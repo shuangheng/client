@@ -49,12 +49,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9cdbf4ee-aa9a-4fcc-8a3d-2345560baaf0" name="Default" comment="" />
-    <list id="408213a6-32ef-4789-9083-f61f03960103" name="Rejected commit: Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list id="408213a6-32ef-4789-9083-f61f03960103" name="Rejected commit: Default" comment="" />
     <ignored path="client.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="$PROJECT_DIR$/.idea/workspace.xml" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
