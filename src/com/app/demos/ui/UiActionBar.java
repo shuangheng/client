@@ -219,7 +219,7 @@ public class UiActionBar extends BaseUi implements ActionBar.TabListener {
         mPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(), fragmentsList));
         mPager.setCurrentItem(0);
         //左右预加载个数
-        mPager.setOffscreenPageLimit(2);
+        ///mPager.setOffscreenPageLimit(2);
         //切换动画
         mPager.setPageTransformer(true,new DepthPageTransformer());
         mPager.setOnPageChangeListener(new MyOnPageChangeListener());
