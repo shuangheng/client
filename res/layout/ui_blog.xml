@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <include layout="@layout/main_layout" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <include layout="@layout/main_top" />
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fillViewport="true"
+            android:scrollbars="vertical" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical" >
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="60dip" >
+
+                    <ImageView
+                        android:id="@+id/app_blog_image_face"
+                        android:layout_width="50dip"
+                        android:layout_height="50dip"
+                        android:layout_margin="5dip"
+                        android:focusable="false"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/face" />
+
+                    <TextView
+                        android:id="@+id/app_blog_text_customer_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dip"
+                        android:layout_toRightOf="@+id/app_blog_image_face"
+                        android:text="name"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/app_blog_text_customer_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/app_blog_text_customer_name"
+                        android:layout_toRightOf="@+id/app_blog_image_face"
+                        android:text="info" />
+
+                    <Button
+                        android:id="@+id/app_blog_btn_addfans"
+                        android:layout_width="80dip"
+                        android:layout_height="32dip"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="5dip"
+                        android:layout_marginRight="8dip"
+                        android:background="@drawable/button_1"
+                        android:text="@string/btn_addfans" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dip"
+                    android:layout_marginRight="5dip"
+                    android:background="@drawable/body_1"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/app_blog_text_content"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="5dip"
+                        android:background="#f6f6f6"
+                        android:padding="10dip"
+                        android:textSize="12dip" />
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dip"
+                        android:focusable="false"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/app_blog_text_uptime"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="2dip"
+                            android:text="loading"
+                            android:textSize="12dip" />
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:gravity="right"
+                            android:paddingRight="4dip"
+                            android:text="@string/blog_comment"
+                            android:textSize="12dip" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/app_blog_list_comment"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dip"
+                        android:layout_marginRight="5dip"
+                        android:background="@drawable/body_2"
+                        android:orientation="vertical" >
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/app_blog_btn_comment"
+                        android:layout_width="80dip"
+                        android:layout_height="32dip"
+                        android:layout_marginBottom="3dip"
+                        android:layout_marginLeft="5dip"
+                        android:layout_marginTop="5dip"
+                        android:background="@drawable/button_1"
+                        android:text="@string/btn_comment"
+                        android:textSize="12dip" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <include layout="@layout/main_tab" />
+    </LinearLayout>
+
+</merge>

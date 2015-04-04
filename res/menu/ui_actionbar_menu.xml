@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:Tab="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_photo"
+        android:orderInCategory="99"
+        Tab:showAsAction="ifRoom|withText"
+        android:title="@string/wonderful_comment"
+        android:icon="@drawable/ic_launcher"/>
+
+    <item
+        android:id="@+id/action_text"
+        android:orderInCategory="98"
+        Tab:showAsAction="ifRoom|withText"
+        android:title="@string/edit_submit"
+        android:icon="@drawable/ic_launcher"/>
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        Tab:showAsAction="never"
+        android:title="是"/>
+</menu>

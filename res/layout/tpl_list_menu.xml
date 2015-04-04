@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="50dip"
+    android:background="@drawable/xml_list_menu_bg"
+    android:focusable="false"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingBottom="1dip"
+    android:paddingLeft="10dip"
+    android:paddingRight="10dip"
+    android:paddingTop="1dip" >
+
+    <TextView
+        android:id="@+id/tpl_list_menu_text_name"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:focusable="false"
+        android:gravity="center_vertical"
+        android:textSize="10pt" />
+
+    <Button
+        android:layout_width="24dip"
+        android:layout_height="31dip"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/arrow_1"
+        android:focusable="false" />
+
+</LinearLayout>

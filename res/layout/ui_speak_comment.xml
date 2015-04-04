@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <!-- ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/ui_speak_comment_scrollview" >
+
+     
+        
+        <include
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            layout="@layout/tpl_list_speak" />
+
+        <TextView
+            android:id="@+id/ui_speak_comment_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:text="@string/wonderful_comment"
+            android:textColor="@color/lightwhite" /-->
+            
+	<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ui_speak_comment_editLayout"
+        android:orientation="vertical">
+        
+        <ListView
+            android:id="@+id/ui_speak_comment_listview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:cacheColorHint="#00000000"
+            android:descendantFocusability="blocksDescendants"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:fadingEdge="vertical"
+            
+            android:fadingEdgeLength="5dp" 
+        	
+            android:listSelector="@drawable/xml_list_bg" />
+
+      </LinearLayout>    
+
+	
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:gravity="bottom"
+        android:id="@+id/ui_speak_comment_editLayout" >
+        
+     
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/ic_publish_operation_bar_keyboard" />
+        
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:layout_weight="1"
+            android:background="@drawable/textfield_default_holo_light"
+            android:focusable="false"
+            android:editable="true"
+            android:hint="@string/btn_comment"
+            android:maxLines="5" />
+        
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/ic_send_btn_disabled" />
+
+	</LinearLayout>
+
+
+</RelativeLayout>    

@@ -1,0 +1,32 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#C0C0C0"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/gg_right_pup2"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        
+        android:paddingRight="70dp"
+        android:text="viviens" />
+
+    <Button
+        android:id="@+id/gg_right_pup3"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        
+        android:paddingRight="70dp"
+        android:text="mryang" />
+
+    <Button
+        android:id="@+id/gg_right_pup4"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        
+        android:paddingRight="70dp"
+        android:text="张晓达" />
+
+</LinearLayout>
