@@ -9,13 +9,11 @@ buildscript {
 apply plugin: 'android'
 
 dependencies {
-    releaseCompile 'com.android.support:support-v4:21.0.3'
-    releaseCompile files('Lib/libs/android-support-v4.jar')
-    releaseCompile files('Lib/libs/android-support-v7-appcompat.jar')
     compile 'com.android.support:support-annotations:22.0.0'
     compile 'com.android.support:appcompat-v7:22.0.0'
     compile 'com.android.support:support-v4:22.0.0'
     compile files('libs/nineoldandroids-2.4.0.jar')
+    releaseCompile files('libs/android-support-v4.jar')
 }
 
 android {
