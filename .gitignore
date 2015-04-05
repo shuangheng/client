@@ -30,3 +30,4 @@ proguard/
 README.md~
 *.*~
 workspace.xml
+.gradle/
