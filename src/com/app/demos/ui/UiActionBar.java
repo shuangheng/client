@@ -222,7 +222,7 @@ public class UiActionBar extends BaseUi implements ActionBar.TabListener {
         mPager.setOffscreenPageLimit(2);
 
 
-        /////dev3  bug2----1  切换动画
+        /////dev3  bug2----2  切换动画
 
 
         mPager.setPageTransformer(true,new DepthPageTransformer());
