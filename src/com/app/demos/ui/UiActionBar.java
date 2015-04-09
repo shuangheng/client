@@ -76,7 +76,7 @@ public class UiActionBar extends BaseUi implements ActionBar.TabListener {
     private int position_three;
     private Resources resources;
     private SpeakFragment activityfragment;
-    ////////////////////////////////////
+    /////////////////////////////////////
     private ListView list;
     private MyList blogListAdapter;
     private GonggaoSqlite gonggaoSqlite;
