@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -58,7 +59,7 @@ import java.util.HashMap;
 /**
  * Created by tom on 15-3-25.
  */
-public class UiActionBar extends BaseUi implements ActionBar.TabListener {
+public class UiActionBar extends BaseUi {
     private static final String TAG = "MainActivity";
     private ViewPager mPager;
     private ArrayList<Fragment> fragmentsList;
@@ -103,7 +104,7 @@ public class UiActionBar extends BaseUi implements ActionBar.TabListener {
     // 最后可见条目的索引
     private int lastVisibleIndex;
     private int NUM ;
-    private ActionBar actionBar;
+    //private ActionBar actionBar;
     private TabRedDian viewTab;
     private FrameLayout ivLayout;
     private TextView tv;
@@ -152,51 +153,35 @@ public class UiActionBar extends BaseUi implements ActionBar.TabListener {
     }
 
     private void setUpActionBar() {
-        actionBar = getSupportActionBar();
-        actionBar.setHomeButtonEnabled(false);
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setDisplayShowHomeEnabled(false);
-        actionBar.setDisplayShowCustomEnabled(false);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        actionBar.addTab(actionBar.newTab()
-                .setTabListener(this)
-                .setCustomView(new TabRedDian(this) {
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+// toolbar.setLogo(R.drawable.ic_launcher);
+        mToolbar.setTitle("Rocko");// 标题的文字需在setSupportActionBar之前，不然会无效
+// toolbar.setSubtitle("副标题");
+        setSupportActionBar(mToolbar);
+/* 这些通过ActionBar来设置也是一样的，注意要在setSupportActionBar(toolbar);之后，不然就报错了 */
+// getSupportActionBar().setTitle("标题");
+// getSupportActionBar().setSubtitle("副标题");
+// getSupportActionBar().setLogo(R.drawable.ic_launcher);
 
-                    @Override
-                    public String setText() {
-                        return getResources().getString(R.string.tab_1);
-                    }
-
-                    @Override
-                    public Boolean showRed() {
-                        return true;
-                    }
-                }));
-                //.setIcon(R.drawable.ic_launcher)
-                viewTab = new TabRedDian(this) {
-                    @Override
-                    public String setText() {
-                        return getResources().getString(R.string.tab_2);
-                    }
-
-                    @Override
-                    public Boolean showRed() {
-                        return true;
-                    }
-                };
-
-        actionBar.addTab(actionBar.newTab()
-                .setCustomView(viewTab)
-                //.setIcon(R.drawable.ic_launcher)
-                .setTabListener(this));
-
-        actionBar.addTab(actionBar.newTab()
-                .setText("Test")
-                //.setIcon(R.drawable.ic_launcher)
-                .setTabListener(this));
-        actionBar.setCustomView(R.layout.red_dian);
-        //默认显示
-        //actionBar.selectTab(actionBar.getTabAt(1));
+/* 菜单的监听可以在toolbar里设置，也可以像ActionBar那样，通过Activity的onOptionsItemSelected回调方法来处理 */
+        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                /*
+                switch (item.getItemId()) {
+                    case R.id.action_settings:
+                        Toast.makeText(MainActivity.this, "action_settings", 0).show();
+                        break;
+                    case R.id.action_share:
+                        Toast.makeText(MainActivity.this, "action_share", 0).show();
+                        break;
+                    default:
+                        break;
+                }
+                */
+                return true;
+            }
+        });
     }
 
     private void InitViewPager() {
@@ -225,27 +210,7 @@ public class UiActionBar extends BaseUi implements ActionBar.TabListener {
         mPager.setOnPageChangeListener(new MyOnPageChangeListener());
     }
 
-    @Override
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-        if (mPager != null)
-            mPager.setCurrentItem(tab.getPosition());
-        if (tab.getPosition() == 1) {
-            viewTab.iv.setVisibility(View.GONE);
-            //viewTab.tv.setText("hello");
-        }
 
-
-    }
-
-    @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-
-    }
-
-    @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-
-    }
 
     public class MyOnClickListener implements View.OnClickListener {
         private int index = 0;
@@ -262,7 +227,7 @@ public class UiActionBar extends BaseUi implements ActionBar.TabListener {
 
         @Override
         public void onPageSelected(int arg0) {
-            actionBar.selectTab(actionBar.getTabAt(arg0));
+            //actionBar.selectTab(actionBar.getTabAt(arg0));
         }
 
         @Override

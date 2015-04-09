@@ -12,7 +12,7 @@
         <!-- Activity defines -->
         <activity
             android:name=".ui.UiActionBar"
-            android:theme="@style/Theme.AppCompat.Light" >
+            android:theme="@style/AppTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
