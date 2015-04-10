@@ -43,7 +43,7 @@
             <!-- 窗口的背景颜色 -->
             <item name="android:windowBackground">@android:color/white</item>
             <!-- SearchView -->
-            <item name="searchViewStyle">@style/Widget.AppCompat.SearchView</item>
+            <item name="searchViewStyle">@style/MySearchViewStyle</item>
         </style>
 
         <style name="AppTheme" parent="@style/AppBaseTheme" />
