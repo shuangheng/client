@@ -232,7 +232,9 @@ public class UiActionBar extends BaseUi {
 
         @Override
         public void onPageScrolled(int arg0, float arg1, int arg2) {
-            ivLayout.setRotationY(arg1*180);
+            if (android.os.Build.VERSION.SDK_INT >= 11) {
+                ivLayout.setRotationY(arg1 * 180);
+            }
             //ivBottomAdd0.setRotationY(arg1);
             //ivBottomAdd2.setRotationY(arg1);
             //ivBottomAdd1.setRotationY(arg1);
