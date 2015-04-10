@@ -18,5 +18,6 @@
     <color name="lightwhite">#ddd</color>
     <color name="white0">#ffffffff</color>
     <color name="holo_blue">#ff0a91ff</color>
-    
+    <color name="background_tab_pressed">#6633B5E5</color>
+
 </resources>

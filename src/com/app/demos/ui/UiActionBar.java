@@ -1,20 +1,27 @@
 package com.app.demos.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -47,6 +54,7 @@ import com.app.demos.fragment.FindFragment;
 import com.app.demos.fragment.Fragment2;
 import com.app.demos.fragment.Fragment3;
 import com.app.demos.fragment.SpeakFragment;
+import com.app.demos.layout.PagerSlidingTabStrip;
 import com.app.demos.layout.TabRedDian;
 import com.app.demos.list.MyList;
 import com.app.demos.model.Gonggao;
@@ -109,6 +117,10 @@ public class UiActionBar extends BaseUi {
     private FrameLayout ivLayout;
     private TextView tv;
     private int i;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private ShareActionProvider mShareActionProvider;
+    private PagerSlidingTabStrip mPagerSlidingTabStrip;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -162,26 +174,86 @@ public class UiActionBar extends BaseUi {
 // getSupportActionBar().setTitle("标题");
 // getSupportActionBar().setSubtitle("副标题");
 // getSupportActionBar().setLogo(R.drawable.ic_launcher);
+       // getSupportActionBar().setHomeButtonEnabled(true);
 
 /* 菜单的监听可以在toolbar里设置，也可以像ActionBar那样，通过Activity的onOptionsItemSelected回调方法来处理 */
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                /*
                 switch (item.getItemId()) {
                     case R.id.action_settings:
-                        Toast.makeText(MainActivity.this, "action_settings", 0).show();
+                        Toast.makeText(UiActionBar.this, "action_settings", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.action_share:
-                        Toast.makeText(MainActivity.this, "action_share", 0).show();
+                        Toast.makeText(UiActionBar.this, "action_share", Toast.LENGTH_SHORT).show();
                         break;
                     default:
                         break;
                 }
-                */
                 return true;
             }
         });
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open,
+                R.string.drawer_close);
+        mDrawerToggle.syncState();
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        mPagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+
+        initTabsValue();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar, menu);
+		/* ShareActionProvider配置 */
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menu
+                .findItem(R.id.action_share));
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/*");
+        mShareActionProvider.setShareIntent(intent);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // switch (item.getItemId()) {
+        // case R.id.action_settings:
+        // Toast.makeText(MainActivity.this, "action_settings", 0).show();
+        // break;
+        // case R.id.action_share:
+        // Toast.makeText(MainActivity.this, "action_share", 0).show();
+        // break;
+        // default:
+        // break;
+        // }
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * mPagerSlidingTabStrip默认值配置
+     *
+     */
+    private void initTabsValue() {
+        // 底部游标颜色
+        mPagerSlidingTabStrip.setIndicatorColor(Color.BLUE);
+        // tab的分割线颜色
+        mPagerSlidingTabStrip.setDividerColor(Color.TRANSPARENT);
+        // tab背景
+        mPagerSlidingTabStrip.setBackgroundColor(Color.parseColor("#4876FF"));
+        // tab底线高度
+        mPagerSlidingTabStrip.setUnderlineHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                1, getResources().getDisplayMetrics()));
+        // 游标高度
+        mPagerSlidingTabStrip.setIndicatorHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                5, getResources().getDisplayMetrics()));
+        // 选中的文字颜色
+        mPagerSlidingTabStrip.setSelectedTextColor(Color.WHITE);
+        // 正常文字颜色
+        mPagerSlidingTabStrip.setTextColor(Color.BLACK);
     }
 
     private void InitViewPager() {
