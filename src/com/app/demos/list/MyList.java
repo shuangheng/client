@@ -11,6 +11,7 @@ import com.app.demos.model.Gonggao;
 import com.app.demos.ui.MainActivity;
 import com.app.demos.util.AppCache;
 import com.app.demos.util.AppFilter;
+import com.app.demos.util.IOUtil;
 import com.app.demos.util.Suiji;
 
 import android.content.Context;
@@ -118,7 +119,9 @@ public class MyList extends BaseList {
 //		Bitmap bgImage = Bitmap.createScaledBitmap(AppCache.
 //                        getImage(bgUrl),weidth , weidth, true);
 //
-        Bitmap bgImage = AppCache.getImage(bgUrl);        
+        Bitmap bgImage = AppCache.getImage(bgUrl);
+        // it's OK
+        //Bitmap bgImage = AppCache.getCachedImage(blogItem.image.getContext(),bgUrl);
         if (bgImage != null) {
         	int w = bgImage.getWidth();
             int h = bgImage.getHeight();
