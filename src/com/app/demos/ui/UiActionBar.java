@@ -55,6 +55,7 @@ import com.app.demos.fragment.Fragment2;
 import com.app.demos.fragment.Fragment3;
 import com.app.demos.fragment.SpeakFragment;
 import com.app.demos.layout.PagerSlidingTabStrip;
+import com.app.demos.layout.PagerSlidingTabStrip_my;
 import com.app.demos.layout.TabRedDian;
 import com.app.demos.list.MyList;
 import com.app.demos.model.Gonggao;
@@ -80,7 +81,7 @@ public class UiActionBar extends BaseUi {
     private int currIndex = 0;
     private int bottomLineWidth;
     private int offset = 1000;
-    private int position_one;
+    public int position_one;
     private int position_two;
     private int position_three;
     private Resources resources;
@@ -120,7 +121,7 @@ public class UiActionBar extends BaseUi {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private ShareActionProvider mShareActionProvider;
-    private PagerSlidingTabStrip mPagerSlidingTabStrip;
+    private PagerSlidingTabStrip_my mPagerSlidingTabStrip;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -136,6 +137,7 @@ public class UiActionBar extends BaseUi {
         this.setHandler(new MyHandler(this));
 
         resources = getResources();
+        initWidth();
         setUpActionBar();
         InitViewPager();
 
@@ -201,9 +203,7 @@ public class UiActionBar extends BaseUi {
         mDrawerToggle.syncState();
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        mPagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 
-        initTabsValue();
     }
 
     @Override
@@ -257,6 +257,7 @@ public class UiActionBar extends BaseUi {
     }
 
     private void InitViewPager() {
+        mPagerSlidingTabStrip = (PagerSlidingTabStrip_my) findViewById(R.id.tabs);
         mPager = (ViewPager) findViewById(R.id.ui_actionbar_vPager);
         fragmentsList = new ArrayList<Fragment>();
         //LayoutInflater mInflater = getLayoutInflater();
@@ -279,7 +280,10 @@ public class UiActionBar extends BaseUi {
         mPager.setOffscreenPageLimit(2);
         ///  切换动画
         mPager.setPageTransformer(true,new DepthPageTransformer());
-        mPager.setOnPageChangeListener(new MyOnPageChangeListener());
+        //mPager.setOnPageChangeListener(new MyOnPageChangeListener());
+        mPagerSlidingTabStrip.setViewPager(mPager);
+        mPagerSlidingTabStrip.setOnPageChangeListener(new MyOnPageChangeListener());
+        initTabsValue();
     }
 
 
@@ -515,6 +519,17 @@ public class UiActionBar extends BaseUi {
         ivList.add(ivBottomAdd1);
         ivList.add(ivBottomAdd2);
         ivList.get(i).setVisibility(View.VISIBLE);
+    }
+
+    private void initWidth() {
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int screenW = dm.widthPixels;
+//        offset = (int) ((screenW / 4.0 - bottomLineWidth) / 2);
+//        Log.i("MainActivity", "offset=" + offset);
+
+        position_one = (int) (screenW / 3.0);
+
     }
 
     /*/-----actionBar添加iterm菜单

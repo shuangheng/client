@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    tools:context="com.app.demos.ui.UiActionBar" >
 
     <include layout="@layout/toolbar" />
 
@@ -23,11 +25,11 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical" >
 
-                <com.app.demos.layout.PagerSlidingTabStrip
+                <com.app.demos.layout.PagerSlidingTabStrip_my
                     android:id="@+id/tabs"
                     android:layout_width="match_parent"
                     android:layout_height="48dip" >
-                </com.app.demos.layout.PagerSlidingTabStrip>
+                </com.app.demos.layout.PagerSlidingTabStrip_my>
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/ui_actionbar_vPager"
