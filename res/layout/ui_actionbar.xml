@@ -100,9 +100,10 @@
             android:padding="8dp" >
 
             <TextView
+                android:id="@+id/drawer_tv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/app_name"/>
+                android:text="富友凤飞飞string/app_name"/>
         </LinearLayout>
 
 
