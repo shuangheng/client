@@ -4,7 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -62,6 +65,11 @@ import com.app.demos.model.Gonggao;
 import com.app.demos.PageTransformer.DepthPageTransformer;
 import com.app.demos.sqlite.GonggaoSqlite;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -128,7 +136,9 @@ public class UiActionBar extends BaseUi {
         super.onCreate(savedInstanceState);
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.ui_actionbar);
-        //tv = (TextView) findViewById(R.id.ui_actionbar_tv);
+/*////////////////   test   //////////////////////////////////////////
+
+*///////////////////////////   test   ///////////////////////////////
         ivLayout = (FrameLayout) findViewById(R.id.ui_actionbar_layout_add);
         ivBottomAdd0 = (ImageView) findViewById(R.id.ui_actionbar_iv0);
         ivBottomAdd1 = (ImageView) findViewById(R.id.ui_actionbar_iv1);

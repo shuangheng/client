@@ -66,20 +66,20 @@
             android:src="@drawable/ic_publish_operation_bar_keyboard" />
         
         <com.app.demos.layout.materialEditText.MaterialEditText
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:autoText="true"
             android:maxLines="3"
+            android:maxLength="20"
             android:hint="Library Name"
             android:text="MaterialEditText"
             android:textCursorDrawable="@drawable/text_cursor_cyan"
-            android:textSize="34sp"
+            app:met_typeface="fonts/Roboto-LightItalic.ttf"
+            app:met_accentTypeface="fonts/Roboto-LightItalic.ttf"
             app:met_baseColor="@android:color/black"
             app:met_floatingLabel="highlight"
-            app:met_maxCharacters="20"
-            app:met_primaryColor="?colorAccent"
-            app:met_singleLineEllipsis="true"
-            android:singleLine="true" />
+            android:layout_weight="1"
+
+            app:met_primaryColor="?colorAccent" />
             <!--
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -98,6 +98,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
+
             android:background="@drawable/ic_send_btn_disabled" />
 
 	</LinearLayout>
