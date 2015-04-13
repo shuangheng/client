@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.util.Log;
 
 public class HttpUtil {
 	
@@ -16,7 +17,7 @@ public class HttpUtil {
 	static private Uri APN_URI = null;
 	
 	static public int getNetType (Context ctx) {
-		// has network
+		/*/ has network
 		ConnectivityManager conn = null;
 		try {
 			conn = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -37,6 +38,10 @@ public class HttpUtil {
 			return HttpUtil.WIFI_INT;
 		}
 		// check use wap
+
+///!!!!!!!   下面会报错在android 4.2 以上  java.lang.SecurityException: No permission to write APN settings
+//   如果必须要用的APN的信息，则要注意版本兼容性问题，在android4.2以上版本获取apn 的URI发生了变化。
+
 		APN_URI = Uri.parse("content://telephony/carriers/preferapn");
 		Cursor uriCursor = ctx.getContentResolver().query(APN_URI, null, null, null, null);
 		if (uriCursor != null && uriCursor.moveToFirst()) {
@@ -49,6 +54,8 @@ public class HttpUtil {
 			}
 		}
 		return HttpUtil.NET_INT;
-	}
+		*/
+       return  0;
+    }
 	
 }

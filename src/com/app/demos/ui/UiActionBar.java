@@ -85,6 +85,7 @@ public class UiActionBar extends BaseUi {
     private ImageView ivBottomAdd1;
     private ImageView ivBottomAdd2;
     private TextView tvTabActivity, tvTabGroups, tvTabFriends, tvTabChat;
+    private long mPressedTime = 0;
 
     private int currIndex = 0;
     private int bottomLineWidth;
@@ -241,6 +242,19 @@ public class UiActionBar extends BaseUi {
         // break;
         // }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        long mNowTime = System.currentTimeMillis();//获取第一次按键时间
+        if((mNowTime - mPressedTime) > 2000){//比较两次按键时间差
+            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            mPressedTime = mNowTime;
+           }
+        else{//退出程序
+            this.finish();
+            System.exit(0);
+           }
     }
 
     /**
@@ -411,7 +425,7 @@ public class UiActionBar extends BaseUi {
         MaxIdNum = Integer.parseInt(Maxid);
         Log.e("maxid", Maxid);
     }
-
+/*
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
@@ -419,7 +433,7 @@ public class UiActionBar extends BaseUi {
         }
         return super.onKeyDown(keyCode, event);
     }
-
+*/
     @Override
     @SuppressWarnings("unchecked")
     public void onTaskComplete(int taskId, BaseMessage message) {
