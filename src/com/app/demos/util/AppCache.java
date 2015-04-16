@@ -22,6 +22,8 @@ public class AppCache {
 
             int weidth = BaseDevice.getScreenWidth(ctx);
             Bitmap b = Bitmap.createScaledBitmap(newImage, weidth, weidth, true);
+            //回收
+            newImage.recycle();
 			SDUtil.saveImage(b, cacheKey);
 			return b;
 		}

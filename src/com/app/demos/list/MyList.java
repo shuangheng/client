@@ -129,6 +129,8 @@ public class MyList extends BaseList {
             Log.e("bgimage", ""+w+":"+h);
             
 			blogItem.image.setImageBitmap(bgImage);
+            bgImage = null;
+            System.gc();
             
 		}
 		return v;

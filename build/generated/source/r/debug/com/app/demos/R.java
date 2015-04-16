@@ -1896,7 +1896,7 @@ containing a value of this type.
     public static final class id {
         public static final int FILL=0x7f08001c;
         public static final int STROKE=0x7f08001d;
-        public static final int ab_search=0x7f0800ba;
+        public static final int ab_search=0x7f0800c4;
         public static final int action_bar=0x7f080034;
         public static final int action_bar_activity_content=0x7f080000;
         public static final int action_bar_container=0x7f080033;
@@ -1910,10 +1910,10 @@ containing a value of this type.
         public static final int action_mode_bar=0x7f080031;
         public static final int action_mode_bar_stub=0x7f080030;
         public static final int action_mode_close_button=0x7f080023;
-        public static final int action_photo=0x7f0800bd;
-        public static final int action_settings=0x7f0800bc;
-        public static final int action_share=0x7f0800bb;
-        public static final int action_text=0x7f0800be;
+        public static final int action_photo=0x7f0800c7;
+        public static final int action_settings=0x7f0800c6;
+        public static final int action_share=0x7f0800c5;
+        public static final int action_text=0x7f0800c8;
         public static final int activity_chooser_view_content=0x7f080024;
         public static final int add_ibtn=0x7f080043;
         public static final int always=0x7f080017;
@@ -1941,8 +1941,8 @@ containing a value of this type.
         public static final int app_register_btn_submit=0x7f0800a9;
         public static final int app_test_btn_test_array=0x7f0800b4;
         public static final int app_test_btn_test_array_list=0x7f0800b5;
-        public static final int app_write_submit=0x7f0800b7;
-        public static final int app_write_text=0x7f0800b6;
+        public static final int app_write_submit=0x7f0800c1;
+        public static final int app_write_text=0x7f0800c0;
         public static final int beginning=0x7f080013;
         public static final int button1=0x7f0800b0;
         public static final int checkbox=0x7f08002c;
@@ -1993,8 +1993,8 @@ containing a value of this type.
         public static final int main_tab_4=0x7f08005d;
         public static final int main_top_quit=0x7f08005e;
         public static final int main_top_title=0x7f08005f;
-        public static final int menu_about=0x7f0800b8;
-        public static final int menu_exit=0x7f0800b9;
+        public static final int menu_about=0x7f0800c2;
+        public static final int menu_exit=0x7f0800c3;
         public static final int middle=0x7f080015;
         public static final int my_top_back=0x7f080060;
         public static final int my_top_right=0x7f080062;
@@ -2029,6 +2029,16 @@ containing a value of this type.
         public static final int swipe_refresh=0x7f080047;
         public static final int tabMode=0x7f08000b;
         public static final int tabs=0x7f08008c;
+        public static final int test_iv1=0x7f0800b7;
+        public static final int test_iv2=0x7f0800b9;
+        public static final int test_iv3=0x7f0800bb;
+        public static final int test_iv4=0x7f0800bd;
+        public static final int test_iv5=0x7f0800bf;
+        public static final int test_tv1=0x7f0800b6;
+        public static final int test_tv2=0x7f0800b8;
+        public static final int test_tv3=0x7f0800ba;
+        public static final int test_tv4=0x7f0800bc;
+        public static final int test_tv5=0x7f0800be;
         public static final int textView=0x7f080069;
         public static final int textView3=0x7f08006c;
         public static final int textView4=0x7f08006e;
@@ -2161,7 +2171,8 @@ containing a value of this type.
         public static final int ui_speak_comment=0x7f030042;
         public static final int ui_speak_main=0x7f030043;
         public static final int ui_test=0x7f030044;
-        public static final int ui_write=0x7f030045;
+        public static final int ui_test_image=0x7f030045;
+        public static final int ui_write=0x7f030046;
     }
     public static final class menu {
         public static final int menu=0x7f0c0000;
