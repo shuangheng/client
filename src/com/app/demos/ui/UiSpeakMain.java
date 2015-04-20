@@ -7,37 +7,27 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Message;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.demos.R;
-import com.app.demos.adapter.MyFragmentPagerAdapter;
 import com.app.demos.base.BaseHandler;
 import com.app.demos.base.BaseMessage;
 import com.app.demos.base.BaseTask;
 import com.app.demos.base.BaseUi;
 import com.app.demos.base.C;
-import com.app.demos.fragment.FindFragment;
-import com.app.demos.fragment.SpeakFragment;
+import com.app.demos.ui.fragment.FindFragment;
+import com.app.demos.ui.fragment.SpeakFragment;
 import com.app.demos.list.MyList;
 import com.app.demos.model.Gonggao;
 import com.app.demos.sqlite.GonggaoSqlite;
 //import com.app.demos.ui.MainActivity.MyOnClickListener;
-import com.app.demos.ui.MainActivity.MyOnPageChangeListener;
+
 
 public class UiSpeakMain extends BaseUi{
     private int lastIdNum;

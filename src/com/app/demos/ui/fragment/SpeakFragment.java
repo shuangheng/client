@@ -1,4 +1,4 @@
-package com.app.demos.fragment;
+package com.app.demos.ui.fragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,6 +6,8 @@ import java.util.HashMap;
 import com.app.demos.R;
 import com.app.demos.base.C;
 import com.app.demos.list.MyList;
+import com.app.demos.list.bitmap_load_list.ImageLoader;
+import com.app.demos.list.bitmap_load_list.LoaderAdapter;
 import com.app.demos.model.Gonggao;
 import com.app.demos.sqlite.GonggaoSqlite;
 import com.app.demos.ui.UiActionBar;
@@ -43,7 +45,8 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
     //---View---
     private ListView list;
     private ImageButton ib;
-	public MyList blogListAdapter;	
+	public MyList blogListAdapter;
+    private LoaderAdapter adapter;
 	private SharedPreferences sharedPreferences;	
     private PopupWindow popupwindow;
     private View pupView;
@@ -187,7 +190,13 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
+        ImageLoader imageLoader = adapter.getImageLoader();
+            if (imageLoader != null){
+                imageLoader.clearCache();
+            }
+
+            super.onDestroy();
+
         Log.d(TAG, "TestFragment-----onDestroy");
     }
 
@@ -207,8 +216,9 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
 				
 				//ggList.add(g);
 				//getLastId(ggList);
-				blogListAdapter = new MyList(activity,R.layout.tpl_list_speak, ggList);
-			    list.setAdapter(blogListAdapter);
+				//blogListAdapter = new MyList(activity,R.layout.tpl_list_speak, ggList);
+				adapter = new LoaderAdapter(activity,R.layout.tpl_list_speak, ggList);
+			    list.setAdapter(adapter);
 				list.setOnItemClickListener(new OnItemClickListener(){
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view, int postion, long id) {
@@ -228,19 +238,19 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
 		public void setGgList(ArrayList<Gonggao> g){
 			ggList.clear();
 		    ggList.addAll(g);
-		    blogListAdapter.notifyDataSetChanged();// 通知listView刷新数据
+            adapter.notifyDataSetChanged();// 通知listView刷新数据
 		    
 		}
 		
 		//更新ListView数据
 		public void addGgList(ArrayList<Gonggao> g){					
 			ggList.addAll(g);
-			blogListAdapter.notifyDataSetChanged();// 通知listView刷新数据
+            adapter.notifyDataSetChanged();// 通知listView刷新数据
 		}
 
         //通知ListView加载图片
         public void listChanged() {
-            blogListAdapter.notifyDataSetChanged();// 通知listView刷新数据
+            adapter.notifyDataSetChanged();// 通知listView刷新数据
         }
 
 		@Override
@@ -251,10 +261,24 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
 		
 		// 滑到底部后自动加载
 		@Override
-	    public void onScrollStateChanged(AbsListView view, int scrollState) {		
+	    public void onScrollStateChanged(AbsListView view, int scrollState) {
+            switch (scrollState) {
+                case OnScrollListener.SCROLL_STATE_FLING:
+                    adapter.setFlagBusy(true);
+                    break;
+                case OnScrollListener.SCROLL_STATE_IDLE:
+                    adapter.setFlagBusy(false);
+                    break;
+                case OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
+                    adapter.setFlagBusy(false);
+                    break;
+                default:
+                    break;
+            }
+            adapter.notifyDataSetChanged();
 	        // 滑到底部后自动加载，判断listview已经停止滚动并且最后可视的条目等于adapter的条目
 	        if (scrollState == OnScrollListener.SCROLL_STATE_IDLE
-	        		&& lastVisibleIndex == blogListAdapter.getCount()) {
+	        		&& lastVisibleIndex == adapter.getCount()) {
 	            // 当滑到底部时自动加载
 	             //pg.setVisibility(View.VISIBLE);
 	             //bt.setVisibility(View.VISIBLE);
@@ -303,8 +327,8 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
 		
 		//隐藏load more
 		public void hideLoadMore(){
-			//moreView.setVisibility(View.GONE);
-			list.removeFooterView(moreView);
+			moreView.setVisibility(View.GONE);
+			//list.removeFooterView(moreView);
    		    //pg.setVisibility(View.GONE);
 
 		}

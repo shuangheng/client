@@ -79,8 +79,11 @@ public class SDUtil {
 			file.createNewFile();
 			OutputStream outStream = new FileOutputStream(file);
 			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+            //回收
+            bitmap.recycle();
 			outStream.flush();
 			outStream.close();
+            System.gc();
 			Log.i(TAG, "Image saved to sd");
 		} catch (FileNotFoundException e) {
 			Log.w(TAG, "FileNotFoundException");
