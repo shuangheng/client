@@ -38,6 +38,7 @@ import com.app.demos.base.BaseMessage;
 import com.app.demos.base.BaseTask;
 import com.app.demos.base.BaseUi;
 import com.app.demos.base.C;
+import com.app.demos.list.bitmap_load_list.LoaderAdapter;
 import com.app.demos.ui.fragment.Fragment2;
 import com.app.demos.ui.fragment.Fragment3;
 import com.app.demos.ui.fragment.SpeakFragment;
@@ -76,6 +77,7 @@ public class UiActionBar extends BaseUi {
     /////////////////////////////////////
     private ListView list;
     private MyList blogListAdapter;
+    private LoaderAdapter adapter;
     private GonggaoSqlite gonggaoSqlite;
     private ArrayList<Gonggao> ggList;
     private String lastId;
