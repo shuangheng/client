@@ -1,4 +1,4 @@
-package com.app.demos.util;
+package com.app.demos.util.bitmap_load_one;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -22,6 +22,7 @@ public class BitmapUtil {
         opts.inInputShareable = true;
         opts.inDither = false;
         opts.inPurgeable = true;
+        //当在android设备中载入较大图片资源时，可以创建一些临时空间，将载入的资源载入到临时空间中。
         opts.inTempStorage = new byte[16 * 1024];
         FileInputStream is = null;
         Bitmap bmp = null;
@@ -37,7 +38,7 @@ public class BitmapUtil {
             bmp.recycle();
             baos = new ByteArrayOutputStream();
             bmp2.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            bmp2.recycle();
+            bmp2.recycle(); //回收图片所占的内存
             return baos.toByteArray();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -50,7 +51,7 @@ public class BitmapUtil {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            System.gc();
+            System.gc();    //提醒系统及时回收
         }
         return baos.toByteArray();
     }
@@ -63,8 +64,7 @@ public class BitmapUtil {
         return scale;
     }
 
-    public static int computeSampleSize(BitmapFactory.Options options,
-                                        int minSideLength, int maxNumOfPixels) {
+    public static int computeSampleSize(BitmapFactory.Options options, int minSideLength, int maxNumOfPixels) {
         int initialSize = computeInitialSampleSize(options, minSideLength,
                 maxNumOfPixels);
 

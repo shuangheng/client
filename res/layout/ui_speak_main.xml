@@ -46,7 +46,7 @@
 
         <fragment
             android:id="@+id/fragment_speak"
-            android:name="com.app.demos.fragment.SpeakFragment"
+            android:name="com.app.demos.ui.fragment.SpeakFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

@@ -1,4 +1,4 @@
-package com.app.demos.fragment;
+package com.app.demos.ui.fragment;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -26,7 +26,6 @@ import com.app.demos.model.Gonggao;
 import com.app.demos.sqlite.GonggaoSqlite;
 import com.app.demos.ui.MainActivity;
 import com.app.demos.ui.UiSpeakComment;
-import com.app.demos.ui.UiSpeakMain;
 
 import java.util.ArrayList;
 import java.util.HashMap;

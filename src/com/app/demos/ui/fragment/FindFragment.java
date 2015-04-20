@@ -1,4 +1,4 @@
-package com.app.demos.fragment;
+package com.app.demos.ui.fragment;
 
 import java.util.ArrayList;
 

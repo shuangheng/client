@@ -1,4 +1,4 @@
-package com.app.demos.fragment;
+package com.app.demos.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,12 +11,11 @@ import com.app.demos.R;
 /**
  * Created by tom on 15-3-27.
  */
-
-public class Fragment2 extends Fragment {
+public class Fragment3 extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflateAndSetupView(inflater, container, savedInstanceState, R.layout.lay2);
+        return inflateAndSetupView(inflater, container, savedInstanceState, R.layout.lay3);
     }
 
     private View inflateAndSetupView(LayoutInflater inflater, ViewGroup container,
@@ -26,3 +25,4 @@ public class Fragment2 extends Fragment {
         return layout;
     }
 }
+

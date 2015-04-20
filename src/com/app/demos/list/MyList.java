@@ -2,17 +2,11 @@ package com.app.demos.list;
 
 import java.util.ArrayList;
 import com.app.demos.R;
-import com.app.demos.base.BaseDevice;
-import com.app.demos.base.BaseUi;
 import com.app.demos.base.BaseList;
-import com.app.demos.fragment.SpeakFragment;
-import com.app.demos.model.Blogg;
 import com.app.demos.model.Gonggao;
 import com.app.demos.ui.MainActivity;
 import com.app.demos.util.AppCache;
 import com.app.demos.util.AppFilter;
-import com.app.demos.util.IOUtil;
-import com.app.demos.util.Suiji;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -27,7 +21,7 @@ import android.widget.TextView;
 
 public class MyList extends BaseList {
 
-	private Context ui;
+	private Context cont;
 	private LayoutInflater inflater;
 	private ArrayList<Gonggao> gonggaoList;
 	private int resourceId;
@@ -45,9 +39,9 @@ public class MyList extends BaseList {
 	}
 	
 	public MyList (Context context,int resourceId, ArrayList<Gonggao> blogList) {
-		this.ui = context;
+		this.cont = context;
 		this.resourceId =resourceId;
-		this.inflater = LayoutInflater.from(this.ui);
+		this.inflater = LayoutInflater.from(this.cont);
 		this.gonggaoList = blogList;
 	}
 	
@@ -105,7 +99,7 @@ public class MyList extends BaseList {
         		//blogItem.ib.setImageResource(R.drawable.ic_card_liked);
         		Log.d("ibutton", "yes");
         		
-        		v.setBackgroundResource(new MainActivity().likeButtonClick(ui));
+        		v.setBackgroundResource(new MainActivity().likeButtonClick(cont));
         		//new TestFragment().likeButtonClick();
         	}
         });
