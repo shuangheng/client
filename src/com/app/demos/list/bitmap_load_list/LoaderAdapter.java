@@ -1,9 +1,11 @@
 package com.app.demos.list.bitmap_load_list;
 
 import com.app.demos.R;
+import com.app.demos.base.BaseUi;
 import com.app.demos.model.Gonggao;
 import com.app.demos.ui.MainActivity;
 import com.app.demos.util.AppFilter;
+import com.app.demos.util.BaseDevice;
 
 import android.content.Context;
 import android.util.Log;
@@ -11,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Gallery;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,6 +29,7 @@ public class LoaderAdapter extends BaseAdapter{
 
     private static final String TAG = "LoaderAdapter";
     private boolean mBusy = false;
+    int weight ;
 
     public void setFlagBusy(boolean busy) {
         this.mBusy = busy;
@@ -49,6 +53,8 @@ public class LoaderAdapter extends BaseAdapter{
     }
 
     public LoaderAdapter (Context context,int resourceId, ArrayList<Gonggao> blogList) {
+
+
         this.mContext = context;
         this.resourceId =resourceId;
         this.inflater = LayoutInflater.from(mContext);
@@ -115,18 +121,39 @@ public class LoaderAdapter extends BaseAdapter{
         });
 
 
-        // load face image
+        //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.newscar);
 
+        int weight = BaseUi.DEVICE_WIDTH;
+        ViewGroup.LayoutParams params = viewHolder.image.getLayoutParams();
+        params.height=weight;
+        params.width =weight;
+        viewHolder.image.setLayoutParams(params);
+
+
+        /*/viewHolder.image.setAdjustViewBounds(true);
+        viewHolder.image.setMinimumHeight(720);
+        if (weight <= 720) {
+            viewHolder.image.setScaleType(ImageView.ScaleType.FIT_XY);
+            Log.e("", "inside");
+        } else {
+            viewHolder.image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            Log.e("", "crop");
+
+        }
+        */
+
+        // load face image
         String url = gonggaoList.get(position).getBgimage();
 
         viewHolder.image.setImageResource(R.drawable.ic_launcher);
+
 
 
         if (!mBusy) {
             mImageLoader.DisplayImage(url, viewHolder.image, false);
             //viewHolder.mTextView.setText("--" + position + "--IDLE ||TOUCH_SCROLL");
         } else {
-            mImageLoader.DisplayImage(url, viewHolder.image, false);
+            mImageLoader.DisplayImage(url, viewHolder.image, true);
             //viewHolder.mTextView.setText("--" + position + "--FLING");
         }
         return convertView;

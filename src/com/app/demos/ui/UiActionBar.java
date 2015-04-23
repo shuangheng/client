@@ -283,7 +283,7 @@ public class UiActionBar extends BaseUi {
         //左右预加载个数
         mPager.setOffscreenPageLimit(2);
         ///  切换动画
-        mPager.setPageTransformer(true,new DepthPageTransformer());
+        //mPager.setPageTransformer(true,new DepthPageTransformer());
         //mPager.setOnPageChangeListener(new MyOnPageChangeListener());
         mPagerSlidingTabStrip.setViewPager(mPager);
         mPagerSlidingTabStrip.setOnPageChangeListener(new MyOnPageChangeListener());
@@ -431,7 +431,7 @@ public class UiActionBar extends BaseUi {
 						*/
                     // load face image
                     for (Gonggao g : ggList1) {
-                        loadImage(g.getBgimage());
+                        //loadImage(g.getBgimage());
                         gonggaoSqlite.updateGonggao(g);
                     }
                     //blogSqlite.updateBlog(blog);
@@ -452,7 +452,7 @@ public class UiActionBar extends BaseUi {
                 try {	//剩余Data
                     ArrayList<Gonggao> ggList1 = (ArrayList<Gonggao>) message.getResultList("Gonggao");
                     for (Gonggao g : ggList1) {
-                        loadImage(g.getBgimage());
+                        //loadImage(g.getBgimage());
                         gonggaoSqlite.updateGonggao(g);
                     }
                     getLastId(ggList1);
@@ -469,7 +469,7 @@ public class UiActionBar extends BaseUi {
                 try {	//new Data
                     ggList = (ArrayList<Gonggao>) message.getResultList("Gonggao");
                     for (Gonggao g : ggList) {
-                        loadImage(g.getBgimage());
+                        //loadImage(g.getBgimage());
                         gonggaoSqlite.updateGonggao(g);
                     }
                     getFirstId(ggList);

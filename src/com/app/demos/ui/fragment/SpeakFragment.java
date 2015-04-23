@@ -75,6 +75,7 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
 	private ArrayList<Gonggao> ggList;
 	private GonggaoSqlite gonggaoSqlite;
 	private Handler handler;
+    private Boolean isLoade_more;
 
     public static SpeakFragment newInstance(String s) {
         SpeakFragment newFragment = new SpeakFragment();
@@ -113,8 +114,8 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
         
         // 实例化load more data 底部布局
 	    moreView = activity.getLayoutInflater().inflate(R.layout.load_more, null);				    			
-	    //bt = (TextView) moreView.findViewById(R.id.bt_load);
-	    //pg = (ProgressBar) moreView.findViewById(R.id.pg);
+	    bt = (TextView) moreView.findViewById(R.id.load_more_tv);
+	    pg = (ProgressBar) moreView.findViewById(R.id.load_more_pg);
 	    handler = new Handler();				    
 		list.addFooterView(moreView);
 		list.setOnScrollListener(this);
@@ -299,9 +300,10 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
     	public void onRefresh() {
     		// TODO Auto-generated method stub		    		
     			new Handler().post(new Runnable() {  
-    	            public void run() {  
-    	                swipeLayout.setRefreshing(false);  
-    	               activity.getData();
+    	            public void run() {
+                        swipeLayout.setRefreshing(false);
+                        activity.getData();
+                        showLoadMore();
     	            }  
     	        });	    		
     	}
@@ -327,11 +329,21 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
 		
 		//隐藏load more
 		public void hideLoadMore(){
-			moreView.setVisibility(View.GONE);
+			//moreView.setVisibility(View.GONE);
 			//list.removeFooterView(moreView);
-   		    //pg.setVisibility(View.GONE);
+   		    pg.setVisibility(View.INVISIBLE);
+            bt.setText("没有了！我来发表");
 
 		}
+
+    //show load more
+    public void showLoadMore(){
+        //moreView.setVisibility(View.GONE);
+        //list.removeFooterView(moreView);
+        pg.setVisibility(View.VISIBLE);
+        bt.setText("正在加载...");
+
+    }
 		
 		//获取最后一条数据的ID
 		public void getLastId(ArrayList<Gonggao> list){

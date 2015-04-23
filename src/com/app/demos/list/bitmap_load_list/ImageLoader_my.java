@@ -29,7 +29,7 @@ import com.app.demos.util.BaseDevice;
  * copy from " https://github.com/shuangheng/SyncLoaderBitmapDemo/ "
  */
 
-public class ImageLoader {
+public class ImageLoader_my {
 
     private MemoryCache memoryCache = new MemoryCache();
     private AbstractFileCache fileCache;
@@ -38,7 +38,7 @@ public class ImageLoader {
     // 线程池
     private ExecutorService executorService;
 
-    public ImageLoader(Context context) {
+    public ImageLoader_my(Context context) {
         fileCache = new FileCache(context);
         executorService = Executors.newFixedThreadPool(5);
     }
@@ -64,7 +64,7 @@ public class ImageLoader {
         executorService.submit(new PhotosLoader(p));
     }
 
-    private Bitmap getBitmap(String url) {
+    private Bitmap getBitmap(Context context, String url) {
         File f = fileCache.getFile(url);
 
         // 先从文件缓存中查找是否有
@@ -84,12 +84,14 @@ public class ImageLoader {
             conn.setReadTimeout(30000);
             conn.setInstanceFollowRedirects(true);
             InputStream is = conn.getInputStream();
-            OutputStream os = new FileOutputStream(f);
+            //OutputStream os = new FileOutputStream(f);
             //保存图片
-            CopyStream(is, os);
-            os.close();
+            saveImage(context, is, f);
+            //CopyStream(is, os);
+            //os.close();
             //读取图片
             bitmap = decodeFile(f);
+            Log.e("getBitmap()", "" + bitmap.getHeight());
             return bitmap;
         } catch (Exception ex) {
             Log.e("", "getBitmap catch Exception...\nmessage = " + ex.getMessage());
@@ -149,7 +151,7 @@ public class ImageLoader {
         public void run() {
             if (imageViewReused(photoToLoad))
                 return;
-            Bitmap bmp = getBitmap(photoToLoad.url);
+            Bitmap bmp = getBitmap(photoToLoad.imageView.getContext(), photoToLoad.url);
             memoryCache.put(photoToLoad.url, bmp);
             if (imageViewReused(photoToLoad))
                 return;
@@ -216,27 +218,27 @@ public class ImageLoader {
 
     //chou's 保存图片
     public static void saveImage(Context context, InputStream is, File f) {
-      try {
-          Bitmap bitmap;
-          bitmap = BitmapFactory.decodeStream(is);
+        try {
+            Bitmap bitmap;
+            bitmap = BitmapFactory.decodeStream(is);
 
-          int weidth = BaseDevice.getScreenWidth(context);
-          Bitmap b = Bitmap.createScaledBitmap(bitmap, weidth, weidth, true);
-          //回收
-          bitmap.recycle();
+            int weidth = BaseDevice.getScreenWidth(context);
+            Bitmap b = Bitmap.createScaledBitmap(bitmap, weidth, weidth, true);
+            //回收
+            bitmap.recycle();
 
-          OutputStream outStream = new FileOutputStream(f);
-          b.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-
-        outStream.flush();
-        outStream.close();
-        System.gc();
-        Log.i("ImageLoader.copyStream", "Image saved to sd");
-    } catch (FileNotFoundException e) {
-        Log.w("ImageLoader.copyStream", "FileNotFoundException");
-    } catch (IOException e) {
-        Log.w("ImageLoader.copyStream", "IOException");
-    }
+            OutputStream outStream = new FileOutputStream(f);
+            b.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+            b.recycle();
+            outStream.flush();
+            outStream.close();
+            System.gc();
+            Log.i("ImageLoader.saveImage", "Image saved to sd");
+        } catch (FileNotFoundException e) {
+            Log.w("ImageLoader.saveImage", "FileNotFoundException");
+        } catch (IOException e) {
+            Log.w("ImageLoader.saveImage", "IOException");
+        }
     }
 
     // 最主要的方法

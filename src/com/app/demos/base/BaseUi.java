@@ -5,6 +5,7 @@ import java.util.HashMap;
 import com.app.demos.R;
 import com.app.demos.util.AppCache;
 import com.app.demos.util.AppUtil;
+import com.app.demos.util.BaseDevice;
 
 import android.app.Activity;
 import android.content.Context;
@@ -30,6 +31,8 @@ public class BaseUi extends ActionBarActivity {
 	protected boolean showLoadBar = false;
 	protected boolean showDebugMsg = true;
 
+    public static int DEVICE_WIDTH;
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,7 @@ public class BaseUi extends ActionBarActivity {
 		this.taskPool = new BaseTaskPool(this);
 		// init application
 		this.app = (BaseApp) this.getApplicationContext();
+        this.DEVICE_WIDTH = BaseDevice.getScreenWidth(this);
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package com.app.demos.layout;
 
-import com.app.demos.base.BaseDevice;
-import com.app.demos.base.BaseUi;
+import com.app.demos.util.BaseDevice;
 import com.app.demos.util.AppCache;
 
 import android.annotation.SuppressLint;
@@ -11,8 +10,6 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 public class MyView extends View{
 	

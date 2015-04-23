@@ -10,6 +10,7 @@
     <ProgressBar        
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/load_more_pg"
          />
     
     <TextView        
@@ -19,6 +20,7 @@
         android:paddingLeft="8dp"
         android:text="@string/btn_more"
         android:textSize="20sp"
+        android:id="@+id/load_more_tv"
          />
   
 </LinearLayout>

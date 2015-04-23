@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -34,6 +35,7 @@ import com.app.demos.base.C;
 import com.app.demos.layout.ListViewForScrollView;
 import com.app.demos.list.CommentList;
 import com.app.demos.list.ExpandList;
+import com.app.demos.list.bitmap_load_list.ImageLoader;
 import com.app.demos.model.Blogg;
 import com.app.demos.model.Comment;
 import com.app.demos.model.Customer;
@@ -237,11 +239,14 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
 	
 	//--load bgImage
 	private void loadBgImage(){
+        /*
 		new Handler().postDelayed(new Runnable() {  
             public void run() {  
             	ivBgImage.setImageBitmap(AppCache.getImage(bgImageUrl));
             }
         },50);
+        */
+        new ImageLoader(this).DisplayImage(bgImageUrl, ivBgImage, false);
 	}
 	
 	//-- only display Image
@@ -297,6 +302,11 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
 			tvType.setText(typeAll);
 			tvLikeCount.setText(likeCount);
         ivBgImage.setBackgroundColor(getResources().getColor(R.color.white));
+        //设置ImageView大小
+        ViewGroup.LayoutParams param = ivBgImage.getLayoutParams();
+        param.height=BaseUi.DEVICE_WIDTH;
+        param.width =BaseUi.DEVICE_WIDTH;
+        ivBgImage.setLayoutParams(param);
         /////Log.d("l_11", "yes");
 	}
 	

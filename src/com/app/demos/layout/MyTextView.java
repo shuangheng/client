@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-import com.app.demos.base.BaseDevice;
+import com.app.demos.util.BaseDevice;
 
 /**
  * Created by Administrator on 15-2-16.

@@ -4,8 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import com.app.demos.base.BaseDevice;
-
 public class AppCache {
 	
 	// tag for log
