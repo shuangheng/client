@@ -21,6 +21,7 @@ import com.app.demos.model.Gonggao;
 import com.app.demos.ui.MainActivity;
 import com.app.demos.util.AppCache;
 import com.app.demos.util.AppFilter;
+import com.app.demos.util.TimeUtil;
 
 public class CommentList extends BaseList {
 	private Context ui;
@@ -60,7 +61,7 @@ public class CommentList extends BaseList {
 
 	@Override
 	public View getView(int p, View v, ViewGroup parent) {
-		Log.e("faceimage", "faceUrl+3");
+		//Log.e("faceimage", "faceUrl+3");
 		// init tpl
 		CommentListItem  commentItem = null;
 		// if cached expired
@@ -80,7 +81,7 @@ public class CommentList extends BaseList {
 		
 		commentItem.content.setText(AppFilter.getHtml(commentList.get(p).getContent()));
 
-        //commentItem.type.setText(commentList.get(p).getType());
+        commentItem.type.setText(TimeUtil.getStandardDate(commentList.get(p).getUptime()));
 
         commentItem.reply.setOnClickListener(new OnClickListener(){
         	@Override

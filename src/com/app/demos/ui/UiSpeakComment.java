@@ -351,7 +351,7 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
 			}
 		}
 	}
-	
+
 			//获取最后一条数据的ID
 			public String getLastId(ArrayList<Comment> list){
 				int i = list.size();
