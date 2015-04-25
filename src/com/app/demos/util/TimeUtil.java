@@ -15,7 +15,70 @@ import java.util.Date;
 public class TimeUtil {
 
     /**
-     * 将时间戳转为代表"距现在多久之前"的字符串
+     * 将  String TimeStamp "yyyy-MM-dd HH:mm:ss"----->>>>日常用语  的字符串
+     * @param timeStamp   时间戳("yyyy-MM-dd HH:mm:ss")
+     * @return String 日常用语
+     */
+    public static String getDailyDate(String timeStamp) {
+
+        StringBuffer sb = new StringBuffer();
+
+        if (timeStamp != null) {
+
+            //系统时间
+            long currentTime = System.currentTimeMillis();
+            String currentTimeS = long2String(currentTime);
+
+            int currentMinute = Integer.parseInt(getMinute(currentTimeS));// 分钟前
+            int currentHour = Integer.parseInt(getHour(currentTimeS));// 小时
+            int currentDay = Integer.parseInt(getDay(currentTimeS));// 天前
+            int currentMonth = Integer.parseInt(getMonth(currentTimeS));
+            int currentYear = Integer.parseInt(getYear(currentTimeS));
+
+            //long t = String2long(timeStamp);
+            //Log.e("timeStr", timeStr);
+            //Log.e("timeStr", ""+t);
+
+
+            //long time = currentTime - t;
+
+
+            int minute = Integer.parseInt(getMinute(currentTimeS));// 分钟前
+            int hour = Integer.parseInt(getHour(currentTimeS));// 小时
+            int day = Integer.parseInt(getDay(currentTimeS));// 天前
+            int month = Integer.parseInt(getMonth(currentTimeS));
+            int year = Integer.parseInt(getYear(currentTimeS));
+
+
+            Log.e("timeStr", timeStamp + "\n" + //t +
+                    "\n" + "day  " + day + "\n" + "hour   " + hour + "\n" + "m  " + month
+                    + "\n" + "year  " + year  + "\n\n");
+
+            if (currentYear == year) {
+                //int m = currentMonth - month;
+                if (currentMonth == month) {
+                    int d = currentDay - day;
+                    if (currentDay == day) {
+                        sb.append(getTime(timeStamp));
+                    } else if (d == 1) {
+                        sb.append("昨天");
+                    } else if (d == 2) {
+                        sb.append("前天");
+                    } else {
+                        sb.append(getMMdd(timeStamp));
+                    }
+                } else {
+                    sb.append(getMMdd(timeStamp));
+                }
+            } else {
+                sb.append(getYMD(timeStamp));
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 将  时间戳----->>>>"距现在多久之前"  的字符串
      * @param timeStr   时间戳(精确到毫秒)
      * @return String "距现在多久之前"的字符串
      */
@@ -23,7 +86,7 @@ public class TimeUtil {
 
         StringBuffer sb = new StringBuffer();
 
-        long t = int2String(timeStr);
+        long t = String2long(timeStr);
         //Log.e("timeStr", timeStr);
         //Log.e("timeStr", ""+t);
         long time = System.currentTimeMillis() - t;
@@ -36,7 +99,7 @@ public class TimeUtil {
         float day = (time/24/60/60/1000.0f);// 天前
 
         Log.e("timeStr", timeStr + "\n"+t + "\n"+"day  " +day + "\n"+"hour   "+hour+ "\n"+"m  "+minute
-                + "\n"+"s  "+mill);
+                + "\n"+"s  "+mill+ "\n\n");
 
         if (day - 1 > 0) {
             if (day < 1) {
@@ -76,15 +139,15 @@ public class TimeUtil {
     }
 
     /**
-     * <p>String 转换成 时间戳
-     * @param time 时间戳
+     * <p>String TimeStamp转换成 时间戳(long)
+     * @param timeStamp 时间戳"yyyy-MM-dd HH:mm:ss"
      * @return long 到毫秒
      */
-    public static long int2String (String time) {
+    public static long String2long (String timeStamp) {
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//24小时制
         long l = 0;
         try {
-            Date d = sdf.parse(time);
+            Date d = sdf.parse(timeStamp);
             l = d.getTime();//到毫秒
         } catch (ParseException e) {
             e.printStackTrace();
@@ -93,7 +156,23 @@ public class TimeUtil {
         return l;
     }
 
+    /**
+     * <p> 时间戳(long) 转换成 String TimeStamp
+     * @param time 时间戳(long)
+     * @return String "yyyy-MM-dd HH:mm:ss"
+     */
+    public static String long2String (long time) {
+        SimpleDateFormat sd=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//24小时制
 
+        return sd.format(new Timestamp(time));
+    }
+
+    /**
+     *
+     * @param month
+     * @param day
+     * @return
+     */
     public static String getDate(String month,String day){
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//24小时制
         java.util.Date d = new java.util.Date(); ;
@@ -122,6 +201,86 @@ public class TimeUtil {
         }
         return result;
     }
+
+    /**
+     * 从 "yyyy-MM-dd HH:mm:ss" 得到 year
+     * @param timeStamp
+     * @return year yyyy
+     */
+    public static String getYear (String timeStamp) {
+
+        return timeStamp.substring(0, 4);
+    }
+
+    /**
+     * 从 "yyyy-MM-dd HH:mm:ss" 得到 month
+     * @param timeStamp
+     * @return month MM
+     */
+    public static String getMonth (String timeStamp) {
+
+        return timeStamp.substring(5, 7);
+    }
+
+    /**
+     * 从 "yyyy-MM-dd HH:mm:ss" 得到 hours
+     * @param timeStamp
+     * @return hours HH
+     */
+    public static String getHour (String timeStamp) {
+
+        return timeStamp.substring(11, 13);
+    }
+
+    /**
+     * 从 "yyyy-MM-dd HH:mm:ss" 得到 minute
+     * @param timeStamp
+     * @return minute mm
+     */
+    public static String getMinute (String timeStamp) {
+
+        return timeStamp.substring(14, 16);
+    }
+
+    /**
+     * 从 "yyyy-MM-dd HH:mm:ss" 得到 day
+     * @param timeStamp
+     * @return day dd
+     */
+    public static String getDay (String timeStamp) {
+
+        return timeStamp.substring(5, 7);
+    }
+
+    /**
+     * 从 "yyyy-MM-dd HH:mm:ss" 得到 time
+     * @param timeStamp
+     * @return time HH:mm
+     */
+    public static String getTime (String timeStamp) {
+
+        return timeStamp.substring(11, 16);
+    }
+
+    /**
+     * 从 "yyyy-MM-dd HH:mm:ss" 得到 MM-dd
+     * @param timeStamp
+     * @return time MM-dd
+     */
+    public static String getMMdd (String timeStamp) {
+
+        return getMonth(timeStamp) + "月" + getDay(timeStamp) + "日";
+    }
+
+    /**
+     * 从 "yyyy-MM-dd HH:mm:ss" 得到 yyyy-MM-dd
+     * @param timeStamp
+     * @return time yyyy-MM-dd
+     */
+    public static String getYMD (String timeStamp) {
+
+        return timeStamp.substring(0, 10);
+    }
     public static String getTime(int timestamp){
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String time= null;
@@ -131,8 +290,8 @@ public class TimeUtil {
             long i = (currentdate.getTime()/1000-timestamp)/(60);
             System.out.println(currentdate.getTime());
             System.out.println(i);
-            Timestamp now = new Timestamp(System.currentTimeMillis());//获取系统当前时间
-            System.out.println("now-->"+now);//返回结果精确到毫秒。
+            Timestamp now = new Timestamp(System.currentTimeMillis());//获取系统当前时间--(2015-04-25 21:16:01.545)
+            System.out.println("now-->"+now);//返回结果精确到毫秒。(2015-04-25 21:16:01.545)
 
             String str = sdf.format(new Timestamp(IntToLong(timestamp)));
             time = str.substring(11, 16);

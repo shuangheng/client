@@ -81,7 +81,7 @@ public class CommentList extends BaseList {
 		
 		commentItem.content.setText(AppFilter.getHtml(commentList.get(p).getContent()));
 
-        commentItem.type.setText(TimeUtil.getStandardDate(commentList.get(p).getUptime()));
+        commentItem.type.setText(TimeUtil.getDailyDate(commentList.get(p).getUptime()));
 
         commentItem.reply.setOnClickListener(new OnClickListener(){
         	@Override
