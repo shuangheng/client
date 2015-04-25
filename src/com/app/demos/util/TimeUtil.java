@@ -29,8 +29,8 @@ public class TimeUtil {
             long currentTime = System.currentTimeMillis();
             String currentTimeS = long2String(currentTime);
 
-            int currentMinute = Integer.parseInt(getMinute(currentTimeS));// 分钟前
-            int currentHour = Integer.parseInt(getHour(currentTimeS));// 小时
+            //int currentMinute = Integer.parseInt(getMinute(currentTimeS));// 分钟前
+            //int currentHour = Integer.parseInt(getHour(currentTimeS));// 小时
             int currentDay = Integer.parseInt(getDay(currentTimeS));// 天前
             int currentMonth = Integer.parseInt(getMonth(currentTimeS));
             int currentYear = Integer.parseInt(getYear(currentTimeS));
@@ -43,14 +43,15 @@ public class TimeUtil {
             //long time = currentTime - t;
 
 
-            int minute = Integer.parseInt(getMinute(currentTimeS));// 分钟前
-            int hour = Integer.parseInt(getHour(currentTimeS));// 小时
-            int day = Integer.parseInt(getDay(currentTimeS));// 天前
-            int month = Integer.parseInt(getMonth(currentTimeS));
-            int year = Integer.parseInt(getYear(currentTimeS));
+            int minute = Integer.parseInt(getMinute(timeStamp));// 分钟前
+            int hour = Integer.parseInt(getHour(timeStamp));// 小时
+            int day = Integer.parseInt(getDay(timeStamp));// 天前
+            int month = Integer.parseInt(getMonth(timeStamp));
+            int year = Integer.parseInt(getYear(timeStamp));
 
 
             Log.e("timeStr", timeStamp + "\n" + //t +
+                             currentTimeS + "\n"+
                     "\n" + "day  " + day + "\n" + "hour   " + hour + "\n" + "m  " + month
                     + "\n" + "year  " + year  + "\n\n");
 
@@ -59,19 +60,26 @@ public class TimeUtil {
                 if (currentMonth == month) {
                     int d = currentDay - day;
                     if (currentDay == day) {
-                        sb.append(getTime(timeStamp));
+                        //sb.append(getTime(timeStamp));
+                        sb.append(hour).append(":").append(minute);
                     } else if (d == 1) {
                         sb.append("昨天");
                     } else if (d == 2) {
                         sb.append("前天");
                     } else {
-                        sb.append(getMMdd(timeStamp));
+                        //sb.append(getMMdd(timeStamp));
+                        sb.append(month).append("月").append(day).append("日");
+
                     }
                 } else {
-                    sb.append(getMMdd(timeStamp));
+                    //sb.append(getMMdd(timeStamp));
+                    sb.append(month).append("月").append(day).append("日");
+
                 }
             } else {
-                sb.append(getYMD(timeStamp));
+                //sb.append(getYMD(timeStamp));
+                sb.append(year).append("年").append(month).append("月").append(day).append("日");
+
             }
         }
         return sb.toString();
@@ -249,7 +257,7 @@ public class TimeUtil {
      */
     public static String getDay (String timeStamp) {
 
-        return timeStamp.substring(5, 7);
+        return timeStamp.substring(8, 10);
     }
 
     /**
