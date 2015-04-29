@@ -129,10 +129,10 @@ public class AppUtil {
 	
 	/* 获取 Message */
 	static public BaseMessage getMessage (String jsonStr) throws Exception {		
-		jsonStr=jsonStr.substring(6);
+		jsonStr=jsonStr.substring(2);
 		BaseMessage message = new BaseMessage();		
 		JSONObject jsonObject = null ;		
-		
+
 		/*
 		String i = "{\"code\":10000,\"message\":\"Login ok\",\"result\":{\"Customer\":{\"id\":1,\"name\":\"james\",\"sign\":\"Happying\",\"face\":\"1\",\"blogcount\":2,\"fanscount\":0,\"uptime\":\"2014-12-01 17:47:47\",\"sid\":\"k1gqu2pr6j3nf6sglha5622re2ndblbg\"}}}";
 		jsonObject = new JSONObject(i);
@@ -148,6 +148,7 @@ public class AppUtil {
 				message.setResult(jsonObject.getString("result"));
 			}
 		} catch (JSONException e) {
+            Log.e("json", jsonStr);
 			throw new Exception("Json format error");
 		} catch (Exception e) {
 			e.printStackTrace();

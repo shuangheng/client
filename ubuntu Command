@@ -1,0 +1,15 @@
+3.工具的使用
+[root@centos /]# nmap  -sP 192.168.1.0/24    --查看有多少主机在
+[root@centos /]# nmap -sT 192.168.1.23  --扫描指定的主机TCP端口
+[root@centos /]# nmap -sS 192.168.1.23    --SYN扫描IP的tcp和udp端口(速度快)
+[root@centos /]# nmap -O 192.168.1.23    --查看IP对应的操作系统
+[root@centos /]# nmap -A 192.168.1.23    --查看IP对应的详细操作系统
+[root@centos /]# nmap -sA 192.168.1.23  --ACK扫描可穿透防火墙
+[root@centos /]# nmap -PS 192.168.1.23  --查看目标主机开放的端口
+[root@centos /]# nmap -PS -p 21,22,3306 2.2.2.1-100  --查看指定的IP和指定的端口
+		 nmap 186.168.*.*
+
+
+#更改root密码
+ sudo passwd root
+
