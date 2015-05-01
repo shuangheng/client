@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/ui_actionbar"
     tools:context="com.app.demos.ui.UiActionBar" >
 
     <include layout="@layout/toolbar" />
@@ -28,7 +29,7 @@
                 <com.app.demos.layout.PagerSlidingTabStrip_my
                     android:id="@+id/tabs"
                     android:layout_width="match_parent"
-                    android:layout_height="48dip" >
+                    android:layout_height="@dimen/tabsHeight" >
                 </com.app.demos.layout.PagerSlidingTabStrip_my>
 
                 <android.support.v4.view.ViewPager

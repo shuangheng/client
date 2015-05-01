@@ -3,15 +3,18 @@ package com.app.demos.ui.fragment;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.app.demos.Listener.HidingScrollListener;
 import com.app.demos.R;
 import com.app.demos.base.C;
 import com.app.demos.list.MyList;
+import com.app.demos.list.RecyclerAdapter;
 import com.app.demos.list.bitmap_load_list.ImageLoader;
 import com.app.demos.list.bitmap_load_list.LoaderAdapter;
 import com.app.demos.model.Gonggao;
 import com.app.demos.sqlite.GonggaoSqlite;
 import com.app.demos.ui.UiActionBar;
 import com.app.demos.ui.UiSpeakComment;
+import com.app.demos.util.Utils;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -20,10 +23,13 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AbsListView;
@@ -76,6 +82,8 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
 	private GonggaoSqlite gonggaoSqlite;
 	private Handler handler;
     private Boolean isLoade_more;
+    public RecyclerView recyclerView;
+    private RecyclerAdapter recyclerAdapter;
 
     public static SpeakFragment newInstance(String s) {
         SpeakFragment newFragment = new SpeakFragment();
@@ -104,23 +112,58 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         Log.d(TAG, "TestFragment-----onCreateView");
-        View view = inflater.inflate(R.layout.fragment_list_speak, container, false);
+        View view = inflater.inflate(R.layout.fragment_list_speak_recycler, container, false);
 //        TextView viewhello = (TextView) view.findViewById(R.id.tv_hello);
 //        viewhello.setText(hello);
        // viewhello.setVisibility();
     ////////////////////////////////////
-        list = (ListView) view.findViewById(R.id.ui_gongga_list_view);
+        // 实例化load more data 底部布局
+        moreView = activity.getLayoutInflater().inflate(R.layout.load_more, null);
+        bt = (TextView) moreView.findViewById(R.id.load_more_tv);
+        pg = (ProgressBar) moreView.findViewById(R.id.load_more_pg);
+        handler = new Handler();
+        //list.addFooterView(moreView);
+        //list.setOnScrollListener(this);
+        //必须在addFootView()之前用
+        ggList =  new ArrayList<Gonggao>();
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        int paddingTop = Utils.getToolbarHeight(activity) + Utils.getTabsHeight(activity);
+        recyclerView.setPadding(recyclerView.getPaddingLeft(), paddingTop, recyclerView.getPaddingRight(), recyclerView.getPaddingBottom());
+        recyclerView.setHasFixedSize(true);     //使RecyclerView保持固定的大小,这样会提高RecyclerView的性能。
+        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        recyclerAdapter = new RecyclerAdapter(activity, ggList);
+        recyclerView.setAdapter(recyclerAdapter);
+        //recyclerView.setOnScrollListener(new RecyclerView.OnScrollListe
+
+        recyclerView.setOnScrollListener(new HidingScrollListener(activity) {
+            @Override
+            public void onHide() {
+                if (android.os.Build.VERSION.SDK_INT >= 12) {
+                    activity.mToolbarContainer.animate().translationY(-activity.mToolbar.getHeight()).setInterpolator(new DecelerateInterpolator(2)).start();
+                }
+            }
+
+            @Override
+            public void onMoved(int distance) {
+                if (android.os.Build.VERSION.SDK_INT >= 11) {
+                    activity.mToolbarContainer.setTranslationY(-distance);
+                }
+            }
+
+            @Override
+            public void onShow() {
+                if (android.os.Build.VERSION.SDK_INT >= 12) {
+                    activity.mToolbarContainer.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
+                }
+            }
+        });
+
+
+        //list = (ListView) view.findViewById(R.id.ui_gongga_list_view);
         ib = (ImageButton) view.findViewById(R.id.tpl_list_speak_ib_like);
         
-        // 实例化load more data 底部布局
-	    moreView = activity.getLayoutInflater().inflate(R.layout.load_more, null);				    			
-	    bt = (TextView) moreView.findViewById(R.id.load_more_tv);
-	    pg = (ProgressBar) moreView.findViewById(R.id.load_more_pg);
-	    handler = new Handler();				    
-		list.addFooterView(moreView);
-		list.setOnScrollListener(this);
-		//必须在addFootView()之前用
-		setMyAdapter();
+
+		//setMyAdapter();
 		//list.setAdapter(blogListAdapter);
 		/*/ 绑定监听器
         list.setOnScrollListener(this);
@@ -208,7 +251,9 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
 		// debug memory
 		//debugMemory("onStop");
 	}
-	////////////////////////////////////////////////////////////////////////////////////////////////////////	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 	
 	//设置默认List adapter
 		public void setMyAdapter(){
@@ -219,6 +264,7 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
 				//getLastId(ggList);
 				//blogListAdapter = new MyList(activity,R.layout.tpl_list_speak, ggList);
 				adapter = new LoaderAdapter(activity,R.layout.tpl_list_speak, ggList);
+				//adapter = new RecyclerAdapter(ggList);
 			    list.setAdapter(adapter);
 				list.setOnItemClickListener(new OnItemClickListener(){
 					@Override
@@ -239,7 +285,7 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
 		public void setGgList(ArrayList<Gonggao> g){
 			ggList.clear();
 		    ggList.addAll(g);
-            adapter.notifyDataSetChanged();// 通知listView刷新数据
+            recyclerAdapter.notifyDataSetChanged();// 通知listView刷新数据
 		    
 		}
 		

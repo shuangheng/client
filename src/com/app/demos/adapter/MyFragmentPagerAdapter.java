@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
     private ArrayList<Fragment> fragmentsList;
-    private final String[] TITLES = { "分类", "主页", "热门推荐" };
+    private final String[] TITLES = { "广场", "公告", "二手", "寻物" };
 
     public MyFragmentPagerAdapter(FragmentManager fm) {
         super(fm);

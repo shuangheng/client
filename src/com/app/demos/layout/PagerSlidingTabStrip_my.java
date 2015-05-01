@@ -41,6 +41,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.app.demos.R;
+import com.app.demos.base.BaseUi;
 import com.app.demos.util.BaseDevice;
 
 
@@ -268,7 +269,7 @@ public class PagerSlidingTabStrip_my extends HorizontalScrollView {
 				tab.setTextSize(TypedValue.COMPLEX_UNIT_PX, tabTextSize);
 				tab.setTypeface(tabTypeface, tabTypefaceStyle);
 				tab.setTextColor(tabTextColor);
-                tab.setWidth(BaseDevice.getScreenWidth(getContext()) / 3);
+                tab.setWidth(BaseUi.DEVICE_WIDTH / tabCount);
 
 				// setAllCaps() is only available from API 14, so the upper case
 				// is made manually if we are on a

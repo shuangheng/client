@@ -55,7 +55,7 @@ public class LoaderAdapter extends BaseAdapter{
     public LoaderAdapter (Context context,int resourceId, ArrayList<Gonggao> blogList) {
 
 
-        this.mContext = context;
+        mContext = context;
         this.resourceId =resourceId;
         this.inflater = LayoutInflater.from(mContext);
         this.gonggaoList = blogList;

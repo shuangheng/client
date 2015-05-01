@@ -1,5 +1,6 @@
 1. ctrl + shift + 上/下		整行向上/下移动
-2. ctrl + alt + 7		那些地方用到了
-3. ctrl + Y 			删除 整行
-4. ctrl + D			复制 整行
-5. Ctrl+Shift+N 		(Navigate | File)		
+2. ctrl + alt + 7		    那些地方用到了
+3. ctrl + Y 			    删除 整行
+4. ctrl + D			        复制 整行
+5. Ctrl+Shift+N 		    (Navigate | File)
+6. Ctrl + Shift +回车       使用代码完成时，你能接受当前突出显示在弹出列表中选择用Ctrl + Shift +回车，Android Studio将不只是插入选定的字符串，但也会尽力把当前的代码构造成一个（括号语法正确的平衡，添加缺少的括号，分号，等）

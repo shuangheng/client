@@ -22,9 +22,11 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
@@ -110,14 +112,15 @@ public class UiActionBar extends BaseUi {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private ShareActionProvider mShareActionProvider;
-    private PagerSlidingTabStrip_my mPagerSlidingTabStrip;
-    private Toolbar mToolbar;
+    public PagerSlidingTabStrip_my mPagerSlidingTabStrip;
+    public Toolbar mToolbar;
+    public LinearLayout mToolbarContainer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.ui_actionbar);
+        setContentView(R.layout.ui_actionbar_hide);
 /*////////////////   test   //////////////////////////////////////////
 
 *///////////////////////////   test   ///////////////////////////////
@@ -132,12 +135,20 @@ public class UiActionBar extends BaseUi {
         initWidth();
         setUpActionBar();
         InitViewPager();
+        initBottomButtom();
 
+        gonggaoSqlite = new GonggaoSqlite(this);
+    }
+
+    private void initBottomButtom() {
         ivBottomAdd0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ivBottomAdd0.setVisibility(View.GONE);
                 ivBottomAdd1.setVisibility(View.VISIBLE);
+                activityfragment.recyclerView.setPadding(activityfragment.recyclerView.getPaddingLeft(),
+                        600, activityfragment.recyclerView.getPaddingRight(), activityfragment.recyclerView.getPaddingBottom());
+
             }
         });
         ivBottomAdd1.setOnClickListener(new View.OnClickListener() {
@@ -154,14 +165,13 @@ public class UiActionBar extends BaseUi {
                 ivBottomAdd0.setVisibility(View.VISIBLE);
             }
         });
-
-        gonggaoSqlite = new GonggaoSqlite(this);
     }
 
     private void setUpActionBar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbarContainer = (LinearLayout) findViewById(R.id.toolbarContainer);
 // toolbar.setLogo(R.drawable.ic_launcher);
-        mToolbar.setTitle("Rocko");// 标题的文字需在setSupportActionBar之前，不然会无效
+        mToolbar.setTitle("富友");// 标题的文字需在setSupportActionBar之前，不然会无效
 // toolbar.setSubtitle("副标题");
         setSupportActionBar(mToolbar);
 /* 这些通过ActionBar来设置也是一样的，注意要在setSupportActionBar(toolbar);之后，不然就报错了 */
@@ -226,7 +236,7 @@ public class UiActionBar extends BaseUi {
 
     @Override
     public void onBackPressed() {
-        mDrawerLayout.closeDrawers();
+        //mDrawerLayout.closeDrawers();
         long mNowTime = System.currentTimeMillis();//获取第一次按键时间
         if((mNowTime - mPressedTime) > 2000){//比较两次按键时间差
             Toast.makeText(this, "再按一次退出 富友", Toast.LENGTH_SHORT).show();
@@ -277,6 +287,7 @@ public class UiActionBar extends BaseUi {
         fragmentsList.add(activityfragment);
         fragmentsList.add(groupFragment);
         fragmentsList.add(friendsFragment);
+        fragmentsList.add(new Fragment3());
         //fragmentsList.add(chatFragment);
 
         mPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(), fragmentsList));
@@ -313,7 +324,9 @@ public class UiActionBar extends BaseUi {
 
         @Override
         public void onPageScrolled(int arg0, float arg1, int arg2) {
+
             if (android.os.Build.VERSION.SDK_INT >= 11) {
+                mToolbarContainer.setTranslationY(0);
                 ivLayout.setRotationY(arg1 * 180);
             }
             //ivBottomAdd0.setRotationY(arg1);
