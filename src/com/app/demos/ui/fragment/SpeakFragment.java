@@ -3,21 +3,22 @@ package com.app.demos.ui.fragment;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.app.demos.Listener.HideFabScrollListener;
 import com.app.demos.Listener.HidingScrollListener;
 import com.app.demos.R;
 import com.app.demos.base.C;
 import com.app.demos.list.MyList;
-import com.app.demos.list.RecyclerAdapter;
+import com.app.demos.list.RecyclerAdapter.RecyclerAdapter;
 import com.app.demos.list.bitmap_load_list.ImageLoader;
 import com.app.demos.list.bitmap_load_list.LoaderAdapter;
 import com.app.demos.model.Gonggao;
 import com.app.demos.sqlite.GonggaoSqlite;
 import com.app.demos.ui.UiActionBar;
 import com.app.demos.ui.UiSpeakComment;
-import com.app.demos.util.Utils;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -29,6 +30,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemClickListener;
@@ -38,6 +40,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,7 +60,7 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
     private PopupWindow popupwindow;
     private View pupView;
     //下拉刷新Layout
-    private SwipeRefreshLayout swipeLayout;
+    public SwipeRefreshLayout swipeLayout;
     
     // ListView底部View
     private View moreView;
@@ -127,36 +130,17 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
         //必须在addFootView()之前用
         ggList =  new ArrayList<Gonggao>();
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        int paddingTop = Utils.getToolbarHeight(activity) + Utils.getTabsHeight(activity);
-        recyclerView.setPadding(recyclerView.getPaddingLeft(), paddingTop, recyclerView.getPaddingRight(), recyclerView.getPaddingBottom());
+
+        //recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        //int paddingTop = Utils.getToolbarHeight(activity) + Utils.getTabsHeight(activity);
+        //recyclerView.setPadding(recyclerView.getPaddingLeft(), paddingTop, recyclerView.getPaddingRight(), recyclerView.getPaddingBottom());
         recyclerView.setHasFixedSize(true);     //使RecyclerView保持固定的大小,这样会提高RecyclerView的性能。
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerAdapter = new RecyclerAdapter(activity, ggList);
         recyclerView.setAdapter(recyclerAdapter);
         //recyclerView.setOnScrollListener(new RecyclerView.OnScrollListe
 
-        recyclerView.setOnScrollListener(new HidingScrollListener(activity) {
-            @Override
-            public void onHide() {
-                if (android.os.Build.VERSION.SDK_INT >= 12) {
-                    activity.mToolbarContainer.animate().translationY(-activity.mToolbar.getHeight()).setInterpolator(new DecelerateInterpolator(2)).start();
-                }
-            }
-
-            @Override
-            public void onMoved(int distance) {
-                if (android.os.Build.VERSION.SDK_INT >= 11) {
-                    activity.mToolbarContainer.setTranslationY(-distance);
-                }
-            }
-
-            @Override
-            public void onShow() {
-                if (android.os.Build.VERSION.SDK_INT >= 12) {
-                    activity.mToolbarContainer.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
-                }
-            }
-        });
+        recyclerView.setOnScrollListener(new HideFabFooterScrollListener());
 
 
         //list = (ListView) view.findViewById(R.id.ui_gongga_list_view);
@@ -190,6 +174,8 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
 		*/
 		//下拉更新Layout
 		 swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
+        //swipeLayout.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW, Color.GREEN);
+        swipeLayout.setColorSchemeColors( Color.RED, Color.YELLOW, Color.GREEN);
 		    swipeLayout.setOnRefreshListener(this);
 		gonggaoSqlite = new GonggaoSqlite(activity);
         
@@ -292,7 +278,7 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
 		//更新ListView数据
 		public void addGgList(ArrayList<Gonggao> g){					
 			ggList.addAll(g);
-            adapter.notifyDataSetChanged();// 通知listView刷新数据
+            recyclerAdapter.notifyDataSetChanged();// 通知listView刷新数据
 		}
 
         //通知ListView加载图片
@@ -347,7 +333,7 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
     		// TODO Auto-generated method stub		    		
     			new Handler().post(new Runnable() {  
     	            public void run() {
-                        swipeLayout.setRefreshing(false);
+                       // swipeLayout.setRefreshing(false);
                         activity.getData();
                         showLoadMore();
     	            }  
@@ -413,5 +399,78 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
 					blogParams.put("pageId", "0");
 					activity.doTaskAsync(C.task.gg1, C.api.gg, blogParams);
 					}
-				}	
+				}
+
+    private class HideFabFooterScrollListener extends HideFabScrollListener {
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+
+        }
+
+        // 滑到底部后自动加载
+        @Override
+        public void onScrollStateChanged(RecyclerView view, int scrollState) {
+            switch (scrollState) {
+                case OnScrollListener.SCROLL_STATE_FLING:
+                    recyclerAdapter.setFlagBusy(true);
+                    break;
+                case OnScrollListener.SCROLL_STATE_IDLE:
+                    recyclerAdapter.setFlagBusy(false);
+                    break;
+                case OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
+                    recyclerAdapter.setFlagBusy(false);
+                    break;
+                default:
+                    break;
+            }
+            recyclerAdapter.notifyDataSetChanged();
+            // 滑到底部后自动加载，判断listview已经停止滚动并且最后可视的条目等于adapter的条目
+            if (scrollState == OnScrollListener.SCROLL_STATE_IDLE
+                    && isBottom(recyclerView)) {
+                // 当滑到底部时自动加载
+                //pg.setVisibility(View.VISIBLE);
+                //bt.setVisibility(View.VISIBLE);
+                //moreView.setVisibility(View.VISIBLE);
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        activity.loadMoreData();
+                        //bt.setVisibility(View.GONE);
+                        //pg.setVisibility(View.GONE);
+                    }
+                }, 2000);
+
+            }
+        }
+
+
+
+        @Override
+        public void onHide() {
+            if (android.os.Build.VERSION.SDK_INT >= 14) {
+                //activity.mToolbar.animate().translationY(-activity.mToolbar.getHeight()).setInterpolator(new DecelerateInterpolator(2));
+                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) activity.mFabButton.getLayoutParams();
+                int fabBottomMargin = lp.bottomMargin;
+                activity.mFabButton.animate().translationY(activity.mFabButton.getHeight()+fabBottomMargin).setInterpolator(new AccelerateInterpolator(2)).start();
+                //Log.e("s","ddddddddddddddd");
+            }
+        }
+
+
+        @Override
+        public void onShow() {
+            if (android.os.Build.VERSION.SDK_INT >= 14) {
+                //activity.mToolbarContainer.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
+                activity.mFabButton.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
+            }
+        }
+    }
+
+    public boolean isBottom(RecyclerView recyclerView) {
+        //int lastVisiblePosition = findLastCompletelyVisibleItemPosition();
+        int lastVisiblePosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
+        int lastPosition = recyclerView.getAdapter().getItemCount() - 1;
+        return lastVisiblePosition == lastPosition;
+    }
 }

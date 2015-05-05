@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -57,7 +58,7 @@ import java.util.HashMap;
 /**
  * Created by tom on 15-3-25.
  */
-public class UiActionBar extends BaseUi {
+public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = "MainActivity";
     private ViewPager mPager;
     private ArrayList<Fragment> fragmentsList;
@@ -115,6 +116,7 @@ public class UiActionBar extends BaseUi {
     public PagerSlidingTabStrip_my mPagerSlidingTabStrip;
     public Toolbar mToolbar;
     public LinearLayout mToolbarContainer;
+    public ImageButton mFabButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -136,40 +138,24 @@ public class UiActionBar extends BaseUi {
         setUpActionBar();
         InitViewPager();
         initBottomButtom();
+        //initSwipeRefresh();
 
         gonggaoSqlite = new GonggaoSqlite(this);
     }
 
-    private void initBottomButtom() {
-        ivBottomAdd0.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ivBottomAdd0.setVisibility(View.GONE);
-                ivBottomAdd1.setVisibility(View.VISIBLE);
-                activityfragment.recyclerView.setPadding(activityfragment.recyclerView.getPaddingLeft(),
-                        600, activityfragment.recyclerView.getPaddingRight(), activityfragment.recyclerView.getPaddingBottom());
+    private void initSwipeRefresh() {
+        //下拉更新Layout
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
+        swipeLayout.setOnRefreshListener(this);
+    }
 
-            }
-        });
-        ivBottomAdd1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ivBottomAdd1.setVisibility(View.GONE);
-                ivBottomAdd2.setVisibility(View.VISIBLE);
-            }
-        });
-        ivBottomAdd2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ivBottomAdd2.setVisibility(View.GONE);
-                ivBottomAdd0.setVisibility(View.VISIBLE);
-            }
-        });
+    private void initBottomButtom() {
+        mFabButton = (ImageButton) findViewById(R.id.fabButton);
     }
 
     private void setUpActionBar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbarContainer = (LinearLayout) findViewById(R.id.toolbarContainer);
+       /// mToolbarContainer = (LinearLayout) findViewById(R.id.toolbarContainer);
 // toolbar.setLogo(R.drawable.ic_launcher);
         mToolbar.setTitle("富友");// 标题的文字需在setSupportActionBar之前，不然会无效
 // toolbar.setSubtitle("副标题");
@@ -302,6 +288,16 @@ public class UiActionBar extends BaseUi {
         initTabsValue();
     }
 
+    @Override
+    public void onRefresh() {
+        new Handler().post(new Runnable() {
+            public void run() {
+                swipeLayout.setRefreshing(false);
+                getData();
+                //showLoadMore();
+            }
+        });
+    }
 
 
     public class MyOnClickListener implements View.OnClickListener {
@@ -326,8 +322,8 @@ public class UiActionBar extends BaseUi {
         public void onPageScrolled(int arg0, float arg1, int arg2) {
 
             if (android.os.Build.VERSION.SDK_INT >= 11) {
-                mToolbarContainer.setTranslationY(0);
-                ivLayout.setRotationY(arg1 * 180);
+               // mToolbarContainer.setTranslationY(0);
+                //ivLayout.setRotationY(arg1 * 180);
             }
             //ivBottomAdd0.setRotationY(arg1);
             //ivBottomAdd2.setRotationY(arg1);
@@ -342,29 +338,14 @@ public class UiActionBar extends BaseUi {
                //         +"i : "+i);
                 switch (i) {
                     case 0:
-                        ivBottomAdd0.setVisibility(View.VISIBLE);
-                        ivBottomAdd1.setVisibility(View.GONE);
-                        ivBottomAdd2.setVisibility(View.GONE);
-                        //View pb = findViewById(R.id.fragment_speak_layout);
-                        //pb.setTranslationX(720*arg1);
-                        //pb.setRotationY(arg1*90);
+
                         break;
                     case 1:
-                        ivBottomAdd2.setVisibility(View.GONE);
-                        ivBottomAdd0.setVisibility(View.GONE);
-                        ivBottomAdd1.setVisibility(View.VISIBLE);
-                        //View pb1 = findViewById(R.id.fragment_2);
-                        //pb1.setTranslationX(720*arg1);
-                       // pb1.setRotationY(arg1*90);
+
                         break;
 
                     case 2:
-                        ivBottomAdd0.setVisibility(View.GONE);
-                        ivBottomAdd1.setVisibility(View.GONE);
-                        ivBottomAdd2.setVisibility(View.VISIBLE);
-                        //View pb2 = findViewById(R.id.fragment_3);
-                        //pb2.setTranslationX(720*arg1);
-                        //pb2.setRotationY(arg1*90);
+
                         break;
 
                 }
@@ -432,6 +413,7 @@ public class UiActionBar extends BaseUi {
     @SuppressWarnings("unchecked")
     public void onTaskComplete(int taskId, BaseMessage message) {
         super.onTaskComplete(taskId, message);
+        activityfragment.swipeLayout.setRefreshing(false);
         //bt.setText("更多");
         switch (taskId) {
             case C.task.gg:

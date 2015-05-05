@@ -2,24 +2,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include layout="@layout/toolbar" />
+
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize">
 
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+        <!-- 内容界面 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical" >
 
-            <!-- 内容界面 -->
-
-            <LinearLayout
+            <com.app.demos.layout.PagerSlidingTabStrip_my
+                android:id="@+id/tabs"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical" >
-
-
+                android:layout_height="@dimen/tabsHeight" >
+            </com.app.demos.layout.PagerSlidingTabStrip_my>
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/ui_actionbar_vPager"
@@ -29,57 +30,9 @@
                     android:background="#000000"
                     android:flipInterval="30"
                     android:persistentDrawingCache="animation" />
-            </LinearLayout>
-
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:id="@+id/ui_actionbar_layout_add">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/s_9"
-                    android:visibility="visible"
-                    android:id="@+id/ui_actionbar_iv0" />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/s_8"
-                    android:visibility="visible"
-
-                    android:id="@+id/ui_actionbar_iv1" />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/s_3"
-                    android:visibility="visible"
-
-                    android:id="@+id/ui_actionbar_iv2" />
-            </FrameLayout>
-
-            <!--LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:id="@+id/ui_actionbar_tv"
-                    android:textSize="30dp"
-                    android:textColor="@color/red"
-                    android:background="@color/white"/>
-            </LinearLayout -->
-
-
-
-        </RelativeLayout>
+        </LinearLayout>
 
         <!-- 侧滑菜单内容 -->
-
         <LinearLayout
             android:id="@+id/drawer_view"
             android:layout_width="match_parent"
@@ -93,28 +46,67 @@
                 android:id="@+id/drawer_tv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingTop="200dp"
                 android:text="富友凤飞飞string/app_name"/>
         </LinearLayout>
 
     </android.support.v4.widget.DrawerLayout>
 
-    <LinearLayout
-        android:id="@+id/toolbarContainer"
-        android:layout_width="match_parent"
+    <ImageButton
+        android:id="@+id/fabButton"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/xml_fab_background"
+        android:src="@drawable/ic_favorite_outline_white_24dp"
+        android:contentDescription="@null"/>
+
+
+
+
+
+
+
+
+
+
+    <!--<FrameLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:orientation="vertical" >
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/ui_actionbar_layout_add">
 
-        <include layout="@layout/toolbar" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/s_9"
+            android:visibility="visible"
+            android:id="@+id/ui_actionbar_iv0" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/s_8"
+            android:visibility="visible"
 
-        <com.app.demos.layout.PagerSlidingTabStrip_my
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/tabsHeight" >
-        </com.app.demos.layout.PagerSlidingTabStrip_my>
+            android:id="@+id/ui_actionbar_iv1" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/s_3"
+            android:visibility="visible"
 
-    </LinearLayout>
+            android:id="@+id/ui_actionbar_iv2" />
+    </FrameLayout>
+    </LinearLayout -->
+
+
+
 
 
 </RelativeLayout>

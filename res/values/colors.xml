@@ -22,5 +22,10 @@
     <color name="indigo_500">#3f51b5</color>
     <color name="indigo_700">#303f9f</color>
     <color name="cyan_500">#00bcd4</color>
+    <color name="color_primary_red">#f44336</color>
+    <color name="color_primary_red_dark">#d32f2f</color>
+    <color name="color_primary_green"> #4caf50</color>
+    <color name="color_primary_green_dark">#388e3c</color>
+    <color name="color_shadow">#44000000</color>
 
 </resources>
