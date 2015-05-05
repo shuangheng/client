@@ -137,6 +137,24 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
         recyclerView.setHasFixedSize(true);     //使RecyclerView保持固定的大小,这样会提高RecyclerView的性能。
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerAdapter = new RecyclerAdapter(activity, ggList);
+        recyclerAdapter.setOnRecyclerViewListener(new RecyclerAdapter.OnRecyclerViewListener() {
+            @Override
+            public void onItemClick(int position) {
+                Bundle params = new Bundle();
+                params.putString("speakId", ggList.get(position).getId());
+                params.putString("content", ggList.get(position).getContent());
+                params.putString("typeAll", ggList.get(position).getTypeAll());
+                params.putString("likeCount", ggList.get(position).getLikeCount());
+                params.putString("bgImageUrl", ggList.get(position).getBgimage());
+                activity.overlay(UiSpeakComment.class, params);
+            }
+
+            @Override
+            public boolean onItemLongClick(int position) {
+                Toast.makeText(activity, "long", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
         recyclerView.setAdapter(recyclerAdapter);
         //recyclerView.setOnScrollListener(new RecyclerView.OnScrollListe
 
@@ -271,14 +289,19 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
 		public void setGgList(ArrayList<Gonggao> g){
 			ggList.clear();
 		    ggList.addAll(g);
+            //int i = recyclerAdapter.getBasicItemCount();
+            //recyclerAdapter.notifyItemRangeChanged(0, i);
             recyclerAdapter.notifyDataSetChanged();// 通知listView刷新数据
 		    
 		}
 		
 		//更新ListView数据
-		public void addGgList(ArrayList<Gonggao> g){					
+		public void addGgList(ArrayList<Gonggao> g){
+            int i = recyclerAdapter.getBasicItemCount();
 			ggList.addAll(g);
-            recyclerAdapter.notifyDataSetChanged();// 通知listView刷新数据
+            recyclerAdapter.notifyItemChanged(i);
+
+            //recyclerAdapter.notifyDataSetChanged();// 通知listView刷新数据
 		}
 
         //通知ListView加载图片

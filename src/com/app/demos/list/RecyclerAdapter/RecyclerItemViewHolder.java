@@ -1,5 +1,6 @@
 package com.app.demos.list.RecyclerAdapter;
 
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
@@ -8,6 +9,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.demos.R;
+import com.app.demos.ui.UiActionBar;
+import com.app.demos.ui.UiSpeakComment;
 
 /**
  * Created by tom on 15-4-29.
@@ -32,7 +35,7 @@ public class RecyclerItemViewHolder extends RecyclerView.ViewHolder implements V
         likecount = itemLikecount;
         image = itemImage;
         ib = itemIb;
-        parent.setOnClickListener(this);
+        //parent.setOnClickListener(this);
         ib.setOnClickListener(this);
     }
 
@@ -53,7 +56,10 @@ public class RecyclerItemViewHolder extends RecyclerView.ViewHolder implements V
     public void onClick(View v) {
         if(v == itemView)
         {
-            Toast.makeText(v.getContext(), "content", Toast.LENGTH_SHORT).show();
+            Toast.makeText(v.getContext(), "content"+getAdapterPosition(), Toast.LENGTH_SHORT).show();
+            Bundle params = new Bundle();
+
+
         }
 
         if(v == ib)
