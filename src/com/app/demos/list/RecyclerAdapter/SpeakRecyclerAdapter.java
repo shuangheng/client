@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Created by tom on 15-4-29.
  */
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     //added view types
     private static final int TYPE_HEADER = 2;
     private static final int TYPE_ITEM = 1;
@@ -54,7 +54,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private LayoutInflater inflater;
     private ArrayList<Gonggao> gonggaoList;
 
-    public RecyclerAdapter(Context context, ArrayList<Gonggao> blogList) {
+    public SpeakRecyclerAdapter(Context context, ArrayList<Gonggao> blogList) {
         gonggaoList = blogList;
         mImageLoader = new ImageLoader(context);
     }

@@ -9,7 +9,7 @@ import com.app.demos.base.C;
 import com.app.demos.layout.swipeRefreshLayout.Progress_m;
 import com.app.demos.layout.swipeRefreshLayout.Progress_m.OnRefreshListener;
 import com.app.demos.list.MyList;
-import com.app.demos.list.RecyclerAdapter.RecyclerAdapter;
+import com.app.demos.list.RecyclerAdapter.SpeakRecyclerAdapter;
 import com.app.demos.list.bitmap_load_list.ImageLoader;
 import com.app.demos.list.bitmap_load_list.LoaderAdapter;
 import com.app.demos.model.Gonggao;
@@ -85,7 +85,7 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
 	private Handler handler;
     private Boolean isLoade_more;
     public RecyclerView recyclerView;
-    public RecyclerAdapter recyclerAdapter;
+    public SpeakRecyclerAdapter speakRecyclerAdapter;
     private LinearLayoutManager layoutManager;
 
     public static SpeakFragment newInstance(String s) {
@@ -137,8 +137,8 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
         recyclerView.setHasFixedSize(true);     //使RecyclerView保持固定的大小,这样会提高RecyclerView的性能。
         layoutManager = new LinearLayoutManager(activity);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerAdapter = new RecyclerAdapter(activity, ggList);
-        recyclerAdapter.setOnRecyclerViewListener(new RecyclerAdapter.OnRecyclerViewListener() {
+        speakRecyclerAdapter = new SpeakRecyclerAdapter(activity, ggList);
+        speakRecyclerAdapter.setOnRecyclerViewListener(new SpeakRecyclerAdapter.OnRecyclerViewListener() {
             @Override
             public void onItemClick(int position) {
                 Bundle params = new Bundle();
@@ -156,7 +156,7 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
                 return true;
             }
         });
-        recyclerView.setAdapter(recyclerAdapter);
+        recyclerView.setAdapter(speakRecyclerAdapter);
         //recyclerView.setOnScrollListener(new RecyclerView.OnScrollListe
           recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setOnScrollListener(new HideFabFooterScrollListener());
@@ -292,16 +292,16 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
 		    ggList.addAll(g);
             //int i = recyclerAdapter.getBasicItemCount();
             //recyclerAdapter.notifyItemRangeChanged(0, i);
-            recyclerAdapter.notifyDataSetChanged();// 通知listView刷新数据
+            speakRecyclerAdapter.notifyDataSetChanged();// 通知listView刷新数据
 		    
 		}
 		
 		//更新ListView数据
 		public void addGgList(ArrayList<Gonggao> g){
-            int i = recyclerAdapter.getBasicItemCount();
-            recyclerAdapter.notifyItemInserted(i-1);//显示动画
+            int i = speakRecyclerAdapter.getBasicItemCount();
+            speakRecyclerAdapter.notifyItemInserted(i-1);//显示动画
 			ggList.addAll(g);
-            recyclerAdapter.notifyItemChanged(i);
+            speakRecyclerAdapter.notifyItemChanged(i);
 
             //recyclerAdapter.notifyDataSetChanged();// 通知listView刷新数据
 		}
@@ -361,7 +361,7 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
                        // swipeLayout.setRefreshing(false);
                         activity.getData();
                         //showLoadMore();
-                        recyclerAdapter.setisEnd(false);
+                        speakRecyclerAdapter.setisEnd(false);
     	            }  
     	        });	    		
     	}
@@ -440,18 +440,18 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
         public void onScrollStateChanged(RecyclerView view, int scrollState) {
             switch (scrollState) {
                 case OnScrollListener.SCROLL_STATE_FLING:
-                    recyclerAdapter.setFlagBusy(true);
+                    speakRecyclerAdapter.setFlagBusy(true);
                     break;
                 case OnScrollListener.SCROLL_STATE_IDLE:
-                    recyclerAdapter.setFlagBusy(false);
+                    speakRecyclerAdapter.setFlagBusy(false);
                     break;
                 case OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
-                    recyclerAdapter.setFlagBusy(false);
+                    speakRecyclerAdapter.setFlagBusy(false);
                     break;
                 default:
                     break;
             }
-            recyclerAdapter.notifyDataSetChanged();
+            speakRecyclerAdapter.notifyDataSetChanged();
             // 滑到底部后自动加载，判断listview已经停止滚动并且最后可视的条目等于adapter的条目
             if (scrollState == OnScrollListener.SCROLL_STATE_IDLE
                     && isBottom(recyclerView)) {

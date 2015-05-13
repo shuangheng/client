@@ -21,9 +21,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -43,6 +41,7 @@ import com.app.demos.base.BaseTask;
 import com.app.demos.base.BaseUi;
 import com.app.demos.base.C;
 import com.app.demos.list.bitmap_load_list.LoaderAdapter;
+import com.app.demos.ui.fragment.FindFragment;
 import com.app.demos.ui.fragment.Fragment2;
 import com.app.demos.ui.fragment.Fragment3;
 import com.app.demos.ui.fragment.SpeakFragment;
@@ -50,7 +49,6 @@ import com.app.demos.layout.PagerSlidingTabStrip_my;
 import com.app.demos.layout.TabRedDian;
 import com.app.demos.list.MyList;
 import com.app.demos.model.Gonggao;
-import com.app.demos.PageTransformer.DepthPageTransformer;
 import com.app.demos.sqlite.GonggaoSqlite;
 
 import java.util.ArrayList;
@@ -78,6 +76,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
     private int position_three;
     private Resources resources;
     private SpeakFragment activityfragment;
+    private FindFragment findfragment;
     /////////////////////////////////////
     private ListView list;
     private MyList blogListAdapter;
@@ -118,6 +117,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
     public Toolbar mToolbar;
     public LinearLayout mToolbarContainer;
     public ImageButton mFabButton;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -266,14 +266,15 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         //View activityView = mInflater.inflate(R.layout.fragment_list_speak, null);
 
         activityfragment = SpeakFragment.newInstance("Hello Activity.");
+        findfragment = FindFragment.newInstance("Hello Activity.");
         Fragment groupFragment = new Fragment2();
-        Fragment friendsFragment=new Fragment3();
+        //Fragment friendsFragment=new Fragment3();
         //Fragment chatFragment=SpeakFragment.newInstance("Hello Chat.");
 
 
         fragmentsList.add(activityfragment);
         fragmentsList.add(groupFragment);
-        fragmentsList.add(friendsFragment);
+        fragmentsList.add(findfragment);
         fragmentsList.add(new Fragment3());
         //fragmentsList.add(chatFragment);
 
@@ -366,8 +367,8 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         if(lastIdNum == 1){
             //activityfragment.hideLoadMore();
             //activityfragment.recyclerAdapter.setisShowBottom(false);
-            activityfragment.recyclerAdapter.setisEnd(true);
-            activityfragment.recyclerAdapter.notifyItemChanged(activityfragment.recyclerAdapter.getBasicItemCount());
+            activityfragment.speakRecyclerAdapter.setisEnd(true);
+            activityfragment.speakRecyclerAdapter.notifyItemChanged(activityfragment.speakRecyclerAdapter.getBasicItemCount());
             Toast.makeText(getContext(), "加载完成！", Toast.LENGTH_SHORT).show();
         }else{
             HashMap<String, String> blogParams = new HashMap<String, String>();
@@ -440,7 +441,12 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
                     //ggList.clear();
                     //ggList.addAll(ggList1);
                     //setListAdapter();
-                    activityfragment.setGgList(ggList1);
+                    if (i == 2) {
+                        findfragment.setGgList(ggList1);
+                    } else {
+
+                        activityfragment.setGgList(ggList1);
+                    }
                     //activityfragment.blogListAdapter.notifyDataSetChanged();// 通知listView刷新数据
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -457,7 +463,11 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
                     }
                     getLastId(ggList1);
                     //ggList.addAll(ggList1);
-                    activityfragment.addGgList(ggList1);
+                    if (i == 2) {
+                        findfragment.setGgList(ggList1);
+                    } else {
+                        activityfragment.addGgList(ggList1);
+                    }
                     //blogListAdapter.notifyDataSetChanged();// 通知listView刷新数据
                 } catch (Exception e) {
                     // TODO Auto-generated catch block
