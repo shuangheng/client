@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.app.demos.Listener.HideFabScrollListener;
-import com.app.demos.Listener.HidingScrollListener;
 import com.app.demos.R;
 import com.app.demos.base.C;
+import com.app.demos.layout.swipeRefreshLayout.Progress_m;
+import com.app.demos.layout.swipeRefreshLayout.Progress_m.OnRefreshListener;
 import com.app.demos.list.MyList;
 import com.app.demos.list.RecyclerAdapter.RecyclerAdapter;
 import com.app.demos.list.bitmap_load_list.ImageLoader;
@@ -22,8 +23,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -34,7 +34,6 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -44,7 +43,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class SpeakFragment extends Fragment implements OnScrollListener, OnRefreshListener {
+public class SpeakFragment extends Fragment implements  OnRefreshListener {
     private static final String TAG = "SpeakFragment";
     private String hello;// = "hello android";
     private String defaultHello = "default value";
@@ -60,7 +59,7 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
     private PopupWindow popupwindow;
     private View pupView;
     //下拉刷新Layout
-    public SwipeRefreshLayout swipeLayout;
+    public Progress_m swipeLayout;
     
     // ListView底部View
     private View moreView;
@@ -86,7 +85,8 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
 	private Handler handler;
     private Boolean isLoade_more;
     public RecyclerView recyclerView;
-    private RecyclerAdapter recyclerAdapter;
+    public RecyclerAdapter recyclerAdapter;
+    private LinearLayoutManager layoutManager;
 
     public static SpeakFragment newInstance(String s) {
         SpeakFragment newFragment = new SpeakFragment();
@@ -135,7 +135,8 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
         //int paddingTop = Utils.getToolbarHeight(activity) + Utils.getTabsHeight(activity);
         //recyclerView.setPadding(recyclerView.getPaddingLeft(), paddingTop, recyclerView.getPaddingRight(), recyclerView.getPaddingBottom());
         recyclerView.setHasFixedSize(true);     //使RecyclerView保持固定的大小,这样会提高RecyclerView的性能。
-        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        layoutManager = new LinearLayoutManager(activity);
+        recyclerView.setLayoutManager(layoutManager);
         recyclerAdapter = new RecyclerAdapter(activity, ggList);
         recyclerAdapter.setOnRecyclerViewListener(new RecyclerAdapter.OnRecyclerViewListener() {
             @Override
@@ -157,7 +158,7 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
         });
         recyclerView.setAdapter(recyclerAdapter);
         //recyclerView.setOnScrollListener(new RecyclerView.OnScrollListe
-
+          recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setOnScrollListener(new HideFabFooterScrollListener());
 
 
@@ -191,7 +192,7 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
         });
 		*/
 		//下拉更新Layout
-		 swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
+		 swipeLayout = (Progress_m) view.findViewById(R.id.swipe_refresh);
         //swipeLayout.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW, Color.GREEN);
         swipeLayout.setColorSchemeColors( Color.RED, Color.YELLOW, Color.GREEN);
 		    swipeLayout.setOnRefreshListener(this);
@@ -298,6 +299,7 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
 		//更新ListView数据
 		public void addGgList(ArrayList<Gonggao> g){
             int i = recyclerAdapter.getBasicItemCount();
+            recyclerAdapter.notifyItemInserted(i-1);//显示动画
 			ggList.addAll(g);
             recyclerAdapter.notifyItemChanged(i);
 
@@ -308,7 +310,7 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
         public void listChanged() {
             adapter.notifyDataSetChanged();// 通知listView刷新数据
         }
-
+/*
 		@Override
 		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 			// TODO Auto-generated method stub
@@ -349,7 +351,7 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
 	             }, 2000);
 	        }
 	    }
-		
+	*/
 		
 		@Override
     	public void onRefresh() {
@@ -358,7 +360,8 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
     	            public void run() {
                        // swipeLayout.setRefreshing(false);
                         activity.getData();
-                        showLoadMore();
+                        //showLoadMore();
+                        recyclerAdapter.setisEnd(false);
     	            }  
     	        });	    		
     	}
@@ -428,6 +431,7 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
+            swipeLayout.setEnabled(layoutManager.findFirstCompletelyVisibleItemPosition() == 0);
 
         }
 
@@ -492,7 +496,7 @@ public class SpeakFragment extends Fragment implements OnScrollListener, OnRefre
 
     public boolean isBottom(RecyclerView recyclerView) {
         //int lastVisiblePosition = findLastCompletelyVisibleItemPosition();
-        int lastVisiblePosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
+        int lastVisiblePosition = layoutManager.findLastCompletelyVisibleItemPosition();
         int lastPosition = recyclerView.getAdapter().getItemCount() - 1;
         return lastVisiblePosition == lastPosition;
     }

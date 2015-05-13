@@ -21,6 +21,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
@@ -123,9 +124,9 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         super.onCreate(savedInstanceState);
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.ui_actionbar_hide);
-/*////////////////   test   //////////////////////////////////////////
+/////////////////   test   //////////////////////////////////////////
 
-*///////////////////////////   test   ///////////////////////////////
+///////////////////////////   test   ///////////////////////////////
         ivLayout = (FrameLayout) findViewById(R.id.ui_actionbar_layout_add);
         ivBottomAdd0 = (ImageView) findViewById(R.id.ui_actionbar_iv0);
         ivBottomAdd1 = (ImageView) findViewById(R.id.ui_actionbar_iv1);
@@ -363,7 +364,10 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
     public void loadMoreData() {
         // TODO Auto-generated method stub
         if(lastIdNum == 1){
-            activityfragment.hideLoadMore();
+            //activityfragment.hideLoadMore();
+            //activityfragment.recyclerAdapter.setisShowBottom(false);
+            activityfragment.recyclerAdapter.setisEnd(true);
+            activityfragment.recyclerAdapter.notifyItemChanged(activityfragment.recyclerAdapter.getBasicItemCount());
             Toast.makeText(getContext(), "加载完成！", Toast.LENGTH_SHORT).show();
         }else{
             HashMap<String, String> blogParams = new HashMap<String, String>();

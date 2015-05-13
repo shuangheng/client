@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,11 +31,19 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int TYPE_HEADER = 2;
     private static final int TYPE_ITEM = 1;
     private boolean mBusy = false;
+    private boolean isShowBottom = false;
+    private boolean isEnd = false;
     private int positionn;
 
 
     public void setFlagBusy(boolean busy) {
         this.mBusy = busy;
+    }
+    public void setisShowBottom(boolean isShow) {
+        this.isShowBottom = isShow;
+    }
+    public void setisEnd(boolean isEnd) {
+        this.isEnd = isEnd;
     }
 
 
@@ -90,6 +99,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
      */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+
         if (!isPositionFooter(position)) {
             RecyclerItemViewHolder holder = (RecyclerItemViewHolder) viewHolder;
             //String itemText = mItemList.get(position);
@@ -116,6 +126,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
              mImageLoader.DisplayImage(url, holder.image, true);
             //viewHolder.mTextView.setText("--" + position + "--FLING");
              }
+        } else {
+            RecyclerFooterViewHolder footerHolder = (RecyclerFooterViewHolder) viewHolder;
+
+            if (isEnd) {
+                footerHolder.pg.setVisibility(View.GONE);
+                footerHolder.tv.setText("没有了！点击发表");
+            } else {
+                footerHolder.pg.setVisibility(View.VISIBLE);
+                footerHolder.tv.setText("正在加载···");
+            }
         }
     }
 
@@ -195,6 +215,31 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 return onRecyclerViewListener.onItemLongClick(getAdapterPosition());
             }
             return false;
+        }
+    }
+
+    class RecyclerFooterViewHolder extends RecyclerView.ViewHolder {
+        public ProgressBar pg;
+        public TextView tv;
+        public RecyclerFooterViewHolder( final View itemView) {
+            super(itemView);
+            pg = (ProgressBar) itemView.findViewById(R.id.load_more_pg);
+            tv = (TextView) itemView.findViewById(R.id.load_more_tv);
+            if (!isEnd) {
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(itemView.getContext(), "more Click", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(itemView.getContext(), "end", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         }
     }
 
