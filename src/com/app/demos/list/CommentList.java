@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.app.demos.R;
 import com.app.demos.base.BaseList;
 
+import com.app.demos.list.bitmap_load_list.ImageLoader;
 import com.app.demos.model.Comment;
 import com.app.demos.model.Gonggao;
 import com.app.demos.ui.MainActivity;
@@ -28,8 +29,19 @@ public class CommentList extends BaseList {
 	private LayoutInflater inflater;
 	private ArrayList<Comment> commentList;
 	private int resourceId;
-	
-	public final class CommentListItem {
+    private boolean mBusy = false;
+    private ImageLoader mImageLoader;
+
+    public void setFlagBusy(boolean busy) {
+        this.mBusy = busy;
+    }
+    public ImageLoader getImageLoader(){
+        return mImageLoader;
+    }
+
+
+
+    public final class CommentListItem {
 		public ImageView face;		
 		public TextView content;        
         public TextView type;
@@ -40,8 +52,9 @@ public class CommentList extends BaseList {
 	public CommentList (Context context,int resourceId, ArrayList<Comment> commentList) {
 		this.ui = context;
 		this.resourceId =resourceId;
-		this.inflater = LayoutInflater.from(this.ui);
+		this.inflater = LayoutInflater.from(ui);
 		this.commentList = commentList;
+        mImageLoader = new ImageLoader(context);
 	}
 	
 	@Override
@@ -90,7 +103,21 @@ public class CommentList extends BaseList {
         		Log.d("ibutton", "yes");        		
         	}
         });
-        
+
+        // load face image
+        String url = commentList.get(p).getContent();
+
+        commentItem.face.setImageResource(R.drawable.face);
+
+
+
+        if (!mBusy) {
+            mImageLoader.DisplayImage(url, commentItem.face, false);
+            //viewHolder.mTextView.setText("--" + position + "--IDLE ||TOUCH_SCROLL");
+        } else {
+            mImageLoader.DisplayImage(url, commentItem.face, true);
+            //viewHolder.mTextView.setText("--" + position + "--FLING");
+        }
 
 		/*/ load face image
 

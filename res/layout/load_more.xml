@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="48dp"
     android:layout_gravity="center"
-    android:gravity="center_horizontal"
-    android:visibility="gone"
+    android:gravity="center"
     android:id="@+id/load_more_layout" >
 
     <ProgressBar        
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingRight="8dp"
         android:id="@+id/load_more_pg"
          />
     
@@ -17,7 +17,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:paddingLeft="8dp"
         android:text="@string/btn_more"
         android:textSize="20sp"
         android:id="@+id/load_more_tv"

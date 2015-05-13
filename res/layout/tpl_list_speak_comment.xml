@@ -17,12 +17,17 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/xml_list_blog_bg"
         android:focusable="false"
         android:orientation="vertical"
         android:paddingLeft="5dip"
-        android:paddingRight="5dip" >
-        
+        android:paddingRight="5dip"
+        android:paddingBottom="8dip">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ffd0d0d0" />
+
         <TextView
             android:id="@+id/tpl_list_comment_tvContent"
             android:layout_width="match_parent"
@@ -64,6 +69,8 @@
                 android:text="@string/comment_reply"
                 android:textSize="10dip" />
         </LinearLayout>
+
+
         
 	</LinearLayout>
 

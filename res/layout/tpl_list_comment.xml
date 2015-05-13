@@ -4,11 +4,25 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dip"
-    android:background="@drawable/xml_list_comment_bg"
+
     android:focusable="false"
-    android:gravity="center_vertical"
-    android:orientation="vertical"
+
     android:padding="5dip" >
+
+    <ImageView
+        android:id="@+id/tpl_list_info_image_face"
+        android:layout_width="50dip"
+        android:layout_height="50dip"
+        android:layout_alignParentRight="true"
+        android:layout_margin="5dip"
+        android:focusable="false"
+        android:src="@drawable/face" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/xml_list_comment_bg"
+        android:orientation="vertical">
 
     <TextView
         android:id="@+id/tpl_list_comment_content"
@@ -27,5 +41,7 @@
         android:focusable="false"
         android:gravity="center_vertical"
         android:textSize="10dip" />
+
+    </LinearLayout>
 
 </LinearLayout>
