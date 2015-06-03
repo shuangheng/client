@@ -40,17 +40,17 @@ import com.app.demos.base.BaseMessage;
 import com.app.demos.base.BaseTask;
 import com.app.demos.base.BaseUi;
 import com.app.demos.base.C;
+import com.app.demos.layout.PagerSlidingTabStrip_my;
+import com.app.demos.layout.TabRedDian;
+import com.app.demos.list.MyList;
 import com.app.demos.list.bitmap_load_list.LoaderAdapter;
 import com.app.demos.model.Find;
+import com.app.demos.model.Gonggao;
+import com.app.demos.sqlite.GonggaoSqlite;
 import com.app.demos.ui.fragment.FindFragment;
 import com.app.demos.ui.fragment.Fragment2;
 import com.app.demos.ui.fragment.Fragment3;
 import com.app.demos.ui.fragment.SpeakFragment;
-import com.app.demos.layout.PagerSlidingTabStrip_my;
-import com.app.demos.layout.TabRedDian;
-import com.app.demos.list.MyList;
-import com.app.demos.model.Gonggao;
-import com.app.demos.sqlite.GonggaoSqlite;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,7 +59,8 @@ import java.util.HashMap;
  * Created by tom on 15-3-25.
  */
 public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshListener {
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "UiActionBar";
+    private boolean isFirstOpean;
     private ViewPager mPager;
     private ArrayList<Fragment> fragmentsList;
     private ImageView ivBottomLine;
@@ -94,7 +95,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
     private PopupWindow popupwindow;
     private View pupView;
     //下拉刷新Layout
-    private SwipeRefreshLayout swipeLayout;
+    public SwipeRefreshLayout swipeLayout;
 
     // ListView底部View
     private View moreView;
@@ -118,6 +119,8 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
     public Toolbar mToolbar;
     public LinearLayout mToolbarContainer;
     public ImageButton mFabButton;
+    private String find_lastId;
+    private int find_lastIdNum;
 
 
     @Override
@@ -134,15 +137,21 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         ivBottomAdd2 = (ImageView) findViewById(R.id.ui_actionbar_iv2);
         ///////////////////////////////////////////
         this.setHandler(new MyHandler(this));
-
+        isFirstOpean = true;//第一次打开程序
         resources = getResources();
         initWidth();
         setUpActionBar();
+        //initSwipeRefresh();
         InitViewPager();
         initBottomButtom();
-        //initSwipeRefresh();
+
 
         gonggaoSqlite = new GonggaoSqlite(this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 
     private void initSwipeRefresh() {
@@ -293,24 +302,29 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
 
     @Override
     public void onRefresh() {
-        new Handler().post(new Runnable() {
-            public void run() {
-                swipeLayout.setRefreshing(false);
-                getData();
-                //showLoadMore();
-            }
-        });
+        if (isFirstOpean) {
+            Log.e(TAG, "onRefresh()  = " + isFirstOpean);
+            new Handler().post(new Runnable() {
+                public void run() {
+
+                    getGonggaoData();
+                    getFindData();
+                    //showLoadMore();
+                    Log.e(TAG, "onRefresh() true = " + isFirstOpean);
+                }
+            });
+        } else {
+            Log.e(TAG, "mPager.getCurrentItem() = " + mPager.getCurrentItem());
+           switch (mPager.getCurrentItem()) {
+               case 0:
+                   getGonggaoData();
+               case 2:
+                   getFindData();
+                   Log.e(TAG, "onRefresh() false"+ isFirstOpean);
+           }
+        }
+        isFirstOpean = false;
     }
-
-    public void getFindData() {
-        // show all  list
-        HashMap<String, String> blogParams = new HashMap<String, String>();
-        blogParams.put("typeId", "0");
-        blogParams.put("pageId", "0");
-        this.doTaskAsync(C.task.find, C.api.find, blogParams);
-
-    }
-
 
     public class MyOnClickListener implements View.OnClickListener {
         private int index = 0;
@@ -321,7 +335,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         public void onClick(View v) {
             mPager.setCurrentItem(index);
         }
-    };
+    }
 
     public class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
 
@@ -332,7 +346,6 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
 
         @Override
         public void onPageScrolled(int arg0, float arg1, int arg2) {
-
             if (android.os.Build.VERSION.SDK_INT >= 11) {
                // mToolbarContainer.setTranslationY(0);
                 //ivLayout.setRotationY(arg1 * 180);
@@ -369,7 +382,14 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         }
     }
 
+    public void getFindData() {
+        // show all  list
+        HashMap<String, String> blogParams = new HashMap<String, String>();
+        blogParams.put("typeId", "0");
+        blogParams.put("pageId", "0");
+        this.doTaskAsync(C.task.find, C.api.find, blogParams);
 
+    }
 
     //加载更多数据
     public void loadMoreData() {
@@ -389,8 +409,26 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         }
     }
 
+    //加载更多Find数据
+    public void loadMoreFindData() {
+        // TODO Auto-generated method stub
+        if(lastIdNum == 1){
+            //activityfragment.hideLoadMore();
+            //activityfragment.recyclerAdapter.setisShowBottom(false);
+            findfragment.findRecyclerAdapter.setisEnd(true);
+            findfragment.findRecyclerAdapter.notifyItemChanged(findfragment.findRecyclerAdapter.getBasicItemCount());
+            Toast.makeText(getContext(), "加载完成！", Toast.LENGTH_SHORT).show();
+        }else{
+            HashMap<String, String> blogParams = new HashMap<String, String>();
+            blogParams.put("Id", lastId);
+            blogParams.put("typeId", "0");
+            blogParams.put("pageId", "0");
+            this.doTaskAsync(C.task.find_more, C.api.find, blogParams);
+        }
+    }
+
     //从网络获取数据
-    public void getData(){
+    public void getGonggaoData(){
         // show all  list
         HashMap<String, String> blogParams = new HashMap<String, String>();
         blogParams.put("typeId", "0");
@@ -412,9 +450,9 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
     public void getFindLastId(ArrayList<Find> list){
         int i = list.size();
         Find j = list.get(i-1);
-        lastId = j.getId();
-        lastIdNum =Integer.parseInt(lastId);
-        Log.e("id",lastId);
+        find_lastId = j.getId();
+        find_lastIdNum =Integer.parseInt(lastId);
+        Log.e("find_id",lastId);
     }
 
     //获取第一条数据的ID
@@ -439,12 +477,11 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         super.onTaskComplete(taskId, message);
         activityfragment.swipeLayout.setRefreshing(false);
         findfragment.swipeLayout.setRefreshing(false);
-        Log.e("i",""+i);
+        Log.e(TAG,""+i);
         //bt.setText("更多");
         switch (taskId) {
             case C.task.gg:
                 try {	//all Data
-                    if (i == 0) {
                     ArrayList<Gonggao> ggList1 = (ArrayList<Gonggao>) message.getResultList("Gonggao");
 						/*/缓存数据
 						gonggaoSqlite.delete(null, null);
@@ -465,15 +502,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
                     //setListAdapter();
 
                         activityfragment.setGgList(ggList1);
-                    } else if (i == 2){
-                        ArrayList<Find> ggList1 = (ArrayList<Find>) message.getResultList("Find");
 
-                        Log.e("i",""+i);
-                        //blogSqlite.updateBlog(blog);
-                        getFindLastId(ggList1);
-                        //getFirstId(ggList1);
-                        findfragment.setGgList(ggList1);
-                    }
                     //activityfragment.blogListAdapter.notifyDataSetChanged();// 通知listView刷新数据
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -481,13 +510,27 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
                 }
                 break;
 
+            case C.task.gg1:
+                try {	//剩余Data
+                        ArrayList<Gonggao> ggList1 = (ArrayList<Gonggao>) message.getResultList("Gonggao");
+                        for (Gonggao g : ggList1) {
+                            //loadImage(g.getBgimage());
+                            gonggaoSqlite.updateGonggao(g);
+                        }
+                        getLastId(ggList1);
+                        //ggList.addAll(ggList1);
+                        activityfragment.addGgList(ggList1);
+
+                    //blogListAdapter.notifyDataSetChanged();// 通知listView刷新数据
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                break;
+
                 case C.task.find:
                     try {	//all Data
-
-
                             ArrayList<Find> ggList1 = (ArrayList<Find>) message.getResultList("Find");
-
-                            Log.e("i",""+i);
                             //blogSqlite.updateBlog(blog);
                             getFindLastId(ggList1);
                             //getFirstId(ggList1);
@@ -500,23 +543,12 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
                     }
                     break;
 
-            case C.task.gg1:
+            case C.task.find_more:
                 try {	//剩余Data
-                    if (i == 0) {
-                    ArrayList<Gonggao> ggList1 = (ArrayList<Gonggao>) message.getResultList("Gonggao");
-                    for (Gonggao g : ggList1) {
-                        //loadImage(g.getBgimage());
-                        gonggaoSqlite.updateGonggao(g);
-                    }
-                    getLastId(ggList1);
-                    //ggList.addAll(ggList1);
-                        activityfragment.addGgList(ggList1);
-                    }  else if (i == 2){
                         ArrayList<Find> ggList1 = (ArrayList<Find>) message.getResultList("Find");
 
                         getFindLastId(ggList1);
                         findfragment.addGgList(ggList1);
-                    }
                     //blogListAdapter.notifyDataSetChanged();// 通知listView刷新数据
                 } catch (Exception e) {
                     // TODO Auto-generated catch block

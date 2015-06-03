@@ -60,7 +60,8 @@ public final class C {
 		public static final int commentAllList		= 1021;
 		public static final int commentListMore		= 1022;
         public static final int find                = 1023;
-    }
+		public static final int find_more			= 1024;
+	}
 	
 	public static final class err {
 		public static final String network			= "网络错误";

@@ -87,7 +87,7 @@ public class FindFragment extends Fragment implements  OnRefreshListener {
     private Boolean isLoade_more;
     public RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
-    private FindRecycAdapter findRecyclerAdapter;
+    public FindRecycAdapter findRecyclerAdapter;
     private ArrayList<Find> findList;
 
     public static FindFragment newInstance(String s) {
@@ -168,7 +168,7 @@ public class FindFragment extends Fragment implements  OnRefreshListener {
         });
 		*/
         //下拉更新Layout
-        swipeLayout = (Progress_m) view.findViewById(R.id.swipe_refresh);
+        swipeLayout = (Progress_m) view.findViewById(R.id.find_swipe_refresh);
         //swipeLayout.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW, Color.GREEN);
         swipeLayout.setColorSchemeColors( Color.RED, Color.YELLOW, Color.GREEN);
         swipeLayout.setOnRefreshListener(this);
@@ -327,7 +327,7 @@ public class FindFragment extends Fragment implements  OnRefreshListener {
     public void likeButtonClick(){
         SharedPreferences sharedPreferences = activity.getSharedPreferences("fragment1_isLike", 0);
         Boolean isLike = sharedPreferences.getBoolean("isLike",false);
-        if (isLike = false) {
+        if (isLike) {
             ib.setImageResource(R.drawable.ic_card_liked);
             //获取编辑器
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -419,7 +419,7 @@ public class FindFragment extends Fragment implements  OnRefreshListener {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        activity.loadMoreData();
+                        activity.loadMoreFindData();
                         //bt.setVisibility(View.GONE);
                         //pg.setVisibility(View.GONE);
                     }

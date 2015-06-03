@@ -126,11 +126,7 @@ public class FindRecycAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             holder.clue.setText("线索:" + f.getClue_count());
 
             //set holder.images
-            String s = f.getImages_content();
-            if (null != s) {
-                holder.images.setText(s);
-                Log.e("Find->getImage_content", "getter() ok");
-            } else {
+
                 String sb = "";
                 String str = f.getLost_item().substring(1);
                 String item_summary = f.getSummary().substring(1);
@@ -160,11 +156,9 @@ public class FindRecycAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                             return drawable;
                         }
                     }, null));
-                    f.setImages_content(sb);
-                    Log.e("Find->getImage_content", "setter() ok");
 
                 }
-            }
+
             /*
             final int t = R.drawable.s_4;
             final String sText1 = " 测试：\n<img src=\""+R.drawable.s_2+"\" />nbsp<p>\t<img src=\""+t+"\" />dggdgdggdgdgdhhgdhhhjjkl;;;<p><img src=\""+t+"\" />dggdgd";

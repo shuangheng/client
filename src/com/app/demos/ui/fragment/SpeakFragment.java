@@ -192,9 +192,8 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
         });
 		*/
 		//下拉更新Layout
-		 swipeLayout = (Progress_m) view.findViewById(R.id.swipe_refresh);
-        //swipeLayout.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW, Color.GREEN);
-        swipeLayout.setColorSchemeColors( Color.RED, Color.YELLOW, Color.GREEN);
+		 swipeLayout = (Progress_m) view.findViewById(R.id.speak_swipe_refresh);
+        swipeLayout.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW, Color.GREEN);
 		    swipeLayout.setOnRefreshListener(this);
 		gonggaoSqlite = new GonggaoSqlite(activity);
         
@@ -359,7 +358,7 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
     			new Handler().post(new Runnable() {  
     	            public void run() {
                        // swipeLayout.setRefreshing(false);
-                        activity.getData();
+                        activity.getGonggaoData();
                         //showLoadMore();
                         speakRecyclerAdapter.setisEnd(false);
     	            }  
