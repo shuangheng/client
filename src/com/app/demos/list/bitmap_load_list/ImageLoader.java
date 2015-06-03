@@ -92,7 +92,7 @@ public class ImageLoader {
             bitmap = decodeFile(f);
             return bitmap;
         } catch (Exception ex) {
-            Log.e("", "getBitmap catch Exception...\nmessage = " + ex.getMessage());
+            Log.e("", "getBitmap catch Exception...\n message = " + ex.getMessage());
             return null;
         }
     }

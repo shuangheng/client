@@ -33,7 +33,8 @@ public final class C {
 		public static final String gg				= "/gonggao/ggList";
 		public static final String ggnew			= "/gonggao/newList";
 		public static final String newsList			= "/news/updateNews";
-	}
+        public static final String find             = "/find/findList";
+    }
 	
 	public static final class task {
 		public static final int index				= 1001;
@@ -58,7 +59,8 @@ public final class C {
 		public static final int newsList			= 1020;
 		public static final int commentAllList		= 1021;
 		public static final int commentListMore		= 1022;
-	}
+        public static final int find                = 1023;
+    }
 	
 	public static final class err {
 		public static final String network			= "网络错误";

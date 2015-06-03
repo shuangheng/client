@@ -13,6 +13,7 @@ import com.app.demos.list.RecyclerAdapter.FindRecycAdapter;
 import com.app.demos.list.RecyclerAdapter.SpeakRecyclerAdapter;
 import com.app.demos.list.bitmap_load_list.ImageLoader;
 import com.app.demos.list.bitmap_load_list.LoaderAdapter;
+import com.app.demos.model.Find;
 import com.app.demos.model.Gonggao;
 import com.app.demos.sqlite.GonggaoSqlite;
 import com.app.demos.ui.UiActionBar;
@@ -81,13 +82,13 @@ public class FindFragment extends Fragment implements  OnRefreshListener {
     private String Maxid;
     public String lastId;
 
-    private ArrayList<Gonggao> ggList;
     private GonggaoSqlite gonggaoSqlite;
     private Handler handler;
     private Boolean isLoade_more;
     public RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
     private FindRecycAdapter findRecyclerAdapter;
+    private ArrayList<Find> findList;
 
     public static FindFragment newInstance(String s) {
         FindFragment newFragment = new FindFragment();
@@ -120,7 +121,7 @@ public class FindFragment extends Fragment implements  OnRefreshListener {
 
         handler = new Handler();
 
-        ggList =  new ArrayList<Gonggao>();
+        findList =  new ArrayList<Find>();
         recyclerView = (RecyclerView) view.findViewById(R.id.fragment_find_recyclerView);
 
         //recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
@@ -129,7 +130,7 @@ public class FindFragment extends Fragment implements  OnRefreshListener {
         recyclerView.setHasFixedSize(true);     //使RecyclerView保持固定的大小,这样会提高RecyclerView的性能。
         layoutManager = new LinearLayoutManager(activity);
         recyclerView.setLayoutManager(layoutManager);
-        findRecyclerAdapter = new FindRecycAdapter(activity, ggList);
+        findRecyclerAdapter = new FindRecycAdapter(activity, findList);
 
         recyclerView.setAdapter(findRecyclerAdapter);
         //recyclerView.setOnScrollListener(new RecyclerView.OnScrollListe
@@ -138,7 +139,7 @@ public class FindFragment extends Fragment implements  OnRefreshListener {
 
 
         //list = (ListView) view.findViewById(R.id.ui_gongga_list_view);
-        ib = (ImageButton) view.findViewById(R.id.tpl_list_speak_ib_like);
+        //ib = (ImageButton) view.findViewById(R.id.tpl_list_speak_ib_like);
 
 
         //setMyAdapter();
@@ -237,34 +238,15 @@ public class FindFragment extends Fragment implements  OnRefreshListener {
 
     //设置默认List adapter
     public void setMyAdapter(){
-        ggList =  new ArrayList<Gonggao>();
-        //Gonggao g = new Gonggao("10000","","my","","","2015-01-09");
 
-        //ggList.add(g);
-        //getLastId(ggList);
-        //blogListAdapter = new MyList(activity,R.layout.tpl_list_speak, ggList);
-        adapter = new LoaderAdapter(activity,R.layout.tpl_list_speak, ggList);
-        //adapter = new RecyclerAdapter(ggList);
-        list.setAdapter(adapter);
-        list.setOnItemClickListener(new OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int postion, long id) {
-                Bundle params = new Bundle();
-                params.putString("speakId", ggList.get(postion).getId());
-                params.putString("content", ggList.get(postion).getContent());
-                params.putString("typeAll", ggList.get(postion).getTypeAll());
-                params.putString("likeCount", ggList.get(postion).getLikeCount());
-                params.putString("bgImageUrl", ggList.get(postion).getBgimage());
-                activity.overlay(UiSpeakComment.class, params);
-            }
-        });
 
     }
 
     //更新ListView数据
-    public void setGgList(ArrayList<Gonggao> g){
-        ggList.clear();
-        ggList.addAll(g);
+    public void setGgList(ArrayList<Find> g){
+        findList.clear();
+        findList.addAll(g);
+        Log.e("findf", "setGgList()");
         //int i = recyclerAdapter.getBasicItemCount();
         //recyclerAdapter.notifyItemRangeChanged(0, i);
         findRecyclerAdapter.notifyDataSetChanged();// 通知listView刷新数据
@@ -272,10 +254,10 @@ public class FindFragment extends Fragment implements  OnRefreshListener {
     }
 
     //更新ListView数据
-    public void addGgList(ArrayList<Gonggao> g){
+    public void addGgList(ArrayList<Find> g){
         int i = findRecyclerAdapter.getBasicItemCount();
         findRecyclerAdapter.notifyItemInserted(i-1);//显示动画
-        ggList.addAll(g);
+        findList.addAll(g);
         findRecyclerAdapter.notifyItemChanged(i);
 
         //recyclerAdapter.notifyDataSetChanged();// 通知listView刷新数据
@@ -334,7 +316,7 @@ public class FindFragment extends Fragment implements  OnRefreshListener {
         new Handler().post(new Runnable() {
             public void run() {
                 // swipeLayout.setRefreshing(false);
-                activity.getData();
+                activity.getFindData();
                 //showLoadMore();
                 findRecyclerAdapter.setisEnd(false);
             }

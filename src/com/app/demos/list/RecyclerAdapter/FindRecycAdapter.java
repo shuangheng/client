@@ -1,8 +1,11 @@
 package com.app.demos.list.RecyclerAdapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +18,9 @@ import android.widget.Toast;
 
 import com.app.demos.R;
 import com.app.demos.base.BaseUi;
+import com.app.demos.layout.CircleImageView;
 import com.app.demos.list.bitmap_load_list.ImageLoader;
+import com.app.demos.model.Find;
 import com.app.demos.model.Gonggao;
 import com.app.demos.util.AppFilter;
 import com.app.demos.util.TimeUtil;
@@ -51,9 +56,20 @@ public class FindRecycAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private Context mContext;
     private String[] urlArrays;
     private LayoutInflater inflater;
-    private ArrayList<Gonggao> gonggaoList;
+    private ArrayList<Find> gonggaoList;
 
-    public FindRecycAdapter(Context context, ArrayList<Gonggao> blogList) {
+     final Html.ImageGetter imageGetter = new Html.ImageGetter() {
+
+        public Drawable getDrawable(String source) {
+            Drawable drawable=null;
+            int rId=Integer.parseInt(source);
+            drawable=mContext.getResources().getDrawable(rId);
+            drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+            return drawable;
+        }
+    };
+
+    public FindRecycAdapter(Context context, ArrayList<Find> blogList) {
         mContext = context;
         gonggaoList = blogList;
         mImageLoader = new ImageLoader(context);
@@ -104,23 +120,74 @@ public class FindRecycAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             RecyclerItemViewHolder holder = (RecyclerItemViewHolder) viewHolder;
             //String itemText = mItemList.get(position);
             //positionn = position;
-            holder.where.setText(AppFilter.getHtml(gonggaoList.get(position).getContent()));
-            holder.uptime.setText(TimeUtil.getDailyDate(gonggaoList.get(position).getUptime()));
-            holder.clue.setText("线索:" + gonggaoList.get(position).getLikeCount());
+            Find f = gonggaoList.get(position);
+            holder.where.setText(AppFilter.getHtml(f.getWhere()));
+            holder.uptime.setText(TimeUtil.getDailyDate(f.getUptime()));
+            holder.clue.setText("线索:" + f.getClue_count());
 
-            //动态添加iv
-            for (int i = 0; i < 1; i++) {
-                ImageView imageView = new ImageView(mContext);
-                imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                //imageViews[i] = imageView;
-                imageView.setImageResource(R.drawable.ic_launcher);
-                holder.images.addView(imageView);
+            //set holder.images
+            String s = f.getImages_content();
+            if (null != s) {
+                holder.images.setText(s);
+                Log.e("Find->getImage_content", "getter() ok");
+            } else {
+                String sb = "";
+                String str = f.getLost_item().substring(1);
+                String item_summary = f.getSummary().substring(1);
+                Log.e("null",str+"\n"+item_summary+f.getId());
+                //String[] strArr = str.split("\\s+");
+                String[] strArr = str.split("@");
+                String[] item_summaryArr = item_summary.split("@");
+                int[] intArr = {R.drawable.s_1,
+                                R.drawable.s_2,
+                                R.drawable.s_8,
+                                R.drawable.s_24,
+                                R.drawable.s_5,
+                                R.drawable.s_28};
+                if (strArr.length > 0 ) {
+                    for (int i = 0; i < strArr.length; i++) {
+                    //for (String sting : strArr) {
+                        int w = Integer.parseInt(strArr[i]);
+                        sb = sb + "<img src=\""+intArr[w-1]+"\" /> \t " + item_summaryArr[i] +"<p>";
+                    }
+                    holder.images.setText(Html.fromHtml(sb, new Html.ImageGetter() {
+
+                        public Drawable getDrawable(String source) {
+                            Drawable drawable=null;
+                            int rId=Integer.parseInt(source);
+                            drawable=mContext.getResources().getDrawable(rId);
+                            drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                            return drawable;
+                        }
+                    }, null));
+                    f.setImages_content(sb);
+                    Log.e("Find->getImage_content", "setter() ok");
+
+                }
             }
+            /*
+            final int t = R.drawable.s_4;
+            final String sText1 = " 测试：\n<img src=\""+R.drawable.s_2+"\" />nbsp<p>\t<img src=\""+t+"\" />dggdgdggdgdgdhhgdhhhjjkl;;;<p><img src=\""+t+"\" />dggdgd";
+
+            //int i = holder.images.getHeight();
+            holder.images.setText(Html.fromHtml(sText1, new Html.ImageGetter() {
+
+                public Drawable getDrawable(String source) {
+                    Drawable drawable=null;
+                    int rId=Integer.parseInt(source);
+                    drawable=mContext.getResources().getDrawable(rId);
+                    drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                    return drawable;
+                }
+            }, null));
+*/
+            //mImageLoader.DisplayImage("http://127.0.0.1:8002/faces/default/face_2.png", imageViews[0], false);
 
             // load face image
-            String url = gonggaoList.get(position).getFace();
-            //url="http://10.0.2.2:8002/faces/default/l_25.jpg";
-            if (!mBusy) {
+            //String url = "http://pic004.cnblogs.com/news/201211/20121108_091749_1.jpg";
+            //String url = gonggaoList.get(position).getFace();
+            String url="http://10.0.2.2:8002/faces/default/l_25.jpg";
+            if (!mBusy && url != null) {
                 mImageLoader.DisplayImage(url, holder.image, false);
                 //viewHolder.mTextView.setText("--" + position + "--IDLE ||TOUCH_SCROLL");
             } else {
@@ -139,6 +206,8 @@ public class FindRecycAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             }
         }
     }
+
+
 
     //our old getItemCount()
     public int getBasicItemCount() {
@@ -172,17 +241,17 @@ public class FindRecycAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         public final TextView where;
         //private final TextView user;
         public TextView uptime;
-        public ViewGroup images;
+        public TextView images;
         public final TextView clue;
-        public final ImageView image;
+        public final CircleImageView image;
 
         public RecyclerItemViewHolder(View parent) {
             super(parent);
             where = (TextView) parent.findViewById(R.id.tpl_list_find_card_where);
             clue = (TextView) parent.findViewById(R.id.tpl_list_find_card_clue);
             uptime = (TextView) parent.findViewById(R.id.tpl_list_find_card_time);
-            image = (ImageView) parent.findViewById(R.id.tpl_list_speak_iv_bg);
-            images = (ViewGroup) parent.findViewById(R.id.tpl_list_find_card_images);
+            image = (CircleImageView) parent.findViewById(R.id.tpl_list_find_card_image_face);
+            images = (TextView) parent.findViewById(R.id.tpl_list_find_card_images);
 
 
         }

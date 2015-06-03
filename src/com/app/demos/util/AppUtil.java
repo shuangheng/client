@@ -54,7 +54,7 @@ public class AppUtil {
 		
 	}
 	
-	/* 首字母大写 */
+	/* 首字母改成大写 */
 	static public String ucfirst (String str) {
 		if (str != null && str != "") {
 			str  = str.substring(0,1).toUpperCase()+str.substring(1);
