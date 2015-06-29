@@ -256,7 +256,7 @@ public class FindFragment extends Fragment implements  OnRefreshListener {
     //更新ListView数据
     public void addGgList(ArrayList<Find> g){
         int i = findRecyclerAdapter.getBasicItemCount();
-        findRecyclerAdapter.notifyItemInserted(i-1);//显示动画
+        findRecyclerAdapter.notifyItemInserted(i);//显示动画
         findList.addAll(g);
         findRecyclerAdapter.notifyItemChanged(i);
 

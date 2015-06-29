@@ -51,6 +51,7 @@ import com.app.demos.ui.fragment.FindFragment;
 import com.app.demos.ui.fragment.Fragment2;
 import com.app.demos.ui.fragment.Fragment3;
 import com.app.demos.ui.fragment.SpeakFragment;
+import com.app.demos.ui.test.UiFoxconnEssPost;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -162,6 +163,33 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
 
     private void initBottomButtom() {
         mFabButton = (ImageButton) findViewById(R.id.fabButton);
+        mFabButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(UiActionBar.this, UiFindCreate.class);
+                startActivityForResult(intent, 1);
+            }
+        });
+        mFabButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                overlay(UiFoxconnEssPost.class);
+                return true;
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case 1:
+                if (resultCode == RESULT_OK) {
+                    int Find_index = data.getIntExtra("Find_index", 2);
+                    mPager.setCurrentItem(2);
+                    findfragment.swipeLayout.setRefreshing(true);
+                    findfragment.onRefresh();
+                }
+        }
     }
 
     private void setUpActionBar() {
@@ -291,7 +319,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         mPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(), fragmentsList));
         mPager.setCurrentItem(0);
         //左右预加载个数
-        //mPager.setOffscreenPageLimit(2);
+        mPager.setOffscreenPageLimit(3);
         ///  切换动画
         //mPager.setPageTransformer(true,new DepthPageTransformer());
         //mPager.setOnPageChangeListener(new MyOnPageChangeListener());

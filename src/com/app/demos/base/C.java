@@ -1,7 +1,15 @@
 package com.app.demos.base;
 
+import com.app.demos.R;
+
 public final class C {
-	
+	public static final int[] find_imageIds = new int[]{R.drawable.s_15,
+			R.drawable.s_19,
+			R.drawable.s_2,
+			R.drawable.s_8,
+			R.drawable.s_24,
+			R.drawable.s_28};;
+
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	// core settings (important)
 	
@@ -34,6 +42,7 @@ public final class C {
 		public static final String ggnew			= "/gonggao/newList";
 		public static final String newsList			= "/news/updateNews";
         public static final String find             = "/find/findList";
+        public static final String find_release     = "/find/findCreate";
     }
 	
 	public static final class task {
@@ -61,6 +70,7 @@ public final class C {
 		public static final int commentListMore		= 1022;
         public static final int find                = 1023;
 		public static final int find_more			= 1024;
+		public static final int find_release		= 1025;
 	}
 	
 	public static final class err {
@@ -90,6 +100,10 @@ public final class C {
 	// additional settings
 	
 	public static final class web {
+		public static final String a				= "http://218.28.167.99:8080/EssFunction.ashx";
+		public static final String b				= "http://218.28.167.99:8080/Ws_EssFunction.ashx";
+		public static final String c				= "http://218.28.167.99:8080/PushMsgFunction.ashx";
+		public static final String d				= "http://218.28.167.99:8080/IWs_EssFunction.ashx";
 		public static final String base				= "http://10.0.2.2:8002";
 		public static final String index			= base + "/index.php";
 		public static final String gomap			= base + "/gomap.php";

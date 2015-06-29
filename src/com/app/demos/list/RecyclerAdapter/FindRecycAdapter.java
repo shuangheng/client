@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.app.demos.R;
 import com.app.demos.base.BaseUi;
+import com.app.demos.base.C;
 import com.app.demos.layout.CircleImageView;
 import com.app.demos.list.bitmap_load_list.ImageLoader;
 import com.app.demos.model.Find;
@@ -123,28 +124,26 @@ public class FindRecycAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             Find f = gonggaoList.get(position);
             holder.where.setText(AppFilter.getHtml(f.getWhere()));
             holder.uptime.setText(TimeUtil.getDailyDate(f.getUptime()));
-            holder.clue.setText("线索:" + f.getClue_count());
-
+            //holder.clue.setText("线索:" + f.getClue_count());
+            holder.clue.setText(f.getClue_count());
             //set holder.images
 
                 String sb = "";
-                String str = f.getLost_item().substring(1);
-                String item_summary = f.getSummary().substring(1);
+                String str = f.getLost_item().substring(2);//去掉是首位@@
+                String item_summary = f.getSummary().substring(2);
                 Log.e("null",str+"\n"+item_summary+f.getId());
                 //String[] strArr = str.split("\\s+");
-                String[] strArr = str.split("@");
-                String[] item_summaryArr = item_summary.split("@");
-                int[] intArr = {R.drawable.s_1,
-                                R.drawable.s_2,
-                                R.drawable.s_8,
-                                R.drawable.s_24,
-                                R.drawable.s_5,
-                                R.drawable.s_28};
+                String[] strArr = str.split("@@");
+                String[] item_summaryArr = item_summary.split("@@");
+            for (String s: strArr) {
+                Log.e("", s + "\n");
+            }
+
                 if (strArr.length > 0 ) {
                     for (int i = 0; i < strArr.length; i++) {
                     //for (String sting : strArr) {
                         int w = Integer.parseInt(strArr[i]);
-                        sb = sb + "<img src=\""+intArr[w-1]+"\" /> \t " + item_summaryArr[i] +"<p>";
+                        sb = sb + "<img src=\""+ C.find_imageIds[w]+"\" /> \t " + item_summaryArr[i] +"<p>";
                     }
                     holder.images.setText(Html.fromHtml(sb, new Html.ImageGetter() {
 

@@ -30,7 +30,26 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ui.UiFindCreate"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"
+            android:theme="@style/AppTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".ui.TestImage"
+            android:theme="@style/com.app.demos.theme.light" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.test.UiFoxconnEssPost"
             android:theme="@style/com.app.demos.theme.light" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

@@ -52,31 +52,7 @@
 
     </android.support.v4.widget.DrawerLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
 
-        android:orientation="vertical">
-
-        <ImageButton
-
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-
-            android:layout_marginBottom="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/xml_fab_background"
-            android:src="@drawable/ic_favorite_outline_white_24dp"
-            android:contentDescription="@null"/>
-
-        <com.app.demos.layout.progress.Progress_m
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-
-
-    </LinearLayout>
 
 
     <ImageButton

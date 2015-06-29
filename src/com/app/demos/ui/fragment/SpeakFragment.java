@@ -298,7 +298,7 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
 		//更新ListView数据
 		public void addGgList(ArrayList<Gonggao> g){
             int i = speakRecyclerAdapter.getBasicItemCount();
-            speakRecyclerAdapter.notifyItemInserted(i-1);//显示动画
+            speakRecyclerAdapter.notifyItemInserted(i);//显示动画
 			ggList.addAll(g);
             speakRecyclerAdapter.notifyItemChanged(i);
 
