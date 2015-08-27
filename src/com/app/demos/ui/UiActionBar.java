@@ -51,6 +51,7 @@ import com.app.demos.ui.fragment.FindFragment;
 import com.app.demos.ui.fragment.Fragment2;
 import com.app.demos.ui.fragment.Fragment3;
 import com.app.demos.ui.fragment.SpeakFragment;
+import com.app.demos.ui.test.UiCreateSpeakTest;
 import com.app.demos.ui.test.UiFoxconnEssPost;
 
 import java.util.ArrayList;
@@ -166,7 +167,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         mFabButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(UiActionBar.this, UiFindCreate.class);
+                Intent intent = new Intent(UiActionBar.this, UiCreateSpeak.class);
                 startActivityForResult(intent, 1);
             }
         });
@@ -256,7 +257,8 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         // default:
         // break;
         // }
-        return super.onOptionsItemSelected(item);
+        //return super.onOptionsItemSelected(item);
+        return true;
     }
 
     @Override
@@ -505,7 +507,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         super.onTaskComplete(taskId, message);
         activityfragment.swipeLayout.setRefreshing(false);
         findfragment.swipeLayout.setRefreshing(false);
-        Log.e(TAG,""+i);
+        Log.e(TAG, "" + i);
         //bt.setText("更多");
         switch (taskId) {
             case C.task.gg:
@@ -611,6 +613,17 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         }
     }
 
+    @Override
+    public void onNetworkError(int taskId) {
+        super.onNetworkError(taskId);
+        switch (taskId) {
+            case C.task.gg:
+                activityfragment.swipeLayout.setRefreshing(false);
+                break;
+            case C.task.find:
+                findfragment.swipeLayout.setRefreshing(false);
+        }
+    }
 
     //likeButton事件
     public int likeButtonClick(Context ctx){

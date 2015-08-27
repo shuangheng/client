@@ -48,6 +48,7 @@
     <string name="wonderful_comment">精彩评论</string>
     <string name="drawer_open">打开</string>
     <string name="drawer_close">关闭</string>
-    
+    <string name="ui_create_speak_content_hint">说点什么...</string>
+
 
 </resources>

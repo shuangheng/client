@@ -1,16 +1,25 @@
 package com.app.demos.ui.test;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.demos.R;
+import com.app.demos.base.BaseTask;
+import com.app.demos.base.BaseUi;
+import com.app.demos.model.DromInfo;
+import com.app.demos.sqlite.DromInfoSqlite;
 import com.app.demos.test.Zsf_Http;
 import com.app.demos.util.foxconn_ESS_zsf.AppClient;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -19,7 +28,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by tom on 15-6-21.
  */
-public class UiFoxconnEssPost extends Activity implements View.OnClickListener {
+public class UiFoxconnEssPost extends BaseUi implements View.OnClickListener {
+    private TextView textView;
     private EditText editText;
     private Button button1;
     private Button button2;
@@ -36,13 +46,21 @@ public class UiFoxconnEssPost extends Activity implements View.OnClickListener {
     private Button button13;
     private Button button14;
     private String TAG;
+    private String result = "null";
+    private Context context = this;
+
+    private DromInfoSqlite dromInfoSqlite;
+    private DromInfo dromInfo;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ui_foxconn_ess_post_test);
 
+        dromInfoSqlite = new DromInfoSqlite(this);
+
         TAG = "UiFoxconnEssPost";
+        textView = (TextView) findViewById(R.id.ui_foxconn_ess_post_text);
         editText = (EditText) findViewById(R.id.ui_foxconn_ess_post_edit);
         button1 = (Button) findViewById(R.id.ui_foxconn_ess_post_btn1);
         button2 = (Button) findViewById(R.id.ui_foxconn_ess_post_btn2);
@@ -59,21 +77,23 @@ public class UiFoxconnEssPost extends Activity implements View.OnClickListener {
         button13 = (Button) findViewById(R.id.ui_foxconn_ess_post_btn13);
         button14 = (Button) findViewById(R.id.ui_foxconn_ess_post_btn14);
 
-        button1.setText("myzsfDormInfoPost");
-        button2.setText("userInfoPost");
-        button3.setText("empMobilePost");
-        button4.setText("userLogPost");
-        button5.setText("dailyIssuePost");
-        button6.setText("getUserCLossLogPost");
-        button7.setText("getRelationshipPost");
-        button8.setText("getRMDAwardTypePost");
-        button9.setText("getPushedBgPost");
-        button10.setText("getNoPassReasonPost");
+        button1.setText("myzsfDormInfoPost (empno)");
+        button2.setText("userInfoPost (empno)");
+        button3.setText("empMobilePost (empno) !!");
+        button4.setText("userLogPost (empno)");
+        button5.setText("dailyIssuePost (empno/start/end)");
+        button6.setText("getUserCLossLogPost  (empno)!!");
+        button7.setText("getRelationshipPost (null)");
+        button8.setText("getRMDAwardTypePost (null)");
+        button9.setText("getPushedBgPost (empno)!!");
+        button10.setText("getNoPassReasonPost (factory)");
         button11.setText("getUserShortCutNewPost");
-        button12.setText("getRecentRecordPost");
-        button13.setText("getQuestionListPost");
-        button14.setText("getAutoRespondUrlPost");
+        button12.setText("getRecentRecordPost (empno)");
+        button13.setText("getQuestionListPost (null)");
+        button14.setText("getAutoRespondUrlPost (null)");
 
+        //Button[] buttons = {button1}
+        //setButtonClick();
         button1.setOnClickListener(this);
         button2.setOnClickListener(this);
         button3.setOnClickListener(this);
@@ -88,6 +108,48 @@ public class UiFoxconnEssPost extends Activity implements View.OnClickListener {
         button13.setOnClickListener(this);
         button14.setOnClickListener(this);
         button10.setOnClickListener(this);
+        button1.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                overlay(UiShareHistory.class);
+                return true;
+            }
+        });
+
+
+    }
+
+    private void setButtonClick (Button[] buttons) {
+        for (Button b : buttons) {
+            b.setOnClickListener(this);
+        }
+    }
+
+    @Override
+    public void onTaskComplete(String result) {
+        super.onTaskComplete(result);
+        textView.setText(result);
+
+        JSONObject localJSONObject;
+        try {
+            localJSONObject = new JSONObject(result).getJSONArray("DormInfo").getJSONObject(0);
+
+            String str2 = localJSONObject.getString("EMPNO");
+            String name = localJSONObject.getString("EMPNAME");
+            String str4 = localJSONObject.getString("DISTRICTNAME");
+            String str5 = localJSONObject.getString("DORMDISTRICTNAME");
+            String str6 = localJSONObject.getString("BUILDING");
+            String str7 = localJSONObject.getString("ROOM");
+            String str8 = localJSONObject.getString("BED");
+            String str9 = localJSONObject.getString("INDATE");
+            String str10 = localJSONObject.getString("MOBILE");
+
+            dromInfo = new DromInfo(str2.substring(1), str2, name, result, "1");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        dromInfoSqlite.updateDromInfo(dromInfo);
+
     }
 
     @Override
@@ -95,7 +157,7 @@ public class UiFoxconnEssPost extends Activity implements View.OnClickListener {
         final String[] strings = editText.getText().toString().split("&");
         switch (v.getId()) {
             case R.id.ui_foxconn_ess_post_btn1:
-                ExecutorService service = Executors.newFixedThreadPool(3);
+                ExecutorService service = Executors.newCachedThreadPool();
 
                 Runnable run = new Runnable() {
                     @Override
@@ -103,7 +165,8 @@ public class UiFoxconnEssPost extends Activity implements View.OnClickListener {
                         Log.e(TAG, "run");
 
                         try {
-                            AppClient.myzsfDormInfoPost(strings[0]);
+                            result = AppClient.myzsfDormInfoPost(strings[0]);
+                            sendMessage(BaseTask.TEST_FoxconnEss, result);
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -112,8 +175,8 @@ public class UiFoxconnEssPost extends Activity implements View.OnClickListener {
                     }
                 };
                 // 在未来某个时间执行给定的命令
-                //service.execute(run);
-                service.submit(run);
+                service.execute(run);
+                //service.submit(run);
                 // }
                 // 关闭启动线程
                 service.shutdown();
@@ -137,7 +200,7 @@ public class UiFoxconnEssPost extends Activity implements View.OnClickListener {
                         Log.e(TAG, "run1");
 
                         try {
-                            AppClient.userInfoPost(strings[0]);
+                            result = AppClient.userInfoPost(strings[0]);
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -171,7 +234,7 @@ public class UiFoxconnEssPost extends Activity implements View.OnClickListener {
                         Log.e(TAG, "run12");
 
                         try {
-                            AppClient.empMobilePost(strings[0]);
+                            result = AppClient.empMobilePost(strings[0]);
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -205,7 +268,7 @@ public class UiFoxconnEssPost extends Activity implements View.OnClickListener {
                         Log.e(TAG, "run123");
 
                         try {
-                            AppClient.userLogPost(strings[0]);
+                            result = AppClient.userLogPost(strings[0]);
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -239,7 +302,7 @@ public class UiFoxconnEssPost extends Activity implements View.OnClickListener {
                         Log.e(TAG, "HTTP_test");
 
                         try {
-                            AppClient.dailyIssuePost(strings[0], strings[1], strings[2]);
+                            result = AppClient.dailyIssuePost(strings[0], strings[1], strings[2]);
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -273,7 +336,7 @@ public class UiFoxconnEssPost extends Activity implements View.OnClickListener {
                         Log.e(TAG, "HTTP_test");
 
                         try {
-                            AppClient.getUserCLossLogPost(strings[0]);
+                            result = AppClient.getUserCLossLogPost(strings[0]);
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -307,7 +370,7 @@ public class UiFoxconnEssPost extends Activity implements View.OnClickListener {
                         Log.e(TAG, "HTTP_test");
 
                         try {
-                            AppClient.getRelationshipPost();
+                            result = AppClient.getRelationshipPost();
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -341,7 +404,7 @@ public class UiFoxconnEssPost extends Activity implements View.OnClickListener {
                         Log.e(TAG, "HTTP_test");
 
                         try {
-                            AppClient.getRMDAwardTypePost();
+                            result = AppClient.getRMDAwardTypePost();
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -375,7 +438,7 @@ public class UiFoxconnEssPost extends Activity implements View.OnClickListener {
                         Log.e(TAG, "HTTP_test");
 
                         try {
-                            AppClient.getPushedBgPost(strings[0]);
+                            result = AppClient.getPushedBgPost(strings[0]);
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -409,7 +472,7 @@ public class UiFoxconnEssPost extends Activity implements View.OnClickListener {
                         Log.e(TAG, "HTTP_test");
 
                         try {
-                            AppClient.getNoPassReasonPost(strings[0]);
+                            result = AppClient.getNoPassReasonPost(strings[0]);
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -443,7 +506,7 @@ public class UiFoxconnEssPost extends Activity implements View.OnClickListener {
                         Log.e(TAG, "HTTP_test");
 
                         try {
-                            AppClient.getUserShortCutNewPost(strings[0], strings[1]);
+                            result = AppClient.getUserShortCutNewPost(strings[0], strings[1]);
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -477,7 +540,7 @@ public class UiFoxconnEssPost extends Activity implements View.OnClickListener {
                         Log.e(TAG, "HTTP_test");
 
                         try {
-                            AppClient.getRecentRecordPost(strings[0]);
+                            result = AppClient.getRecentRecordPost(strings[0]);
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -511,7 +574,7 @@ public class UiFoxconnEssPost extends Activity implements View.OnClickListener {
                         Log.e(TAG, "HTTP_test");
 
                         try {
-                            AppClient.getQuestionListPost();
+                            result = AppClient.getQuestionListPost();
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -545,7 +608,7 @@ public class UiFoxconnEssPost extends Activity implements View.OnClickListener {
                         Log.e(TAG, "HTTP_test");
 
                         try {
-                            AppClient.getAutoRespondUrlPost();
+                            result = AppClient.getAutoRespondUrlPost();
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -569,6 +632,8 @@ public class UiFoxconnEssPost extends Activity implements View.OnClickListener {
                 //Log.e(TAg, content.getText().toString());
                 Toast.makeText(this, editText.getText().toString(), Toast.LENGTH_SHORT).show();
                 break;
-        }
+            }
+
+            textView.setText(result);
     }
 }

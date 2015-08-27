@@ -3,6 +3,7 @@ package com.app.demos.base;
 public class BaseTask {
 
 	public static final int TASK_COMPLETE = 0;
+	public static final int TEST_FoxconnEss = 6;
 	public static final int NETWORK_ERROR = 1;
 	public static final int SHOW_LOADBAR = 2;
 	public static final int HIDE_LOADBAR = 3;

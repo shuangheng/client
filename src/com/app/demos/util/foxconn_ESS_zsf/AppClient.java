@@ -38,6 +38,7 @@ public class AppClient {
      */
     public static String myzsfDormInfoPost(String empno) throws Exception {
         Log.e("myzsfDormInfoPost()", "().start");
+        String content1 = null;
 
         try {
 
@@ -60,10 +61,11 @@ public class AppClient {
             HttpEntity entity = httpResponse.getEntity();// 获取消息内容
 
             String content = EntityUtils.toString(entity); // 把消息对象直接转换为字符串
+            content1 = aDES(content);
             Log.e("Http_test", content);
-            Log.e("Http_test_DES", aDES(content));
+            Log.e("Http_test_DES", content1);
             //showTextView.setText(content);
-            return aDES(content);
+            return content1;
             //return decode(content.getBytes());
 
         } catch (ClientProtocolException e) {
@@ -73,7 +75,8 @@ public class AppClient {
 
             e.printStackTrace();
         }
-        return null;
+
+        return content1;
     }
 
     /**

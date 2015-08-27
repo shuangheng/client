@@ -47,7 +47,7 @@
         android:layout_height="31dip"
         android:layout_alignParentRight="true"
         android:layout_marginTop="8dip"
-        android:background="@drawable/arrow_1"
+        android:background="@drawable/action_bar_back"
         android:focusable="false" />
 
 </RelativeLayout>

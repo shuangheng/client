@@ -51,7 +51,7 @@ public class BaseTaskPool {
 			taskPool.shutdown();
 		}
 	}
-	
+
 	// task thread logic
 	private class TaskThread implements Runnable {
 		private Context context;

@@ -8,6 +8,7 @@ import android.content.Context;
 
 import com.app.demos.base.BaseSqlite;
 import com.app.demos.model.Blogg;
+import com.app.demos.model.DromInfo;
 import com.app.demos.model.Gonggao;
 
 public class BlogSqlite extends BaseSqlite {
@@ -103,14 +104,11 @@ public class BlogSqlite extends BaseSqlite {
 	@Override
 	protected String createSql2() {
 		// TODO Auto-generated method stub
-        return "CREATE TABLE " + "gonggao" + " (" +
-                Gonggao.COL_ID + " INTEGER PRIMARY KEY, " +
-                Gonggao.COL_USER + " TEXT, " +
-                Gonggao.COL_BGIMAGE + " TEXT, " +
-                Gonggao.COL_TITLE + " TEXT, " +
-                Gonggao.COL_CONTENT + " TEXT, " +
-                Gonggao.COL_SEECOUNT + " TEXT, " +
-                Gonggao.COL_UPTIME + " TEXT" +
-                ");";
+        return "CREATE TABLE " + "drominfo" + " (" +
+				DromInfo.COL_ID + " INTEGER PRIMARY KEY, " +
+				DromInfo.COL_NAME + " TEXT, " +
+				DromInfo.COL_CONTENT + " TEXT" +
+
+				");";
 	}
 }

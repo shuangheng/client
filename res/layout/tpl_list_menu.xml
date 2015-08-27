@@ -24,7 +24,7 @@
         android:layout_width="24dip"
         android:layout_height="31dip"
         android:layout_alignParentRight="true"
-        android:background="@drawable/arrow_1"
+        android:background="@drawable/action_bar_back"
         android:focusable="false" />
 
 </LinearLayout>

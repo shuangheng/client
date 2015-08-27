@@ -16,7 +16,7 @@ import android.util.Log;
 public abstract class BaseSqlite {
 
 	private static final String DB_NAME = "demos.db";
-	private static final int DB_VERSION = 2;
+	private static final int DB_VERSION = 3;
 	
 	private DbHelper dbh = null;
 	private SQLiteDatabase db = null;
@@ -150,8 +150,8 @@ public abstract class BaseSqlite {
 		@Override
 		public void onCreate(SQLiteDatabase db) {
 			db.execSQL(createSql());
-			//db.execSQL(createSql2());
-			
+			db.execSQL(createSql2());
+
 			Log.e("db","onCreateSql");
 		}
 

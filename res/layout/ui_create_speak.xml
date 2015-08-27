@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/abc_action_bar_default_height_material"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/action_bar_back"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="发表speak"
+            android:gravity="center"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/action_bar_back"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/ui_create_speak_container"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <ScrollView
+            android:id="@+id/ui_create_speak_scroll"
+            android:layout_width="fill_parent"
+            android:layout_height="0.0dip"
+            android:layout_weight="1.0">
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:textSize="@dimen/feed_card_content_text_size"
+                    android:gravity="top|left|center"
+                    android:id="@+id/ui_create_speak_edit_content"
+                    android:background="@null"
+                    android:padding="10.0dip"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="100.0dip"
+                    android:hint="@string/ui_create_speak_content_hint"
+                    android:cursorVisible="false"
+                    android:lineSpacingExtra="6.0dip" />
+
+                <ImageView
+                    android:id="@+id/ui_create_speak_bg_image"
+                    android:layout_width="100.0dip"
+                    android:layout_height="100.0dip"
+                    android:layout_marginLeft="10.0dip"
+                    android:scaleType="centerCrop"
+                    android:layout_below="@id/ui_create_speak_edit_content"
+                    android:contentDescription="@null" />
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+    <RelativeLayout
+        android:background="@drawable/bottom_bar_bg"
+        android:padding="10.0dip"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/bottom_bar_height">
+
+        <CheckBox
+            android:id="@+id/operation_bar_stranger_enabled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/check_box"
+            android:text="comment_enabled" />
+
+        <ImageView
+            android:id="@+id/ui_create_speak_iv_picture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_publish_operation_bar_emoticon"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@null" />
+
+        <ImageView
+            android:id="@+id/operation_bar_image_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10.0dip"
+            android:src="@drawable/ic_publish_operation_bar_subject"
+            android:layout_toLeftOf="@+id/ui_create_speak_iv_picture"
+            android:layout_centerVertical="true"
+            android:onClick="clickOnSubjectPan"
+            android:contentDescription="@null" />
+
+        <ImageView
+            android:id="@+id/ui_create_speak_iv_expression"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10.0dip"
+            android:src="@drawable/ic_publish_operation_bar_photo"
+            android:layout_toLeftOf="@+id/operation_bar_image_center"
+            android:layout_centerVertical="true"
+            android:contentDescription="@null" />
+    </RelativeLayout>
+
+    <include layout="@layout/horizontal_line_dip" />
+
+    <FrameLayout
+        android:id="@+id/ui_create_speak_fragment_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</LinearLayout>

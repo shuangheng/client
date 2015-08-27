@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import android.content.ContentValues;
 import android.content.Context;
 import com.app.demos.base.BaseSqlite;
+import com.app.demos.model.DromInfo;
 import com.app.demos.model.Gonggao;
 
 public class GonggaoSqlite extends BaseSqlite {
@@ -33,7 +34,7 @@ public class GonggaoSqlite extends BaseSqlite {
 
 	@Override
 	protected String createSql() {
-		return "CREATE TABLE " + tableName() + " (" +
+		return "CREATE TABLE IF NOT EXISTS " + tableName() + " (" +
 			Gonggao.COL_ID + " INTEGER PRIMARY KEY, " +
 			Gonggao.COL_USER + " TEXT, " +
             Gonggao.COL_BGIMAGE + " TEXT, " +
@@ -102,6 +103,13 @@ public class GonggaoSqlite extends BaseSqlite {
 	@Override
 	protected String createSql2() {
 		// TODO Auto-generated method stub
-		return null;
+		return "CREATE TABLE IF NOT EXISTS " + "drominfo" + " (" +
+				DromInfo.COL_ID + " INTEGER PRIMARY KEY, " +
+				DromInfo.COL_NUM + " TEXT, " +
+				DromInfo.COL_NAME + " TEXT, " +
+				DromInfo.COL_DISPLAY + " TEXT, " +
+				DromInfo.COL_CONTENT + " TEXT" +
+
+				");";
 	}
 }

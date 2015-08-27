@@ -36,6 +36,15 @@ public class BaseHandler extends Handler {
 						ui.toast(C.err.message);
 					}
 					break;
+				case BaseTask.TEST_FoxconnEss:
+					ui.hideLoadBar();
+					result = msg.getData().getString("data");
+					if (result != null) {
+						ui.onTaskComplete(result);
+					} else {
+						ui.toast(C.err.message);
+					}
+					break;
 				case BaseTask.NETWORK_ERROR:
 					ui.hideLoadBar();
 					taskId = msg.getData().getInt("task");

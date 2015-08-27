@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ui_dark">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/holo_blue"
+        android:gravity="center_vertical" >
+
+        <ImageView
+            android:id="@+id/ui_createFind_iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/action_bar_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:singleLine="true"
+            android:text="写寻物启事"
+            android:gravity="center_horizontal"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"
+            android:layout_centerInParent="true" />
+
+        <TextView
+            android:id="@+id/ui_createFind_tv_release"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/xml_btn_my_bg_light"
+            android:text="发布"
+            android:textColor="@android:color/white"
+            android:gravity="center_vertical"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                card_view:contentPadding="10dp"
+                card_view:contentPaddingBottom="0dp"
+                android:orientation="vertical"
+                card_view:cardBackgroundColor="@color/white"
+                card_view:cardCornerRadius="0dp" >
+
+                <com.app.demos.layout.materialEditText.MaterialEditText
+                    android:id="@+id/ui_findcreate_where_etext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:maxLength="21"
+                    android:hint="可能丢失地点"
+                    android:textCursorDrawable="@drawable/text_cursor_cyan"
+                    app:met_baseColor="@color/black"
+                    app:met_floatingLabel="highlight"
+                    app:met_floatingLabelText="地点 :"
+                    app:met_hideUnderline="true"
+                    app:met_maxCharacters="20"
+                    app:met_primaryColor="@color/holo_blue" />
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                card_view:contentPadding="10dp"
+                card_view:cardBackgroundColor="@color/white"
+                card_view:cardCornerRadius="0dp" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:text="失物 :"
+                         />
+
+                    <LinearLayout
+                        android:id="@+id/ui_findcreate_spinners"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/ui_findcreate_button"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="添加"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                card_view:cardBackgroundColor="@color/white"
+                card_view:contentPadding="10dp"
+                card_view:cardCornerRadius="0dp" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="详细内容 :" />
+                    
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="寻物启事"
+                        android:textSize="30sp"
+                        android:gravity="center"
+                        android:layout_marginBottom="10dp"/>
+
+                    <EditText
+                        android:id="@+id/ui_findcreate_content_etext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top"
+                        android:background="@null"
+                        android:minLines="7"/>
+
+                    <Button
+                        android:id="@+id/ui_findcreate_button2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/xml_btn_my_bg_light"
+                        android:text="write"/>
+
+                    <TextView
+                        android:id="@+id/sfsfsfsfd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="aksfjka"/>
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>
