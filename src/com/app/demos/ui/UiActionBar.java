@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,12 +17,15 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
+import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -40,8 +44,8 @@ import com.app.demos.base.BaseMessage;
 import com.app.demos.base.BaseTask;
 import com.app.demos.base.BaseUi;
 import com.app.demos.base.C;
-import com.app.demos.layout.PagerSlidingTabStrip_my;
-import com.app.demos.layout.TabRedDian;
+import com.app.demos.layout.other.PagerSlidingTabStrip_my;
+import com.app.demos.layout.other.TabRedDian;
 import com.app.demos.list.MyList;
 import com.app.demos.list.bitmap_load_list.LoaderAdapter;
 import com.app.demos.model.Find;
@@ -51,7 +55,6 @@ import com.app.demos.ui.fragment.FindFragment;
 import com.app.demos.ui.fragment.Fragment2;
 import com.app.demos.ui.fragment.Fragment3;
 import com.app.demos.ui.fragment.SpeakFragment;
-import com.app.demos.ui.test.UiCreateSpeakTest;
 import com.app.demos.ui.test.UiFoxconnEssPost;
 
 import java.util.ArrayList;
@@ -61,11 +64,11 @@ import java.util.HashMap;
  * Created by tom on 15-3-25.
  */
 public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshListener {
-    private static final String TAG = "UiActionBar";
+    public static final String TAG = "UiActionBar";
     private boolean isFirstOpean;
     private ViewPager mPager;
     private ArrayList<Fragment> fragmentsList;
-    private ImageView ivBottomLine;
+    private TextView drawerTv;
     private ImageView ivBottomAdd0;
     private ImageView ivBottomAdd1;
     private ImageView ivBottomAdd2;
@@ -82,7 +85,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
     private SpeakFragment activityfragment;
     private FindFragment findfragment;
     /////////////////////////////////////
-    private ListView list;
+    private ListView drawerList;
     private MyList blogListAdapter;
     private LoaderAdapter adapter;
     private GonggaoSqlite gonggaoSqlite;
@@ -123,6 +126,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
     public ImageButton mFabButton;
     private String find_lastId;
     private int find_lastIdNum;
+    private Context context;
 
 
     @Override
@@ -133,6 +137,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
 /////////////////   test   //////////////////////////////////////////
 
 ///////////////////////////   test   ///////////////////////////////
+        context = this;
         ivLayout = (FrameLayout) findViewById(R.id.ui_actionbar_layout_add);
         ivBottomAdd0 = (ImageView) findViewById(R.id.ui_actionbar_iv0);
         ivBottomAdd1 = (ImageView) findViewById(R.id.ui_actionbar_iv1);
@@ -146,6 +151,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         //initSwipeRefresh();
         InitViewPager();
         initBottomButtom();
+        initDrawer();
 
 
         gonggaoSqlite = new GonggaoSqlite(this);
@@ -191,6 +197,37 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
                     findfragment.onRefresh();
                 }
         }
+    }
+
+    /**
+     * 初始化DrawerLayout
+     */
+    private void initDrawer() {
+        drawerTv = (TextView) findViewById(R.id.drawer_tv);
+        drawerList = (ListView) findViewById(R.id.drawer_list);
+        String[] data = {"设备信息", "other"};
+        drawerList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data));
+        drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        TelephonyManager phoneMgr = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+                        String phoneName = Build.BRAND;//品牌
+                        String phoneModel = Build.MODEL;//手机型号
+                        String phoneNumber =phoneMgr.getLine1Number();//本机电话号码
+                        int SDK =Build.VERSION.SDK_INT;//SDK版本号
+                        String OS =Build.VERSION.RELEASE;//Firmware/OS 版本号
+
+                        drawerTv.setText(phoneName + "\n" + phoneModel + "\n" + phoneNumber + "\n" + SDK + "\n" + OS);
+                        break;
+                    case 1:
+                        //overlay(UiImageZoom.class);
+                        startActivity(new Intent(context,UiImageZoom.class));
+                        //overridePendingTransition(R.anim.img_zoom_in_center, 0);//动画效果
+                }
+            }
+        });
     }
 
     private void setUpActionBar() {
@@ -263,7 +300,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
 
     @Override
     public void onBackPressed() {
-        //mDrawerLayout.closeDrawers();
+        mDrawerLayout.closeDrawers();
         long mNowTime = System.currentTimeMillis();//获取第一次按键时间
         if((mNowTime - mPressedTime) > 2000){//比较两次按键时间差
             Toast.makeText(this, "再按一次退出 富友", Toast.LENGTH_SHORT).show();

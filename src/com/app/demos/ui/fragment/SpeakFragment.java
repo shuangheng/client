@@ -15,6 +15,7 @@ import com.app.demos.list.bitmap_load_list.LoaderAdapter;
 import com.app.demos.model.Gonggao;
 import com.app.demos.sqlite.GonggaoSqlite;
 import com.app.demos.ui.UiActionBar;
+import com.app.demos.ui.UiImageZoom;
 import com.app.demos.ui.UiSpeakComment;
 
 import android.app.Activity;
@@ -139,21 +140,28 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
         recyclerView.setLayoutManager(layoutManager);
         speakRecyclerAdapter = new SpeakRecyclerAdapter(activity, ggList);
         speakRecyclerAdapter.setOnRecyclerViewListener(new SpeakRecyclerAdapter.OnRecyclerViewListener() {
+            Bundle params = new Bundle();
             @Override
             public void onItemClick(int position) {
-                Bundle params = new Bundle();
-                params.putString("speakId", ggList.get(position).getId());
-                params.putString("content", ggList.get(position).getContent());
-                params.putString("typeAll", ggList.get(position).getTypeAll());
-                params.putString("likeCount", ggList.get(position).getLikeCount());
-                params.putString("bgImageUrl", ggList.get(position).getBgimage());
-                activity.overlay(UiSpeakComment.class, params);
+                    params.putString("speakId", ggList.get(position).getId());
+                    params.putString("content", ggList.get(position).getContent());
+                    params.putString("typeAll", ggList.get(position).getTypeAll());
+                    params.putString("likeCount", ggList.get(position).getLikeCount());
+                    params.putString("bgImageUrl", ggList.get(position).getBgimage());
+                    activity.overlay(UiSpeakComment.class, params);
             }
 
             @Override
             public boolean onItemLongClick(int position) {
                 Toast.makeText(activity, "long", Toast.LENGTH_SHORT).show();
                 return true;
+            }
+
+            @Override
+            public void onImageClick(int position) {
+                params.putString("bgImageUrl", ggList.get(position).getBgimage());
+                activity.overlay(UiImageZoom.class, params);
+                //activity.overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);//动画效果
             }
         });
         recyclerView.setAdapter(speakRecyclerAdapter);
@@ -200,38 +208,38 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
         return view;
 
     }
-    
+
     @Override
     public void onStart() {
-    	super.onStart();
-    	new Handler().post(new Runnable() {  
-            public void run() {  
-            	long loginTime = System.currentTimeMillis();
-        		
-        		SharedPreferences sharedPreferences = activity.getSharedPreferences("fragment1", 0);
-        		String lastTime = sharedPreferences.getString("time","0");
-        		long time0 = Long.valueOf(lastTime);
-        		long jgtime = loginTime - time0;
-        		
-        		Log.w("LoginTime", ""+loginTime);        		
-        		Log.w("Time0", ""+time0);        		
-        		Log.w("jgtime", ""+jgtime);
-        		if (jgtime>30000){
-        			//从网路获取列表
+        super.onStart();
+        new Handler().post(new Runnable() {
+            public void run() {
+                long loginTime = System.currentTimeMillis();
+
+                SharedPreferences sharedPreferences = activity.getSharedPreferences("fragment1", 0);
+                String lastTime = sharedPreferences.getString("time", "0");
+                long time0 = Long.valueOf(lastTime);
+                long jgtime = loginTime - time0;
+
+                Log.w("LoginTime", "" + loginTime);
+                Log.w("Time0", "" + time0);
+                Log.w("jgtime", "" + jgtime);
+                if (jgtime > 30000) {
+                    //从网路获取列表
                     swipeLayout.setRefreshing(true);
                     onRefresh();
-        			
-        			String nowTime = Long.toString(loginTime);
-            		SharedPreferences.Editor editor = sharedPreferences.edit();//获取编辑器   
-            		editor.putString("time", nowTime);  
-            		//editor.putInt("sex", (int) loginTime);  
-            		editor.commit();//提交修改  
-        		}else{
-        			//获取本地列表
-        			//loadLocalData();
-        		}
-        		
-        	}  
+
+                    String nowTime = Long.toString(loginTime);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();//获取编辑器
+                    editor.putString("time", nowTime);
+                    //editor.putInt("sex", (int) loginTime);
+                    editor.commit();//提交修改
+                } else {
+                    //获取本地列表
+                    //loadLocalData();
+                }
+
+            }
         });  		
     	
     }

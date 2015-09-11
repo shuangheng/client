@@ -2,6 +2,7 @@ package com.app.demos.list.RecyclerAdapter;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,12 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.demos.R;
 import com.app.demos.base.BaseUi;
+import com.app.demos.base.C;
 import com.app.demos.list.bitmap_load_list.ImageLoader;
 import com.app.demos.model.Gonggao;
 import com.app.demos.ui.MainActivity;
@@ -22,6 +25,8 @@ import com.app.demos.util.AppFilter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.app.demos.util.Math_my.isEven;
 
 /**
  * Created by tom on 15-4-29.
@@ -55,6 +60,7 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
     private ArrayList<Gonggao> gonggaoList;
 
     public SpeakRecyclerAdapter(Context context, ArrayList<Gonggao> blogList) {
+        mContext = context;
         gonggaoList = blogList;
         mImageLoader = new ImageLoader(context);
     }
@@ -62,6 +68,8 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
     public static interface OnRecyclerViewListener {
         void onItemClick(int position);
         boolean onItemLongClick(int position);
+
+        void onImageClick(int Position);
     }
 
     private OnRecyclerViewListener onRecyclerViewListener;
@@ -83,7 +91,7 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         if (viewType == TYPE_ITEM) {
-            final View view = LayoutInflater.from(context).inflate(R.layout.tpl_list_speak, parent, false);
+            final View view = LayoutInflater.from(context).inflate(R.layout.tpl_list_speak_8_27, parent, false);
             return new RecyclerItemViewHolder(view);
         } else if (viewType == TYPE_HEADER) {
             final View view = LayoutInflater.from(context).inflate(R.layout.load_more, parent, false);
@@ -105,27 +113,44 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
             //String itemText = mItemList.get(position);
             //positionn = position;
             holder.content.setText(AppFilter.getHtml(gonggaoList.get(position).getContent()));
+
             holder.type.setText(gonggaoList.get(position).getTypeAll());
             holder.likecount.setText(gonggaoList.get(position).getLikeCount());
+            //set background color
+            holder.content.setTextColor(holder.content.getResources().getColor(! isEven(position) ? R.color.white : R.color.black));
+            holder.ib.setBackgroundResource(!isEven(position) ? R.drawable.ic_card_like : R.drawable.ic_card_like_grey);
+            holder.containerLayout.setBackgroundColor(!isEven(position) ?
+                            holder.containerLayout.getResources().getColor(C.colors[position % 16]) :
+                            holder.containerLayout.getResources().getColor(R.color.white));
 
-
+            /*
             int weight = BaseUi.DEVICE_WIDTH;
             ViewGroup.LayoutParams params = holder.image.getLayoutParams();
             params.height = weight;
             params.width = weight;
             holder.image.setLayoutParams(params);
+            */
 
             // load face image
-            String url = gonggaoList.get(position).getBgimage();
-            holder.image.setImageResource(R.drawable.ic_launcher);
+            String imagePath = gonggaoList.get(position).getBgimage();
+            String url = C.web.bgimage + imagePath + ".jpg";
+
             //url="http://10.0.2.2:8002/faces/default/l_25.jpg";
-            if (!mBusy) {
-            mImageLoader.DisplayImage(url, holder.image, false);
-            //viewHolder.mTextView.setText("--" + position + "--IDLE ||TOUCH_SCROLL");
-            } else {
-             mImageLoader.DisplayImage(url, holder.image, true);
-            //viewHolder.mTextView.setText("--" + position + "--FLING");
-             }
+                holder.image.setVisibility(gonggaoList.get(position).getBgimage().equals("null") ? View.GONE : View.VISIBLE);
+                holder.image.setImageResource(R.drawable.ic_launcher);
+
+            mImageLoader.DisplayImage(url, holder.image, mBusy);
+
+            /*
+                if (!mBusy) {
+                    mImageLoader.DisplayImage(url, holder.image, false);
+                    //viewHolder.mTextView.setText("--" + position + "--IDLE ||TOUCH_SCROLL");
+                } else {
+                    mImageLoader.DisplayImage(url, holder.image, true);
+                    //viewHolder.mTextView.setText("--" + position + "--FLING");
+                }
+            */
+
         } else {
             RecyclerFooterViewHolder footerHolder = (RecyclerFooterViewHolder) viewHolder;
 
@@ -167,43 +192,48 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     class RecyclerItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         //private final TextView mItemTextView;
-        //private final TextView title;
+        public final TextView extra;
         public final TextView content;
         //private final TextView user;
-        //public TextView uptime;
+        public TextView seeAll;
+        public final LinearLayout containerLayout;
         public final TextView likecount;
         public final TextView type;
         public final ImageView image;
-        public final ImageButton ib;
+        public final ImageView ib;
 
         public RecyclerItemViewHolder(View parent) {
             super(parent);
             content = (TextView) parent.findViewById(R.id.tpl_list_speak_tv_content);
+            containerLayout = (LinearLayout) parent.findViewById(R.id.tpl_list_speak_container);
             type = (TextView) parent.findViewById(R.id.tpl_list_speak_tv_type);
+            extra = (TextView) parent.findViewById(R.id.tpl_list_speak_speak_extra);
+            seeAll = (TextView) parent.findViewById(R.id.tpl_list_speak_speak_all_content_tips);
             likecount = (TextView) parent.findViewById(R.id.tpl_list_speak_tv_like);
             image = (ImageView) parent.findViewById(R.id.tpl_list_speak_iv_bg);
-            ib = (ImageButton) parent.findViewById(R.id.tpl_list_speak_ib_like);
+            ib = (ImageView) parent.findViewById(R.id.tpl_list_speak_ib_like);
             parent.setOnClickListener(this);
             parent.setOnLongClickListener(this);
             ib.setOnClickListener(this);
+            image.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            if(v == itemView)
-            {
+            if(v == itemView) {
                 if (null != onRecyclerViewListener) {
                     onRecyclerViewListener.onItemClick(getAdapterPosition());
                 }
                 Toast.makeText(v.getContext(), "content" + getAdapterPosition(), Toast.LENGTH_SHORT).show();
                 Bundle params = new Bundle();
-
-
             }
-
-            if(v == ib)
-            {
+            if(v == ib) {
                 Toast.makeText(v.getContext(), "ib", Toast.LENGTH_SHORT).show();
+            }
+            if (v == image) {
+                if (null != onRecyclerViewListener) {
+                    onRecyclerViewListener.onImageClick(getAdapterPosition());
+                }
             }
 
 

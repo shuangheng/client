@@ -18,9 +18,9 @@
             android:layout_weight="1"
             android:orientation="vertical" >
             
-            <com.app.demos.layout.TitleLayout
+            <com.app.demos.layout.other.TitleLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" ></com.app.demos.layout.TitleLayout>
+        android:layout_height="wrap_content" ></com.app.demos.layout.other.TitleLayout>
 
             <ListView
                 android:id="@+id/app_index_list_view"

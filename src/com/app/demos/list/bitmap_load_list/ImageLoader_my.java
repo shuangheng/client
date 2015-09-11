@@ -14,14 +14,20 @@ import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.LogRecord;
 
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.app.demos.base.BaseTask;
+import com.app.demos.util.AppFileDownUtils;
 import com.app.demos.util.BaseDevice;
 
 /**
@@ -30,6 +36,10 @@ import com.app.demos.util.BaseDevice;
  */
 
 public class ImageLoader_my {
+
+    Bundle bundle = new Bundle();
+    Handler handler = new Handler();
+    Message msg = new Message();
 
     private MemoryCache memoryCache = new MemoryCache();
     private AbstractFileCache fileCache;
@@ -49,10 +59,12 @@ public class ImageLoader_my {
         // 先从内存缓存中查找
 
         Bitmap bitmap = memoryCache.get(url);
-        if (bitmap != null)
+        if (bitmap != null) {
             imageView.setImageBitmap(bitmap);
-        else if (!isLoadOnlyFromCache){
-
+            //Message message = new Message();
+            //message.what = AppFileDownUtils.MSG_DOWNING;
+            //new Handler().sendMessage(message);
+        } else if (!isLoadOnlyFromCache){
             // 若没有的话则开启新线程加载图片
             queuePhoto(url, imageView);
         }
@@ -67,34 +79,85 @@ public class ImageLoader_my {
     private Bitmap getBitmap(Context context, String url) {
         File f = fileCache.getFile(url);
 
+        int fileSize = -1;
+        int downFileSize = 0;
+        boolean result = false;
+        int progress = 0;
+
+
         // 先从文件缓存中查找是否有
         Bitmap b = null;
         if (f != null && f.exists()){
-            b = decodeFile(f);
+            try {
+                InputStream is = new FileInputStream(f);
+                b = BitmapFactory.decodeStream(is);
+                return b;
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                return null;
+            }
+
         }
-        if (b != null){
-            return b;
-        }
+
         // 最后从指定的url中下载图片
         try {
             Bitmap bitmap = null;
             URL imageUrl = new URL(url);
             HttpURLConnection conn = (HttpURLConnection) imageUrl.openConnection();
-            conn.setConnectTimeout(30000);
-            conn.setReadTimeout(30000);
-            conn.setInstanceFollowRedirects(true);
-            InputStream is = conn.getInputStream();
+            conn.setConnectTimeout(10000);//毫秒(ms)  1000ms = 1s
+            conn.setReadTimeout(10000);
+            //conn.setInstanceFollowRedirects(true);//设置这个连接是否遵循重定向。
+
+
+            conn.setRequestMethod("GET");
+            conn.setDoInput(true);
+            conn.connect();
+            //InputStream is = conn.getInputStream();
             //OutputStream os = new FileOutputStream(f);
-            //保存图片
-            saveImage(context, is, f);
+            Log.e("size", "filddddeSize");
+            if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                fileSize = conn.getContentLength();
+                Log.e("size", ""+fileSize);
+                InputStream is = conn.getInputStream();
+                FileOutputStream fos = new FileOutputStream(f);
+                byte[] buffer = new byte[1024];
+                int i = 0;
+                int tempProgress = -1;
+                while ((i = is.read(buffer)) != -1) {
+                    downFileSize = downFileSize + i;
+                    // 下载进度
+                    progress = (int) (downFileSize * 100.0 / fileSize);
+                    fos.write(buffer, 0, i);
+
+                    synchronized (this) {
+                        if (downFileSize == fileSize) {
+                            // 下载完成
+                            //msg.what = BaseTask.IMAGE_LOAD_OK;
+                            //handler.sendMessage(msg);
+                        } else if (tempProgress != progress) {
+                            // 下载进度发生改变，则发送Message
+                            tempProgress = progress;
+                            //bundle.putInt("progress", progress);
+                            //msg.what = BaseTask.IMAGE_LOADING;
+                            //msg.setData(bundle);
+                            //handler.sendMessage(msg);
+                        }
+                    }
+                }
+                fos.flush();
+                fos.close();
+            }
+                //保存图片
+            //saveImage(context, is, f);
             //CopyStream(is, os);
             //os.close();
             //读取图片
-            bitmap = decodeFile(f);
-            Log.e("getBitmap()", "" + bitmap.getHeight());
+            bitmap = BitmapFactory.decodeStream(new FileInputStream(f));
             return bitmap;
         } catch (Exception ex) {
             Log.e("", "getBitmap catch Exception...\nmessage = " + ex.getMessage());
+            //msg.what = BaseTask.IMAGE_LOAD_FAIL;
+            //handler.sendMessage(msg);
             return null;
         }
     }

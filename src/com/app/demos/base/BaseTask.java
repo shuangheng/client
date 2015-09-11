@@ -3,13 +3,17 @@ package com.app.demos.base;
 public class BaseTask {
 
 	public static final int TASK_COMPLETE = 0;
-	public static final int TEST_FoxconnEss = 6;
 	public static final int NETWORK_ERROR = 1;
 	public static final int SHOW_LOADBAR = 2;
 	public static final int HIDE_LOADBAR = 3;
 	public static final int SHOW_TOAST = 4;
 	public static final int LOAD_IMAGE = 5;
-	
+	public static final int TEST_FoxconnEss = 6;
+
+	public static final int IMAGE_LOADING = 7;
+	public static final int IMAGE_LOAD_FAIL = 8;
+	public static final int IMAGE_LOAD_OK = 9;
+
 	private int id = 0;
 	private String name = "";
 	

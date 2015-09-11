@@ -13,8 +13,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.app.demos.R;
-import com.app.demos.base.BaseUi;
-import com.app.demos.layout.MyTextView;
 import com.app.demos.ui.fragment.Fragment2;
 import com.app.demos.ui.fragment.Fragment3;
 import com.app.demos.ui.fragment.FragmentNull;

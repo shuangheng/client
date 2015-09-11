@@ -13,3 +13,19 @@
 #更改root密码
  sudo passwd root
 
+
+
+
+在jpg图片目录中运行：
+
+    mogrify -format png *.jpg  //得到png格式图片
+
+
+    mogrify -resize 270x480   *.png   //将图片分辨率修改为 270X480大小。
+
+
+批量修改文件名，将jpg后缀的文件修改为_small.jpg
+
+    rename s/.jpg/_small.jpg/ *
+
+

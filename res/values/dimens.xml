@@ -11,4 +11,5 @@
     <dimen name="inner_components_spacing">8dp</dimen>
     <dimen name="bottom_ellipsis_height">4dp</dimen>
     <dimen name="tabsHeight">40dp</dimen>
+    <dimen name="default_horizontal_margin">16.0dip</dimen>
 </resources>

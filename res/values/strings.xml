@@ -50,5 +50,16 @@
     <string name="drawer_close">关闭</string>
     <string name="ui_create_speak_content_hint">说点什么...</string>
 
+    <string name="secret_all_content_tips">查看全文...</string>
+
+    <string name="lll">name="search_image">找图片
+    name="search_image_empty_hint">对不起，没有搜索到相关图片
+     name="send_anonymous_letter_to_tip">请善意使用此功能，若被对方举报屏蔽，你将无法继续使用
+    name="set_crowd">设置我的其它圈子</string>
+    <string name="notif_down_file">通知下载文件</string>
+    <string name="downloadProgress">下载进度</string>
+    <string name="downloadSuccess">下载成功</string>
+    <string name="downloadFailure">下载失败</string>
+
 
 </resources>

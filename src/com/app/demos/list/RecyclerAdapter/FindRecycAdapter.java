@@ -2,27 +2,21 @@ package com.app.demos.list.RecyclerAdapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.demos.R;
-import com.app.demos.base.BaseUi;
 import com.app.demos.base.C;
-import com.app.demos.layout.CircleImageView;
+import com.app.demos.layout.other.CircleImageView;
 import com.app.demos.list.bitmap_load_list.ImageLoader;
 import com.app.demos.model.Find;
-import com.app.demos.model.Gonggao;
 import com.app.demos.util.AppFilter;
 import com.app.demos.util.TimeUtil;
 

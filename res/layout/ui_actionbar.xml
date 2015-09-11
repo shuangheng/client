@@ -26,11 +26,11 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical" >
 
-                <com.app.demos.layout.PagerSlidingTabStrip_my
+                <com.app.demos.layout.other.PagerSlidingTabStrip_my
                     android:id="@+id/tabs"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/tabsHeight" >
-                </com.app.demos.layout.PagerSlidingTabStrip_my>
+                </com.app.demos.layout.other.PagerSlidingTabStrip_my>
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/ui_actionbar_vPager"

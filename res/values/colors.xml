@@ -26,9 +26,10 @@
     <color name="color_primary_red">#f44336</color>
     <color name="color_primary_red_dark">#d32f2f</color>
     <color name="color_primary_green"> #4caf50</color>
-    <color name="color_primary_green_dark">#388e3c</color>
+    <color name="color_primary_green_dark">#176c13</color>
     <color name="color_shadow">#44000000</color>
     <color name="ui_dark">#20000000</color>
     <color name="ui_green">#ff98222b</color>
+    <color name="secret_card_view_linkify_text_1">#ff4182b4</color>
 
 </resources>

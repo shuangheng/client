@@ -3,10 +3,7 @@ package com.app.demos.ui;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -32,20 +29,13 @@ import com.app.demos.base.BaseMessage;
 import com.app.demos.base.BaseTask;
 import com.app.demos.base.BaseUi;
 import com.app.demos.base.C;
-import com.app.demos.layout.ListViewForScrollView;
 import com.app.demos.list.CommentList;
-import com.app.demos.list.ExpandList;
 import com.app.demos.list.bitmap_load_list.ImageLoader;
-import com.app.demos.model.Blogg;
 import com.app.demos.model.Comment;
 import com.app.demos.model.Customer;
-import com.app.demos.model.Gonggao;
 //import com.app.demos.ui.UiBlog.BlogHandler;
-import com.app.demos.util.AppCache;
 import com.app.demos.util.AppFilter;
-import com.app.demos.util.AppUtil;
 import com.app.demos.util.UIUtil;
-import android.widget.AbsListView.OnScrollListener;
 
 public class UiSpeakComment extends BaseUi implements OnScrollListener{
 	private String speakId;
@@ -246,7 +236,7 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
             }
         },50);
         */
-        new ImageLoader(this).DisplayImage(bgImageUrl, ivBgImage, false);
+        new ImageLoader(this).DisplayImage(C.web.bgimage + bgImageUrl + ".jpg", ivBgImage, false);
 	}
 	
 	//-- only display Image

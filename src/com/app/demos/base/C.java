@@ -8,7 +8,24 @@ public final class C {
 			R.drawable.s_2,
 			R.drawable.s_8,
 			R.drawable.s_24,
-			R.drawable.s_28};;
+			R.drawable.s_28};
+
+	public static final int[] colors = {R.color.color_primary_green_dark,R.color.color_primary_green_dark,
+			R.color.color_primary_red,
+			R.color.color_primary_red,
+			R.color.accent_material_light,
+			R.color.accent_material_light,
+			R.color.indigo_700,
+			R.color.indigo_700,
+			R.color.ui_green,
+			R.color.ui_green,
+			R.color.switch_thumb_normal_material_dark,
+			R.color.switch_thumb_normal_material_dark,
+			R.color.color_primary_green,
+			R.color.color_primary_green,
+			R.color.cyan_500,
+			R.color.cyan_500
+	};
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	// core settings (important)
@@ -107,6 +124,7 @@ public final class C {
 		public static final String base				= "http://10.0.2.2:8002";
 		public static final String index			= base + "/index.php";
 		public static final String gomap			= base + "/gomap.php";
+		public static final String bgimage			= base + "/faces/default/l_";
 	}
 
 	int bgImage_s[] = {R.drawable.s_1,

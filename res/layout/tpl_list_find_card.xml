@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.app.demos.layout.CircleImageView
+        <com.app.demos.layout.other.CircleImageView
             android:id="@+id/tpl_list_find_card_image_face"
             android:layout_width="56dp"
             android:layout_height="56dp"
