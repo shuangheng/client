@@ -1,4 +1,4 @@
-package com.app.demos.layout;
+package com.app.demos.layout.other;
 
 import com.app.demos.R;
 

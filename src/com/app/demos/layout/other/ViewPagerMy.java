@@ -1,4 +1,4 @@
-package com.app.demos.layout;
+package com.app.demos.layout.other;
 
 import android.content.Context;
 import android.content.res.Resources;

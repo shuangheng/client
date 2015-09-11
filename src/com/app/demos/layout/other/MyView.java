@@ -1,4 +1,4 @@
-package com.app.demos.layout;
+package com.app.demos.layout.other;
 
 import com.app.demos.util.BaseDevice;
 import com.app.demos.util.AppCache;

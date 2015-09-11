@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.app.demos.layout;
+package com.app.demos.layout.other;
 
 import java.util.Locale;
 
