@@ -31,17 +31,20 @@ import com.app.demos.base.BaseUi;
 import com.app.demos.base.C;
 import com.app.demos.list.CommentList;
 import com.app.demos.list.bitmap_load_list.ImageLoader;
+import com.app.demos.list.bitmap_load_list.ImageLoader_my;
 import com.app.demos.model.Comment;
 import com.app.demos.model.Customer;
 //import com.app.demos.ui.UiBlog.BlogHandler;
 import com.app.demos.util.AppFilter;
 import com.app.demos.util.UIUtil;
 
+import static com.app.demos.util.Math_my.isEven;
+
 public class UiSpeakComment extends BaseUi implements OnScrollListener{
 	private String speakId;
 	private String customerId;
 	private String content;
-	private String typeAll;
+	private String type;
 	private String likeCount;
 	private String bgImageUrl;
 	
@@ -63,8 +66,12 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
 	private int lastVisibleIndex;
 	private int lastIdNum;
 	private String lastId;
-	
-	
+	private String commentcount;
+	private TextView extra;
+	private String bgColor;
+	private LinearLayout containerLayout;
+
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -78,11 +85,6 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
 		
 		//**load bgImage
 		loadBgImage();
-		
-		//-- only display Image
-		onlyBgImage();
-		
-				
 		
 		/*/ do add care
 		//careBtn = (Button) this.findViewById(R.id.);
@@ -229,32 +231,10 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
 	
 	//--load bgImage
 	private void loadBgImage(){
-        /*
-		new Handler().postDelayed(new Runnable() {  
-            public void run() {  
-            	ivBgImage.setImageBitmap(AppCache.getImage(bgImageUrl));
-            }
-        },50);
-        */
-        new ImageLoader(this).DisplayImage(C.web.bgimage + bgImageUrl + ".jpg", ivBgImage, false);
-	}
-	
-	//-- only display Image
-	private void onlyBgImage(){
-			ivBgImage.setOnClickListener(new OnClickListener(){
-				@Override
-				public void onClick(View v) {				
-					if(tvContent.isShown()){
-						tvContent.setVisibility(View.INVISIBLE);
-						//tvType.setVisibility(View.INVISIBLE);
-						layout.setVisibility(View.INVISIBLE);
-					} else {
-						tvContent.setVisibility(View.VISIBLE);
-						//tvType.setVisibility(View.VISIBLE);
-						layout.setVisibility(View.VISIBLE);
-					}
-				}
-			});
+        if (!bgImageUrl.equals("null")) {
+			ivBgImage.setVisibility(View.VISIBLE);
+			new ImageLoader_my(this).DisplayImage(C.web.bgimage + bgImageUrl + ".jpg", ivBgImage, false);
+		}
 	}
 	
 	//--fill content
@@ -262,34 +242,52 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
 			Bundle params = this.getIntent().getExtras();
 			speakId = params.getString("speakId");
 			content = params.getString("content");
-			typeAll = params.getString("typeAll");
+			type = params.getString("type");
+			commentcount = params.getString("commentcount");
 			likeCount = params.getString("likeCount");
 			bgImageUrl = params.getString("bgImageUrl");
-			
+			bgColor = params.getString("bgColor");
+
 			moreView = getLayoutInflater().inflate(R.layout.load_more, null);
-			tplSpeak = getLayoutInflater().inflate(R.layout.tpl_list_speak, null);
+			tplSpeak = getLayoutInflater().inflate(R.layout.tpl_list_speak_comment_header, null);
 			
 			// fill content
 			layout = (LinearLayout) tplSpeak.findViewById(R.id.tpl_list_speak_bottom_layout);
+			containerLayout = (LinearLayout) tplSpeak.findViewById(R.id.tpl_list_speak_container);
 			tvContent = (TextView) tplSpeak.findViewById(R.id.tpl_list_speak_tv_content);
 			tvType = (TextView) tplSpeak.findViewById(R.id.tpl_list_speak_tv_type);
+			extra = (TextView) tplSpeak.findViewById(R.id.tpl_list_speak_speak_extra);
 			tvLikeCount = (TextView) tplSpeak.findViewById(R.id.tpl_list_speak_tv_like);
 			ivBgImage = (ImageView) tplSpeak.findViewById(R.id.tpl_list_speak_iv_bg);
 			ibLike = (ImageButton) tplSpeak.findViewById(R.id.tpl_list_speak_ib_like);
 			//mlayout = getLayout(R.id.tpl_list_speak_bottom_layout);
-			ibLike.setOnClickListener(new OnClickListener(){
-	        	@Override
-	            public void onClick(View v) {
-	        		//blogItem.ib.setImageResource(R.drawable.ic_card_liked);
-	        		Log.d("ibutton", "yes");
-	        		
-	        		v.setBackgroundResource(new MainActivity().likeButtonClick(getContext()));
-	        		//new TestFragment().likeButtonClick();
-	        	}
-	        });
-			
+		ivBgImage.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Bundle params = new Bundle();
+				params.putString("bgImageUrl", bgImageUrl);
+				overlay(UiImageZoom.class, params);
+			}
+		});
+			ibLike.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					//blogItem.ib.setImageResource(R.drawable.ic_card_liked);
+					Log.d("ibutton", "yes");
+
+					v.setBackgroundResource(new MainActivity().likeButtonClick(getContext()));
+					//new TestFragment().likeButtonClick();
+				}
+			});
+
+		int position = Integer.parseInt(bgColor);
+		containerLayout.setBackgroundColor(!isEven(position) ?
+				containerLayout.getResources().getColor(C.colors[position % 16]) :
+				containerLayout.getResources().getColor(R.color.white));
+
 			tvContent.setText(AppFilter.getHtml(content));
-			tvType.setText(typeAll);
+			tvType.setText(type);
+			extra.setText("评论 " + commentcount);
 			tvLikeCount.setText(likeCount);
         ivBgImage.setBackgroundColor(getResources().getColor(R.color.white));
         //设置ImageView大小

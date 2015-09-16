@@ -111,4 +111,9 @@ public class BlogSqlite extends BaseSqlite {
 
 				");";
 	}
+
+	@Override
+	protected String createSql3() {
+		return null;
+	}
 }

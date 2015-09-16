@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import com.app.demos.base.BaseSqlite;
 import com.app.demos.model.DromInfo;
+import com.app.demos.model.FavoriteSpeak;
 import com.app.demos.model.Gonggao;
 
 public class GonggaoSqlite extends BaseSqlite {
@@ -27,6 +28,9 @@ public class GonggaoSqlite extends BaseSqlite {
 			Gonggao.COL_TITLE,
 			Gonggao.COL_CONTENT,
 			Gonggao.COL_SEECOUNT,			
+			Gonggao.COL_COMMENTCOUNT,
+			Gonggao.COL_LIKECOUNT,
+			Gonggao.COL_TYPE,
 			Gonggao.COL_UPTIME
 		};
 		return columns;
@@ -41,6 +45,9 @@ public class GonggaoSqlite extends BaseSqlite {
 			Gonggao.COL_TITLE + " TEXT, " +
 			Gonggao.COL_CONTENT + " TEXT, " +
 			Gonggao.COL_SEECOUNT + " TEXT, " +			
+			Gonggao.COL_COMMENTCOUNT + " TEXT, " +
+			Gonggao.COL_LIKECOUNT + " TEXT, " +
+			Gonggao.COL_TYPE + " TEXT, " +
 			Gonggao.COL_UPTIME + " TEXT" +
 			");";
 	}
@@ -59,6 +66,9 @@ public class GonggaoSqlite extends BaseSqlite {
 		values.put(Gonggao.COL_TITLE, g.getTitle());
 		values.put(Gonggao.COL_CONTENT, g.getContent());
 		values.put(Gonggao.COL_SEECOUNT, g.getSeecount());	
+		values.put(Gonggao.COL_COMMENTCOUNT, g.getCommentcount());
+		values.put(Gonggao.COL_LIKECOUNT, g.getLikeCount());
+		values.put(Gonggao.COL_TYPE, g.getType());
 		values.put(Gonggao.COL_UPTIME, g.getUptime());
 		// prepare sql
 		String whereSql = Gonggao.COL_ID + "=?";
@@ -91,7 +101,10 @@ public class GonggaoSqlite extends BaseSqlite {
 				g.setTitle(rRow.get(3));
 				g.setContent(rRow.get(4));
 				g.setSeecount(rRow.get(5));
-				g.setUptime(rRow.get(6));
+				g.setCommentcount(rRow.get(6));
+				g.setLikecount(rRow.get(7));
+				g.setType(rRow.get(8));
+				g.setUptime(rRow.get(9));
 				gList.add(g);
 			}
 		} catch (Exception e) {
@@ -110,6 +123,15 @@ public class GonggaoSqlite extends BaseSqlite {
 				DromInfo.COL_DISPLAY + " TEXT, " +
 				DromInfo.COL_CONTENT + " TEXT" +
 
+				");";
+	}
+
+	@Override
+	protected String createSql3() {
+		return "CREATE TABLE IF NOT EXISTS " + "favorite_speak" + " (" +
+				FavoriteSpeak.COL_CUSTOMERID + " TEXT, " +
+				FavoriteSpeak.COL_SPEAKID + " TEXT, " +
+				FavoriteSpeak.COL_UPTIME + " TEXT" +
 				");";
 	}
 }

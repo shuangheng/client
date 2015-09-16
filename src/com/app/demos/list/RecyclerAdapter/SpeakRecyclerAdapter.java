@@ -35,6 +35,7 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
     //added view types
     private static final int TYPE_HEADER = 2;
     private static final int TYPE_ITEM = 1;
+    private static final int TYPE_FOOTER = 3;
     private boolean mBusy = false;
     private boolean isShowBottom = false;
     private boolean isEnd = false;
@@ -93,8 +94,8 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
         if (viewType == TYPE_ITEM) {
             final View view = LayoutInflater.from(context).inflate(R.layout.tpl_list_speak_8_27, parent, false);
             return new RecyclerItemViewHolder(view);
-        } else if (viewType == TYPE_HEADER) {
-            final View view = LayoutInflater.from(context).inflate(R.layout.load_more, parent, false);
+        } else if (viewType == TYPE_FOOTER) {
+            final View view = LayoutInflater.from(context).inflate(R.layout.tpl_list_speak_footer, parent, false);
             return new RecyclerFooterViewHolder(view);
         }
         throw new RuntimeException("There is no type that matches the type " + viewType + " + make sure your using types correctly");
@@ -114,7 +115,8 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
             //positionn = position;
             holder.content.setText(AppFilter.getHtml(gonggaoList.get(position).getContent()));
 
-            holder.type.setText(gonggaoList.get(position).getTypeAll());
+            holder.type.setText(gonggaoList.get(position).getType());
+            holder.extra.setText(gonggaoList.get(position).getTypeAll());
             holder.likecount.setText(gonggaoList.get(position).getLikeCount());
             //set background color
             holder.content.setTextColor(holder.content.getResources().getColor(! isEven(position) ? R.color.white : R.color.black));
@@ -141,25 +143,18 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             mImageLoader.DisplayImage(url, holder.image, mBusy);
 
-            /*
-                if (!mBusy) {
-                    mImageLoader.DisplayImage(url, holder.image, false);
-                    //viewHolder.mTextView.setText("--" + position + "--IDLE ||TOUCH_SCROLL");
-                } else {
-                    mImageLoader.DisplayImage(url, holder.image, true);
-                    //viewHolder.mTextView.setText("--" + position + "--FLING");
-                }
-            */
-
         } else {
             RecyclerFooterViewHolder footerHolder = (RecyclerFooterViewHolder) viewHolder;
-
-            if (isEnd) {
-                footerHolder.pg.setVisibility(View.GONE);
-                footerHolder.tv.setText("没有了！点击发表");
-            } else {
+            if (position > 4) {
                 footerHolder.pg.setVisibility(View.VISIBLE);
-                footerHolder.tv.setText("正在加载···");
+                footerHolder.tv.setVisibility(View.VISIBLE);
+                if (isEnd) {
+                    footerHolder.pg.setVisibility(View.GONE);
+                    footerHolder.tv.setText("点我发表");
+                } else {
+                    footerHolder.pg.setVisibility(View.VISIBLE);
+                    footerHolder.tv.setText("正在加载···");
+                }
             }
         }
     }
@@ -177,7 +172,7 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public int getItemViewType(int position) {
         if (isPositionFooter(position)) {
-            return TYPE_HEADER;
+            return TYPE_FOOTER;
         }
         return TYPE_ITEM;
     }
@@ -253,8 +248,8 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
         public TextView tv;
         public RecyclerFooterViewHolder( final View itemView) {
             super(itemView);
-            pg = (ProgressBar) itemView.findViewById(R.id.load_more_pg);
-            tv = (TextView) itemView.findViewById(R.id.load_more_tv);
+            pg = (ProgressBar) itemView.findViewById(R.id.list_speak_footer_progressbar);
+            tv = (TextView) itemView.findViewById(R.id.list_speak_footer_hint_textview);
             if (!isEnd) {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override

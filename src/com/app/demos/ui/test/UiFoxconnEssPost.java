@@ -157,9 +157,7 @@ public class UiFoxconnEssPost extends BaseUi implements View.OnClickListener {
         final String[] strings = editText.getText().toString().split("&");
         switch (v.getId()) {
             case R.id.ui_foxconn_ess_post_btn1:
-                ExecutorService service = Executors.newCachedThreadPool();
-
-                Runnable run = new Runnable() {
+                new Thread(new Runnable() {
                     @Override
                     public void run() {
                         Log.e(TAG, "run");
@@ -173,21 +171,8 @@ public class UiFoxconnEssPost extends BaseUi implements View.OnClickListener {
                         }
 
                     }
-                };
-                // 在未来某个时间执行给定的命令
-                service.execute(run);
-                //service.submit(run);
-                // }
-                // 关闭启动线程
-                service.shutdown();
-                // 等待子线程结束，再继续执行下面的代码
-                try {
-                    service.awaitTermination(5, TimeUnit.SECONDS);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                System.out.println("all thread complete");
-                //Log.e(TAg, content.getText().toString());
+                }).start();
+
                 Toast.makeText(this, editText.getText().toString(), Toast.LENGTH_SHORT).show();
                 break;
 ///////////////////////

@@ -139,6 +139,7 @@ public abstract class BaseSqlite {
 	abstract protected String[] tableColumns ();
 	abstract protected String createSql ();
 	abstract protected String createSql2 ();
+	abstract protected String createSql3 ();
 	abstract protected String upgradeSql ();
 	
 	protected class DbHelper extends SQLiteOpenHelper {
@@ -151,6 +152,7 @@ public abstract class BaseSqlite {
 		public void onCreate(SQLiteDatabase db) {
 			db.execSQL(createSql());
 			db.execSQL(createSql2());
+			db.execSQL(createSql3());
 
 			Log.e("db","onCreateSql");
 		}

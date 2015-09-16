@@ -140,6 +140,6 @@ public class Gonggao extends BaseModel {
     }
     
     public String getTypeAll() {
-		return this.type+" · 评论"+this.commentcount;    	
+		return "评论 "+this.commentcount;
     }
 }

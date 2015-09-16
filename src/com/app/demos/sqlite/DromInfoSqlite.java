@@ -129,4 +129,9 @@ public class DromInfoSqlite extends BaseSqlite {
 
                 ");";
     }
+
+    @Override
+    protected String createSql3() {
+        return null;
+    }
 }

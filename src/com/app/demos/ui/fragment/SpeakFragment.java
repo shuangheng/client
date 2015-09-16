@@ -19,6 +19,7 @@ import com.app.demos.ui.UiImageZoom;
 import com.app.demos.ui.UiSpeakComment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -145,9 +146,11 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
             public void onItemClick(int position) {
                     params.putString("speakId", ggList.get(position).getId());
                     params.putString("content", ggList.get(position).getContent());
-                    params.putString("typeAll", ggList.get(position).getTypeAll());
+                    params.putString("type", ggList.get(position).getType());
+                    params.putString("commentcount", ggList.get(position).getCommentcount());
                     params.putString("likeCount", ggList.get(position).getLikeCount());
                     params.putString("bgImageUrl", ggList.get(position).getBgimage());
+                    params.putString("bgColor", "" + position);
                     activity.overlay(UiSpeakComment.class, params);
             }
 
@@ -203,10 +206,20 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
 		 swipeLayout = (Progress_m) view.findViewById(R.id.speak_swipe_refresh);
         swipeLayout.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW, Color.GREEN);
 		    swipeLayout.setOnRefreshListener(this);
-		gonggaoSqlite = new GonggaoSqlite(activity);
+
+        initData();
+
+
         
         return view;
 
+    }
+
+    private void initData() {
+        final ArrayList<Gonggao> ggList = activity.gonggaoSqlite.getAllGonggao();
+        if (ggList != null) {
+            setGgList(ggList);
+        }
     }
 
     @Override
@@ -216,7 +229,8 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
             public void run() {
                 long loginTime = System.currentTimeMillis();
 
-                SharedPreferences sharedPreferences = activity.getSharedPreferences("fragment1", 0);
+                SharedPreferences sharedPreferences = activity.getSharedPreferences("fragment_speak", Context.MODE_PRIVATE);
+                Boolean isLatest_favorite = sharedPreferences.getBoolean("isLatest_favorite", false);
                 String lastTime = sharedPreferences.getString("time", "0");
                 long time0 = Long.valueOf(lastTime);
                 long jgtime = loginTime - time0;
