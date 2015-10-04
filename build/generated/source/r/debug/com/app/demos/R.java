@@ -21,7 +21,8 @@ public final class R {
         public static final int img_zoom_out_center=0x7f040009;
         public static final int in_from_right=0x7f04000a;
         public static final int inuptodown=0x7f04000b;
-        public static final int outdowntoup=0x7f04000c;
+        public static final int keep=0x7f04000c;
+        public static final int outdowntoup=0x7f04000d;
     }
     public static final class array {
         public static final int email_suffix=0x7f0a0000;

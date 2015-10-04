@@ -186,6 +186,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
             public void onClick(View v) {
                 Intent intent = new Intent(UiActionBar.this, UiCreateSpeak.class);
                 startActivityForResult(intent, 1);
+                overridePendingTransition(R.anim.in_from_right, 0);
             }
         });
         mFabButton.setOnLongClickListener(new View.OnLongClickListener() {
@@ -241,6 +242,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
                     case 2:
                         UiAuthenticator.actionStart(context, 1);
                         //overridePendingTransition(R.anim.img_zoom_in_center, 0);//动画效果
+                        mDrawerLayout.closeDrawers();
                         break;
                 }
             }
