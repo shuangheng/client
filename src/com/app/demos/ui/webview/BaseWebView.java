@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.os.PersistableBundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -64,7 +65,7 @@ public class BaseWebView extends SwipeBackActivity {
     @Override
     public void onStart() {
         super.onStart();
-        swipeRefresh.setRefreshing(true);
+        //swipeRefresh.setRefreshing(true);
     }
 
     /**
@@ -148,6 +149,12 @@ public class BaseWebView extends SwipeBackActivity {
             @Override
             public void onRefresh() {
                 webView.reload();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefresh.setRefreshing(false);
+                    }
+                }, 3000);
             }
         });
     }
@@ -293,7 +300,7 @@ public class BaseWebView extends SwipeBackActivity {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             if (newProgress == 100) {
-                swipeRefresh.setRefreshing(false);
+                //swipeRefresh.setRefreshing(false);
                 progressBar.setVisibility(View.GONE);
 
             } else {
@@ -301,7 +308,7 @@ public class BaseWebView extends SwipeBackActivity {
                     progressBar.setVisibility(View.VISIBLE);
                 }
                 if (!swipeRefresh.isRefreshing()) {
-                    swipeRefresh.setRefreshing(true);
+                    //swipeRefresh.setRefreshing(true);
                 }
                 progressBar.setProgress(newProgress);
             }
