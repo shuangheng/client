@@ -31,13 +31,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.demos.R;
+import com.app.demos.layout.other.WebViewMy;
 import com.app.demos.layout.swipebacklayout.app.SwipeBackActivity;
 
 /**
  * Created by tom on 15-10-2.
  */
 public class BaseWebView extends SwipeBackActivity {
-    private WebView webView;
+    private WebViewMy webView;
     private ProgressBar progressBar;
     private Toolbar toolbar;
     private TextView mErrorView;
@@ -54,9 +55,16 @@ public class BaseWebView extends SwipeBackActivity {
         setContentView(R.layout.ui_webview);
         initView();
         initSwipeRefresh();
+
         Bundle localBundle = getIntent().getExtras();
         paramUrl = localBundle.getString("url");
         webView.loadUrl(paramUrl);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        swipeRefresh.setRefreshing(true);
     }
 
     /**
@@ -76,7 +84,7 @@ public class BaseWebView extends SwipeBackActivity {
 
 
     private void initView() {
-        webView = (WebView) findViewById(R.id.ui_web_view);
+        webView = (WebViewMy) findViewById(R.id.ui_web_view);
         progressBar = (ProgressBar) findViewById(R.id.ui_web_view_progressBar);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         editText = (EditText) LayoutInflater.from(this).inflate(R.layout.toolbar_network_adress, null);
@@ -108,6 +116,27 @@ public class BaseWebView extends SwipeBackActivity {
             @Override
             public boolean onLongClick(View view) {
                 return false;
+            }
+        });
+        webView.setOnViewScrollChangedListener(new WebViewMy.OnViewTopListener() {
+            @Override
+            public void onScroll() {
+                swipeRefresh.setEnabled(isViewTop());
+            }
+
+            @Override
+            public void onViewTop() {
+
+            }
+
+            @Override
+            public void onViewBottom() {
+
+            }
+
+            @Override
+            public void onViewVicinityBottom() {
+
             }
         });
 
@@ -144,7 +173,6 @@ public class BaseWebView extends SwipeBackActivity {
 
             @Override
             public Drawable getDrawable(String source) {
-                // TODO Auto-generated method stub
                 int id = Integer.parseInt(source);
                 Drawable d = getResources().getDrawable(id);
                 d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
@@ -220,6 +248,22 @@ public class BaseWebView extends SwipeBackActivity {
         }
     }
 
+    /**
+     * getScrollY()方法返回的是当前可见区域的顶端距整个页面顶端的距离,也就是当前内容滚动的距离.
+     * getHeight()或者getBottom()方法都返回当前WebView 这个容器的高度
+     * getContentHeight 返回的是整个html 的高度,但并不等同于当前整个页面的高度,
+     * 因为WebView 有缩放功能, 所以当前整个页面的高度实际上应该是原始html 的高度再乘上缩放比例.
+     * 因此,更正后的结果,准确的判断方法应该是：
+     * @return
+     */
+    private Boolean isViewbottom() {
+        return webView.getContentHeight()*webView.getScale() == (webView.getHeight()+webView.getScrollY());
+    }
+
+    private Boolean isViewTop() {
+        return 0 == webView.getScrollY();
+    }
+
     private class WebViewClientMy extends WebViewClient {
 
         @Override
@@ -249,10 +293,15 @@ public class BaseWebView extends SwipeBackActivity {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             if (newProgress == 100) {
+                swipeRefresh.setRefreshing(false);
                 progressBar.setVisibility(View.GONE);
+
             } else {
                 if (View.GONE == progressBar.getVisibility()) {
                     progressBar.setVisibility(View.VISIBLE);
+                }
+                if (!swipeRefresh.isRefreshing()) {
+                    swipeRefresh.setRefreshing(true);
                 }
                 progressBar.setProgress(newProgress);
             }

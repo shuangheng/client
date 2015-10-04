@@ -81,18 +81,6 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
         this.onRecyclerViewListener = onRecyclerViewListener;
     }
 
-    public static interface OnRecyclerGetView {
-        void onGetView();
-    }
-
-    private OnRecyclerGetView onRecyclerGetView;
-
-    /**
-     * get item view
-     */
-    public void getItemView (OnRecyclerGetView onRecyclerGetView) {
-        this.onRecyclerGetView = onRecyclerGetView;
-    }
 
     /**
      * 这个方法主要生成为每个Item inflater出一个View，但是该方法返回的是一个ViewHolder。

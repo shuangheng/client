@@ -67,7 +67,7 @@ import java.util.HashMap;
 /**
  * Created by tom on 15-3-25.
  */
-public class UiActionBar extends SwipeBackActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshListener {
     public static final String TAG = "UiActionBar";
     private boolean isFirstOpean;
     private ViewPager mPager;
