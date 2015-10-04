@@ -190,7 +190,7 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
                     g.setLikecount(String.valueOf(Integer.parseInt(g.getLikeCount()) - 1));
                     activity.gonggaoSqlite.updateGonggao(g);
                     activity.favoriteSpeakSqlite.delete(FavoriteSpeak.COL_SPEAKID + "=?", new String[]{g.getId()});
-                    activity.getFavoriteSpeakDelete("10", g.getId());
+                    activity.getFavoriteSpeakDelete("10", g.getId());//delete on server
                 } else {
                     v.setBackgroundResource(R.drawable.ic_card_liked);
                     g.setFavorite("0");

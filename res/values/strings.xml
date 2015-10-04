@@ -91,6 +91,10 @@
     <string name="tracking_mode_right">Right</string>
     <string name="tracking_mode_bottom">Bottom</string>
     <string name="tracking_mode_all">All</string>
+    <string name="favorite_ok">收藏成功！</string>
+    <string name="favorite_fail">收藏失败</string>
+    <string name="favorite_delete_ok">取消收藏</string>
+    <string name="favorite_delete_fail">取消失败</string>
 
 
 </resources>
