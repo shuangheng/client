@@ -325,7 +325,7 @@ public class UiAuthenticator extends BaseUi {
     public void clickOnProtocol(View paramView)
     {
         BaseWebView.actionStart(this, "http://www.baidu.com");
-        overridePendingTransition(R.anim.in_from_right, 0);
+        overridePendingTransition(R.anim.in_from_right, android.R.anim.fade_out);
     }
 
     public void clickOnRegion(View paramView)

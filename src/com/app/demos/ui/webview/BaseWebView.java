@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.PersistableBundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -30,7 +31,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.demos.R;
-import com.app.demos.layout.swipeback.HFFinishRelativeLayout;
 import com.app.demos.layout.swipebacklayout.app.SwipeBackActivity;
 
 /**
@@ -45,6 +45,7 @@ public class BaseWebView extends SwipeBackActivity {
     private boolean isPageError = false;
     private EditText editText;
     private boolean isFinishScrollLeft;
+    private SwipeRefreshLayout swipeRefresh;
 
     @Override
     public void onCreate(Bundle paramBundle) {
@@ -52,7 +53,7 @@ public class BaseWebView extends SwipeBackActivity {
         openHardWare();
         setContentView(R.layout.ui_webview);
         initView();
-
+        initSwipeRefresh();
         Bundle localBundle = getIntent().getExtras();
         paramUrl = localBundle.getString("url");
         webView.loadUrl(paramUrl);
@@ -62,10 +63,8 @@ public class BaseWebView extends SwipeBackActivity {
      * 开启硬件加速
      */
     private void openHardWare() {
-        if (Build.VERSION.SDK_INT >= 11) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
                     WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
-        }
     }
 
     public static void actionStart(Context context, String url)
@@ -112,6 +111,16 @@ public class BaseWebView extends SwipeBackActivity {
             }
         });
 
+    }
+
+    private void initSwipeRefresh() {
+        swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.ui_web_view_swipe_refresh);
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                webView.reload();
+            }
+        });
     }
 
     private void toolBarLongClick() {

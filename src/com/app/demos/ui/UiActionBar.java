@@ -46,6 +46,7 @@ import com.app.demos.base.BaseUi;
 import com.app.demos.base.C;
 import com.app.demos.layout.other.PagerSlidingTabStrip_my;
 import com.app.demos.layout.other.TabRedDian;
+import com.app.demos.layout.swipebacklayout.app.SwipeBackActivity;
 import com.app.demos.list.MyList;
 import com.app.demos.list.bitmap_load_list.LoaderAdapter;
 import com.app.demos.model.FavoriteSpeak;
@@ -66,66 +67,39 @@ import java.util.HashMap;
 /**
  * Created by tom on 15-3-25.
  */
-public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshListener {
+public class UiActionBar extends SwipeBackActivity implements SwipeRefreshLayout.OnRefreshListener {
     public static final String TAG = "UiActionBar";
     private boolean isFirstOpean;
     private ViewPager mPager;
     private ArrayList<Fragment> fragmentsList;
     private TextView drawerTv;
-    private ImageView ivBottomAdd0;
-    private ImageView ivBottomAdd1;
-    private ImageView ivBottomAdd2;
-    private TextView tvTabActivity, tvTabGroups, tvTabFriends, tvTabChat;
     private long mPressedTime = 0;
 
-    private int currIndex = 0;
-    private int bottomLineWidth;
-    private int offset = 1000;
     public int position_one;
-    private int position_two;
-    private int position_three;
     private Resources resources;
     private SpeakFragment activityfragment;
     private FindFragment findfragment;
     /////////////////////////////////////
     private ListView drawerList;
-    private MyList blogListAdapter;
-    private LoaderAdapter adapter;
     public GonggaoSqlite gonggaoSqlite;
     private ArrayList<Gonggao> ggList;
     private String lastId;
     public int lastIdNum;
     private String Maxid;
     public int MaxIdNum;
-    private SharedPreferences sharedPreferences;
     private String lastTime;
     private String cacheMaxId;
     private PopupWindow popupwindow;
-    private View pupView;
-    //下拉刷新Layout
     public SwipeRefreshLayout swipeLayout;
 
     // ListView底部View
-    private View moreView;
-    private Button bt;
-    private ProgressBar pg;
     public Handler handler;
-    // 设置一个最大的数据条数，超过即不再加载
-
-    // 最后可见条目的索引
-    private int lastVisibleIndex;
-    private int NUM ;
-    //private ActionBar actionBar;
-    private TabRedDian viewTab;
-    private FrameLayout ivLayout;
-    private TextView tv;
     private int i;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private ShareActionProvider mShareActionProvider;
     public PagerSlidingTabStrip_my mPagerSlidingTabStrip;
     public Toolbar mToolbar;
-    public LinearLayout mToolbarContainer;
     public ImageButton mFabButton;
     private String find_lastId;
     private int find_lastIdNum;
@@ -143,10 +117,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
 
 ///////////////////////////   test   ///////////////////////////////
         context = this;
-        ivLayout = (FrameLayout) findViewById(R.id.ui_actionbar_layout_add);
-        ivBottomAdd0 = (ImageView) findViewById(R.id.ui_actionbar_iv0);
-        ivBottomAdd1 = (ImageView) findViewById(R.id.ui_actionbar_iv1);
-        ivBottomAdd2 = (ImageView) findViewById(R.id.ui_actionbar_iv2);
+
         ///////////////////////////////////////////
         this.setHandler(new MyHandler(this));
         isFirstOpean = true;//第一次打开程序
@@ -186,7 +157,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
             public void onClick(View v) {
                 Intent intent = new Intent(UiActionBar.this, UiCreateSpeak.class);
                 startActivityForResult(intent, 1);
-                overridePendingTransition(R.anim.in_from_right, 0);
+                overridePendingTransition(R.anim.in_from_right, android.R.anim.fade_out);
             }
         });
         mFabButton.setOnLongClickListener(new View.OnLongClickListener() {
@@ -651,31 +622,6 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
                 }
                 break;
 
-            case C.task.gg2:
-                try {	//new Data
-                    ggList = (ArrayList<Gonggao>) message.getResultList("Gonggao");
-                    for (Gonggao g : ggList) {
-                        //loadImage(g.getBgimage());
-                        gonggaoSqlite.updateGonggao(g);
-                    }
-                    getFirstId(ggList);
-                    getLastId(ggList);
-                    //setListAdapter();
-                    cacheMaxId = sharedPreferences.getString("cacheMaxId","0");
-                    int i = Integer.parseInt(cacheMaxId)+1;
-                    if(lastIdNum == i){
-                        ArrayList<Gonggao> sqlList = gonggaoSqlite.getAllGonggao();
-                        ggList.addAll(0, sqlList);
-                        blogListAdapter.notifyDataSetChanged();// 通知listView刷新数据
-                    }
-                    //ggList.addAll(0, ggList);
-                    //blogListAdapter.notifyDataSetChanged();// 通知listView刷新数据
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                break;
-
             case C.task.favorite_speak_create:
                 try {
                     if (message.getCode().equals("10000")) {
@@ -746,15 +692,6 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
             Log.d("isLike", "false");
             return i;
         }
-    }
-
-    //show ivBottomAdd
-    public void showIvBottomAdd(int i) {
-        ArrayList<ImageView> ivList = new ArrayList<ImageView>();
-        ivList.add(ivBottomAdd0);
-        ivList.add(ivBottomAdd1);
-        ivList.add(ivBottomAdd2);
-        ivList.get(i).setVisibility(View.VISIBLE);
     }
 
     private void initWidth() {

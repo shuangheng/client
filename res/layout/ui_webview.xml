@@ -18,11 +18,12 @@
                 android:progressDrawable="@drawable/my_progressbar"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
+                android:visibility="gone"
                 android:layout_alignParentBottom="true"/>
         </RelativeLayout>
 
         <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_refresh"
+            android:id="@+id/ui_web_view_swipe_refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <FrameLayout
