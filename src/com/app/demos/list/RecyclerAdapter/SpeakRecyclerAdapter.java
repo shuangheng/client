@@ -71,12 +71,27 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
         boolean onItemLongClick(int position);
 
         void onImageClick(int Position);
+
+        void onFavoriteClick(View v, int Position);
     }
 
     private OnRecyclerViewListener onRecyclerViewListener;
 
     public void setOnRecyclerViewListener(OnRecyclerViewListener onRecyclerViewListener) {
         this.onRecyclerViewListener = onRecyclerViewListener;
+    }
+
+    public static interface OnRecyclerGetView {
+        void onGetView();
+    }
+
+    private OnRecyclerGetView onRecyclerGetView;
+
+    /**
+     * get item view
+     */
+    public void getItemView (OnRecyclerGetView onRecyclerGetView) {
+        this.onRecyclerGetView = onRecyclerGetView;
     }
 
     /**
@@ -113,14 +128,21 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
             RecyclerItemViewHolder holder = (RecyclerItemViewHolder) viewHolder;
             //String itemText = mItemList.get(position);
             //positionn = position;
-            holder.content.setText(AppFilter.getHtml(gonggaoList.get(position).getContent()));
+            Gonggao g = gonggaoList.get(position);
+            holder.content.setText(AppFilter.getHtml(g.getContent()));
 
-            holder.type.setText(gonggaoList.get(position).getType());
-            holder.extra.setText(gonggaoList.get(position).getTypeAll());
-            holder.likecount.setText(gonggaoList.get(position).getLikeCount());
+            holder.type.setText(g.getType());
+            holder.extra.setText(g.getTypeAll());
+            holder.likecount.setText(g.getLikeCount());
+
             //set background color
-            holder.content.setTextColor(holder.content.getResources().getColor(! isEven(position) ? R.color.white : R.color.black));
+            holder.content.setTextColor(holder.content.getResources().getColor(!isEven(position) ? R.color.white : R.color.black));
             holder.ib.setBackgroundResource(!isEven(position) ? R.drawable.ic_card_like : R.drawable.ic_card_like_grey);
+            //if (g.getFavorite() != null) {
+                if (g.getFavorite() != null && g.getFavorite().equals("0")) {
+                    holder.ib.setBackgroundResource(R.drawable.ic_card_liked);
+                }
+           // }
             holder.containerLayout.setBackgroundColor(!isEven(position) ?
                             holder.containerLayout.getResources().getColor(C.colors[position % 16]) :
                             holder.containerLayout.getResources().getColor(R.color.white));
@@ -135,7 +157,7 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             // load face image
             String imagePath = gonggaoList.get(position).getBgimage();
-            String url = C.web.bgimage + imagePath + ".jpg";
+            String url = C.web.thumb_image + imagePath + ".jpg";//thumb image path
 
             //url="http://10.0.2.2:8002/faces/default/l_25.jpg";
                 holder.image.setVisibility(gonggaoList.get(position).getBgimage().equals("null") ? View.GONE : View.VISIBLE);
@@ -223,6 +245,9 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
                 Bundle params = new Bundle();
             }
             if(v == ib) {
+                if (null != onRecyclerViewListener) {
+                    onRecyclerViewListener.onFavoriteClick(ib, getAdapterPosition());
+                }
                 Toast.makeText(v.getContext(), "ib", Toast.LENGTH_SHORT).show();
             }
             if (v == image) {

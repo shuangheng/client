@@ -12,6 +12,7 @@ import com.app.demos.list.MyList;
 import com.app.demos.list.RecyclerAdapter.SpeakRecyclerAdapter;
 import com.app.demos.list.bitmap_load_list.ImageLoader;
 import com.app.demos.list.bitmap_load_list.LoaderAdapter;
+import com.app.demos.model.FavoriteSpeak;
 import com.app.demos.model.Gonggao;
 import com.app.demos.sqlite.GonggaoSqlite;
 import com.app.demos.ui.UiActionBar;
@@ -19,6 +20,7 @@ import com.app.demos.ui.UiImageZoom;
 import com.app.demos.ui.UiSpeakComment;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -44,6 +46,8 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import static com.app.demos.util.Math_my.isEven;
 
 public class SpeakFragment extends Fragment implements  OnRefreshListener {
     private static final String TAG = "SpeakFragment";
@@ -126,6 +130,7 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
         moreView = activity.getLayoutInflater().inflate(R.layout.load_more, null);
         bt = (TextView) moreView.findViewById(R.id.load_more_tv);
         pg = (ProgressBar) moreView.findViewById(R.id.load_more_pg);
+        ib = (ImageButton) view.findViewById(R.id.tpl_list_speak_ib_like);
         handler = new Handler();
         //list.addFooterView(moreView);
         //list.setOnScrollListener(this);
@@ -142,16 +147,18 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
         speakRecyclerAdapter = new SpeakRecyclerAdapter(activity, ggList);
         speakRecyclerAdapter.setOnRecyclerViewListener(new SpeakRecyclerAdapter.OnRecyclerViewListener() {
             Bundle params = new Bundle();
+
             @Override
             public void onItemClick(int position) {
-                    params.putString("speakId", ggList.get(position).getId());
-                    params.putString("content", ggList.get(position).getContent());
-                    params.putString("type", ggList.get(position).getType());
-                    params.putString("commentcount", ggList.get(position).getCommentcount());
-                    params.putString("likeCount", ggList.get(position).getLikeCount());
-                    params.putString("bgImageUrl", ggList.get(position).getBgimage());
-                    params.putString("bgColor", "" + position);
-                    activity.overlay(UiSpeakComment.class, params);
+                params.putString("speakId", ggList.get(position).getId());
+                params.putString("content", ggList.get(position).getContent());
+                params.putString("type", ggList.get(position).getType());
+                params.putString("commentcount", ggList.get(position).getCommentcount());
+                params.putString("likeCount", ggList.get(position).getLikeCount());
+                params.putString("bgImageUrl", ggList.get(position).getBgimage());
+                params.putString("favorite", ggList.get(position).getFavorite());
+                params.putString("bgColor", "" + position);
+                activity.overlay(UiSpeakComment.class, params);
             }
 
             @Override
@@ -162,9 +169,41 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
 
             @Override
             public void onImageClick(int position) {
-                params.putString("bgImageUrl", ggList.get(position).getBgimage());
-                activity.overlay(UiImageZoom.class, params);
+                String imagePath = ggList.get(position).getBgimage();
+                String thumburl = C.web.thumb_image + imagePath + ".jpg";//thumb image path
+                UiImageZoom.actionStart(activity, C.web.bgimage + ggList.get(position).getBgimage() + ".jpg", thumburl);
+                //params.putString("bgImageUrl", ggList.get(position).getBgimage());
+                //activity.overlay(UiImageZoom.class, params);
                 //activity.overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);//动画效果
+            }
+
+            @Override
+            public void onFavoriteClick(View v, int position) {
+                SharedPreferences.Editor editor = activity.sharedPreferences_speak.edit();//获取编辑器
+                editor.putBoolean("isLatest_favorite", false);
+                editor.commit();//提交修改
+
+                Gonggao g = ggList.get(position);
+                if (g.getFavorite() != null && g.getFavorite().equals("0")) {
+                    v.setBackgroundResource(!isEven(position) ? R.drawable.ic_card_like : R.drawable.ic_card_like_grey);
+                    g.setFavorite("1");
+                    g.setLikecount(String.valueOf(Integer.parseInt(g.getLikeCount()) - 1));
+                    activity.gonggaoSqlite.updateGonggao(g);
+                    activity.favoriteSpeakSqlite.delete(FavoriteSpeak.COL_SPEAKID + "=?", new String[]{g.getId()});
+                    activity.getFavoriteSpeakDelete("10", g.getId());
+                } else {
+                    v.setBackgroundResource(R.drawable.ic_card_liked);
+                    g.setFavorite("0");
+                    g.setLikecount(String.valueOf(Integer.parseInt(g.getLikeCount()) + 1));
+                    activity.gonggaoSqlite.updateGonggao(g);
+
+                    ContentValues values = new ContentValues();
+                    values.put(FavoriteSpeak.COL_SPEAKID, g.getId());
+                    activity.favoriteSpeakSqlite.create(values);
+                    activity.getFavoriteSpeakCreate("10", g.getId());
+                }
+                speakRecyclerAdapter.notifyDataSetChanged();
+                Log.e(TAG, "onFavoriteClick");
             }
         });
         recyclerView.setAdapter(speakRecyclerAdapter);
@@ -174,7 +213,7 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
 
 
         //list = (ListView) view.findViewById(R.id.ui_gongga_list_view);
-        ib = (ImageButton) view.findViewById(R.id.tpl_list_speak_ib_like);
+
         
 
 		//setMyAdapter();
@@ -229,33 +268,40 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
             public void run() {
                 long loginTime = System.currentTimeMillis();
 
-                SharedPreferences sharedPreferences = activity.getSharedPreferences("fragment_speak", Context.MODE_PRIVATE);
-                Boolean isLatest_favorite = sharedPreferences.getBoolean("isLatest_favorite", false);
-                String lastTime = sharedPreferences.getString("time", "0");
-                long time0 = Long.valueOf(lastTime);
-                long jgtime = loginTime - time0;
+                checkFavoriteSpeak();
+                //String lastTime = sharedPreferences.getString("time", "0");
+                //long time0 = Long.valueOf(lastTime);
+                //long jgtime = loginTime - time0;
 
-                Log.w("LoginTime", "" + loginTime);
-                Log.w("Time0", "" + time0);
-                Log.w("jgtime", "" + jgtime);
-                if (jgtime > 30000) {
+                //Log.w("LoginTime", "" + loginTime);
+                //Log.w("Time0", "" + time0);
+                //Log.w("jgtime", "" + jgtime);
+                //if (jgtime > 30000) {
                     //从网路获取列表
                     swipeLayout.setRefreshing(true);
                     onRefresh();
 
-                    String nowTime = Long.toString(loginTime);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();//获取编辑器
-                    editor.putString("time", nowTime);
+                   // String nowTime = Long.toString(loginTime);
+                   // SharedPreferences.Editor editor = sharedPreferences.edit();//获取编辑器
+                    //editor.putString("time", nowTime);
                     //editor.putInt("sex", (int) loginTime);
-                    editor.commit();//提交修改
-                } else {
+                    //editor.commit();//提交修改
+                //} else {
                     //获取本地列表
                     //loadLocalData();
-                }
+                //}
 
             }
         });  		
     	
+    }
+
+    private void checkFavoriteSpeak() {
+        SharedPreferences sharedPreferences = activity.sharedPreferences_speak;
+        Boolean isLatest_favorite = sharedPreferences.getBoolean("isLatest_favorite", false);
+        if (!isLatest_favorite) {
+            activity.getFavoriteSpeakAll(String.valueOf(10));
+        }
     }
 
     @Override

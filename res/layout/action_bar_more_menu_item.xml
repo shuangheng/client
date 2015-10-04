@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:background="@drawable/item_background_holo_light"
+    android:paddingLeft="16.0dip"
+    android:paddingRight="16.0dip"
+    android:layout_width="fill_parent"
+    android:layout_height="48.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:textSize="16.0dip"
+        android:textColor="#ff282d32"
+        android:id="@+id/more_menu_item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true" />
+
+    <View
+        android:id="@+id/more_menu_item_line"
+        android:background="@color/divider"
+        android:layout_width="fill_parent"
+        android:layout_height="1.0px"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

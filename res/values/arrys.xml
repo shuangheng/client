@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--span style="font-size:16px;"-->
+    <resources>
+        <string-array name="spinnername">
+            <item>北京</item>
+            <item>上海 </item>
+            <item>广州</item>
+            <item>深圳</item>
+        </string-array>
+
+    <string-array name="email_suffix">
+        <item>qq</item>
+        <item>126</item>
+        <item>163</item>
+        <item>sohu</item>
+        <item>sina.com</item>
+        <item>aliyun</item>
+        <item>vip.163</item>
+        <item>vip.qq</item>
+        <item>vip.sina</item>
+        <item>gmail</item>
+        <item>hotmail</item>
+        <item>outlook</item>
+    </string-array>
+    </resources>

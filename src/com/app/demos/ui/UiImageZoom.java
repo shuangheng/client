@@ -51,6 +51,7 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
     private ImageLoader_my imageLoader;
     private ImageView imageReload;
     private String bgImageUrl;
+    private String thumbUrl;
     private ImageDownUtils downUtils;
     private IndexHandler handler;
     private FileCache fileCache;
@@ -62,11 +63,37 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
         context = this;
         setContentView(R.layout.ui_image_zoom);
         handler = new IndexHandler();
+        initView();
+        displayImage();
+        downUtils = new ImageDownUtils(this, handler,
+                "http://f.hiphotos.baidu.com/image/h%3D200/sign=5bd83cff0c7b020813c938e152d8f25f/37d3d539b6003af30f59c83a332ac65c1138b68c.jpg");
+
+    }
+
+    protected static Intent setIntent(Context paramContext, Class<?> paramClass, String url, String thumbUrl)
+    {
+        Intent localIntent = new Intent(paramContext, paramClass);
+        localIntent.putExtra("imageUrl", url);
+        localIntent.putExtra("thumbnailUrl", thumbUrl);
+        return localIntent;
+    }
+
+    public static void actionStart(Context paramContext, String url, String thumbUrl)
+    {
+        paramContext.startActivity(setIntent(paramContext, UiImageZoom.class, url, thumbUrl));
+        //((Activity)paramContext).overridePendingTransition(2130968581, 0);//anim
+    }
+
+    /**
+     * init view
+     */
+    private void initView() {
         container = findViewById(R.id.ui_image_container);
-        container.setOnClickListener(this);
         imageReload = (ImageView) findViewById(R.id.ui_image_reload);
-        imageReload.setOnClickListener(this);
         photoView = (PhotoView) findViewById(R.id.ui_image_photoview);
+        progressBar = (RoundProgressBar) findViewById(R.id.ui_image_progress_bar);
+        progressBar.setSize(90);//设置大小
+
         //photoView.setImageDrawable(getResources().getDrawable(R.drawable.l_25));
         photoView.setMaxScale(10.0F);
         photoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
@@ -75,20 +102,8 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
                 finish();
             }
         });
-        initRoundProgressBar();
-        displayImage();
-        downUtils = new ImageDownUtils(this, handler,
-                "http://f.hiphotos.baidu.com/image/h%3D200/sign=5bd83cff0c7b020813c938e152d8f25f/37d3d539b6003af30f59c83a332ac65c1138b68c.jpg");
-
-    }
-
-    /**
-     * init RoundProgressBar
-     */
-    private void initRoundProgressBar() {
-        progressBar = (RoundProgressBar) findViewById(R.id.ui_image_progress_bar);
-        //progressBar.setProgress(2);
-        progressBar.setSize(90);//设置大小
+        container.setOnClickListener(this);
+        imageReload.setOnClickListener(this);
     }
 
     /**
@@ -97,42 +112,35 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
     private void displayImage() {
         String url = "";
         imageLoader = new ImageLoader_my(context);
-        Bundle params = this.getIntent().getExtras();
-        if (params != null) {
-            bgImageUrl = params.getString("bgImageUrl");
+            //bgImageUrl = params.getString("bgImageUrl");
+            bgImageUrl = getIntent().getStringExtra("imageUrl");
+            thumbUrl = getIntent().getStringExtra("thumbnailUrl");
+        if (thumbUrl != null) {
+            imageLoader.DisplayImage(thumbUrl, photoView, true, false);
+        }
             if (bgImageUrl != null) {
                 Log.e("UiImageZoom >>url", bgImageUrl);
-                url = C.web.bgimage + bgImageUrl + ".jpg";
+                url = bgImageUrl;
                 progressBar.setVisibility(View.VISIBLE);
 
 
+            } else {
+                url = "http://f.hiphotos.baidu.com/image/h%3D200/sign=5bd83cff0c7b020813c938e152d8f25f/37d3d539b6003af30f59c83a332ac65c1138b68c.jpg";
             }
-        } else {
-            url = "http://f.hiphotos.baidu.com/image/h%3D200/sign=5bd83cff0c7b020813c938e152d8f25f/37d3d539b6003af30f59c83a332ac65c1138b68c.jpg";
-
-        }
         fileCache = new FileCache(context);
         saveFilePath = fileCache.getFile(url);
-        //imageLoader.DisplayImage(url, photoView, false);
     }
 
 
     @Override
     protected void onStart() {
         super.onStart();
-        /*
-        new Handler().postDelayed(new Runnable() {
-            public void run() {
-                downUtils.start();
-            }
-        }, 1000);
-        */
         new Thread(new Runnable() {
             @Override
             public void run() {
                 downUtils.start();
             }
-        }).start();
+        }).start();//load image
     }
 
     //private void getParam
@@ -151,7 +159,12 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
                 finish();
                 break;
             case R.id.ui_image_reload:
-                displayImage();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        downUtils.start();
+                    }
+                }).start();//load image
                 imageReload.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
                 break;

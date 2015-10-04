@@ -36,6 +36,145 @@ public class AppClient {
      * @return
      * @throws Exception
      */
+    public static String UserLoginIn(String empno,String passwd) throws Exception {
+        Log.e("UserLoginIn", "().start");
+        String content1 = null;
+        try {
+            HttpClient client = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(C.web.a);
+            List dataList = new ArrayList();
+            dataList.add(new BasicNameValuePair("method", "UserLoginIn"));
+            dataList.add(new BasicNameValuePair("empno", empno));
+            dataList.add(new BasicNameValuePair("emppwd", passwd));
+            httpPost.setEntity(new UrlEncodedFormEntity(dataList));// UrlEncodedFormEntity用于将集合转换为Entity对象
+            HttpResponse httpResponse = client.execute(httpPost);// 获取相应消息
+            HttpEntity entity = httpResponse.getEntity();// 获取消息内容
+            String content = EntityUtils.toString(entity); // 把消息对象直接转换为字符串
+            content1 = aDES(content);
+            Log.e("Http_test", content);
+            Log.e("Http_test_DES", content1);
+            return content1;
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return content1;
+    }
+
+    /**
+     * ok
+     * @param empno
+     * @return
+     * @throws Exception
+     */
+    public static String getVerificationCode(String empno,String mobile) throws Exception {
+        Log.e("UserLoginIn", "().start");
+        String content1 = null;
+        try {
+            HttpClient client = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(C.web.b);
+            List dataList = new ArrayList();
+            dataList.add(new BasicNameValuePair("method", "Sys_Get_YZCode"));
+            dataList.add(new BasicNameValuePair("EmpNo", empno));
+            //dataList.add(new BasicNameValuePair("Mobile", mobile));
+            httpPost.setEntity(new UrlEncodedFormEntity(dataList));// UrlEncodedFormEntity用于将集合转换为Entity对象
+            HttpResponse httpResponse = client.execute(httpPost);// 获取相应消息
+            HttpEntity entity = httpResponse.getEntity();// 获取消息内容
+            String content = EntityUtils.toString(entity); // 把消息对象直接转换为字符串
+            content1 = aDES(content);
+            Log.e("Http_test", content);
+            Log.e("Http_test_DES", content1);
+            return content1;
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return content1;
+    }
+
+    /**
+     * ok
+     * @param empno
+     * @return
+     * @throws Exception
+     */
+    public static String compareVerificationCode(String empno,String Random) throws Exception {
+        Log.e("UserLoginIn", "().start");
+        String content1 = null;
+        try {
+            HttpClient client = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(C.web.b);
+            List dataList = new ArrayList();
+            dataList.add(new BasicNameValuePair("method", "Sys_Compare_YZCode"));
+            dataList.add(new BasicNameValuePair("EmpNo", empno));
+            dataList.add(new BasicNameValuePair("Random", Random));
+            httpPost.setEntity(new UrlEncodedFormEntity(dataList));// UrlEncodedFormEntity用于将集合转换为Entity对象
+            HttpResponse httpResponse = client.execute(httpPost);// 获取相应消息
+            HttpEntity entity = httpResponse.getEntity();// 获取消息内容
+            String content = EntityUtils.toString(entity); // 把消息对象直接转换为字符串
+            content1 = aDES(content);
+            Log.e("Http_test", content);
+            Log.e("Http_test_DES", content1);
+            return content1;
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return content1;
+    }
+
+    /**
+     * ok
+     * @param empno
+     * @return
+     * @throws Exception
+     */
+    public static String getUserShortCutNew(String empno) throws Exception {
+        Log.e("getUserShortCutNew()", "().start");
+        String content1 = null;
+        try {
+            HttpClient client = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(C.web.b);
+            List dataList = new ArrayList();
+            dataList.add(new BasicNameValuePair("method", "Sys_Get_UserShortCutNew"));
+            dataList.add(new BasicNameValuePair("empno", empno));
+            dataList.add(new BasicNameValuePair("VersionType", "A"));
+            dataList.add(new BasicNameValuePair("AppVersion", "4.4.2-1035858"));
+
+            httpPost.setEntity(new UrlEncodedFormEntity(dataList));// UrlEncodedFormEntity用于将集合转换为Entity对象
+
+            HttpResponse httpResponse = client.execute(httpPost);// 获取相应消息
+
+            HttpEntity entity = httpResponse.getEntity();// 获取消息内容
+
+            String content = EntityUtils.toString(entity); // 把消息对象直接转换为字符串
+            content1 = aDES(content);
+            Log.e("Http_test", content);
+            Log.e("Http_test_DES", content1);
+            //showTextView.setText(content);
+            return content1;
+            //return decode(content.getBytes());
+
+        } catch (ClientProtocolException e) {
+
+            e.printStackTrace();
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }
+
+        return content1;
+    }
+
+    /**
+     * ok
+     * @param empno
+     * @return
+     * @throws Exception
+     */
     public static String myzsfDormInfoPost(String empno) throws Exception {
         Log.e("myzsfDormInfoPost()", "().start");
         String content1 = null;

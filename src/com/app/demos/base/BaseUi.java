@@ -16,6 +16,7 @@ import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -97,9 +98,16 @@ public class BaseUi extends ActionBarActivity {
 	// util method
 
 	public void toast (String msg) {
-		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+		Toast toast = new Toast(this);
+		toast = Toast.makeText(this, msg, Toast.LENGTH_SHORT);
+		toast.setGravity(Gravity.CENTER, 0, 0);//显示位置
+		toast.show();
 	}
 
+	/**
+	 * don't finish this Activity
+	 * @param classObj
+	 */
 	public void overlay (Class<?> classObj) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
@@ -107,6 +115,10 @@ public class BaseUi extends ActionBarActivity {
         startActivity(intent);
 	}
 
+	/**
+	 * don't finish this Activity
+	 * @param classObj
+	 */
 	public void overlay (Class<?> classObj, Bundle params) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
@@ -115,6 +127,10 @@ public class BaseUi extends ActionBarActivity {
         startActivity(intent);
 	}
 
+	/**
+	 * finish this Activity
+	 * @param classObj
+	 */
 	public void forward (Class<?> classObj) {
 		Intent intent = new Intent();
 		intent.setClass(this, classObj);
@@ -123,6 +139,10 @@ public class BaseUi extends ActionBarActivity {
 		this.finish();
 	}
 
+	/**
+	 * finish this Activity
+	 * @param classObj
+	 */
 	public void forward (Class<?> classObj, Bundle params) {
 		Intent intent = new Intent();
 		intent.setClass(this, classObj);
@@ -294,7 +314,7 @@ public class BaseUi extends ActionBarActivity {
 		}, 0);
 	}
 
-public void onTaskComplete (int taskId, BaseMessage message) {
+	public void onTaskComplete (int taskId, BaseMessage message) {
 
 	}
 

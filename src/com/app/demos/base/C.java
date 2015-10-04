@@ -41,6 +41,8 @@ public final class C {
 		public static final String index			= "/index/index";
 		public static final String register			= "/index/register";
 		public static final String login			= "/index/login";
+		public static final String forgotPwd 		= "/index/forgotPwd";
+		public static final String sendMail = "/email/sendMail";
 		public static final String logout			= "/index/logout";
 		public static final String faceView 		= "/image/faceView";
 		public static final String faceList 		= "/image/faceList";
@@ -60,7 +62,12 @@ public final class C {
 		public static final String newsList			= "/news/updateNews";
         public static final String find             = "/find/findList";
         public static final String find_release     = "/find/findCreate";
-    }
+		public static final String favorite_speak	= "/favorite/favoriteList";
+		public static final String favorite_speak_count	= "/favorite/favoriteCount";
+		public static final String favorite_speak_create	= "/favorite/favoriteCreate";
+		public static final String favorite_speak_delete	= "/favorite/favoriteDelete";
+
+	}
 	
 	public static final class task {
 		public static final int index				= 1001;
@@ -88,10 +95,16 @@ public final class C {
         public static final int find                = 1023;
 		public static final int find_more			= 1024;
 		public static final int find_release		= 1025;
+		public static final int favorite_speak		= 1026;
+		public static final int favorite_speak_count		= 1027;
+		public static final int favorite_speak_create		= 1028;
+		public static final int favorite_speak_delete		= 1029;
+		public static final int forgotPwd 			= 1030;
+		public static final int sendMail 			= 1031;
 	}
 	
 	public static final class err {
-		public static final String network			= "网络错误";
+		public static final String network			= "网络异常！请稍后重试";
 		public static final String message			= "消息错误";
 		public static final String jsonFormat		= "消息格式错误";
 	}
@@ -125,6 +138,7 @@ public final class C {
 		public static final String index			= base + "/index.php";
 		public static final String gomap			= base + "/gomap.php";
 		public static final String bgimage			= base + "/faces/default/l_";
+		public static final String thumb_image		= base + "/thumb.php?filename=l_";
 	}
 
 	int bgImage_s[] = {R.drawable.s_1,

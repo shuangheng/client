@@ -8,11 +8,11 @@ import com.app.demos.base.BaseModel;
 public class FavoriteSpeak extends BaseModel {
 
     // model columns
-    public final static String COL_CUSTOMERID = "customerId";
+    public final static String COL_CUSTOMERID = "customerid";
     public final static String COL_SPEAKID = "speakId";
     public final static String COL_UPTIME = "uptime";
 
-    private String customerId;
+    private String customerid;
     private String uptime;
     private String speakId;
 
@@ -21,12 +21,12 @@ public class FavoriteSpeak extends BaseModel {
 
     public FavoriteSpeak(String customerId, String speakId, String uptime) {
         this.speakId = speakId;
-        this.customerId = customerId;
+        this.customerid = customerId;
         this.uptime = uptime;
     }
 
     public String getCustomerId() {
-        return customerId;
+        return customerid;
     }
 
     public String getUptime() {
@@ -38,7 +38,7 @@ public class FavoriteSpeak extends BaseModel {
     }
 
     public void setCustomerId(String customerId) {
-        this.customerId = customerId;
+        this.customerid = customerId;
     }
 
     public void setUptime(String uptime) {

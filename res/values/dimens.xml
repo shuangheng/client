@@ -13,4 +13,11 @@
     <dimen name="tabsHeight">40dp</dimen>
     <dimen name="default_horizontal_margin">16.0dip</dimen>
     <dimen name="list_speak_footer_offset">55.0dip</dimen>
+    <dimen name="common_edit_text_height">52.0dip</dimen>
+    <dimen name="single_button_text_size">17.0dip</dimen>
+    <dimen name="single_button_height">47.0dip</dimen>
+    <dimen name="action_bar_title_left_padding">10.0dip</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="common_margin">16dip</dimen>
 </resources>

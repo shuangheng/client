@@ -183,6 +183,7 @@ public class FindFragment extends Fragment implements  OnRefreshListener {
         super.onStart();
         new Handler().post(new Runnable() {
             public void run() {
+                /*
                 long loginTime = System.currentTimeMillis();
 
                 SharedPreferences sharedPreferences = activity.getSharedPreferences("fragment1", 0);
@@ -206,7 +207,9 @@ public class FindFragment extends Fragment implements  OnRefreshListener {
                 }else{
                     //获取本地列表
                     //loadLocalData();
-                }
+                }*/
+                swipeLayout.setRefreshing(true);
+                onRefresh();
 
             }
         });

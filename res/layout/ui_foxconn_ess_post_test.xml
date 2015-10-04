@@ -9,6 +9,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <ImageView
+            android:id="@+id/ui_foxconn_ess_post_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/s_6"/>
+
         <TextView
             android:id="@+id/ui_foxconn_ess_post_text"
             android:layout_width="match_parent"
@@ -17,10 +23,19 @@
         <EditText
             android:id="@+id/ui_foxconn_ess_post_edit"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"/>
 
         <Button
+            android:id="@+id/ui_foxconn_ess_post_btn0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <Button
             android:id="@+id/ui_foxconn_ess_post_btn1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/ui_foxconn_ess_post_btn15"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <Button

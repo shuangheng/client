@@ -170,25 +170,17 @@ public class UiGongGao extends BaseUiAuth implements OnScrollListener,OnClickLis
 	//right 下拉菜单 初始化
 	@SuppressWarnings("deprecation")
 	public void initmPopupWindowView() {  
-		  
-        // // 获取自定义布局文件pop.xml的视图  
-        pupView = getLayoutInflater().inflate(R.layout.pup_gg_right, null);  
+        pupView = getLayoutInflater().inflate(R.layout.pup_gg_right, null);  //获取自定义布局文件pop.xml的视图
         // 创建PopupWindow实例,200,150分别是宽度和高度  
         popupwindow = new PopupWindow(pupView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);  
-        // 设置动画效果 [R.style.AnimationFade 是自己事先定义好的]  
-        popupwindow.setAnimationStyle(R.style.AnimationFade); 
-     // 这个是为了点击“返回Back”也能使其消失，并且并不会影响你的背景
-        popupwindow.setBackgroundDrawable(new BitmapDrawable());  
+        popupwindow.setAnimationStyle(R.style.AnimationFade); // 设置动画效果 [R.style.AnimationFade 是自己事先定义好的]
+        popupwindow.setBackgroundDrawable(new BitmapDrawable());// 这个是为了点击“返回Back”也能使其消失，并且并不会影响你的背景
         
-     // 使其聚集  下面3条是为了使 点击popuWindow 以外的区域能够关闭它
+     	// 使其聚集  下面3条是为了使 点击popuWindow 以外的区域能够关闭它
         popupwindow.setFocusable(true);  
-        // 设置允许在外点击消失  
-        popupwindow.setOutsideTouchable(true);  
-        //刷新状态（必须刷新否则无效）  
-        popupwindow.update(); 
-        // 自定义view添加触摸事件  
-        
-        pupView.setOnTouchListener(this);  
+        popupwindow.setOutsideTouchable(true);// 设置允许在外点击消失
+        popupwindow.update();//刷新状态（必须刷新否则无效）
+        pupView.setOnTouchListener(this); // 自定义view添加触摸事件
   
         /** 在这里可以实现自定义视图的功能 */  
         Button pup2 = (Button) pupView.findViewById(R.id.gg_right_pup2);  
@@ -544,9 +536,9 @@ public class UiGongGao extends BaseUiAuth implements OnScrollListener,OnClickLis
 	@Override
 	public void onStop(){
 		super.onStop();
-		if (popupwindow != null && popupwindow.isShowing()) {  
-            popupwindow.dismiss();  
-            popupwindow = null;  
-        }  
+		if (popupwindow != null && popupwindow.isShowing()) {
+            popupwindow.dismiss();
+            popupwindow = null;
+        }
 	}
 }

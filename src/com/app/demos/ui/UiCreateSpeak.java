@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.app.demos.R;
+import com.app.demos.layout.swipebacklayout.app.SwipeBackActivity;
 import com.app.demos.ui.fragment.Fragment2;
 import com.app.demos.ui.fragment.Fragment3;
 import com.app.demos.ui.fragment.FragmentNull;
@@ -20,7 +21,7 @@ import com.app.demos.ui.fragment.FragmentNull;
 /**
  * Created by tom on 15-6-29.
  */
-public class UiCreateSpeak extends FragmentActivity implements View.OnClickListener {
+public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickListener {
     private EditText editContent;
     private ImageView ivBg;
     private ImageView ivRelease;

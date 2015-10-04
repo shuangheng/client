@@ -17,7 +17,8 @@ public class Gonggao extends BaseModel {
     public final static String COL_USER = "user";
     public final static String COL_TYPE = "type";
     public final static String COL_COMMENTCOUNT = "commentcount";
-	
+    public final static String COL_FAVORITE = "favorite";
+
 	private String id;
     private String face;
     private String bgimage;
@@ -30,6 +31,7 @@ public class Gonggao extends BaseModel {
     private String likecount;
     private String commentcount;
     private String type;
+	private String favorite;
 
     public Gonggao () {}
 	
@@ -131,7 +133,16 @@ public class Gonggao extends BaseModel {
         this.commentcount = commentcount;
     }
 
-    public String getBgimage() {
+	public String getFavorite() {
+		return favorite;
+	}
+
+	public void setFavorite(String favorite) {
+		this.favorite = favorite;
+	}
+
+
+	public String getBgimage() {
         return this.bgimage;
     }
 

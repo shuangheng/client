@@ -115,7 +115,7 @@
                 android:layout_centerVertical="true"
                 android:background="@drawable/xml_login_btn"
                 android:focusable="true"
-                android:text="@string/login_submit" />
+                android:text="@string/login" />
         </RelativeLayout>
         
     </LinearLayout>

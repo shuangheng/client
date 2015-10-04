@@ -17,7 +17,7 @@
     <color name="divider3">#FFFFFF</color>
     <color name="loading">#99000000</color>
     <color name="lightwhite">#ddd</color>
-    <color name="white0">#ffffffff</color>
+    <color name="white0">#f7f7f7</color>
     <color name="holo_blue">#ff0a91ff</color>
     <color name="background_tab_pressed">#6633B5E5</color>
     <color name="indigo_500">#3f51b5</color>
@@ -31,5 +31,16 @@
     <color name="ui_dark">#20000000</color>
     <color name="ui_green">#ff98222b</color>
     <color name="secret_card_view_linkify_text_1">#ff4182b4</color>
+    <color name="green">#ff1abc9c</color>
+    <color name="protocol_link">#ff12b7b3</color>
+    <color name="tou_ming">#b0000000</color>
+    <color name="transparent">@android:color/transparent</color>
+    <color name="login_edit_text">#009688</color>
+
+    <color name="androidColorA">#33B5E5</color>
+    <color name="androidColorB">#AA66CC</color>
+    <color name="androidColorC">#99CC00</color>
+    <color name="androidColorD">#FFBB33</color>
+    <color name="androidColorE">#FF4444</color>
 
 </resources>

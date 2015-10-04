@@ -1,5 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:titleTextStyle">@style/ActionBarTitleTextStyle</item>
+        <item name="android:subtitleTextStyle">@style/ActionBarSubTitleTextStyle</item>
+        <item name="android:indeterminateProgressStyle">@style/ActionBarProgress</item>
+    </style>
+    <style name="ActionBarProgress" parent="@android:style/Widget.Holo.Light.ProgressBar">
+        <item name="android:maxWidth">40.0dip</item>
+        <item name="android:maxHeight">30.0dip</item>
+        <item name="android:indeterminateDrawable">@drawable/progress_medium_holo</item>
+        <item name="android:minWidth">40.0dip</item>
+        <item name="android:minHeight">30.0dip</item>
+    </style>
+    <style name="ActionBarTitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textSize">@dimen/action_bar_title_text_size</item>
+        <item name="android:textColor">@color/action_bar_title</item>
+    </style>
+    <style name="ActionBarSubTitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Subtitle">
+        <item name="android:textSize">@dimen/action_bar_subtitle_text_size</item>
+        <item name="android:textColor">@color/action_bar_sub_title</item>
+    </style>
+    <style name="MimiActionBar" />
+    <style name="MimiActionBar.Menu" parent="@style/MimiActionBar">
+        <item name="android:background">@drawable/dialog_full_holo_light</item>
+    </style>
+    <style name="ActionButton" parent="@android:style/Widget.Holo.Light.ActionButton">
+        <item name="android:paddingLeft">8.0dip</item>
+        <item name="android:paddingRight">8.0dip</item>
+        <item name="android:minWidth">40.0dip</item>
+    </style>
 
     <style name="com.app.demos.theme.login" parent="android:Theme.Light">
         <item name="android:windowNoTitle">true</item>
@@ -14,63 +44,121 @@
         <!-- <item name="android:windowIsFloating">true</item> -->
         <!-- <item name="android:windowIsTranslucent">false</item> -->
         <item name="android:windowNoTitle">true</item>
-        <item name="android:windowBackground">@null</item>
+        <item name="android:windowBackground">@drawable/progressing_dialog_bg</item>
+        <item name="android:backgroundDimAmount">0.2</item>
         <!-- <item name="android:backgroundDimEnabled">false</item> -->
     </style>
-    
+
+    <style name="SwipeBackLayout">
+        <item name="edge_size">50dip</item>
+        <item name="shadow_left">@drawable/shadow_left</item>
+        <item name="shadow_right">@drawable/shadow_right</item>
+        <item name="shadow_bottom">@drawable/shadow_bottom</item>
+    </style>
+
     <style name="AnimationFade">
         <!-- PopupWindow弹出的动画效果 -->
         <item name="android:windowEnterAnimation">@anim/inuptodown</item>
         <item name="android:windowExitAnimation">@anim/outdowntoup</item>
     </style>
-    
+
     <!-- 自定义进度条样式 -->
-    <style name="myProgress">
+    <style name="myProgress" >
         <item name="android:indeterminateDrawable">@drawable/my_progressbar</item>
-        <item name="android:minWidth">320dip</item>
-        <item name="android:maxWidth">320dip</item>
-        <item name="android:minHeight">20dip</item>
-        <item name="android:maxHeight">20dip</item>
     </style>
 
     <!-- 自定义toolbar -->
-        <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- activity tou ming -->
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- toolbar bg（actionbar）颜色
 
-            <!-- toolbar（actionbar）颜色 -->
-            <item name="colorPrimary">#4876FF</item>
-            <!-- 状态栏颜色 -->
-            <item name="colorPrimaryDark">#3A5FCD</item>
-            <!-- 窗口的背景颜色 -->
-            <item name="android:windowBackground">@android:color/white</item>
-            <!-- SearchView -->
-            <item name="searchViewStyle">@style/MySearchViewStyle</item>
-        </style>
+        colorPrimaryDark
 
-        <style name="AppTheme" parent="@style/AppBaseTheme" />
+            状态栏背景色。
+
+            在 style 的属性中设置。
+
+        textColorPrimary
+
+            App bar 上的标题与更多菜单中的文字颜色。
+
+            在 style 的属性中设置。
+
+        App bar 的背景色
+
+            Actionbar 的背景色设定在 style 中的 colorPrimary。
+
+            Toolbar 的背景色在layout文件中设置background属性。
+
+        colorAccent
+
+            各控制元件(如：check box、switch 或是 radoi) 被勾选 (checked) 或是选定 (selected) 的颜色。
+
+            在 style 的属性中设置。
+
+        colorControlNormal  (API >= 21)
+
+            各控制元件的预设颜色。
+
+            在 style 的属性中设置
+
+        windowBackground
+
+            App 的背景色。
+
+            在 style 的属性中设置
+
+        navigationBarColor
+
+            导航栏的背景色，但只能用在 API Level 21 (Android 5) 以上的版本
+
+            在 style 的属性中设置
+-->
+        <item name="colorPrimary">#4876FF</item>
+        <!-- toolbar text（actionbar）颜色 -->
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <!-- 状态栏颜色 -->
+        <item name="colorPrimaryDark">#3A5FCD</item>
+        <!-- 窗口的背景颜色 -->
+        <item name="android:windowBackground">@android:color/white</item>
+        <!-- SearchView -->
+        <item name="searchViewStyle">@style/MySearchViewStyle</item>
+    </style>
+
+    <style name="AppThemeNoActionBar" parent="@style/AppBaseTheme" />
 
     <!-- 自定义SearchView -->
-        <style name="MySearchViewStyle" parent="Widget.AppCompat.SearchView">
-            <!--
-        Background for the search query section (e.g. EditText)
-        <item name="queryBackground">...</item>
-        Background for the actions section (e.g. voice, submit)
-        <item name="submitBackground">...</item>
-        Close button icon
-        <item name="closeIcon">...</item>
-        Search button icon
-        <item name="searchIcon">...</item>
-        Go/commit button icon
-        <item name="goIcon">...</item>
-        Voice search button icon
-        <item name="voiceIcon">...</item>
-        Commit icon shown in the query suggestion row
-        <item name="commitIcon">...</item>
-        Layout for query suggestion rows
-        <item name="suggestionRowLayout">...</item>
-            -->
+    <style name="MySearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <!--
+    Background for the search query section (e.g. EditText)
+    <item name="queryBackground">...</item>
+    Background for the actions section (e.g. voice, submit)
+    <item name="submitBackground">...</item>
+    Close button icon
+    <item name="closeIcon">...</item>
+    Search button icon
+    <item name="searchIcon">...</item>
+    Go/commit button icon
+    <item name="goIcon">...</item>
+    Voice search button icon
+    <item name="voiceIcon">...</item>
+    Commit icon shown in the query suggestion row
+    <item name="commitIcon">...</item>
+    Layout for query suggestion rows
+    <item name="suggestionRowLayout">...</item>
+        -->
 
-        </style>
+    </style>
+    <style name="AppThemeSwipeBack" parent="@style/Theme.AppCompat.Light"></style>
+
+    <style name="AppThemeSwipeBack.Transparent">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
 
 
-
+    <dimen name="action_bar_subtitle_text_size">13.0dip</dimen>
+    <dimen name="action_bar_title_text_size">17.0dip</dimen>
+    <color name="action_bar_sub_title">#ff8c9196</color>
+    <color name="action_bar_title">#ff282d32</color>
 </resources>

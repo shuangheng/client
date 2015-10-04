@@ -1,8 +1,0 @@
-/home/tom/project/client/build/intermediates/classes/debug
-/home/tom/project/client/build/intermediates/pre-dexed/debug/support-annotations-22.0.0-50624ab4729bc91f47bf3ad3a09fb4a73d69b496.jar
-/home/tom/project/client/build/intermediates/pre-dexed/debug/classes-560fa90d04a8c615884fe63a695d32065465747d.jar
-/home/tom/project/client/build/intermediates/pre-dexed/debug/nineoldandroids-2.4.0-871ccb4094cbd254e55f5efeb582e9ad4f5d902a.jar
-/home/tom/project/client/build/intermediates/pre-dexed/debug/internal_impl-22.0.0-3734fc897754b33a720ce19f5f8497948f5340a9.jar
-/home/tom/project/client/build/intermediates/pre-dexed/debug/classes-947a035613266cafe0a58a350784284ae6353205.jar
-/home/tom/project/client/build/intermediates/pre-dexed/debug/classes-d63265ec64334fff10f7a7cc26423a9b355e55b9.jar
-/home/tom/project/client/build/intermediates/pre-dexed/debug/classes-94144c206ab78cde04d06edfb682c3a0d29e9024.jar

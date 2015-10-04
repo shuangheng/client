@@ -144,7 +144,7 @@ public class FindRecycAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         public Drawable getDrawable(String source) {
                             Drawable drawable=null;
                             int rId=Integer.parseInt(source);
-                            drawable=mContext.getResources().getDrawable(rId);
+                            drawable = mContext.getResources().getDrawable(rId);
                             drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
                             return drawable;
                         }

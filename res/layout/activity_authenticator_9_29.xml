@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.app.demos.ui.authenticator.UiAuthenticator"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize">
+        <LinearLayout
+            android:orientation="vertical"
+            android:paddingLeft="20.0dip"
+            android:paddingRight="20.0dip"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <com.app.demos.layout.materialEditText.MaterialEditText
+                android:id="@+id/edit_empno"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/empno"
+                android:maxLength="9"
+                android:singleLine="true"
+                android:layout_marginTop="20dp"
+                app:met_floatingLabel="highlight"
+                app:met_clearButton="true"
+                app:met_maxCharacters="8"
+                app:met_textColor="@color/text_color" />
+
+            <com.app.demos.layout.materialEditText.MaterialEditText
+                android:id="@+id/edit_emppwd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/edit_hint_password"
+                android:maxLength="21"
+                android:inputType="textPassword"
+                app:met_floatingLabel="highlight"
+                app:met_clearButton="true"
+                app:met_minCharacters="4"
+                app:met_maxCharacters="20"
+                app:met_textColor="@color/text_color"
+                app:met_textColorHint="#33ff0000" />
+
+            <com.app.demos.layout.materialEditText.MaterialEditTextComplete
+                android:id="@+id/edit_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/email"
+                android:maxLength="30"
+                android:inputType="textEmailAddress"
+                app:met_floatingLabel="highlight"
+                app:met_clearButton="true"
+                app:met_textColor="@color/text_color"
+                app:met_helperText="@string/email_use" />
+            <Button
+                android:id="@+id/auth_login_button"
+                android:textSize="@dimen/single_button_text_size"
+                android:textColor="@android:color/white"
+                android:background="@drawable/dark_btn_bg"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/single_button_height"
+                android:onClick="clickOnButton"
+                android:layout_marginTop="16.0dip" />
+            <TextView
+                android:id="@+id/protocol_link"
+                android:textSize="14.5dip"
+                android:layout_gravity="start"
+                android:padding="16.0dip"
+                android:clickable="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/protocol_link"
+                android:onClick="clickOnProtocol" />
+            <TextView
+                android:id="@+id/forgot_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14.5dip"
+                android:textColor="@android:color/darker_gray"
+                android:layout_gravity="end"
+                android:padding="16.0dip"
+                android:clickable="true"
+                android:text="@string/forgot_password"
+                android:onClick="clickOnForgotPassword" />
+            <TextView
+                android:id="@+id/protocol_text"
+                android:textSize="14.5dip"
+                android:textColor="@android:color/darker_gray"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="100.0dip"
+                android:layout_marginTop="16.0dip"
+                android:visibility="gone"
+                android:text="@string/protocol_text"/>
+        </LinearLayout>
+    </ScrollView>
+    <include layout="@layout/toolbar" />
+</RelativeLayout>

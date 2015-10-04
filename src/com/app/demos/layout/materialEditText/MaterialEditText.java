@@ -398,7 +398,7 @@ public class MaterialEditText extends EditText {
     iconRightBitmaps = generateIconBitmaps(typedArray.getResourceId(R.styleable.MaterialEditText_met_iconRight, -1));
     showClearButton = typedArray.getBoolean(R.styleable.MaterialEditText_met_clearButton, false);
     clearButtonBitmaps = generateIconBitmaps(R.drawable.met_ic_clear);
-    closeButtonBitmaps = generateIconBitmaps(R.drawable.met_ic_close);
+    //closeButtonBitmaps = generateIconBitmaps(R.drawable.met_ic_close);
     iconPadding = typedArray.getDimensionPixelSize(R.styleable.MaterialEditText_met_iconPadding, getPixel(16));
     floatingLabelAlwaysShown = typedArray.getBoolean(R.styleable.MaterialEditText_met_floatingLabelAlwaysShown, false);
     helperTextAlwaysShown = typedArray.getBoolean(R.styleable.MaterialEditText_met_helperTextAlwaysShown, false);
@@ -1200,6 +1200,8 @@ public class MaterialEditText extends EditText {
     }
   }
 
+
+
   private ObjectAnimator getLabelAnimator() {
     if (labelAnimator == null) {
       labelAnimator = ObjectAnimator.ofFloat(this, "floatingLabelFraction", 0f, 1f);
@@ -1255,10 +1257,12 @@ public class MaterialEditText extends EditText {
       } else {
         buttonLeft = endX - iconOuterWidth;
       }
-      Bitmap clearButtonBitmap = TextUtils.isEmpty(getText()) ? closeButtonBitmaps[0] : clearButtonBitmaps[0];
-      buttonLeft += (iconOuterWidth - clearButtonBitmap.getWidth()) / 2;
-      int iconTop = lineStartY + bottomSpacing - iconOuterHeight + (iconOuterHeight - clearButtonBitmap.getHeight()) / 2;
-      canvas.drawBitmap(clearButtonBitmap, buttonLeft, iconTop, paint);
+      Bitmap clearButtonBitmap = TextUtils.isEmpty(getText()) ? null : clearButtonBitmaps[0];
+      if (clearButtonBitmap != null) {
+        buttonLeft += (iconOuterWidth - clearButtonBitmap.getWidth()) / 2;
+        int iconTop = lineStartY + bottomSpacing - iconOuterHeight + (iconOuterHeight - clearButtonBitmap.getHeight()) / 2;
+        canvas.drawBitmap(clearButtonBitmap, buttonLeft, iconTop, paint);
+      }
     }
 
     // draw the underline

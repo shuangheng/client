@@ -37,16 +37,13 @@ import com.app.demos.util.BaseDevice;
 
 public class ImageLoader_my {
 
-    Bundle bundle = new Bundle();
-    Handler handler = new Handler();
-    Message msg = new Message();
-
     private MemoryCache memoryCache = new MemoryCache();
     private AbstractFileCache fileCache;
     private Map<ImageView, String> imageViews = Collections
             .synchronizedMap(new WeakHashMap<ImageView, String>());
     // 线程池
     private ExecutorService executorService;
+    private String TAG = ImageLoader_my.class.getName();
 
     public ImageLoader_my(Context context) {
         fileCache = new FileCache(context);
@@ -54,49 +51,45 @@ public class ImageLoader_my {
     }
 
     // 最主要的方法
-    public void DisplayImage(String url, ImageView imageView, boolean isLoadOnlyFromCache) {
+    public void DisplayImage(String url, ImageView imageView, boolean isLoadOnlyFromCache, boolean showThumb) {
         imageViews.put(imageView, url);
         // 先从内存缓存中查找
 
         Bitmap bitmap = memoryCache.get(url);
         if (bitmap != null) {
             imageView.setImageBitmap(bitmap);
-            //Message message = new Message();
-            //message.what = AppFileDownUtils.MSG_DOWNING;
-            //new Handler().sendMessage(message);
         } else if (!isLoadOnlyFromCache){
             // 若没有的话则开启新线程加载图片
-            queuePhoto(url, imageView);
+            queuePhoto(url, imageView, showThumb);
         }
     }
 
 
-    private void queuePhoto(String url, ImageView imageView) {
-        PhotoToLoad p = new PhotoToLoad(url, imageView);
+    private void queuePhoto(String url, ImageView imageView, boolean showThumb) {
+        PhotoToLoad p = new PhotoToLoad(url, imageView, showThumb);
         executorService.submit(new PhotosLoader(p));
     }
 
-    private Bitmap getBitmap(Context context, String url) {
+    private Bitmap getBitmap(Context context, String url, boolean showThumb) {
         File f = fileCache.getFile(url);
-
-        int fileSize = -1;
-        int downFileSize = 0;
-        boolean result = false;
-        int progress = 0;
-
-
         // 先从文件缓存中查找是否有
         Bitmap b = null;
         if (f != null && f.exists()){
-            try {
-                InputStream is = new FileInputStream(f);
-                b = BitmapFactory.decodeStream(is);
-                return b;
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                return null;
+            if (showThumb) {
+                b = decodeFile(f);//get thumb image
+                if (b != null) {
+                    return b;
+                }
+            } else {
+                try {
+                    InputStream is = new FileInputStream(f);
+                    b = BitmapFactory.decodeStream(is);//get normal image
+                    return b;
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    return null;
+                }
             }
-
         }
 
         // 最后从指定的url中下载图片
@@ -106,56 +99,22 @@ public class ImageLoader_my {
             HttpURLConnection conn = (HttpURLConnection) imageUrl.openConnection();
             conn.setConnectTimeout(10000);//毫秒(ms)  1000ms = 1s
             conn.setReadTimeout(10000);
-            //conn.setInstanceFollowRedirects(true);//设置这个连接是否遵循重定向。
-
-
+            conn.setInstanceFollowRedirects(true);//设置这个连接是否遵循重定向。
             conn.setRequestMethod("GET");
-            conn.setDoInput(true);
-            conn.connect();
-            //InputStream is = conn.getInputStream();
-            //OutputStream os = new FileOutputStream(f);
-            Log.e("size", "filddddeSize");
-            if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                fileSize = conn.getContentLength();
-                Log.e("size", ""+fileSize);
-                InputStream is = conn.getInputStream();
-                FileOutputStream fos = new FileOutputStream(f);
-                byte[] buffer = new byte[1024];
-                int i = 0;
-                int tempProgress = -1;
-                while ((i = is.read(buffer)) != -1) {
-                    downFileSize = downFileSize + i;
-                    // 下载进度
-                    progress = (int) (downFileSize * 100.0 / fileSize);
-                    fos.write(buffer, 0, i);
-
-                    synchronized (this) {
-                        if (downFileSize == fileSize) {
-                            // 下载完成
-                            //msg.what = BaseTask.IMAGE_LOAD_OK;
-                            //handler.sendMessage(msg);
-                        } else if (tempProgress != progress) {
-                            // 下载进度发生改变，则发送Message
-                            tempProgress = progress;
-                            //bundle.putInt("progress", progress);
-                            //msg.what = BaseTask.IMAGE_LOADING;
-                            //msg.setData(bundle);
-                            //handler.sendMessage(msg);
-                        }
-                    }
-                }
-                fos.flush();
-                fos.close();
-            }
-                //保存图片
-            //saveImage(context, is, f);
-            //CopyStream(is, os);
-            //os.close();
+            InputStream is = conn.getInputStream();
+            OutputStream os = new FileOutputStream(f);
+            CopyStream(is, os);//save image
+            os.close();
             //读取图片
-            bitmap = BitmapFactory.decodeStream(new FileInputStream(f));
-            return bitmap;
+            if (showThumb) {
+                bitmap = decodeFile(f);//get thumb image
+                return bitmap;
+            } else {
+                bitmap = BitmapFactory.decodeStream(new FileInputStream(f));//get normal image
+                return bitmap;
+            }
         } catch (Exception ex) {
-            Log.e("", "getBitmap catch Exception...\nmessage = " + ex.getMessage());
+            Log.e(TAG, "getBitmap catch Exception...\nmessage = " + ex.getMessage());
             //msg.what = BaseTask.IMAGE_LOAD_FAIL;
             //handler.sendMessage(msg);
             return null;
@@ -196,10 +155,12 @@ public class ImageLoader_my {
     private class PhotoToLoad {
         public String url;
         public ImageView imageView;
+        public boolean showThumb;
 
-        public PhotoToLoad(String u, ImageView i) {
+        public PhotoToLoad(String u, ImageView i,boolean b) {
             url = u;
             imageView = i;
+            showThumb = b;
         }
     }
 
@@ -214,7 +175,7 @@ public class ImageLoader_my {
         public void run() {
             if (imageViewReused(photoToLoad))
                 return;
-            Bitmap bmp = getBitmap(photoToLoad.imageView.getContext(), photoToLoad.url);
+            Bitmap bmp = getBitmap(photoToLoad.imageView.getContext(), photoToLoad.url, photoToLoad.showThumb);
             memoryCache.put(photoToLoad.url, bmp);
             if (imageViewReused(photoToLoad))
                 return;
@@ -301,21 +262,6 @@ public class ImageLoader_my {
             Log.w("ImageLoader.saveImage", "FileNotFoundException");
         } catch (IOException e) {
             Log.w("ImageLoader.saveImage", "IOException");
-        }
-    }
-
-    // 最主要的方法
-    public void DisplayImage(Context context, String url, ImageView imageView, boolean isLoadOnlyFromCache) {
-        imageViews.put(imageView, url);
-        // 先从内存缓存中查找
-
-        Bitmap bitmap = memoryCache.get(url);
-        if (bitmap != null)
-            imageView.setImageBitmap(bitmap);
-        else if (!isLoadOnlyFromCache){
-
-            // 若没有的话则开启新线程加载图片
-            queuePhoto(url, imageView);
         }
     }
 }

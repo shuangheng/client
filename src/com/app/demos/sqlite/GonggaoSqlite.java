@@ -11,8 +11,8 @@ import com.app.demos.model.Gonggao;
 public class GonggaoSqlite extends BaseSqlite {
 
 	public GonggaoSqlite(Context context) {
-		super(context);				
-	}	
+		super(context);
+	}
 
 	@Override
 	protected String tableName() {
@@ -22,16 +22,17 @@ public class GonggaoSqlite extends BaseSqlite {
 	@Override
 	protected String[] tableColumns() {
 		String[] columns = {
-			Gonggao.COL_ID,
-			Gonggao.COL_USER,
-            Gonggao.COL_BGIMAGE,
-			Gonggao.COL_TITLE,
-			Gonggao.COL_CONTENT,
-			Gonggao.COL_SEECOUNT,			
-			Gonggao.COL_COMMENTCOUNT,
-			Gonggao.COL_LIKECOUNT,
-			Gonggao.COL_TYPE,
-			Gonggao.COL_UPTIME
+				Gonggao.COL_ID,
+				Gonggao.COL_USER,
+				Gonggao.COL_BGIMAGE,
+				Gonggao.COL_TITLE,
+				Gonggao.COL_CONTENT,
+				Gonggao.COL_SEECOUNT,
+				Gonggao.COL_COMMENTCOUNT,
+				Gonggao.COL_LIKECOUNT,
+				Gonggao.COL_TYPE,
+				Gonggao.COL_UPTIME,
+				Gonggao.COL_FAVORITE
 		};
 		return columns;
 	}
@@ -39,17 +40,18 @@ public class GonggaoSqlite extends BaseSqlite {
 	@Override
 	protected String createSql() {
 		return "CREATE TABLE IF NOT EXISTS " + tableName() + " (" +
-			Gonggao.COL_ID + " INTEGER PRIMARY KEY, " +
-			Gonggao.COL_USER + " TEXT, " +
-            Gonggao.COL_BGIMAGE + " TEXT, " +
-			Gonggao.COL_TITLE + " TEXT, " +
-			Gonggao.COL_CONTENT + " TEXT, " +
-			Gonggao.COL_SEECOUNT + " TEXT, " +			
-			Gonggao.COL_COMMENTCOUNT + " TEXT, " +
-			Gonggao.COL_LIKECOUNT + " TEXT, " +
-			Gonggao.COL_TYPE + " TEXT, " +
-			Gonggao.COL_UPTIME + " TEXT" +
-			");";
+				Gonggao.COL_ID + " INTEGER PRIMARY KEY, " +
+				Gonggao.COL_USER + " TEXT, " +
+				Gonggao.COL_BGIMAGE + " TEXT, " +
+				Gonggao.COL_TITLE + " TEXT, " +
+				Gonggao.COL_CONTENT + " TEXT, " +
+				Gonggao.COL_SEECOUNT + " TEXT, " +
+				Gonggao.COL_COMMENTCOUNT + " TEXT, " +
+				Gonggao.COL_LIKECOUNT + " TEXT, " +
+				Gonggao.COL_TYPE + " TEXT, " +
+				Gonggao.COL_UPTIME + " TEXT, " +
+				Gonggao.COL_FAVORITE + " TEXT" +
+				");";
 	}
 
 	@Override
@@ -61,15 +63,16 @@ public class GonggaoSqlite extends BaseSqlite {
 		// prepare g data
 		ContentValues values = new ContentValues();
 		values.put(Gonggao.COL_ID, g.getId());
-        values.put(Gonggao.COL_USER, g.getUser());
-        values.put(Gonggao.COL_BGIMAGE, g.getBgimage());
+		values.put(Gonggao.COL_USER, g.getUser());
+		values.put(Gonggao.COL_BGIMAGE, g.getBgimage());
 		values.put(Gonggao.COL_TITLE, g.getTitle());
 		values.put(Gonggao.COL_CONTENT, g.getContent());
-		values.put(Gonggao.COL_SEECOUNT, g.getSeecount());	
+		values.put(Gonggao.COL_SEECOUNT, g.getSeecount());
 		values.put(Gonggao.COL_COMMENTCOUNT, g.getCommentcount());
 		values.put(Gonggao.COL_LIKECOUNT, g.getLikeCount());
 		values.put(Gonggao.COL_TYPE, g.getType());
 		values.put(Gonggao.COL_UPTIME, g.getUptime());
+		values.put(Gonggao.COL_FAVORITE, g.getFavorite());
 		// prepare sql
 		String whereSql = Gonggao.COL_ID + "=?";
 		String[] whereParams = new String[]{g.getId()};
@@ -89,15 +92,15 @@ public class GonggaoSqlite extends BaseSqlite {
 
 	public ArrayList<Gonggao> getAllGonggao () {
 		ArrayList<Gonggao> gList = new ArrayList<Gonggao>();
-		try {			
+		try {
 			ArrayList<ArrayList<String>> rList = this.query2(null, null);
 			int rCount = rList.size();
-			for (int i = 0; i < rCount; i++) {				
+			for (int i = 0; i < rCount; i++) {
 				ArrayList<String> rRow = rList.get(i);
 				Gonggao g = new Gonggao();
-				g.setId(rRow.get(0));				
+				g.setId(rRow.get(0));
 				g.setUser(rRow.get(1));
-                g.setBgimage(rRow.get(2));
+				g.setBgimage(rRow.get(2));
 				g.setTitle(rRow.get(3));
 				g.setContent(rRow.get(4));
 				g.setSeecount(rRow.get(5));
@@ -105,6 +108,7 @@ public class GonggaoSqlite extends BaseSqlite {
 				g.setLikecount(rRow.get(7));
 				g.setType(rRow.get(8));
 				g.setUptime(rRow.get(9));
+				g.setFavorite(rRow.get(10));
 				gList.add(g);
 			}
 		} catch (Exception e) {
