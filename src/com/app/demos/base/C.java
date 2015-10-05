@@ -104,7 +104,7 @@ public final class C {
 	}
 	
 	public static final class err {
-		public static final String network			= "网络异常！请稍后重试";
+		public static final String network			= "网络不稳定！请稍后重试";
 		public static final String message			= "消息错误";
 		public static final String jsonFormat		= "消息格式错误";
 	}

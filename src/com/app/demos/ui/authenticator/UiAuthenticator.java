@@ -298,19 +298,25 @@ public class UiAuthenticator extends BaseUi {
      * @param emppwd
      */
     private void doAuth(final String empno, final String emppwd) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Log.e(TAG, "run");
-                try {
-                    String s = AppClient.UserLoginIn(empno, emppwd);
-                    sendMessage(BaseTask.TEST_FoxconnEss, s);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    sendMessage(BaseTask.NETWORK_ERROR);
+        if (emppwd.length() > 3 && email.length() > 8) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.e(TAG, "run");
+                    try {
+                        String s = AppClient.UserLoginIn(empno, emppwd);
+                        sendMessage(BaseTask.TEST_FoxconnEss, s);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        sendMessage(BaseTask.NETWORK_ERROR);
+                    }
                 }
-            }
-        }).start();
+            }).start();
+        } else  if (emppwd.length() < 4){
+            toast(getString(R.string.emppwd_wrong));
+        } else if (email.length() < 8) {
+            toast(getString(R.string.email_wrong));
+        }
     }
 
     public void clickOnForgotPassword(View paramView)

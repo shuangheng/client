@@ -145,6 +145,7 @@ public class BaseWebView extends SwipeBackActivity {
 
     private void initSwipeRefresh() {
         swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.ui_web_view_swipe_refresh);
+        swipeRefresh.setColorSchemeColors(R.color.ui_green);
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

@@ -115,15 +115,16 @@
 
             在 style 的属性中设置
 -->
-        <item name="colorPrimary">#4876FF</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
         <!-- toolbar text（actionbar）颜色 -->
-        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
         <!-- 状态栏颜色 -->
-        <item name="colorPrimaryDark">#3A5FCD</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <!-- 窗口的背景颜色 -->
         <item name="android:windowBackground">@android:color/white</item>
         <!-- SearchView -->
         <item name="searchViewStyle">@style/MySearchViewStyle</item>
+        <item name="android:colorBackground">@color/background_material_light</item>
     </style>
 
     <style name="AppThemeNoActionBar" parent="@style/AppBaseTheme" />
