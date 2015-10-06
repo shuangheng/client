@@ -211,7 +211,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
                         mDrawerLayout.closeDrawers();
                         break;
                     case 2:
-                        UiAuthenticator.actionStart(context, 1);
+                        UiAuthenticator.actionStart(context, 2);
                         //overridePendingTransition(R.anim.img_zoom_in_center, 0);//动画效果
                         mDrawerLayout.closeDrawers();
                         break;
@@ -555,8 +555,6 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
     @SuppressWarnings("unchecked")
     public void onTaskComplete(int taskId, BaseMessage message) {
         super.onTaskComplete(taskId, message);
-        activityfragment.swipeLayout.setRefreshing(false);
-        findfragment.swipeLayout.setRefreshing(false);
         Log.e(TAG, "" + i);
         switch (taskId) {
             case C.task.gg:
@@ -664,11 +662,25 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         super.onNetworkError(taskId);
         switch (taskId) {
             case C.task.gg:
-                activityfragment.swipeLayout.setRefreshing(false);
+                //activityfragment.swipeLayout.setRefreshing(false);
                 break;
             case C.task.find:
-                findfragment.swipeLayout.setRefreshing(false);
+                //findfragment.swipeLayout.setRefreshing(false);
         }
+    }
+
+    @Override
+    public void hideProgressBar() {
+        super.hideProgressBar();
+        activityfragment.swipeLayout.setRefreshing(false);
+        findfragment.swipeLayout.setRefreshing(false);
+    }
+
+    @Override
+    protected void showProgressBar() {
+        super.showProgressBar();
+        activityfragment.swipeLayout.setRefreshing(true);
+        findfragment.swipeLayout.setRefreshing(true);
     }
 
     //likeButton事件

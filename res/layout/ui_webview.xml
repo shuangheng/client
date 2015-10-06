@@ -22,25 +22,29 @@
                 android:layout_alignParentBottom="true"/>
         </RelativeLayout>
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/ui_web_view_swipe_refresh"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <FrameLayout
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/ui_web_view_swipe_refresh"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <com.app.demos.layout.other.WebViewMy
                     android:id="@+id/ui_web_view"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent" />
-                <TextView
-                    android:id="@+id/ui_webview_pageError"
-                    android:background="@android:color/white"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="gone"
-                    android:gravity="center" />
-            </FrameLayout>
-        </android.support.v4.widget.SwipeRefreshLayout>
+            </android.support.v4.widget.SwipeRefreshLayout>
+
+            <TextView
+                android:id="@+id/ui_webview_pageError"
+                android:background="@android:color/white"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:gravity="center" />
+        </FrameLayout>
+
     </LinearLayout>
 </RelativeLayout>

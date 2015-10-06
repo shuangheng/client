@@ -33,6 +33,7 @@ public class BaseHandler extends Handler {
 					} else if (!AppUtil.isEmptyInt(taskId)) {
 						ui.onTaskComplete(taskId);
 					} else {
+						ui.hideProgressBar();
 						ui.toast(C.err.message);
 					}
 					break;
@@ -42,6 +43,7 @@ public class BaseHandler extends Handler {
 					if (result != null) {
 						ui.onTaskComplete(result);
 					} else {
+						ui.hideProgressBar();
 						ui.toast(C.err.message);
 					}
 					break;

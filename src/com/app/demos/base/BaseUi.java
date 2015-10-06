@@ -6,6 +6,7 @@ import com.app.demos.R;
 import com.app.demos.util.AppCache;
 import com.app.demos.util.AppUtil;
 import com.app.demos.util.BaseDevice;
+import com.app.demos.util.HttpUtil;
 
 import android.app.Activity;
 import android.content.Context;
@@ -287,35 +288,47 @@ public class BaseUi extends ActionBarActivity {
 	}
 
 	public void doTaskAsync (int taskId, String taskUrl) {
-		//showLoadBar();
-		taskPool.addTask(taskId, taskUrl, new BaseTask(){
-			@Override
-			public void onComplete (String httpResult) {
-				sendMessage(BaseTask.TASK_COMPLETE, this.getId(), httpResult);
-			}
-			@Override
-			public void onError (String error) {
-				sendMessage(BaseTask.NETWORK_ERROR, this.getId(), null);
-			}
-		}, 0);
+		if (HttpUtil.isNetworkConnected(this)) {
+			showProgressBar();
+			taskPool.addTask(taskId, taskUrl, new BaseTask() {
+				@Override
+				public void onComplete(String httpResult) {
+					sendMessage(BaseTask.TASK_COMPLETE, this.getId(), httpResult);
+				}
+
+				@Override
+				public void onError(String error) {
+					sendMessage(BaseTask.NETWORK_ERROR, this.getId(), null);
+				}
+			}, 0);
+		} else {
+			hideProgressBar();
+			toast(getString(R.string.not_network));
+		}
 	}
 
 	public void doTaskAsync (int taskId, String taskUrl, HashMap<String, String> taskArgs) {
-		//showLoadBar();
-		taskPool.addTask(taskId, taskUrl, taskArgs, new BaseTask(){
-			@Override
-			public void onComplete (String httpResult) {
-				sendMessage(BaseTask.TASK_COMPLETE, this.getId(), httpResult);
-			}
-			@Override
-			public void onError (String error) {
-				sendMessage(BaseTask.NETWORK_ERROR, this.getId(), null);
-			}
-		}, 0);
+		if (HttpUtil.isNetworkConnected(this)) {
+			showProgressBar();
+			taskPool.addTask(taskId, taskUrl, taskArgs, new BaseTask() {
+				@Override
+				public void onComplete(String httpResult) {
+					sendMessage(BaseTask.TASK_COMPLETE, this.getId(), httpResult);
+				}
+
+				@Override
+				public void onError(String error) {
+					sendMessage(BaseTask.NETWORK_ERROR, this.getId(), null);
+				}
+			}, 0);
+		} else {
+			hideProgressBar();
+			toast(getString(R.string.not_network));
+		}
 	}
 
 	public void onTaskComplete (int taskId, BaseMessage message) {
-
+		hideProgressBar();
 	}
 
 	//public ArrayList<? extends BaseModel> onTaskComplete1 (int taskId, BaseMessage message) {
@@ -324,10 +337,11 @@ public class BaseUi extends ActionBarActivity {
 
 
 	public void onTaskComplete (int taskId) {
-
+		hideProgressBar();
 	}
 
 	public void onNetworkError (int taskId) {
+		hideProgressBar();
 		toast(C.err.network);
 	}
 
@@ -342,6 +356,10 @@ public class BaseUi extends ActionBarActivity {
 
 	public void onTaskComplete(String result) {
 	}
+
+	protected void hideProgressBar() {}
+
+	protected void showProgressBar() {}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	// common classes

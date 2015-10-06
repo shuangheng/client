@@ -16,6 +16,7 @@ dependencies {
     releaseCompile files('libs/android-support-v4.jar')
     compile 'com.android.support:recyclerview-v7:23.0.1'
     compile 'com.android.support:cardview-v7:23.0.1'
+    //compile 'com.github.navasmdc:MaterialDesign:1.+@aar'
 }
 
 android {

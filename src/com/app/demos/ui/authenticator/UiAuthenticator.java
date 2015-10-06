@@ -172,9 +172,22 @@ public class UiAuthenticator extends BaseUi {
     }
 
     @Override
+    public void hideProgressBar() {
+        super.hideProgressBar();
+        presDialog.dismiss();
+    }
+
+    @Override
+    protected void showProgressBar() {
+        super.showProgressBar();
+        presDialog.show();
+
+    }
+
+    @Override
     public void onTaskComplete(int taskId, BaseMessage message) {
         super.onTaskComplete(taskId, message);
-        presDialog.dismiss();
+        //presDialog.dismiss();
         switch (taskId) {
             case C.task.login:
                 String code = message.getCode();
@@ -242,7 +255,6 @@ public class UiAuthenticator extends BaseUi {
                 case 3:
                     doGetNewPwd(empno, email);
             }
-            presDialog.show();
 
         } else if (empno.length() == 0) {
             toast(getResources().getString(R.string.empno_not_null));
@@ -251,6 +263,7 @@ public class UiAuthenticator extends BaseUi {
 
     private void doGetNewPwd(String empno,String email) {
         if (email.length() > 7) {
+            //presDialog.show();
             HashMap<String, String> urlparams = new HashMap<String, String>();
             urlparams.put("name", empno);
             urlparams.put("email", email);
@@ -270,10 +283,13 @@ public class UiAuthenticator extends BaseUi {
 
     private void doLogin(String empno, String emppwd) {
         if (emppwd.length() >3) {
+            //presDialog.show();
             HashMap<String, String> urlParams = new HashMap<String, String>();
             urlParams.put("name", empno);
             urlParams.put("pass", emppwd);
             this.doTaskAsync(C.task.login, C.api.login, urlParams);
+        } else {
+            toast(getString(R.string.emppwd_wrong));
         }
     }
 
@@ -299,6 +315,7 @@ public class UiAuthenticator extends BaseUi {
      */
     private void doAuth(final String empno, final String emppwd) {
         if (emppwd.length() > 3 && email.length() > 8) {
+            presDialog.show();
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -409,7 +426,7 @@ public class UiAuthenticator extends BaseUi {
     @Override
     public void onNetworkError(int taskId) {
         super.onNetworkError(taskId);
-        presDialog.dismiss();
+        //presDialog.dismiss();
     }
 
     @Override
