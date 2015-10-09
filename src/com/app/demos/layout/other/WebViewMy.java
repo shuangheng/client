@@ -28,7 +28,7 @@ public class WebViewMy extends WebView {
     @Override
     protected void onScrollChanged(int newX, int newY, int oldX, int oldY) {
         super.onScrollChanged(newX, newY, oldX, oldY);
-        onViewTopListener.onScroll();
+        onViewTopListener.onScroll(newY, oldY);
         if (newY != oldY) {
             float contentHeight = getContentHeight() * getScale();//整个网页height
             float mCurrContentHeight = getHeight() + getScrollY();// 当前内容高度
@@ -50,7 +50,7 @@ public class WebViewMy extends WebView {
     }
 
     public static interface OnViewTopListener {
-        void onScroll();
+        void onScroll(int newY, int oldY);
         void onViewTop();
         void onViewBottom();
         void onViewVicinityBottom();

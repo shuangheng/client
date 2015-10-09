@@ -105,7 +105,7 @@
                             android:layout_weight="2"
                             android:gravity="right"
                             android:paddingRight="4dip"
-                            android:text="@string/blog_comment"
+                            android:text="@string/comment"
                             android:textSize="12dip" />
                     </LinearLayout>
 

@@ -3,8 +3,11 @@ package com.app.demos.ui;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -48,9 +51,11 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
     private String likeCount;
     private String bgImageUrl;
 
+    private Toolbar toolbar;
     private TextView tvContent;
     private TextView tvType;
     private TextView tvLikeCount;
+    private TextView extra;
     private Button careBtn;
     private Button commentBtn;
     private ImageView ivBgImage;
@@ -67,10 +72,11 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
     private int lastIdNum;
     private String lastId;
     private String commentcount;
-    private TextView extra;
+
     private String bgColor;
     private LinearLayout containerLayout;
     private String favorite;
+    private int toolcolor;
 
 
     @Override
@@ -81,41 +87,13 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
         // set handler
         this.setHandler(new BlogHandler(this));
         layout = (LinearLayout) this.findViewById(R.id.tpl_list_speak_bottom_layout);
+
         //--fill content
         fillContent();
-
+        initToolBar();
         //**load bgImage
         loadBgImage();
 
-		/*/ do add care
-		//careBtn = (Button) this.findViewById(R.id.);
-		//careBtn.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// prepare blog data
-				HashMap<String, String> urlParams = new HashMap<String, String>();
-				urlParams.put("customerId", customerId);
-				doTaskAsync(C.task.fansAdd, C.api.fansAdd, urlParams);
-			}
-		});
-
-		// do add comment
-		commentBtn = (Button) this.findViewById(R.id.app_blog_btn_comment);
-		commentBtn.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Bundle data = new Bundle();
-				data.putInt("action", C.action.edittext.COMMENT);
-				data.putString("blogId", blogId);
-				doEditText(data);
-			}
-		});
-
-		// prepare speak data
-		HashMap<String, String> blogParams = new HashMap<String, String>();
-		blogParams.put("blogId", blogId);
-		this.doTaskAsync(C.task.blogView, C.api.blogView, blogParams);
-		*/
     }
 
     @Override
@@ -123,16 +101,20 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
         super.onStart();
         loadData();
 
-		/*
-		commentList =  new ArrayList<Comment>();
-		for(int i = 0;i<110;i++){
-			Comment c = new Comment();
-			c.setContent(""+i);
-			commentList.add(c);
+    }
 
-		}
-		setMyAdapter();
-		*/
+    public static void actionStart(Context context, String speakId, String content, String type, String commentcount, String likeCount,
+                                    String bgImageUrl, String favorite, String bgColor) {
+        Intent intent = new Intent( context, UiSpeakComment.class);
+        intent.putExtra("speakId", speakId);
+        intent.putExtra("content", content);
+        intent.putExtra("type", type);
+        intent.putExtra("commentcount", commentcount);
+        intent.putExtra("likeCount", likeCount);
+        intent.putExtra("bgImageUrl", bgImageUrl);
+        intent.putExtra("favorite", favorite);
+        intent.putExtra("bgColor", bgColor);
+        context.startActivity(intent);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -205,7 +187,7 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
         list.addFooterView(moreView);
         list.setAdapter(commentAdapter);
         list.setOnScrollListener(this);
-        list.setOnItemClickListener(new OnItemClickListener(){
+        list.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int postion, long id) {
 
@@ -214,20 +196,19 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
 
     }
 
-    @Override
-    public void onNetworkError (int taskId) {
-        super.onNetworkError(taskId);
-    }
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // other methods
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-            doFinish();
+    private void initToolBar() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(getTitle());// 标题的文字需在setSupportActionBar之前，不然会无效
+        if (toolcolor != R.color.white) {
+            toolbar.setBackgroundColor(toolcolor);
         }
-        return super.onKeyDown(keyCode, event);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);//实现左侧返回按钮
     }
 
     //--load bgImage
@@ -273,7 +254,7 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
             }
         });
 
-        if (favorite.equals("0")) {
+        if (favorite != null && favorite.equals("0")) {
             ibLike.setBackgroundResource(R.drawable.ic_card_liked);
         }
         ibLike.setOnClickListener(new OnClickListener() {
@@ -286,12 +267,10 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
                 //new TestFragment().likeButtonClick();
             }
         });
-
         int position = Integer.parseInt(bgColor);
-        containerLayout.setBackgroundColor(!isEven(position) ?
-                containerLayout.getResources().getColor(C.colors[position % 16]) :
-                containerLayout.getResources().getColor(R.color.white));
-
+        toolcolor = !isEven(position) ? containerLayout.getResources().getColor(C.colors[position % 16]) :
+                                        containerLayout.getResources().getColor(R.color.white);
+        containerLayout.setBackgroundColor(toolcolor);
         tvContent.setText(AppFilter.getHtml(content));
         tvType.setText(type);
         extra.setText("评论 " + commentcount);
@@ -374,11 +353,9 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
 
     //****load data
     private void loadData(){
-        // prepare comment data
         HashMap<String, String> commentParams = new HashMap<String, String>();
         commentParams.put("id", speakId);
         commentParams.put("pageId", "0");
-        //this.doTaskAsync(C.task.commentList, C.api.commentList, commentParams);
         this.doTaskAsync(C.task.commentAllList, C.api.commentAllList);
     }
 

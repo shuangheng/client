@@ -440,7 +440,7 @@ public class UiAuthenticator extends BaseUi {
 
     private void initToolBar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-            mToolbar.setTitle(getString(R.string.app_name));// 标题的文字需在setSupportActionBar之前，不然会无效
+        mToolbar.setTitle(getString(R.string.app_name));// 标题的文字需在setSupportActionBar之前，不然会无效
         //mToolbar.setLogo(R.drawable.icon);
         setSupportActionBar(mToolbar);
             /* 这些通过ActionBar来设置也是一样的，注意要在setSupportActionBar(toolbar);之后，不然就报错了 */

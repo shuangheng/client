@@ -2,86 +2,102 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    xmlns:materialdesign="http://schemas.android.com/apk/res-auto">
 
 	<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/ui_speak_comment_editLayout"
+        android:paddingTop="?attr/actionBarSize"
+
         android:orientation="vertical">
-        
-        <ListView
-            android:id="@+id/ui_speak_comment_listview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:cacheColorHint="#00000000"
-            android:descendantFocusability="blocksDescendants"
-            android:divider="@null"
-            android:dividerHeight="2dp"
-            android:fadingEdge="vertical"
-            
-            android:fadingEdgeLength="1dp"
-        	
-            android:listSelector="@drawable/xml_list_bg" />
-
-      </LinearLayout>    
-
-	
-    
-    <LinearLayout
+    <!--android:layout_above="@+id/ui_speak_comment_editLayout" -->
+    <ListView
+        android:id="@+id/ui_speak_comment_listview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:cacheColorHint="#00000000"
+        android:descendantFocusability="blocksDescendants"
+        android:divider="@null"
+        android:dividerHeight="2dp"
+        android:fadingEdge="vertical"
+
+        android:fadingEdgeLength="1dp"
+
+        android:listSelector="@drawable/xml_list_bg" />
+
+  </LinearLayout>
+
+
+
+<!--LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_gravity="bottom"
+    android:gravity="bottom"
+    android:id="@+id/ui_speak_comment_editLayout"
+    android:orientation="horizontal">
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:src="@drawable/ic_publish_operation_bar_keyboard" />
+
+    <com.app.demos.layout.materialEditText.MaterialEditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="3"
+        android:maxLength="20"
+        android:hint="Library Name"
+        android:text="MaterialEditText"
+        android:textCursorDrawable="@drawable/text_cursor_cyan"
+        app:met_typeface="fonts/Roboto-LightItalic.ttf"
+        app:met_accentTypeface="fonts/Roboto-LightItalic.ttf"
+        app:met_baseColor="@android:color/black"
+        app:met_floatingLabel="highlight"
+        android:layout_weight="1"
+
+        app:met_primaryColor="?colorAccent" />
+        <!-
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:layout_weight="1"
+        android:background="@drawable/textfield_default_holo_light"
+        android:focusable="false"
+        android:editable="true"
+        android:hint="@string/btn_comment"
+        android:maxLines="5"
+         >
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+
+        android:background="@drawable/ic_send_btn_disabled" />
+
+</LinearLayout -->
+
+    <com.app.demos.layout.ButtonFloat
+        android:id="@+id/buttonFloat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom"
-        android:gravity="bottom"
-        android:id="@+id/ui_speak_comment_editLayout"
-        android:orientation="horizontal">
-        
-     
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:src="@drawable/ic_publish_operation_bar_keyboard" />
-        
-        <com.app.demos.layout.materialEditText.MaterialEditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxLines="3"
-            android:maxLength="20"
-            android:hint="Library Name"
-            android:text="MaterialEditText"
-            android:textCursorDrawable="@drawable/text_cursor_cyan"
-            app:met_typeface="fonts/Roboto-LightItalic.ttf"
-            app:met_accentTypeface="fonts/Roboto-LightItalic.ttf"
-            app:met_baseColor="@android:color/black"
-            app:met_floatingLabel="highlight"
-            android:layout_weight="1"
+        android:layout_marginRight="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="#1E88E5"
+        materialdesign:animate="true"
+        materialdesign:iconDrawable="@drawable/ic_action_new" />
 
-            app:met_primaryColor="?colorAccent" />
-            <!--
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="3dp"
-            android:layout_weight="1"
-            android:background="@drawable/textfield_default_holo_light"
-            android:focusable="false"
-            android:editable="true"
-            android:hint="@string/btn_comment"
-            android:maxLines="5"
-             -->
-
-        
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-
-            android:background="@drawable/ic_send_btn_disabled" />
-
-	</LinearLayout>
-
+    <include layout="@layout/toolbar" />
 
 </RelativeLayout>    

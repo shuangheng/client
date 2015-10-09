@@ -48,7 +48,15 @@
         <attr name="SwipeBackLayoutStyle" format="reference"/>
     </declare-styleable>
 
+    <declare-styleable name="ButtonFloat">
 
+        <!-- Color of ripple animation -->
+        <attr name="rippleColor" format="color|reference" />
+        <!-- in float button indicate icon resource -->
+        <attr name="iconDrawable" format="integer" />
+        <!-- in float button indicate if must start with animation -->
+        <attr name="animate" format="boolean" />
+    </declare-styleable>
 
     <declare-styleable name="MaterialEditText">
         <!-- The base color of the line and the texts. Default is black. -->

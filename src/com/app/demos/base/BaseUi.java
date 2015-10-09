@@ -19,6 +19,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
@@ -93,6 +94,18 @@ public class BaseUi extends ActionBarActivity {
 		super.onDestroy();
 		// debug memory
 		debugMemory("on销毁");
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case android.R.id.home:
+				finish();
+				break;
+			default:
+				break;
+		}
+		return true;
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////

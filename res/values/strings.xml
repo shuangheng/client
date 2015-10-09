@@ -34,7 +34,7 @@
     <string name="register_submit">注册</string>
     <string name="login">登录</string>
     <string name="edit_submit">保存</string>
-    <string name="blog_comment">评论</string>
+    <string name="comment">评论</string>
     <string name="customer_fans">粉丝</string>
     <string name="customer_blog">微博</string>
     <string name="topNetworkError">网络连接后，下拉更新！</string>

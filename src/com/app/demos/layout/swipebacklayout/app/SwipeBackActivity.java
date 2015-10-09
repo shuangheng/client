@@ -2,7 +2,10 @@
 package com.app.demos.layout.swipebacklayout.app;
 
 import android.os.Bundle;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import com.app.demos.base.BaseUi;
 import com.app.demos.layout.swipebacklayout.SwipeBackLayout;
@@ -52,4 +55,5 @@ public class SwipeBackActivity extends BaseUi implements SwipeBackActivityBase {
         Utils.convertActivityToTranslucentMy(this);
         getSwipeBackLayout().scrollToFinishActivity();
     }
+
 }

@@ -25,7 +25,7 @@ public class BaseHandler extends Handler {
 			String result;
 			switch (msg.what) {
 				case BaseTask.TASK_COMPLETE:
-					ui.hideLoadBar();
+					ui.hideProgressBar();
 					taskId = msg.getData().getInt("task");
 					result = msg.getData().getString("data");
 					if (result != null) {
@@ -33,22 +33,20 @@ public class BaseHandler extends Handler {
 					} else if (!AppUtil.isEmptyInt(taskId)) {
 						ui.onTaskComplete(taskId);
 					} else {
-						ui.hideProgressBar();
 						ui.toast(C.err.message);
 					}
 					break;
 				case BaseTask.TEST_FoxconnEss:
-					ui.hideLoadBar();
+					ui.hideProgressBar();
 					result = msg.getData().getString("data");
 					if (result != null) {
 						ui.onTaskComplete(result);
 					} else {
-						ui.hideProgressBar();
 						ui.toast(C.err.message);
 					}
 					break;
 				case BaseTask.NETWORK_ERROR:
-					ui.hideLoadBar();
+					ui.hideProgressBar();
 					taskId = msg.getData().getInt("task");
 					ui.onNetworkError(taskId);
 					break;

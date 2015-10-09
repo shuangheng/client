@@ -44,6 +44,7 @@ import com.app.demos.base.BaseMessage;
 import com.app.demos.base.BaseTask;
 import com.app.demos.base.BaseUi;
 import com.app.demos.base.C;
+import com.app.demos.layout.ButtonFloat;
 import com.app.demos.layout.other.PagerSlidingTabStrip_my;
 import com.app.demos.layout.other.TabRedDian;
 import com.app.demos.layout.swipebacklayout.app.SwipeBackActivity;
@@ -59,6 +60,8 @@ import com.app.demos.ui.fragment.FindFragment;
 import com.app.demos.ui.fragment.Fragment2;
 import com.app.demos.ui.fragment.Fragment3;
 import com.app.demos.ui.fragment.SpeakFragment;
+import com.app.demos.ui.test.FlexibleSpaceWithImageListViewActivity;
+import com.app.demos.ui.test.ToolBarTitleScroll;
 import com.app.demos.ui.test.UiFoxconnEssPost;
 
 import java.util.ArrayList;
@@ -100,7 +103,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
     private ShareActionProvider mShareActionProvider;
     public PagerSlidingTabStrip_my mPagerSlidingTabStrip;
     public Toolbar mToolbar;
-    public ImageButton mFabButton;
+    public ButtonFloat mFabButton;
     private String find_lastId;
     private int find_lastIdNum;
     private Context context;
@@ -151,13 +154,13 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
     }
 
     private void initBottomButtom() {
-        mFabButton = (ImageButton) findViewById(R.id.fabButton);
+        mFabButton = (ButtonFloat) findViewById(R.id.buttonFloat);
         mFabButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(UiActionBar.this, UiCreateSpeak.class);
                 startActivityForResult(intent, 1);
-                overridePendingTransition(R.anim.in_from_right, android.R.anim.fade_out);
+                overridePendingTransition(R.anim.in_from_right, 0);
             }
         });
         mFabButton.setOnLongClickListener(new View.OnLongClickListener() {
@@ -188,7 +191,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
     private void initDrawer() {
         drawerTv = (TextView) findViewById(R.id.drawer_tv);
         drawerList = (ListView) findViewById(R.id.drawer_list);
-        String[] data = {"设备信息", "other", "login out"};
+        String[] data = {"设备信息", "other", "login out", "toolBar Scroll", "toolbar scroll 2"};
         drawerList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data));
         drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -205,14 +208,19 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
                         drawerTv.setText(phoneName + "\n" + phoneModel + "\n" + phoneNumber + "\n" + SDK + "\n" + OS);
                         break;
                     case 1:
-                        //overlay(UiImageZoom.class);
-                        startActivity(new Intent(context,UiImageZoom.class));
-                        //overridePendingTransition(R.anim.img_zoom_in_center, 0);//动画效果
                         mDrawerLayout.closeDrawers();
+                        UiImageZoom.actionStart(context, null, null);
                         break;
                     case 2:
                         UiAuthenticator.actionStart(context, 2);
-                        //overridePendingTransition(R.anim.img_zoom_in_center, 0);//动画效果
+                        mDrawerLayout.closeDrawers();
+                        break;
+                    case 3:
+                        overlay(ToolBarTitleScroll.class);
+                        mDrawerLayout.closeDrawers();
+                        break;
+                    case 4:
+                        overlay(FlexibleSpaceWithImageListViewActivity.class);
                         mDrawerLayout.closeDrawers();
                         break;
                 }
@@ -532,7 +540,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         Find j = list.get(i-1);
         find_lastId = j.getId();
         find_lastIdNum =Integer.parseInt(lastId);
-        Log.e("find_id",lastId);
+        Log.e("find_id", lastId);
     }
 
     //获取第一条数据的ID
@@ -563,6 +571,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
                     //缓存数据
                     gonggaoSqlite.delete(null, null);
                     for(Gonggao g : ggList1){
+                        g.setFavorite("1");
                         gonggaoSqlite.updateGonggao(g);
                     }
 
@@ -581,9 +590,10 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
             case C.task.gg1:
                 try {	//剩余Data
                     ArrayList<Gonggao> ggList1 = (ArrayList<Gonggao>) message.getResultList("Gonggao");
-                    //for (Gonggao g : ggList1) {
-                    //   gonggaoSqlite.updateGonggao(g);
-                    //}
+                    for (Gonggao g : ggList1) {
+                        g.setFavorite("1");
+                       gonggaoSqlite.updateGonggao(g);
+                    }
                     getLastId(ggList1);
                     activityfragment.addGgList(ggList1);
                 } catch (Exception e) {
@@ -679,8 +689,14 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
     @Override
     protected void showProgressBar() {
         super.showProgressBar();
-        activityfragment.swipeLayout.setRefreshing(true);
-        findfragment.swipeLayout.setRefreshing(true);
+        switch (mPager.getCurrentItem()) {
+            case 0:
+                activityfragment.swipeLayout.setRefreshing(true);
+                break;
+            case 2:
+                findfragment.swipeLayout.setRefreshing(true);
+                break;
+        }
     }
 
     //likeButton事件

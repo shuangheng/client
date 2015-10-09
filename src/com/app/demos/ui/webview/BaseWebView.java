@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -33,6 +34,7 @@ import android.widget.Toast;
 
 import com.app.demos.R;
 import com.app.demos.layout.other.WebViewMy;
+import com.app.demos.layout.swipebacklayout.SwipeBackLayout;
 import com.app.demos.layout.swipebacklayout.app.SwipeBackActivity;
 
 /**
@@ -48,6 +50,7 @@ public class BaseWebView extends SwipeBackActivity {
     private EditText editText;
     private boolean isFinishScrollLeft;
     private SwipeRefreshLayout swipeRefresh;
+    private SwipeBackLayout mSwipeBackLayout;
 
     @Override
     public void onCreate(Bundle paramBundle) {
@@ -57,6 +60,7 @@ public class BaseWebView extends SwipeBackActivity {
         initView();
         initSwipeRefresh();
 
+        mSwipeBackLayout = getSwipeBackLayout();
         Bundle localBundle = getIntent().getExtras();
         paramUrl = localBundle.getString("url");
         webView.loadUrl(paramUrl);
@@ -121,8 +125,9 @@ public class BaseWebView extends SwipeBackActivity {
         });
         webView.setOnViewScrollChangedListener(new WebViewMy.OnViewTopListener() {
             @Override
-            public void onScroll() {
+            public void onScroll(int newY, int oldY) {
                 swipeRefresh.setEnabled(isViewTop());
+                mSwipeBackLayout.setEnableGesture(isViewTop());
             }
 
             @Override
@@ -165,8 +170,14 @@ public class BaseWebView extends SwipeBackActivity {
             getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
             editText.setVisibility(View.GONE);
         } else {
-            getSupportActionBar().setCustomView(editText);
+            ActionBar.LayoutParams lp = new ActionBar.LayoutParams(
+                    ActionBar.LayoutParams.WRAP_CONTENT,
+                    ActionBar.LayoutParams.WRAP_CONTENT,
+                    Gravity.RIGHT);
+            getSupportActionBar().setCustomView(editText, lp);
             getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);//去掉标题
+            getSupportActionBar().setDisplayShowHomeEnabled(false);//去掉导航
             editText.setVisibility(View.VISIBLE);
         }
 

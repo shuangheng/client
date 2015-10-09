@@ -146,19 +146,11 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
         recyclerView.setLayoutManager(layoutManager);
         speakRecyclerAdapter = new SpeakRecyclerAdapter(activity, ggList);
         speakRecyclerAdapter.setOnRecyclerViewListener(new SpeakRecyclerAdapter.OnRecyclerViewListener() {
-            Bundle params = new Bundle();
-
             @Override
             public void onItemClick(int position) {
-                params.putString("speakId", ggList.get(position).getId());
-                params.putString("content", ggList.get(position).getContent());
-                params.putString("type", ggList.get(position).getType());
-                params.putString("commentcount", ggList.get(position).getCommentcount());
-                params.putString("likeCount", ggList.get(position).getLikeCount());
-                params.putString("bgImageUrl", ggList.get(position).getBgimage());
-                params.putString("favorite", ggList.get(position).getFavorite());
-                params.putString("bgColor", "" + position);
-                activity.overlay(UiSpeakComment.class, params);
+                Gonggao g = ggList.get(position);
+                UiSpeakComment.actionStart(activity, g.getId(), g.getContent(), g.getType(), g.getCommentcount(), g.getLikeCount(),
+                                                    g.getBgimage(), g.getFavorite(), "" + position);
             }
 
             @Override
@@ -278,7 +270,6 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
                 //Log.w("jgtime", "" + jgtime);
                 //if (jgtime > 30000) {
                     //从网路获取列表
-                    swipeLayout.setRefreshing(true);
                     onRefresh();
 
                    // String nowTime = Long.toString(loginTime);
