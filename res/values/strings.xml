@@ -97,5 +97,8 @@
     <string name="favorite_delete_fail">取消失败</string>
     <string name="not_network">当前无网络连接</string>
 
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
 
 </resources>

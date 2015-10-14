@@ -171,7 +171,7 @@ public class UiSpeakMain extends BaseUi{
 			HashMap<String, String> blogParams = new HashMap<String, String>();		
 			blogParams.put("typeId", "0");
 			blogParams.put("pageId", "0");
-			this.doTaskAsync(C.task.gg, C.api.gg, blogParams);
+			this.doTaskAsync(C.task.gg, C.api.gg, blogParams, true);
 						
 			}
 		

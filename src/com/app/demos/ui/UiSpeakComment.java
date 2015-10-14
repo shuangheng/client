@@ -38,6 +38,7 @@ import com.app.demos.list.bitmap_load_list.ImageLoader_my;
 import com.app.demos.model.Comment;
 import com.app.demos.model.Customer;
 //import com.app.demos.ui.UiBlog.BlogHandler;
+import com.app.demos.model.Gonggao;
 import com.app.demos.util.AppFilter;
 import com.app.demos.util.UIUtil;
 
@@ -103,16 +104,9 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
 
     }
 
-    public static void actionStart(Context context, String speakId, String content, String type, String commentcount, String likeCount,
-                                    String bgImageUrl, String favorite, String bgColor) {
+    public static void actionStart(Context context,Gonggao g, String bgColor) {
         Intent intent = new Intent( context, UiSpeakComment.class);
-        intent.putExtra("speakId", speakId);
-        intent.putExtra("content", content);
-        intent.putExtra("type", type);
-        intent.putExtra("commentcount", commentcount);
-        intent.putExtra("likeCount", likeCount);
-        intent.putExtra("bgImageUrl", bgImageUrl);
-        intent.putExtra("favorite", favorite);
+        intent.putExtra("Gonggao", g);
         intent.putExtra("bgColor", bgColor);
         context.startActivity(intent);
     }
@@ -159,7 +153,7 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
                     // refresh customer data
                     HashMap<String, String> cvParams = new HashMap<String, String>();
                     cvParams.put("customerId", customerId);
-                    this.doTaskAsync(C.task.customerView, C.api.customerView, cvParams);
+                    this.doTaskAsync(C.task.customerView, C.api.customerView, cvParams, true);
                 } else {
                     toast("Add fans fail");
                 }
@@ -222,13 +216,14 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
     //--fill content
     private void fillContent(){
         Bundle params = this.getIntent().getExtras();
-        speakId = params.getString("speakId");
-        content = params.getString("content");
-        type = params.getString("type");
-        commentcount = params.getString("commentcount");
-        likeCount = params.getString("likeCount");
-        bgImageUrl = params.getString("bgImageUrl");
-        favorite = params.getString("favorite");
+        Gonggao g = getIntent().getParcelableExtra("Gonggao");
+        speakId = g.getId();
+        content = g.getContent();
+        type = g.getType();
+        commentcount = g.getCommentcount();
+        likeCount = g.getLikeCount();
+        bgImageUrl = g.getBgimage();
+        favorite = g.getFavorite();
         bgColor = params.getString("bgColor");
 
         moreView = getLayoutInflater().inflate(R.layout.load_more, null);
@@ -347,7 +342,7 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
             blogParams.put("lastId", lastId);
             //blogParams.put("typeId", "0");
             //blogParams.put("pageId", "0");
-            this.doTaskAsync(C.task.commentListMore, C.api.commentAllList, blogParams);
+            this.doTaskAsync(C.task.commentListMore, C.api.commentAllList, blogParams, false);
         }
     }
 
@@ -356,7 +351,7 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
         HashMap<String, String> commentParams = new HashMap<String, String>();
         commentParams.put("id", speakId);
         commentParams.put("pageId", "0");
-        this.doTaskAsync(C.task.commentAllList, C.api.commentAllList);
+        this.doTaskAsync(C.task.commentAllList, C.api.commentAllList, true);
     }
 
     @Override

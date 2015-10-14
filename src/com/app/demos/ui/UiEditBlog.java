@@ -31,7 +31,7 @@ public class UiEditBlog extends BaseUiAuth {
 				EditText mWriteText = (EditText) findViewById(R.id.app_write_text);
 				HashMap<String, String> urlParams = new HashMap<String, String>();
 				urlParams.put("content", mWriteText.getText().toString());
-				doTaskAsync(C.task.blogCreate, C.api.blogCreate, urlParams);
+				//doTaskAsync(C.task.blogCreate, C.api.blogCreate, urlParams);
 			}
 		});
 	}

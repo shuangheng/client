@@ -58,7 +58,7 @@ public class UiBlog extends BaseUiAuth {
 				// prepare blog data
 				HashMap<String, String> urlParams = new HashMap<String, String>();
 				urlParams.put("customerId", customerId);
-				doTaskAsync(C.task.fansAdd, C.api.fansAdd, urlParams);
+				doTaskAsync(C.task.fansAdd, C.api.fansAdd, urlParams, true);
 			}
 		});
 		
@@ -77,7 +77,7 @@ public class UiBlog extends BaseUiAuth {
 		// prepare blog data
 		HashMap<String, String> blogParams = new HashMap<String, String>();
 		blogParams.put("blogId", blogId);
-		this.doTaskAsync(C.task.blogView, C.api.blogView, blogParams);
+		this.doTaskAsync(C.task.blogView, C.api.blogView, blogParams, true);
 	}
 	
 	@Override
@@ -88,7 +88,7 @@ public class UiBlog extends BaseUiAuth {
 		HashMap<String, String> commentParams = new HashMap<String, String>();
 		commentParams.put("blogId", blogId);
 		commentParams.put("pageId", "0");
-		this.doTaskAsync(C.task.commentList, C.api.commentList, commentParams);
+		this.doTaskAsync(C.task.commentList, C.api.commentList, commentParams, true);
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////
@@ -149,7 +149,7 @@ public class UiBlog extends BaseUiAuth {
 					// refresh customer data
 					HashMap<String, String> cvParams = new HashMap<String, String>();
 					cvParams.put("customerId", customerId);
-					this.doTaskAsync(C.task.customerView, C.api.customerView, cvParams);
+					this.doTaskAsync(C.task.customerView, C.api.customerView, cvParams, true);
 				} else {
 					toast("Add fans fail");
 				}

@@ -75,7 +75,7 @@ public class UiNews extends BaseUiAuth {
 		//HashMap<String, String> blogParams = new HashMap<String, String>();
 		//blogParams.put("typeId", "0");
 		//blogParams.put("pageId", "0");
-		this.doTaskAsync(C.task.newsList, C.api.newsList);
+		this.doTaskAsync(C.task.newsList, C.api.newsList, true);
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////

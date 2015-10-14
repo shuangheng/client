@@ -383,7 +383,7 @@ public class FindFragment extends Fragment implements  OnRefreshListener {
             blogParams.put("Id", lastId);
             blogParams.put("typeId", "0");
             blogParams.put("pageId", "0");
-            activity.doTaskAsync(C.task.gg1, C.api.gg, blogParams);
+            activity.doTaskAsync(C.task.gg1, C.api.gg, blogParams, false);
         }
     }
 

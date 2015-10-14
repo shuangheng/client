@@ -59,7 +59,7 @@ public class UiMain extends BaseUi {
 			urlParams.put("pass", settings.getString("password", ""));
 			Log.e(settings.getString("username", ""),settings.getString("password", ""));
 			try {
-				this.doTaskAsync(C.task.login, C.api.login, urlParams);
+				this.doTaskAsync(C.task.login, C.api.login, urlParams, true);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

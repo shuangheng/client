@@ -1,8 +1,11 @@
 package com.app.demos.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.app.demos.base.BaseModel;
 
-public class Gonggao extends BaseModel {
+public class Gonggao extends BaseModel implements Parcelable {
 	
 	// model columns
 	public final static String COL_ID = "id";
@@ -19,6 +22,32 @@ public class Gonggao extends BaseModel {
     public final static String COL_COMMENTCOUNT = "commentcount";
     public final static String COL_FAVORITE = "favorite";
 
+    public static final Parcelable.Creator<Gonggao> CREATOR = new Parcelable.Creator<Gonggao>() {
+        @Override
+        public Gonggao createFromParcel(Parcel source) {
+            Gonggao g = new Gonggao();
+            g.id = source.readString();
+            g.face = source.readString();
+            g.bgimage = source.readString();
+            g.title = source.readString();
+            g.content = source.readString();
+            g.comment = source.readString();
+            g.uptime = source.readString();
+            g.likecount = source.readString();
+            g.seecount = source.readString();
+            g.user = source.readString();
+            g.type = source.readString();
+            g.commentcount = source.readString();
+            g.favorite = source.readString();
+            return g;
+        }
+
+        @Override
+        public Gonggao[] newArray(int size) {
+            return new Gonggao[size];
+        }
+    };
+
 	private String id;
     private String face;
     private String bgimage;
@@ -26,12 +55,29 @@ public class Gonggao extends BaseModel {
 	private String content;
 	private String comment;
 	private String uptime;
+    private String likecount;
     private String seecount;
 	private String user;
-    private String likecount;
-    private String commentcount;
     private String type;
+    private String commentcount;
 	private String favorite;
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(face);
+        dest.writeString(bgimage);
+        dest.writeString(title);
+        dest.writeString(content);
+        dest.writeString(comment);
+        dest.writeString(uptime);
+        dest.writeString(likecount);
+        dest.writeString(seecount);
+        dest.writeString(user);
+        dest.writeString(type);
+        dest.writeString(commentcount);
+        dest.writeString(favorite);
+    }
 
     public Gonggao () {}
 	
@@ -43,6 +89,13 @@ public class Gonggao extends BaseModel {
 		this.seecount = seecount;
 		this.uptime =  uptime;
 	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+
 	
 	public String getId () {
 		return this.id;
@@ -153,4 +206,5 @@ public class Gonggao extends BaseModel {
     public String getTypeAll() {
 		return "评论 "+this.commentcount;
     }
+
 }

@@ -64,13 +64,13 @@ public class UiBlogs extends BaseUiAuth {
 		// prepare customer data
 		HashMap<String, String> cvParams = new HashMap<String, String>();
 		cvParams.put("customerId", customer.getId());
-		this.doTaskAsync(C.task.customerView, C.api.customerView, cvParams);
+		this.doTaskAsync(C.task.customerView, C.api.customerView, cvParams, true);
 		
 		// prepare blog data
 		HashMap<String, String> blogParams = new HashMap<String, String>();
 		blogParams.put("typeId", "1");
 		blogParams.put("pageId", "0");
-		this.doTaskAsync(C.task.blogList, C.api.blogList, blogParams);
+		this.doTaskAsync(C.task.blogList, C.api.blogList, blogParams, true);
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////

@@ -164,7 +164,7 @@ public class MaterialProgressDrawable extends Drawable implements Animatable {
 
     /**
      * Set the amount of rotation to apply to the progress spinner.
-     *
+     * 旋转
      * @param rotation Rotation is from [0..1]
      */
     public void setProgressRotation(float rotation) {

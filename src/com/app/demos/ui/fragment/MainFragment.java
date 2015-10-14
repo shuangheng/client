@@ -329,7 +329,7 @@ public class MainFragment extends Fragment implements AbsListView.OnScrollListen
             blogParams.put("Id", lastId);
             blogParams.put("typeId", "0");
             blogParams.put("pageId", "0");
-            activity.doTaskAsync(C.task.gg1, C.api.gg, blogParams);
+            activity.doTaskAsync(C.task.gg1, C.api.gg, blogParams, true);
         }
     }
 }

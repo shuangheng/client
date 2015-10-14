@@ -463,7 +463,7 @@ public class MainActivity extends BaseUi implements OnGestureListener {
 			blogParams.put("Id", lastId);
 			blogParams.put("typeId", "0");
 			blogParams.put("pageId", "0");
-			this.doTaskAsync(C.task.gg1, C.api.gg, blogParams);
+			this.doTaskAsync(C.task.gg1, C.api.gg, blogParams, true);
 			}
 		}	
 			
@@ -473,7 +473,7 @@ public class MainActivity extends BaseUi implements OnGestureListener {
 			HashMap<String, String> blogParams = new HashMap<String, String>();		
 			blogParams.put("typeId", "0");
 			blogParams.put("pageId", "0");
-			this.doTaskAsync(C.task.gg, C.api.gg, blogParams);
+			this.doTaskAsync(C.task.gg, C.api.gg, blogParams, true);
 						
 			}
 		

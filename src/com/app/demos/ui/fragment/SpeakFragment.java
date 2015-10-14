@@ -149,8 +149,7 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
             @Override
             public void onItemClick(int position) {
                 Gonggao g = ggList.get(position);
-                UiSpeakComment.actionStart(activity, g.getId(), g.getContent(), g.getType(), g.getCommentcount(), g.getLikeCount(),
-                                                    g.getBgimage(), g.getFavorite(), "" + position);
+                UiSpeakComment.actionStart(activity, g, "" + position);
             }
 
             @Override
@@ -164,8 +163,6 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
                 String imagePath = ggList.get(position).getBgimage();
                 String thumburl = C.web.thumb_image + imagePath + ".jpg";//thumb image path
                 UiImageZoom.actionStart(activity, C.web.bgimage + ggList.get(position).getBgimage() + ".jpg", thumburl);
-                //params.putString("bgImageUrl", ggList.get(position).getBgimage());
-                //activity.overlay(UiImageZoom.class, params);
                 //activity.overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);//动画效果
             }
 
@@ -481,7 +478,7 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
 					blogParams.put("Id", lastId);
 					blogParams.put("typeId", "0");
 					blogParams.put("pageId", "0");
-					activity.doTaskAsync(C.task.gg1, C.api.gg, blogParams);
+					activity.doTaskAsync(C.task.gg1, C.api.gg, blogParams, false);
 					}
 				}
 

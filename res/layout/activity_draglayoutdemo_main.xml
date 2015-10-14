@@ -1,0 +1,63 @@
+<com.app.demos.ui.test.draglayoutdemo.DragLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/img_frame_background" >
+
+    <LinearLayout
+        android:id="@+id/fl_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="40dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="50dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            android:text="用户设置" >
+        </TextView>
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:layout_marginTop="15dp"
+            android:textSize="18sp"
+            android:text="系统设置" >
+        </TextView>
+    </LinearLayout>
+
+    <com.app.demos.ui.test.draglayoutdemo.MainContentLayout
+        android:id="@+id/mainContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/tab_bg"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/topbar"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:background="@color/topbar_bg" >
+
+            <ImageView
+                android:id="@+id/topbar_left_button"
+                android:layout_width="38dip"
+                android:layout_height="38dip"
+                android:layout_gravity="left|center"
+                android:scaleType="fitXY"
+                android:src="@drawable/drawer_press" />
+        </RelativeLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager_view"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@id/topbar" />
+    </com.app.demos.ui.test.draglayoutdemo.MainContentLayout>
+
+</com.app.demos.ui.test.draglayoutdemo.DragLayout>

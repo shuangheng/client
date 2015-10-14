@@ -1,13 +1,23 @@
 package com.app.demos.base;
 
 import android.app.Application;
+import android.content.Context;
 
 public class BaseApp extends Application {
-	
+
+	private static Context context;
 	private String s;
 	private long l;
 	private int i;
-	
+
+	@Override
+	public void onCreate() {
+		context = getApplicationContext();
+	}
+
+	public  static Context getContext() {
+		return context;
+	}
 	public int getInt () {
 		return i;
 	}

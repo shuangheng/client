@@ -222,7 +222,7 @@ public class UiGongGao extends BaseUiAuth implements OnScrollListener,OnClickLis
 		blogParams.put("Id", lastId);
 		blogParams.put("typeId", "0");
 		blogParams.put("pageId", "0");
-		this.doTaskAsync(C.task.gg1, C.api.gg, blogParams);		
+		this.doTaskAsync(C.task.gg1, C.api.gg, blogParams, true);
 	}	
 		
 	//从网络获取数据
@@ -231,7 +231,7 @@ public class UiGongGao extends BaseUiAuth implements OnScrollListener,OnClickLis
 		HashMap<String, String> blogParams = new HashMap<String, String>();		
 		blogParams.put("typeId", "0");
 		blogParams.put("pageId", "0");
-		this.doTaskAsync(C.task.gg, C.api.gg, blogParams);
+		this.doTaskAsync(C.task.gg, C.api.gg, blogParams, true);
 					
 		}	
 	
@@ -488,7 +488,7 @@ public class UiGongGao extends BaseUiAuth implements OnScrollListener,OnClickLis
 			blogParams.put("Maxid", Maxid);
 			blogParams.put("typeId", "0");
 			blogParams.put("pageId", "0");
-			this.doTaskAsync(C.task.gg2, C.api.ggnew, blogParams);
+			this.doTaskAsync(C.task.gg2, C.api.ggnew, blogParams, true);
 		}
 		
 	//记录系统时间

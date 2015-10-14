@@ -49,7 +49,7 @@ public class UiEditText extends BaseUiAuth {
 						HashMap<String, String> urlParams = new HashMap<String, String>();
 						urlParams.put("key", "sign");
 						urlParams.put("val", input);
-						doTaskAsync(C.task.customerEdit, C.api.customerEdit, urlParams);
+						doTaskAsync(C.task.customerEdit, C.api.customerEdit, urlParams, true);
 					}
 				});
 				break;
@@ -62,7 +62,7 @@ public class UiEditText extends BaseUiAuth {
 						HashMap<String, String> urlParams = new HashMap<String, String>();
 						urlParams.put("blogId", blogId);
 						urlParams.put("content", input);
-						doTaskAsync(C.task.commentCreate, C.api.commentCreate, urlParams);
+						doTaskAsync(C.task.commentCreate, C.api.commentCreate, urlParams, true);
 					}
 				});
 				break;

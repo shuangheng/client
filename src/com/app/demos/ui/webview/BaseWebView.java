@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 import com.app.demos.R;
 import com.app.demos.layout.other.WebViewMy;
+import com.app.demos.layout.swipeRefreshLayout.CircleImageView;
 import com.app.demos.layout.swipebacklayout.SwipeBackLayout;
 import com.app.demos.layout.swipebacklayout.app.SwipeBackActivity;
 
@@ -50,7 +51,6 @@ public class BaseWebView extends SwipeBackActivity {
     private EditText editText;
     private boolean isFinishScrollLeft;
     private SwipeRefreshLayout swipeRefresh;
-    private SwipeBackLayout mSwipeBackLayout;
 
     @Override
     public void onCreate(Bundle paramBundle) {
@@ -60,7 +60,6 @@ public class BaseWebView extends SwipeBackActivity {
         initView();
         initSwipeRefresh();
 
-        mSwipeBackLayout = getSwipeBackLayout();
         Bundle localBundle = getIntent().getExtras();
         paramUrl = localBundle.getString("url");
         webView.loadUrl(paramUrl);
@@ -120,14 +119,14 @@ public class BaseWebView extends SwipeBackActivity {
         webView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                return false;
+                return true;//屏蔽系统copy meun
             }
         });
+        webView.setOnTouchListener(this);
         webView.setOnViewScrollChangedListener(new WebViewMy.OnViewTopListener() {
             @Override
             public void onScroll(int newY, int oldY) {
                 swipeRefresh.setEnabled(isViewTop());
-                mSwipeBackLayout.setEnableGesture(isViewTop());
             }
 
             @Override
@@ -150,7 +149,7 @@ public class BaseWebView extends SwipeBackActivity {
 
     private void initSwipeRefresh() {
         swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.ui_web_view_swipe_refresh);
-        swipeRefresh.setColorSchemeColors(R.color.ui_green);
+        swipeRefresh.setColorSchemeColors(android.support.v7.appcompat.R.attr.colorPrimary);
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

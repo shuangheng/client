@@ -26,14 +26,14 @@ public class UiSetFace extends BaseUiAuth {
 		setContentView(R.layout.ui_face);
 
 		// get face image list
-		this.doTaskAsync(C.task.faceList, C.api.faceList);
+		this.doTaskAsync(C.task.faceList, C.api.faceList, true);
 	}
 	
 	private void doSetFace (String faceId) {
 		HashMap<String, String> urlParams = new HashMap<String, String>();
 		urlParams.put("key", "face");
 		urlParams.put("val", faceId);
-		doTaskAsync(C.task.customerEdit, C.api.customerEdit, urlParams);
+		doTaskAsync(C.task.customerEdit, C.api.customerEdit, urlParams, true);
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////

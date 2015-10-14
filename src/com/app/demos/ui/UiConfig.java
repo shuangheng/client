@@ -81,7 +81,7 @@ public class UiConfig extends BaseUiAuth {
 		// prepare customer data
 		HashMap<String, String> cvParams = new HashMap<String, String>();
 		cvParams.put("customerId", customer.getId());
-		this.doTaskAsync(C.task.customerView, C.api.customerView, cvParams);
+		//this.doTaskAsync(C.task.customerView, C.api.customerView, cvParams);
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////

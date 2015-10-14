@@ -35,7 +35,6 @@ import com.app.demos.base.BaseMessage;
 import com.app.demos.base.BaseTask;
 import com.app.demos.base.BaseUi;
 import com.app.demos.base.C;
-import com.app.demos.base.baseActionbar.BaseUiActionBar;
 import com.app.demos.dialog.ProgressingDialog;
 import com.app.demos.layout.materialEditText.MaterialEditText;
 import com.app.demos.layout.materialEditText.MaterialEditTextComplete;
@@ -267,7 +266,7 @@ public class UiAuthenticator extends BaseUi {
             HashMap<String, String> urlparams = new HashMap<String, String>();
             urlparams.put("name", empno);
             urlparams.put("email", email);
-            doTaskAsync(C.task.forgotPwd, C.api.forgotPwd, urlparams);
+            doTaskAsync(C.task.forgotPwd, C.api.forgotPwd, urlparams, true);
         } else {
             toast(getResources().getString(R.string.email_wrong));
         }
@@ -278,7 +277,7 @@ public class UiAuthenticator extends BaseUi {
         urlparams.put("title", empno);
         urlparams.put("content", empno);
         urlparams.put("toemail", email);
-        doTaskAsync(C.task.sendMail, C.api.sendMail, urlparams);
+        doTaskAsync(C.task.sendMail, C.api.sendMail, urlparams, true);
     }
 
     private void doLogin(String empno, String emppwd) {
@@ -287,7 +286,7 @@ public class UiAuthenticator extends BaseUi {
             HashMap<String, String> urlParams = new HashMap<String, String>();
             urlParams.put("name", empno);
             urlParams.put("pass", emppwd);
-            this.doTaskAsync(C.task.login, C.api.login, urlParams);
+            this.doTaskAsync(C.task.login, C.api.login, urlParams, true);
         } else {
             toast(getString(R.string.emppwd_wrong));
         }
@@ -300,7 +299,7 @@ public class UiAuthenticator extends BaseUi {
             urlparams.put("pass", emppwd);
             urlparams.put("email", email);
             urlparams.put("authType", authType);
-            doTaskAsync(C.task.register, C.api.register, urlparams);
+            doTaskAsync(C.task.register, C.api.register, urlparams, true);
         } else if (emppwd.length() < 4) {
             toast(getResources().getString(R.string.emppwd_wrong));
         } else if (email.length() < 8) {

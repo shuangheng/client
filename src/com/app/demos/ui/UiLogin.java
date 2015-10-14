@@ -101,7 +101,7 @@ public class UiLogin extends BaseUi {
 			urlparams.put("name", mEditName.getText().toString());
 			urlparams.put("pass", mEditPass.getText().toString());
 			try {
-				this.doTaskAsync(C.task.register, C.api.register, urlparams);
+				this.doTaskAsync(C.task.register, C.api.register, urlparams, true);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -115,7 +115,7 @@ public class UiLogin extends BaseUi {
 			urlParams.put("name", mEditName.getText().toString());
 			urlParams.put("pass", mEditPass.getText().toString());
 			try {
-				this.doTaskAsync(C.task.login, C.api.login, urlParams);
+				this.doTaskAsync(C.task.login, C.api.login, urlParams, true);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -130,7 +130,7 @@ public class UiLogin extends BaseUi {
 			urlParams.put("pass", settings.getString("password", ""));
 			Log.e(settings.getString("username", ""),settings.getString("password", ""));
 			try {
-				this.doTaskAsync(C.task.login, C.api.login, urlParams);
+				this.doTaskAsync(C.task.login, C.api.login, urlParams, true);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

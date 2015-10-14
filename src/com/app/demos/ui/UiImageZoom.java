@@ -31,6 +31,7 @@ import com.app.demos.list.bitmap_load_list.FileCache;
 import com.app.demos.list.bitmap_load_list.ImageLoader;
 import com.app.demos.list.bitmap_load_list.ImageLoader_my;
 import com.app.demos.util.AppFileDownUtils;
+import com.app.demos.util.HttpUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -112,21 +113,21 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
     private void displayImage() {
         String url = "";
         imageLoader = new ImageLoader_my(context);
-            //bgImageUrl = params.getString("bgImageUrl");
-            bgImageUrl = getIntent().getStringExtra("imageUrl");
-            thumbUrl = getIntent().getStringExtra("thumbnailUrl");
+        //bgImageUrl = params.getString("bgImageUrl");
+        bgImageUrl = getIntent().getStringExtra("imageUrl");
+        thumbUrl = getIntent().getStringExtra("thumbnailUrl");
         if (thumbUrl != null) {
             imageLoader.DisplayImage(thumbUrl, photoView, true, false);
         }
-            if (bgImageUrl != null) {
-                Log.e("UiImageZoom >>url", bgImageUrl);
-                url = bgImageUrl;
-                progressBar.setVisibility(View.VISIBLE);
+        if (bgImageUrl != null) {
+            Log.e("UiImageZoom >>url", bgImageUrl);
+            url = bgImageUrl;
+            progressBar.setVisibility(View.VISIBLE);
 
 
-            } else {
-                url = "http://f.hiphotos.baidu.com/image/h%3D200/sign=5bd83cff0c7b020813c938e152d8f25f/37d3d539b6003af30f59c83a332ac65c1138b68c.jpg";
-            }
+        } else {
+            url = "http://f.hiphotos.baidu.com/image/h%3D200/sign=5bd83cff0c7b020813c938e152d8f25f/37d3d539b6003af30f59c83a332ac65c1138b68c.jpg";
+        }
         fileCache = new FileCache(context);
         saveFilePath = fileCache.getFile(url);
     }
@@ -135,12 +136,7 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
     @Override
     protected void onStart() {
         super.onStart();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                downUtils.start();
-            }
-        }).start();//load image
+        new Thread(downUtils).start();//load image
     }
 
     //private void getParam
@@ -159,20 +155,15 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
                 finish();
                 break;
             case R.id.ui_image_reload:
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        downUtils.start();
-                    }
-                }).start();//load image
                 imageReload.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
+                new Thread(downUtils).start();//load image
                 break;
         }
     }
 
     // inner classes
-    class ImageDownUtils extends Thread {
+    class ImageDownUtils implements Runnable {
 
         private Context mContext;
         private Handler mHandler;
@@ -190,7 +181,7 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
         private FileCache fileCache;
 
         public ImageDownUtils(Context context, Handler handler,
-                                String downloadUrl) {
+                              String downloadUrl) {
             mContext = context;
             mHandler = handler;
             mDownloadUrl = downloadUrl;
@@ -228,7 +219,13 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
                         Log.e(UiActionBar.TAG, "down");
                     } else {
                         Log.e(UiActionBar.TAG, "download");
-                        downSuc = downloadFile(mDownloadUrl, saveFilePath);
+                        if (HttpUtil.isNetworkConnected(UiImageZoom.this)) {
+                            downSuc = downloadFile(mDownloadUrl, saveFilePath);
+                        } else {
+                            Message msg = new Message();
+                            msg.what = MSG_UNDOWN;
+                            mHandler.sendMessage(msg);
+                        }
                     }
 
 
@@ -237,6 +234,7 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
                         msg.what = MSG_FINISH;
                         mHandler.sendMessage(msg);
                     } else {
+                        saveFilePath.delete();//delete 未下载完成的文件
                         Message msg = new Message();
                         msg.what = MSG_FAILURE;
                         mHandler.sendMessage(msg);
@@ -348,7 +346,13 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
                     case AppFileDownUtils.MSG_FAILURE:
                         imageReload.setVisibility(View.VISIBLE);
                         progressBar.setVisibility(View.GONE);
-                        progressBar.setProgress(0);
+                        progressBar.setProgress(2);
+                        break;
+                    case AppFileDownUtils.MSG_UNDOWN:
+                        imageReload.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
+                        progressBar.setProgress(2);
+                        Toast.makeText(UiImageZoom.this, getString(R.string.not_network), Toast.LENGTH_SHORT).show();
                         break;
                     case AppFileDownUtils.MSG_FINISH:
                         progressBar.setVisibility(View.GONE);

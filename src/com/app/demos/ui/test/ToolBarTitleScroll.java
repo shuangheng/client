@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.app.demos.R;
 import com.app.demos.base.BaseUi;
+import com.app.demos.layout.swipebacklayout.SwipeBackLayout;
 import com.app.demos.layout.swipebacklayout.app.SwipeBackActivity;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import java.util.List;
 /**
  * Created by root on 15-10-9.
  */
-public class ToolBarTitleScroll extends BaseUi implements AbsListView.OnScrollListener {
+public class ToolBarTitleScroll extends SwipeBackActivity implements AbsListView.OnScrollListener {
     //控件
     private ListView listView;
     private Toolbar toolbar;
@@ -38,7 +39,7 @@ public class ToolBarTitleScroll extends BaseUi implements AbsListView.OnScrollLi
     private float floatTitleLeftMargin;//header标题文字左偏移量
     private float floatTitleSize;//header标题文字大小
     private float floatTitleSizeLarge;//header标题文字大小（大号）
-    private GestureDetector gestureDetector;
+    private float scrollY;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,28 +51,7 @@ public class ToolBarTitleScroll extends BaseUi implements AbsListView.OnScrollLi
         initListViewHeader();
         initListView();
         initEvent();
-        gestureDetector = new GestureDetector(this, onGestureListener);
-    }
 
-    private GestureDetector.OnGestureListener onGestureListener =
-            new GestureDetector.SimpleOnGestureListener() {
-                @Override
-                public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-                                       float velocityY) {
-                    float x = e2.getX() - e1.getX();
-                    float y = e2.getY() - e1.getY();
-
-                    if (x > 0) {
-                        Toast.makeText(ToolBarTitleScroll.this, "向R滑", Toast.LENGTH_SHORT).show();
-                    } else if (x < 0) {
-                        Toast.makeText(ToolBarTitleScroll.this, "向左滑", Toast.LENGTH_SHORT).show();
-                    }
-                    return true;
-                }
-            };
-
-    public boolean onTouchEvent(MotionEvent event) {
-        return gestureDetector.onTouchEvent(event);
     }
 
     private void initMeasure() {
@@ -108,6 +88,7 @@ public class ToolBarTitleScroll extends BaseUi implements AbsListView.OnScrollLi
 
     private void initEvent() {
         listView.setOnScrollListener(this);
+        listView.setOnTouchListener(this);
     }
 
     @Override
@@ -121,12 +102,13 @@ public class ToolBarTitleScroll extends BaseUi implements AbsListView.OnScrollLi
     public void onScrollStateChanged(AbsListView view, int scrollState) {
 
 
+
     }
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         //Y轴偏移量
-        float scrollY = getScrollY(view);
+        scrollY = getScrollY(view);
 
         //变化率
         float headerBarOffsetY = headerHeight - minHeaderHeight;//Toolbar与header高度的差值
@@ -183,4 +165,6 @@ public class ToolBarTitleScroll extends BaseUi implements AbsListView.OnScrollLi
 
         return -top + firstVisiblePosition * c.getHeight() + headerHeight;
     }
+
+
 }

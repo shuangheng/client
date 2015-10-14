@@ -26,14 +26,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,10 +40,6 @@ import com.app.demos.base.BaseUi;
 import com.app.demos.base.C;
 import com.app.demos.layout.ButtonFloat;
 import com.app.demos.layout.other.PagerSlidingTabStrip_my;
-import com.app.demos.layout.other.TabRedDian;
-import com.app.demos.layout.swipebacklayout.app.SwipeBackActivity;
-import com.app.demos.list.MyList;
-import com.app.demos.list.bitmap_load_list.LoaderAdapter;
 import com.app.demos.model.FavoriteSpeak;
 import com.app.demos.model.Find;
 import com.app.demos.model.Gonggao;
@@ -60,7 +50,9 @@ import com.app.demos.ui.fragment.FindFragment;
 import com.app.demos.ui.fragment.Fragment2;
 import com.app.demos.ui.fragment.Fragment3;
 import com.app.demos.ui.fragment.SpeakFragment;
-import com.app.demos.ui.test.FlexibleSpaceWithImageListViewActivity;
+import com.app.demos.ui.test.GestureDetectorTest;
+import com.app.demos.ui.test.draglayoutdemo.*;
+import com.app.demos.ui.test.observableScrollView.FlexibleSpaceWithImageListViewActivity;
 import com.app.demos.ui.test.ToolBarTitleScroll;
 import com.app.demos.ui.test.UiFoxconnEssPost;
 
@@ -138,9 +130,13 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
-        mDrawerLayout.closeDrawers();
     }
 
     public static void actionStart(Context context) {
@@ -191,7 +187,8 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
     private void initDrawer() {
         drawerTv = (TextView) findViewById(R.id.drawer_tv);
         drawerList = (ListView) findViewById(R.id.drawer_list);
-        String[] data = {"设备信息", "other", "login out", "toolBar Scroll", "toolbar scroll 2"};
+        String[] data = {"设备信息", "other", "login out", "toolBar Scroll", "toolbar scroll 2", "GestureDetector"
+                        , "draglayoutdemo", "drag down", "drage top"};
         drawerList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data));
         drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -208,21 +205,37 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
                         drawerTv.setText(phoneName + "\n" + phoneModel + "\n" + phoneNumber + "\n" + SDK + "\n" + OS);
                         break;
                     case 1:
-                        mDrawerLayout.closeDrawers();
                         UiImageZoom.actionStart(context, null, null);
                         break;
                     case 2:
                         UiAuthenticator.actionStart(context, 2);
-                        mDrawerLayout.closeDrawers();
                         break;
                     case 3:
                         overlay(ToolBarTitleScroll.class);
-                        mDrawerLayout.closeDrawers();
                         break;
                     case 4:
                         overlay(FlexibleSpaceWithImageListViewActivity.class);
-                        mDrawerLayout.closeDrawers();
                         break;
+                    case 5:
+                        overlay(GestureDetectorTest.class);
+                        break;
+                    case 6:
+                        overlay(com.app.demos.ui.test.draglayoutdemo.MainActivity.class);
+                        break;
+                    case 7:
+                        overlay(com.app.demos.ui.test.dragelayoutDown.MainActivity.class);
+                        break;
+                    case 8:
+                        overlay(com.app.demos.ui.test.dragTopLayout.MainDragTopActivity.class);
+                        break;
+                }
+                if (position != 0) {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mDrawerLayout.closeDrawers();
+                        }
+                    }, 500);
                 }
             }
         });
@@ -455,7 +468,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         HashMap<String, String> blogParams = new HashMap<String, String>();
         blogParams.put("typeId", "0");
         blogParams.put("pageId", "0");
-        this.doTaskAsync(C.task.find, C.api.find, blogParams);
+        this.doTaskAsync(C.task.find, C.api.find, blogParams, true);
 
     }
 
@@ -473,7 +486,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
             blogParams.put("Id", lastId);
             blogParams.put("typeId", "0");
             blogParams.put("pageId", "0");
-            this.doTaskAsync(C.task.gg1, C.api.gg, blogParams);
+            this.doTaskAsync(C.task.gg1, C.api.gg, blogParams, false);
         }
     }
 
@@ -491,7 +504,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
             blogParams.put("Id", lastId);
             blogParams.put("typeId", "0");
             blogParams.put("pageId", "0");
-            this.doTaskAsync(C.task.find_more, C.api.find, blogParams);
+            this.doTaskAsync(C.task.find_more, C.api.find, blogParams, false);
         }
     }
 
@@ -501,7 +514,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         HashMap<String, String> blogParams = new HashMap<String, String>();
         blogParams.put("typeId", "0");
         blogParams.put("pageId", "0");
-        this.doTaskAsync(C.task.gg, C.api.gg, blogParams);
+        this.doTaskAsync(C.task.gg, C.api.gg, blogParams, true);
 
     }
 
@@ -509,20 +522,20 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         HashMap<String, String> blogParams = new HashMap<String, String>();
         blogParams.put("customerid", customerid);
         blogParams.put("speakId", speakId);
-        this.doTaskAsync(C.task.favorite_speak_delete, C.api.favorite_speak_delete, blogParams);
+        this.doTaskAsync(C.task.favorite_speak_delete, C.api.favorite_speak_delete, blogParams, false);
     }
 
     public void getFavoriteSpeakCreate(String customerid, String speakId) {
         HashMap<String, String> blogParams = new HashMap<String, String>();
         blogParams.put("customerid", customerid);
         blogParams.put("speakId", speakId);
-        this.doTaskAsync(C.task.favorite_speak_create, C.api.favorite_speak_create, blogParams);
+        this.doTaskAsync(C.task.favorite_speak_create, C.api.favorite_speak_create, blogParams, false);
     }
 
     public void getFavoriteSpeakAll(String customerid) {
         HashMap<String, String> blogParams = new HashMap<String, String>();
         blogParams.put("customerid", customerid);
-        this.doTaskAsync(C.task.favorite_speak, C.api.favorite_speak, blogParams);
+        this.doTaskAsync(C.task.favorite_speak, C.api.favorite_speak, blogParams, false);
     }
 
     //获取最后一条数据的ID

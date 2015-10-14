@@ -26,7 +26,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.SimpleAdapter.ViewBinder;
 
-public class BaseUi extends ActionBarActivity {
+public class BaseUi extends BaseActivity {
 
 	protected BaseApp app;
 	protected BaseHandler handler;
@@ -300,9 +300,14 @@ public class BaseUi extends ActionBarActivity {
 		taskPool.addTask(taskId, baseTask, delayTime);
 	}
 
-	public void doTaskAsync (int taskId, String taskUrl) {
-		if (HttpUtil.isNetworkConnected(this)) {
-			showProgressBar();
+	public void doTaskAsync (int taskId, String taskUrl, Boolean showProgress) {
+		if ( ! HttpUtil.isNetworkConnected(this)) {
+			toast(getString(R.string.not_network));
+			return;//stop moth
+		}
+			if (showProgress) {
+				showProgressBar();
+			}
 			taskPool.addTask(taskId, taskUrl, new BaseTask() {
 				@Override
 				public void onComplete(String httpResult) {
@@ -314,15 +319,17 @@ public class BaseUi extends ActionBarActivity {
 					sendMessage(BaseTask.NETWORK_ERROR, this.getId(), null);
 				}
 			}, 0);
-		} else {
-			hideProgressBar();
-			toast(getString(R.string.not_network));
-		}
+
 	}
 
-	public void doTaskAsync (int taskId, String taskUrl, HashMap<String, String> taskArgs) {
-		if (HttpUtil.isNetworkConnected(this)) {
-			showProgressBar();
+	public void doTaskAsync (int taskId, String taskUrl, HashMap<String, String> taskArgs, Boolean showProgress) {
+		if ( ! HttpUtil.isNetworkConnected(this)) {
+			toast(getString(R.string.not_network));
+			return;
+		}
+			if (showProgress) {
+				showProgressBar();
+			}
 			taskPool.addTask(taskId, taskUrl, taskArgs, new BaseTask() {
 				@Override
 				public void onComplete(String httpResult) {
@@ -334,10 +341,6 @@ public class BaseUi extends ActionBarActivity {
 					sendMessage(BaseTask.NETWORK_ERROR, this.getId(), null);
 				}
 			}, 0);
-		} else {
-			hideProgressBar();
-			toast(getString(R.string.not_network));
-		}
 	}
 
 	public void onTaskComplete (int taskId, BaseMessage message) {

@@ -248,7 +248,7 @@ public class UiCreateFind extends BaseUi{
             blogParams.put("item_summary", item_summary);
             blogParams.put("where", where);
             blogParams.put("content", content_text);
-            this.doTaskAsync(C.task.find_release, C.api.find_release, blogParams);
+            this.doTaskAsync(C.task.find_release, C.api.find_release, blogParams, true);
         }
     }
 
