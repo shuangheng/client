@@ -234,7 +234,7 @@ public class UiSpeakMain extends BaseUi{
             try {
                 switch (msg.what) {
                     case BaseTask.LOAD_IMAGE:
-                        activityfragment.listChanged();
+                       // activityfragment.listChanged();
                         break;
                 }
             } catch (Exception e) {

@@ -54,7 +54,7 @@ public class CommentList extends BaseList {
 		this.resourceId =resourceId;
 		this.inflater = LayoutInflater.from(ui);
 		this.commentList = commentList;
-        mImageLoader = new ImageLoader(context);
+        mImageLoader = new ImageLoader(context, "image");
 	}
 	
 	@Override

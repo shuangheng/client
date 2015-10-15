@@ -21,8 +21,11 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.Toast;
 import android.widget.SimpleAdapter.ViewBinder;
 
@@ -112,10 +115,12 @@ public class BaseUi extends BaseActivity {
 	// util method
 
 	public void toast (String msg) {
-		Toast toast = new Toast(this);
-		toast = Toast.makeText(this, msg, Toast.LENGTH_SHORT);
-		toast.setGravity(Gravity.CENTER, 0, 0);//显示位置
-		toast.show();
+		Toast toast = Toast.makeText(this, msg, Toast.LENGTH_SHORT);
+        View view = toast.getView();
+        view.setBackgroundResource(R.drawable.toast_bg);
+        toast.setView(view);
+        toast.setGravity(Gravity.CENTER, 0, 0);//显示位置
+        toast.show();
 	}
 
 	/**
@@ -302,6 +307,7 @@ public class BaseUi extends BaseActivity {
 
 	public void doTaskAsync (int taskId, String taskUrl, Boolean showProgress) {
 		if ( ! HttpUtil.isNetworkConnected(this)) {
+            hideProgressBar();
 			toast(getString(R.string.not_network));
 			return;//stop moth
 		}
@@ -309,21 +315,22 @@ public class BaseUi extends BaseActivity {
 				showProgressBar();
 			}
 			taskPool.addTask(taskId, taskUrl, new BaseTask() {
-				@Override
-				public void onComplete(String httpResult) {
-					sendMessage(BaseTask.TASK_COMPLETE, this.getId(), httpResult);
-				}
+                @Override
+                public void onComplete(String httpResult) {
+                    sendMessage(BaseTask.TASK_COMPLETE, this.getId(), httpResult);
+                }
 
-				@Override
-				public void onError(String error) {
-					sendMessage(BaseTask.NETWORK_ERROR, this.getId(), null);
-				}
-			}, 0);
+                @Override
+                public void onError(String error) {
+                    sendMessage(BaseTask.NETWORK_ERROR, this.getId(), null);
+                }
+            }, 0);
 
 	}
 
 	public void doTaskAsync (int taskId, String taskUrl, HashMap<String, String> taskArgs, Boolean showProgress) {
 		if ( ! HttpUtil.isNetworkConnected(this)) {
+            hideProgressBar();
 			toast(getString(R.string.not_network));
 			return;
 		}

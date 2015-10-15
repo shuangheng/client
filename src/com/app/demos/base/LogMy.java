@@ -40,13 +40,14 @@ public class LogMy {
     private static String createLog( String log ) {
 
         StringBuffer buffer = new StringBuffer();
-        buffer.append("DebugLog");
+        buffer.append(log);
+        buffer.append("------>>>>DebugLog");
         buffer.append("[");
         buffer.append(methodName);
         buffer.append(":");
         buffer.append(lineNumber);
         buffer.append("]");
-        buffer.append(log);
+
 
         return buffer.toString();
     }

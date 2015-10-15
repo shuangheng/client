@@ -11,7 +11,6 @@ import com.app.demos.layout.swipeRefreshLayout.Progress_m.OnRefreshListener;
 import com.app.demos.list.MyList;
 import com.app.demos.list.RecyclerAdapter.SpeakRecyclerAdapter;
 import com.app.demos.list.bitmap_load_list.ImageLoader;
-import com.app.demos.list.bitmap_load_list.LoaderAdapter;
 import com.app.demos.model.FavoriteSpeak;
 import com.app.demos.model.Gonggao;
 import com.app.demos.sqlite.GonggaoSqlite;
@@ -60,8 +59,7 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
     private ListView list;
     private ImageButton ib;
 	public MyList blogListAdapter;
-    private LoaderAdapter adapter;
-	private SharedPreferences sharedPreferences;	
+	private SharedPreferences sharedPreferences;
     private PopupWindow popupwindow;
     private View pupView;
     //下拉刷新Layout
@@ -294,7 +292,7 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
 
     @Override
     public void onDestroy() {
-        ImageLoader imageLoader = adapter.getImageLoader();
+        ImageLoader imageLoader = speakRecyclerAdapter.getImageLoader();
             if (imageLoader != null){
                 imageLoader.clearCache();
             }
@@ -323,9 +321,9 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
 				//ggList.add(g);
 				//getLastId(ggList);
 				//blogListAdapter = new MyList(activity,R.layout.tpl_list_speak, ggList);
-				adapter = new LoaderAdapter(activity,R.layout.tpl_list_speak, ggList);
+				//adapter = new LoaderAdapter(activity,R.layout.tpl_list_speak, ggList);
 				//adapter = new RecyclerAdapter(ggList);
-			    list.setAdapter(adapter);
+			    //list.setAdapter(adapter);
 				list.setOnItemClickListener(new OnItemClickListener(){
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view, int postion, long id) {
@@ -361,10 +359,6 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
             //recyclerAdapter.notifyDataSetChanged();// 通知listView刷新数据
 		}
 
-        //通知ListView加载图片
-        public void listChanged() {
-            adapter.notifyDataSetChanged();// 通知listView刷新数据
-        }
 /*
 		@Override
 		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {

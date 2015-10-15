@@ -67,7 +67,7 @@ public class FindRecycAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public FindRecycAdapter(Context context, ArrayList<Find> blogList) {
         mContext = context;
         gonggaoList = blogList;
-        mImageLoader = new ImageLoader(context);
+        mImageLoader = new ImageLoader(context, "image");
     }
 
     public static interface OnRecyclerViewListener {

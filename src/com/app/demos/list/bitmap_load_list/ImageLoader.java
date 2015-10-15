@@ -38,8 +38,8 @@ public class ImageLoader {
     // 线程池
     private ExecutorService executorService;
 
-    public ImageLoader(Context context) {
-        fileCache = new FileCache(context);
+    public ImageLoader(Context context, String file) {
+        fileCache = new FileCache(context, file);
         executorService = Executors.newFixedThreadPool(5);
     }
 

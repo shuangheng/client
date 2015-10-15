@@ -209,7 +209,7 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
     private void loadBgImage(){
         if (!bgImageUrl.equals("null")) {
             ivBgImage.setVisibility(View.VISIBLE);
-            new ImageLoader_my(this).DisplayImage(C.web.bgimage + bgImageUrl + ".jpg", ivBgImage, false, true);
+            new ImageLoader_my(this, "image").DisplayImage(C.web.bgimage + bgImageUrl + ".jpg", ivBgImage, false, true);
         }
     }
 

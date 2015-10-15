@@ -49,18 +49,9 @@ public class LoaderAdapter extends BaseAdapter{
         this.mCount = count;
         this.mContext = context;
         urlArrays = url;
-        mImageLoader = new ImageLoader(context);
+        mImageLoader = new ImageLoader(context, "LoaderAdapter");
     }
 
-    public LoaderAdapter (Context context,int resourceId, ArrayList<Gonggao> blogList) {
-
-
-        mContext = context;
-        this.resourceId =resourceId;
-        this.inflater = LayoutInflater.from(mContext);
-        this.gonggaoList = blogList;
-        mImageLoader = new ImageLoader(context);
-    }
 
     public ImageLoader getImageLoader(){
         return mImageLoader;

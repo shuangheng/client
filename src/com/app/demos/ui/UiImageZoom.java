@@ -24,6 +24,7 @@ import com.app.demos.base.BaseHandler;
 import com.app.demos.base.BaseTask;
 import com.app.demos.base.BaseUi;
 import com.app.demos.base.C;
+import com.app.demos.base.LogMy;
 import com.app.demos.layout.RoundProgressBar;
 import com.app.demos.layout.widget.photoview.PhotoView;
 import com.app.demos.layout.widget.photoview.PhotoViewAttacher;
@@ -66,8 +67,7 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
         handler = new IndexHandler();
         initView();
         displayImage();
-        downUtils = new ImageDownUtils(this, handler,
-                "http://f.hiphotos.baidu.com/image/h%3D200/sign=5bd83cff0c7b020813c938e152d8f25f/37d3d539b6003af30f59c83a332ac65c1138b68c.jpg");
+        downUtils = new ImageDownUtils(this, handler, bgImageUrl);
 
     }
 
@@ -112,7 +112,7 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
      */
     private void displayImage() {
         String url = "";
-        imageLoader = new ImageLoader_my(context);
+        imageLoader = new ImageLoader_my(context, "image");
         //bgImageUrl = params.getString("bgImageUrl");
         bgImageUrl = getIntent().getStringExtra("imageUrl");
         thumbUrl = getIntent().getStringExtra("thumbnailUrl");
@@ -120,7 +120,7 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
             imageLoader.DisplayImage(thumbUrl, photoView, true, false);
         }
         if (bgImageUrl != null) {
-            Log.e("UiImageZoom >>url", bgImageUrl);
+            LogMy.e("UiImageZoom >>url" + bgImageUrl);
             url = bgImageUrl;
             progressBar.setVisibility(View.VISIBLE);
 
@@ -128,7 +128,7 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
         } else {
             url = "http://f.hiphotos.baidu.com/image/h%3D200/sign=5bd83cff0c7b020813c938e152d8f25f/37d3d539b6003af30f59c83a332ac65c1138b68c.jpg";
         }
-        fileCache = new FileCache(context);
+        fileCache = new FileCache(context, "image");
         saveFilePath = fileCache.getFile(url);
     }
 
@@ -216,9 +216,9 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
                         msg.what = MSG_FINISH;
                         mHandler.sendMessage(msg);
                         downSuc = true;
-                        Log.e(UiActionBar.TAG, "down");
+                        LogMy.e("down");
                     } else {
-                        Log.e(UiActionBar.TAG, "download");
+                        LogMy.e("download");
                         if (HttpUtil.isNetworkConnected(UiImageZoom.this)) {
                             downSuc = downloadFile(mDownloadUrl, saveFilePath);
                         } else {
@@ -248,7 +248,8 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
                     mHandler.sendMessage(msg);
                 }
             } catch (Exception e) {
-                Log.e(UiActionBar.TAG, "AppFileDownUtils catch Exception:", e);
+                e.printStackTrace();
+                LogMy.e( "AppFileDownUtils catch Exception:" +e.getMessage());
                 Message msg = new Message();
                 msg.what = MSG_FAILURE;
                 mHandler.sendMessage(msg);
@@ -314,7 +315,7 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
                                 msg.what = MSG_DOWNING;
                                 msg.setData(bundle);
                                 mHandler.sendMessage(msg);
-                                Log.e(UiActionBar.TAG, "downloading");
+                                LogMy.e("downloading");
                                 tempProgress = progress;
                             }
                         }
@@ -328,7 +329,8 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
                 }
             } catch (Exception e) {
                 result = false;
-                Log.e(UiActionBar.TAG, "downloadFile catch Exception:", e);
+                e.printStackTrace();
+                LogMy.e("downloadFile catch Exception:" +e.getMessage());
             }
             return result;
         }

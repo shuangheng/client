@@ -158,7 +158,7 @@ public class UiFoxconnEssPost extends SwipeBackActivity implements View.OnClickL
         super.onTaskComplete(result);
         textView.setText(result);
         Bitmap bitmap = null;
-        FileCache fileCache = new FileCache(context);
+        FileCache fileCache = new FileCache(context, "12344");
         File saveFilePath = fileCache.getFile("1234");
         JSONObject localJSONObject;
 

@@ -116,7 +116,6 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         ///////////////////////////////////////////
         this.setHandler(new MyHandler(this));
         isFirstOpean = true;//第一次打开程序
-        resources = getResources();
         initWidth();
         setUpActionBar();
         //initSwipeRefresh();
@@ -474,7 +473,6 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
 
     //加载更多数据
     public void loadMoreData() {
-        // TODO Auto-generated method stub
         if(lastIdNum == 1){
             //activityfragment.hideLoadMore();
             //activityfragment.recyclerAdapter.setisShowBottom(false);
@@ -492,7 +490,6 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
 
     //加载更多Find数据
     public void loadMoreFindData() {
-        // TODO Auto-generated method stub
         if(lastIdNum == 1){
             //activityfragment.hideLoadMore();
             //activityfragment.recyclerAdapter.setisShowBottom(false);
@@ -582,16 +579,22 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
                 try {	//all Data
                     ArrayList<Gonggao> ggList1 = (ArrayList<Gonggao>) message.getResultList("Gonggao");
                     //缓存数据
-                    gonggaoSqlite.delete(null, null);
-                    for(Gonggao g : ggList1){
-                        g.setFavorite("1");
-                        gonggaoSqlite.updateGonggao(g);
+                    if (ggList1 != null) {
+                        gonggaoSqlite.delete(null, null);
+                        for (Gonggao g : ggList1) {
+                            if (favoriteSpeakSqlite.exists(FavoriteSpeak.COL_SPEAKID + "=?", new String[]{g.getId()})) {
+                                g.setFavorite("0");
+                            } else {
+                                g.setFavorite("1");
+                            }
+                            gonggaoSqlite.updateGonggao(g);
+                        }
+                        getLastId(ggList1);
+                        getFirstId(ggList1);
                     }
 
-                    getLastId(ggList1);
-                    getFirstId(ggList1);
-
-                    activityfragment.setGgList(ggList1);
+                    ArrayList<Gonggao> gg = gonggaoSqlite.getAllGonggao();
+                    activityfragment.setGgList(gg);
 
                     //activityfragment.blogListAdapter.notifyDataSetChanged();// 通知listView刷新数据
                 } catch (Exception e) {
@@ -603,14 +606,22 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
             case C.task.gg1:
                 try {	//剩余Data
                     ArrayList<Gonggao> ggList1 = (ArrayList<Gonggao>) message.getResultList("Gonggao");
-                    for (Gonggao g : ggList1) {
-                        g.setFavorite("1");
-                       gonggaoSqlite.updateGonggao(g);
+                    if (ggList1 != null) {
+                        gonggaoSqlite.delete(null, null);
+                        for (Gonggao g : ggList1) {
+                            if (favoriteSpeakSqlite.exists(FavoriteSpeak.COL_SPEAKID + "=?", new String[]{g.getId()})) {
+                                g.setFavorite("0");
+                            } else {
+                                g.setFavorite("1");
+                            }
+                            gonggaoSqlite.updateGonggao(g);
+                        }
+                        getLastId(ggList1);
                     }
-                    getLastId(ggList1);
-                    activityfragment.addGgList(ggList1);
+
+                    ArrayList<Gonggao> gg = gonggaoSqlite.getAllGonggao();
+                    activityfragment.addGgList(gg);
                 } catch (Exception e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 break;
@@ -638,7 +649,6 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
                     findfragment.addGgList(ggList1);
                     //blogListAdapter.notifyDataSetChanged();// 通知listView刷新数据
                 } catch (Exception e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 break;
@@ -651,7 +661,6 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
                         toast(getString(R.string.favorite_fail));
                     }
                 } catch (Exception e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             case C.task.favorite_speak_delete:
@@ -662,7 +671,6 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
                         toast(getString(R.string.favorite_delete_fail));
                     }
                 } catch (Exception e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 break;
@@ -673,7 +681,6 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
                            favoriteSpeakSqlite.updateFavoriteSpeak(g);
                         }
                 } catch (Exception e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 break;
@@ -766,7 +773,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
             try {
                 switch (msg.what) {
                     case BaseTask.LOAD_IMAGE:
-                        activityfragment.listChanged();
+                        //activityfragment.listChanged();
                         break;
                 }
             } catch (Exception e) {

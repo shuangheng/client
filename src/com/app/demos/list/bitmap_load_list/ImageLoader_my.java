@@ -45,8 +45,8 @@ public class ImageLoader_my {
     private ExecutorService executorService;
     private String TAG = ImageLoader_my.class.getName();
 
-    public ImageLoader_my(Context context) {
-        fileCache = new FileCache(context);
+    public ImageLoader_my(Context context, String file) {
+        fileCache = new FileCache(context, file);
         executorService = Executors.newFixedThreadPool(5);
     }
 

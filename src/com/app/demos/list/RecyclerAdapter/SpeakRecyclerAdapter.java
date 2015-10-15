@@ -63,7 +63,7 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
     public SpeakRecyclerAdapter(Context context, ArrayList<Gonggao> blogList) {
         mContext = context;
         gonggaoList = blogList;
-        mImageLoader = new ImageLoader(context);
+        mImageLoader = new ImageLoader(context, "image");
     }
 
     public static interface OnRecyclerViewListener {
@@ -119,7 +119,7 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
             Gonggao g = gonggaoList.get(position);
             holder.content.setText(AppFilter.getHtml(g.getContent()));
 
-            holder.type.setText(g.getType());
+            holder.type.setText(g.getId());
             holder.extra.setText(g.getTypeAll());
             holder.likecount.setText(g.getLikeCount());
 

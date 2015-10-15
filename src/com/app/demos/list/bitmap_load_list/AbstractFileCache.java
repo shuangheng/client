@@ -12,16 +12,18 @@ import java.io.File;
 import android.content.Context;
 import android.util.Log;
 
+import com.app.demos.base.LogMy;
+
 
 public abstract class AbstractFileCache {
 
     private String dirString;
 
-    public AbstractFileCache(Context context) {
+    public AbstractFileCache(Context context, String file) {
 
-        dirString = getCacheDir();
+        dirString = getCacheDir(file);
         boolean ret = FileHelper.createDirectory(dirString);
-        Log.e("", "FileHelper.createDirectory:" + dirString + ", ret = " + ret);
+        LogMy.e("FileHelper.createDirectory:" + dirString + ", ret = " + ret);
     }
 
     public File getFile(String url) {
@@ -30,7 +32,7 @@ public abstract class AbstractFileCache {
     }
 
     public abstract String  getSavePath(String url);
-    public abstract String  getCacheDir();
+    public abstract String  getCacheDir(String file);
 
     public void clear() {
         FileHelper.deleteDirectory(dirString);

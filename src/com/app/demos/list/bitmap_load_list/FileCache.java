@@ -9,22 +9,24 @@ import android.content.Context;
 
 public class FileCache extends AbstractFileCache {
 
-    public FileCache(Context context) {
-        super(context);
+    private String file;
 
+    public FileCache(Context context, String file) {
+        super(context, file);
+        this.file = file;
     }
 
 
     @Override
     public String getSavePath(String url) {
         String filename = String.valueOf(url.hashCode());
-        return getCacheDir() + filename;
+        return getCacheDir(file) + filename;
     }
 
     @Override
-    public String getCacheDir() {
+    public String getCacheDir(String file) {
 
-        return FileManager.getSaveFilePath();
+        return FileManager.getSaveFilePath(file);
     }
 }
 
