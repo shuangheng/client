@@ -15,7 +15,7 @@ public class Comment extends BaseModel {
 	private String type;
 	private String uptime;
 	
-	public Comment () {}
+
 	
 	public String getId () {
 		return this.id;

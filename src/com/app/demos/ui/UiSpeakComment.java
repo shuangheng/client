@@ -32,6 +32,9 @@ import com.app.demos.base.BaseMessage;
 import com.app.demos.base.BaseTask;
 import com.app.demos.base.BaseUi;
 import com.app.demos.base.C;
+import com.app.demos.layout.ButtonFloat;
+import com.app.demos.layout.ResizeLayout;
+import com.app.demos.layout.materialEditText.MaterialEditText;
 import com.app.demos.list.CommentList;
 import com.app.demos.list.bitmap_load_list.ImageLoader;
 import com.app.demos.list.bitmap_load_list.ImageLoader_my;
@@ -40,11 +43,12 @@ import com.app.demos.model.Customer;
 //import com.app.demos.ui.UiBlog.BlogHandler;
 import com.app.demos.model.Gonggao;
 import com.app.demos.util.AppFilter;
+import com.app.demos.util.ImmUtil;
 import com.app.demos.util.UIUtil;
 
 import static com.app.demos.util.Math_my.isEven;
 
-public class UiSpeakComment extends BaseUi implements OnScrollListener{
+public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickListener {
     private String speakId;
     private String customerId;
     private String content;
@@ -79,6 +83,15 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
     private String favorite;
     private int toolcolor;
 
+    private static final int BIGGER = 1;//about InputMode
+    private static final int SMALLER = 2;
+    private static final int MSG_RESIZE = 1;
+    private static final int HEIGHT_THREADHOLD = 30;
+    private ResizeLayout reSizelayout;
+
+    private ButtonFloat btnFloat;
+    private LinearLayout editLayout;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,9 +100,12 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
 
         // set handler
         this.setHandler(new BlogHandler(this));
-        layout = (LinearLayout) this.findViewById(R.id.tpl_list_speak_bottom_layout);
 
         //--fill content
+        initParamData();
+        initView();
+
+        initList();
         fillContent();
         initToolBar();
         //**load bgImage
@@ -126,8 +142,8 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
                     //@SuppressWarnings("unchecked")
                     commentList = (ArrayList<Comment>) message.getResultList("Comment");
                     getLastId(commentList);
-                    //commentAdapter.notifyDataSetChanged();// 通知listView刷新数据
                     setMyAdapter();
+                    commentAdapter.notifyDataSetChanged();// 通知listView刷新数据
                 } catch (Exception e) {
                     e.printStackTrace();
                     toast(e.getMessage());
@@ -175,18 +191,11 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
     //设置默认List adapter
     public void setMyAdapter(){
         //commentList =  new ArrayList<Comment>();
-        list = (ListView) this.findViewById(R.id.ui_speak_comment_listview);
+        //Comment comment = new Comment("ff", "ffff");
+        //commentList.add(comment);
         commentAdapter = new CommentList(this,R.layout.tpl_list_speak_comment, commentList);
-        list.addHeaderView(tplSpeak);
-        list.addFooterView(moreView);
         list.setAdapter(commentAdapter);
-        list.setOnScrollListener(this);
-        list.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int postion, long id) {
 
-            }
-        });
 
     }
 
@@ -197,8 +206,9 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
     private void initToolBar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(getTitle());// 标题的文字需在setSupportActionBar之前，不然会无效
-        if (toolcolor != R.color.white) {
+        if (toolcolor != android.R.color.white) {
             toolbar.setBackgroundColor(toolcolor);
+            btnFloat.setBackgroundColor(toolcolor);
         }
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -213,6 +223,61 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
         }
     }
 
+    private void initList() {
+        list = (ListView) this.findViewById(R.id.ui_speak_comment_listview);
+        list.addHeaderView(tplSpeak);
+        list.addFooterView(moreView);
+
+        list.setOnScrollListener(this);
+        list.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int postion, long id) {
+
+            }
+        });
+    }
+
+    private void initView() {
+        reSizelayout = (ResizeLayout) findViewById(R.id.ui_speak_comment_ResizeLayout);
+        moreView = getLayoutInflater().inflate(R.layout.load_more, null);
+        tplSpeak = getLayoutInflater().inflate(R.layout.tpl_list_speak_comment_header, null);
+        layout = (LinearLayout) tplSpeak.findViewById(R.id.tpl_list_speak_bottom_layout);
+        containerLayout = (LinearLayout) tplSpeak.findViewById(R.id.tpl_list_speak_container);
+        tvContent = (TextView) tplSpeak.findViewById(R.id.tpl_list_speak_tv_content);
+        tvType = (TextView) tplSpeak.findViewById(R.id.tpl_list_speak_tv_type);
+        extra = (TextView) tplSpeak.findViewById(R.id.tpl_list_speak_speak_extra);
+        tvLikeCount = (TextView) tplSpeak.findViewById(R.id.tpl_list_speak_tv_like);
+        ivBgImage = (ImageView) tplSpeak.findViewById(R.id.tpl_list_speak_iv_bg);
+        ibLike = (ImageButton) tplSpeak.findViewById(R.id.tpl_list_speak_ib_like);
+
+        btnFloat = (ButtonFloat) findViewById(R.id.ui_speak_comment_buttonFloat);
+        editLayout = (LinearLayout) findViewById(R.id.ui_speak_comment_editLayout);
+
+        reSizelayout.setOnResizeListener(new ResizeLayout.OnResizeListener() {
+            @Override
+            public void OnResize(int w, int h, int oldw, int oldh) {
+                int change = BIGGER;
+                if (h < oldh) {
+                    change = SMALLER;
+                }
+
+                Message msg = new Message();
+                msg.what = 1;
+                msg.arg1 = change;
+                handler.sendMessage(msg);
+            }
+        });
+
+        btnFloat.setOnClickListener(this);
+        ivBgImage.setOnClickListener(this);
+        ibLike.setOnClickListener(this);
+
+    }
+
+    private void initParamData() {
+    }
+
+
     //--fill content
     private void fillContent(){
         Bundle params = this.getIntent().getExtras();
@@ -226,56 +291,25 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
         favorite = g.getFavorite();
         bgColor = params.getString("bgColor");
 
-        moreView = getLayoutInflater().inflate(R.layout.load_more, null);
-        tplSpeak = getLayoutInflater().inflate(R.layout.tpl_list_speak_comment_header, null);
-
-        // fill content
-        layout = (LinearLayout) tplSpeak.findViewById(R.id.tpl_list_speak_bottom_layout);
-        containerLayout = (LinearLayout) tplSpeak.findViewById(R.id.tpl_list_speak_container);
-        tvContent = (TextView) tplSpeak.findViewById(R.id.tpl_list_speak_tv_content);
-        tvType = (TextView) tplSpeak.findViewById(R.id.tpl_list_speak_tv_type);
-        extra = (TextView) tplSpeak.findViewById(R.id.tpl_list_speak_speak_extra);
-        tvLikeCount = (TextView) tplSpeak.findViewById(R.id.tpl_list_speak_tv_like);
-        ivBgImage = (ImageView) tplSpeak.findViewById(R.id.tpl_list_speak_iv_bg);
-        ibLike = (ImageButton) tplSpeak.findViewById(R.id.tpl_list_speak_ib_like);
-        //mlayout = getLayout(R.id.tpl_list_speak_bottom_layout);
-        ivBgImage.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Bundle params = new Bundle();
-                //params.putString("bgImageUrl", bgImageUrl);
-                //overlay(UiImageZoom.class, params);
-                UiImageZoom.actionStart(getContext(), C.web.bgimage + bgImageUrl + ".jpg", null);
-            }
-        });
-
-        if (favorite != null && favorite.equals("0")) {
-            ibLike.setBackgroundResource(R.drawable.ic_card_liked);
-        }
-        ibLike.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //blogItem.ib.setImageResource(R.drawable.ic_card_liked);
-                Log.d("ibutton", "yes");
-
-                v.setBackgroundResource(new MainActivity().likeButtonClick(getContext()));
-                //new TestFragment().likeButtonClick();
-            }
-        });
-        int position = Integer.parseInt(bgColor);
-        toolcolor = !isEven(position) ? containerLayout.getResources().getColor(C.colors[position % 16]) :
-                                        containerLayout.getResources().getColor(R.color.white);
+        int position = Integer.parseInt(bgColor);//bg color
+        toolcolor = !isEven(position) ? getResources().getColor(C.colors[position % 16]) :
+                getResources().getColor(android.R.color.white);
         containerLayout.setBackgroundColor(toolcolor);
+
         tvContent.setText(AppFilter.getHtml(content));
         tvType.setText(type);
         extra.setText("评论 " + commentcount);
         tvLikeCount.setText(likeCount);
         ivBgImage.setBackgroundColor(getResources().getColor(R.color.white));
+
+        if (favorite != null && favorite.equals("0")) {
+            ibLike.setBackgroundResource(R.drawable.ic_card_liked);
+        }
         //设置ImageView大小
-        ViewGroup.LayoutParams param = ivBgImage.getLayoutParams();
-        param.height=BaseUi.DEVICE_WIDTH;
-        param.width =BaseUi.DEVICE_WIDTH;
-        ivBgImage.setLayoutParams(param);
+        //ViewGroup.LayoutParams param = ivBgImage.getLayoutParams();
+        //param.height=BaseUi.DEVICE_WIDTH;
+        //param.width =BaseUi.DEVICE_WIDTH;
+        //ivBgImage.setLayoutParams(param);
         /////Log.d("l_11", "yes");
     }
 
@@ -285,14 +319,30 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
         // 滑到底部后自动加载，判断listview已经停止滚动
         if (scrollState == OnScrollListener.SCROLL_STATE_IDLE
                 && lastVisibleIndex >= commentAdapter.getCount()) {
-            Log.e("ScrollView","bottom");
             moreView.setVisibility(View.VISIBLE);
-            handler.postDelayed(new Runnable() {
+            handler.post(new Runnable() {
                 @Override
                 public void run() {
                     loadMoreData();
                 }
-            }, 2000);
+            });
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.ui_speak_comment_buttonFloat:
+                editLayout.setVisibility(View.VISIBLE);
+                MaterialEditText editText = (MaterialEditText) findViewById(R.id.ui_speak_comment_editText);
+                //editText.requestFocus();
+                ImmUtil.showInput2(UiSpeakComment.this, editText);
+
+                break;
+            case R.id.tpl_list_speak_iv_bg:
+                UiImageZoom.actionStart(getContext(), C.web.bgimage + bgImageUrl + ".jpg", null);
+                break;
+
         }
     }
 
@@ -306,17 +356,19 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            try {
-                switch (msg.what) {
-                    case BaseTask.LOAD_IMAGE:
-                        //Bitmap face = AppCache.getImage(faceImageUrl);
-                        //faceImage.setImageBitmap(face);
-
-                        break;
+            switch (msg.what) {
+                case MSG_RESIZE: {
+                    if (msg.arg1 == BIGGER) {//inputMode is hidding
+                        btnFloat.setVisibility(View.VISIBLE);
+                        editLayout.setVisibility(View.GONE);
+                    } else {
+                        btnFloat.setVisibility(View.GONE);
+                        editLayout.setVisibility(View.VISIBLE);
+                    }
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-                ui.toast(e.getMessage());
+                break;
+                default:
+                    break;
             }
         }
     }
@@ -340,8 +392,6 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener{
         }else{
             HashMap<String, String> blogParams = new HashMap<String, String>();
             blogParams.put("lastId", lastId);
-            //blogParams.put("typeId", "0");
-            //blogParams.put("pageId", "0");
             this.doTaskAsync(C.task.commentListMore, C.api.commentAllList, blogParams, false);
         }
     }

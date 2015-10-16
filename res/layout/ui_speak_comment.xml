@@ -1,92 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.app.demos.layout.ResizeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ui_speak_comment_ResizeLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:materialdesign="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent" >
 
-	<LinearLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="?attr/actionBarSize"
 
         android:orientation="vertical">
-    <!--android:layout_above="@+id/ui_speak_comment_editLayout" -->
-    <ListView
-        android:id="@+id/ui_speak_comment_listview"
+        <ListView
+            android:id="@+id/ui_speak_comment_listview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:cacheColorHint="#00000000"
+            android:descendantFocusability="blocksDescendants"
+            android:divider="@null"
+            android:dividerHeight="2dp"
+            android:fadingEdge="vertical"
+            android:fadingEdgeLength="1dp"
+            android:listSelector="@drawable/xml_list_bg" />
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/ui_speak_comment_editLayout"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:cacheColorHint="#00000000"
-        android:descendantFocusability="blocksDescendants"
-        android:divider="@null"
-        android:dividerHeight="2dp"
-        android:fadingEdge="vertical"
-
-        android:fadingEdgeLength="1dp"
-
-        android:listSelector="@drawable/xml_list_bg" />
-
-  </LinearLayout>
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:gravity="bottom"
+        android:visibility="invisible">
 
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/ic_publish_operation_bar_keyboard"
+            android:contentDescription="@null" />
 
-<!--LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    android:layout_gravity="bottom"
-    android:gravity="bottom"
-    android:id="@+id/ui_speak_comment_editLayout"
-    android:orientation="horizontal">
+        <com.app.demos.layout.materialEditText.MaterialEditText
+            android:id="@+id/ui_speak_comment_editText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:maxLines="3"
+            android:maxLength="20"
+            android:hint="@string/input_comment"
+            android:textCursorDrawable="@drawable/text_cursor_cyan"
+            app:met_typeface="fonts/Roboto-LightItalic.ttf"
+            app:met_accentTypeface="fonts/Roboto-LightItalic.ttf"
+            app:met_baseColor="@android:color/black"
+            app:met_floatingLabel="highlight"
+            android:layout_weight="1"
+            app:met_primaryColor="?colorAccent" />
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/ic_send_btn_disabled" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:src="@drawable/ic_publish_operation_bar_keyboard" />
-
-    <com.app.demos.layout.materialEditText.MaterialEditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:maxLines="3"
-        android:maxLength="20"
-        android:hint="Library Name"
-        android:text="MaterialEditText"
-        android:textCursorDrawable="@drawable/text_cursor_cyan"
-        app:met_typeface="fonts/Roboto-LightItalic.ttf"
-        app:met_accentTypeface="fonts/Roboto-LightItalic.ttf"
-        app:met_baseColor="@android:color/black"
-        app:met_floatingLabel="highlight"
-        android:layout_weight="1"
-
-        app:met_primaryColor="?colorAccent" />
-        <!-
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="3dp"
-        android:layout_weight="1"
-        android:background="@drawable/textfield_default_holo_light"
-        android:focusable="false"
-        android:editable="true"
-        android:hint="@string/btn_comment"
-        android:maxLines="5"
-         >
-
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-
-        android:background="@drawable/ic_send_btn_disabled" />
-
-</LinearLayout -->
+    </LinearLayout >
 
     <com.app.demos.layout.ButtonFloat
-        android:id="@+id/buttonFloat"
+        android:id="@+id/ui_speak_comment_buttonFloat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -100,4 +86,4 @@
 
     <include layout="@layout/toolbar" />
 
-</RelativeLayout>    
+</com.app.demos.layout.ResizeLayout>
