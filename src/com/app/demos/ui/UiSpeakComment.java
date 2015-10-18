@@ -9,10 +9,8 @@ import android.os.Bundle;
 import android.os.Message;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -20,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,18 +28,16 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.app.demos.R;
 import com.app.demos.base.BaseHandler;
 import com.app.demos.base.BaseMessage;
-import com.app.demos.base.BaseTask;
 import com.app.demos.base.BaseUi;
 import com.app.demos.base.C;
+import com.app.demos.base.LogMy;
 import com.app.demos.layout.ButtonFloat;
 import com.app.demos.layout.ResizeLayout;
 import com.app.demos.layout.materialEditText.MaterialEditText;
 import com.app.demos.list.CommentList;
-import com.app.demos.list.bitmap_load_list.ImageLoader;
 import com.app.demos.list.bitmap_load_list.ImageLoader_my;
 import com.app.demos.model.Comment;
 import com.app.demos.model.Customer;
-//import com.app.demos.ui.UiBlog.BlogHandler;
 import com.app.demos.model.Gonggao;
 import com.app.demos.util.AppFilter;
 import com.app.demos.util.ImmUtil;
@@ -71,6 +68,8 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
     private ArrayList<Comment> commentList;
     private CommentList commentAdapter;
     private View moreView;
+    private ProgressBar moreView_pg;
+    private TextView moreView_tv;
     private View tplSpeak;
     private ImageButton ibLike;
     private int lastVisibleIndex;
@@ -91,6 +90,7 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
 
     private ButtonFloat btnFloat;
     private LinearLayout editLayout;
+    private boolean bgColorIsWhite;
 
 
     @Override
@@ -116,8 +116,17 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
     @Override
     public void onStart () {
         super.onStart();
-        loadData();
+        if (commentList == null) {
+            LogMy.e(getContext(),"commentList == null");
+            loadData();
+        }
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        btnFloat.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
     }
 
     public static void actionStart(Context context,Gonggao g, String bgColor) {
@@ -127,75 +136,15 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
         context.startActivity(intent);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // async task callback methods
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public void onTaskComplete(int taskId, BaseMessage message) {
-        super.onTaskComplete(taskId, message);
-
-        switch (taskId) {
-            case C.task.commentAllList:
-
-                try {
-                    //@SuppressWarnings("unchecked")
-                    commentList = (ArrayList<Comment>) message.getResultList("Comment");
-                    getLastId(commentList);
-                    setMyAdapter();
-                    commentAdapter.notifyDataSetChanged();// 通知listView刷新数据
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    toast(e.getMessage());
-                }
-                break;
-            case C.task.commentListMore:
-
-                try {
-                    //@SuppressWarnings("unchecked")
-                    ArrayList<Comment> commentList1 = (ArrayList<Comment>) message.getResultList("Comment");
-                    getLastId(commentList1);
-                    commentList.addAll(commentList1);
-                    commentAdapter.notifyDataSetChanged();// 通知listView刷新数据
-                    //setMyAdapter();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    toast(e.getMessage());
-                }
-                break;
-            case C.task.fansAdd:
-                if (message.getCode().equals("10000")) {
-                    toast("Add fans ok");
-                    // refresh customer data
-                    HashMap<String, String> cvParams = new HashMap<String, String>();
-                    cvParams.put("customerId", customerId);
-                    this.doTaskAsync(C.task.customerView, C.api.customerView, cvParams, true);
-                } else {
-                    toast("Add fans fail");
-                }
-                break;
-            case C.task.customerView:
-                try {
-                    // update customer info
-                    final Customer customer = (Customer) message.getResult("Customer");
-                    TextView textInfo = (TextView) this.findViewById(R.id.app_blog_text_customer_info);
-                    textInfo.setText(UIUtil.getCustomerInfo(this, customer));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    toast(e.getMessage());
-                }
-                break;
-        }
-    }
-
     //设置默认List adapter
     public void setMyAdapter(){
         //commentList =  new ArrayList<Comment>();
         //Comment comment = new Comment("ff", "ffff");
         //commentList.add(comment);
-        commentAdapter = new CommentList(this,R.layout.tpl_list_speak_comment, commentList);
-        list.setAdapter(commentAdapter);
-
+        if (commentAdapter == null) {
+            commentAdapter = new CommentList(this, R.layout.tpl_list_speak_comment, commentList);
+            list.setAdapter(commentAdapter);
+        }
 
     }
 
@@ -206,7 +155,7 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
     private void initToolBar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(getTitle());// 标题的文字需在setSupportActionBar之前，不然会无效
-        if (toolcolor != android.R.color.white) {
+        if (!bgColorIsWhite) {
             toolbar.setBackgroundColor(toolcolor);
             btnFloat.setBackgroundColor(toolcolor);
         }
@@ -219,7 +168,7 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
     private void loadBgImage(){
         if (!bgImageUrl.equals("null")) {
             ivBgImage.setVisibility(View.VISIBLE);
-            new ImageLoader_my(this, "image").DisplayImage(C.web.bgimage + bgImageUrl + ".jpg", ivBgImage, false, true);
+            new ImageLoader_my(this, "image").DisplayImage(C.web.bgimage + bgImageUrl + ".jpg", ivBgImage, false, false);
         }
     }
 
@@ -239,7 +188,11 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
 
     private void initView() {
         reSizelayout = (ResizeLayout) findViewById(R.id.ui_speak_comment_ResizeLayout);
-        moreView = getLayoutInflater().inflate(R.layout.load_more, null);
+
+        moreView = getLayoutInflater().inflate(R.layout.tpl_list_speak_footer, null);
+        moreView_pg = (ProgressBar) moreView.findViewById(R.id.list_speak_footer_progressbar);
+        moreView_tv = (TextView) moreView.findViewById(R.id.list_speak_footer_hint_textview);
+
         tplSpeak = getLayoutInflater().inflate(R.layout.tpl_list_speak_comment_header, null);
         layout = (LinearLayout) tplSpeak.findViewById(R.id.tpl_list_speak_bottom_layout);
         containerLayout = (LinearLayout) tplSpeak.findViewById(R.id.tpl_list_speak_container);
@@ -292,8 +245,9 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
         bgColor = params.getString("bgColor");
 
         int position = Integer.parseInt(bgColor);//bg color
-        toolcolor = !isEven(position) ? getResources().getColor(C.colors[position % 16]) :
-                getResources().getColor(android.R.color.white);
+        bgColorIsWhite = isEven(position);
+        toolcolor = bgColorIsWhite ? getResources().getColor(android.R.color.white) :
+                getResources().getColor(C.colors[position % 16]);
         containerLayout.setBackgroundColor(toolcolor);
 
         tvContent.setText(AppFilter.getHtml(content));
@@ -313,30 +267,14 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
         /////Log.d("l_11", "yes");
     }
 
-    // 滑到底部后自动loadData
-    @Override
-    public void onScrollStateChanged(AbsListView view, int scrollState) {
-        // 滑到底部后自动加载，判断listview已经停止滚动
-        if (scrollState == OnScrollListener.SCROLL_STATE_IDLE
-                && lastVisibleIndex >= commentAdapter.getCount()) {
-            moreView.setVisibility(View.VISIBLE);
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    loadMoreData();
-                }
-            });
-        }
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ui_speak_comment_buttonFloat:
-                editLayout.setVisibility(View.VISIBLE);
+                //editLayout.setVisibility(View.VISIBLE);
                 MaterialEditText editText = (MaterialEditText) findViewById(R.id.ui_speak_comment_editText);
                 //editText.requestFocus();
-                ImmUtil.showInput2(UiSpeakComment.this, editText);
+                ImmUtil.showSoftInput(getContext(), editText);
 
                 break;
             case R.id.tpl_list_speak_iv_bg:
@@ -344,6 +282,94 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
                 break;
 
         }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // async task callback methods
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void onTaskComplete(int taskId, BaseMessage message) {
+        super.onTaskComplete(taskId, message);
+        switch (taskId) {
+            case C.task.commentAllList:
+                try {
+                    commentList = (ArrayList<Comment>) message.getResultList("Comment");
+                    getLastId(commentList);
+                    setMyAdapter();
+                    commentAdapter.notifyDataSetChanged();// 通知listView刷新数据
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    toast(e.getMessage());
+                }
+                break;
+            case C.task.commentListMore:
+
+                try {
+                    //@SuppressWarnings("unchecked")
+                    ArrayList<Comment> commentList1 = (ArrayList<Comment>) message.getResultList("Comment");
+                    getLastId(commentList1);
+                    commentList.addAll(commentList1);
+                    commentAdapter.notifyDataSetChanged();// 通知listView刷新数据
+                    //setMyAdapter();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    toast(e.getMessage());
+                }
+                break;
+            case C.task.fansAdd:
+                if (message.getCode().equals("10000")) {
+                    toast("Add fans ok");
+                    // refresh customer data
+                    HashMap<String, String> cvParams = new HashMap<String, String>();
+                    cvParams.put("customerId", customerId);
+                    this.doTaskAsync(C.task.customerView, C.api.customerView, cvParams, true);
+                } else {
+                    toast("Add fans fail");
+                }
+                break;
+            case C.task.customerView:
+                try {
+                    // update customer info
+                    final Customer customer = (Customer) message.getResult("Customer");
+                    TextView textInfo = (TextView) this.findViewById(R.id.app_blog_text_customer_info);
+                    textInfo.setText(UIUtil.getCustomerInfo(this, customer));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    toast(e.getMessage());
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onNetworkError(int taskId) {
+        super.onNetworkError(taskId);
+        moreView_tv.setVisibility(View.VISIBLE);
+        moreView_pg.setVisibility(View.GONE);
+        moreView_tv.setText(getString(R.string.click_refresh));
+        moreView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (commentList == null) {
+                    loadData();
+                } else {
+                    loadMoreData();
+                }
+                moreView_pg.setVisibility(View.VISIBLE);
+                moreView_tv.setText(getString(R.string.btn_more));
+            }
+        });
+    }
+
+    @Override
+    protected void hideProgressBar() {
+
+    }
+
+    @Override
+    protected void showProgressBar() {
+
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -359,8 +385,8 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
             switch (msg.what) {
                 case MSG_RESIZE: {
                     if (msg.arg1 == BIGGER) {//inputMode is hidding
-                        btnFloat.setVisibility(View.VISIBLE);
                         editLayout.setVisibility(View.GONE);
+                        btnFloat.setVisibility(View.VISIBLE);
                     } else {
                         btnFloat.setVisibility(View.GONE);
                         editLayout.setVisibility(View.VISIBLE);
@@ -402,6 +428,23 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
         commentParams.put("id", speakId);
         commentParams.put("pageId", "0");
         this.doTaskAsync(C.task.commentAllList, C.api.commentAllList, true);
+    }
+
+    @Override// 滑到底部后自动loadData
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+        // 滑到底部后自动加载，判断listview已经停止滚动
+        if (scrollState == OnScrollListener.SCROLL_STATE_IDLE
+                && lastVisibleIndex >= commentAdapter.getCount()) {
+            moreView_tv.setVisibility(View.VISIBLE);
+            moreView_pg.setVisibility(View.VISIBLE);
+            moreView_tv.setText(getString(R.string.btn_more));
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    loadMoreData();
+                }
+            });
+        }
     }
 
     @Override

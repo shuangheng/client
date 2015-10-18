@@ -12,49 +12,49 @@ public class BaseActivity extends ActionBarActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LogMy.d("onCreate");
+        LogMy.d(this,"onCreate");
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        LogMy.d("onStart");
+        LogMy.d(this, "onStart");
     }
 
     @Override
     public void onRestart() {
         super.onRestart();
-        LogMy.d("onRestart");
+        LogMy.d(this, "onRestart");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        LogMy.d("onResume");
+        LogMy.d(this,"onResume");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        LogMy.d("onPause");
+        LogMy.d(this, "onPause");
     }
 
 
     @Override
     protected void onStop() {
         super.onStop();
-        LogMy.d("onStop");
+        LogMy.d(this, "onStop");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        LogMy.d("onDestroy");
+        LogMy.d(this, "onDestroy");
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        LogMy.d("onActivityResult");
+        LogMy.d(this, "onActivityResult");
     }
 }

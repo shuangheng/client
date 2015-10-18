@@ -36,6 +36,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
+ *
  * Created by tom on 15-6-6.
  */
 public class UiCreateFind extends BaseUi{
@@ -263,9 +264,6 @@ public class UiCreateFind extends BaseUi{
         }
     }
 
-    public void toast(String message) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-    }
 
     /**
      * 显示  发布 进度条
@@ -364,7 +362,7 @@ public class UiCreateFind extends BaseUi{
             //Toast.makeText(this, "add", Toast.LENGTH_SHORT).show();
             spinner_i++;
         } else {
-            Toast.makeText(this, "窗口达到上限", Toast.LENGTH_SHORT).show();
+            toast("窗口达到上限");
         }
     }
 

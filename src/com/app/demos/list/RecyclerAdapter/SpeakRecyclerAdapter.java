@@ -124,16 +124,16 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
             holder.likecount.setText(g.getLikeCount());
 
             //set background color
-            holder.content.setTextColor(holder.content.getResources().getColor(!isEven(position) ? R.color.white : R.color.black));
-            holder.ib.setBackgroundResource(!isEven(position) ? R.drawable.ic_card_like : R.drawable.ic_card_like_grey);
+            holder.content.setTextColor(holder.content.getResources().getColor(isEven(position) ? R.color.black : R.color.white));
+            holder.ib.setBackgroundResource(isEven(position) ? R.drawable.ic_card_like_grey : R.drawable.ic_card_like);
             //if (g.getFavorite() != null) {
                 if (g.getFavorite() != null && g.getFavorite().equals("0")) {
                     holder.ib.setBackgroundResource(R.drawable.ic_card_liked);
                 }
            // }
-            holder.containerLayout.setBackgroundColor(!isEven(position) ?
-                            holder.containerLayout.getResources().getColor(C.colors[position % 16]) :
-                            holder.containerLayout.getResources().getColor(R.color.white));
+            holder.containerLayout.setBackgroundColor(isEven(position) ?
+                            holder.containerLayout.getResources().getColor(R.color.white) :
+                            holder.containerLayout.getResources().getColor(C.colors[position % 16]));
 
             /*
             int weight = BaseUi.DEVICE_WIDTH;

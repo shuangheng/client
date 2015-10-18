@@ -12,6 +12,7 @@ import java.io.File;
 import android.content.Context;
 import android.util.Log;
 
+import com.app.demos.base.BaseApp;
 import com.app.demos.base.LogMy;
 
 
@@ -23,7 +24,7 @@ public abstract class AbstractFileCache {
 
         dirString = getCacheDir(file);
         boolean ret = FileHelper.createDirectory(dirString);
-        LogMy.e("FileHelper.createDirectory:" + dirString + ", ret = " + ret);
+        LogMy.e(BaseApp.getContext(),"FileHelper.createDirectory:" + dirString + ", ret = " + ret);
     }
 
     public File getFile(String url) {

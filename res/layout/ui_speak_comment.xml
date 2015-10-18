@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="?attr/actionBarSize"
-
         android:orientation="vertical">
         <ListView
             android:id="@+id/ui_speak_comment_listview"
@@ -67,7 +66,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:background="@drawable/ic_send_btn_disabled" />
+            android:background="@drawable/ic_send_btn_disabled"
+            android:contentDescription="@null" />
 
     </LinearLayout >
 
@@ -80,7 +80,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginRight="24dp"
         android:layout_marginEnd="24dp"
-        android:background="#1E88E5"
+        android:background="@color/colorPrimary"
         materialdesign:animate="true"
         materialdesign:iconDrawable="@drawable/ic_action_new" />
 

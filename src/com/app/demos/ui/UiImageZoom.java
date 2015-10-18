@@ -20,6 +20,7 @@ import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.app.demos.R;
+import com.app.demos.base.BaseApp;
 import com.app.demos.base.BaseHandler;
 import com.app.demos.base.BaseTask;
 import com.app.demos.base.BaseUi;
@@ -120,7 +121,7 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
             imageLoader.DisplayImage(thumbUrl, photoView, true, false);
         }
         if (bgImageUrl != null) {
-            LogMy.e("UiImageZoom >>url" + bgImageUrl);
+            LogMy.e(BaseApp.getContext(),"UiImageZoom >>url" + bgImageUrl);
             url = bgImageUrl;
             progressBar.setVisibility(View.VISIBLE);
 
@@ -216,9 +217,9 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
                         msg.what = MSG_FINISH;
                         mHandler.sendMessage(msg);
                         downSuc = true;
-                        LogMy.e("down");
+                        LogMy.e(getApplicationContext(),"down");
                     } else {
-                        LogMy.e("download");
+                        LogMy.e(getBaseContext(),"download");
                         if (HttpUtil.isNetworkConnected(UiImageZoom.this)) {
                             downSuc = downloadFile(mDownloadUrl, saveFilePath);
                         } else {
@@ -249,7 +250,7 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                LogMy.e( "AppFileDownUtils catch Exception:" +e.getMessage());
+                LogMy.e(BaseApp.getContext(), "AppFileDownUtils catch Exception:" +e.getMessage());
                 Message msg = new Message();
                 msg.what = MSG_FAILURE;
                 mHandler.sendMessage(msg);
@@ -315,7 +316,7 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
                                 msg.what = MSG_DOWNING;
                                 msg.setData(bundle);
                                 mHandler.sendMessage(msg);
-                                LogMy.e("downloading");
+                                LogMy.e(BaseApp.getContext(), "downloading");
                                 tempProgress = progress;
                             }
                         }
@@ -330,7 +331,7 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
             } catch (Exception e) {
                 result = false;
                 e.printStackTrace();
-                LogMy.e("downloadFile catch Exception:" +e.getMessage());
+                LogMy.e(BaseApp.getContext(), "downloadFile catch Exception:" +e.getMessage());
             }
             return result;
         }

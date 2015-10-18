@@ -53,6 +53,11 @@
             android:theme="@style/AppThemeNoActionBar" >
         </activity>
         <activity
+            android:name=".ui.AboutActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/AppThemeNoActionBar" >
+        </activity>
+        <activity
             android:name=".ui.test.UiCreateSpeakTest"
             android:windowSoftInputMode="adjustUnspecified|stateHidden"
             android:theme="@style/AppThemeNoActionBar" >

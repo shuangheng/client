@@ -13,8 +13,7 @@ import com.app.demos.base.BaseApp;
 public class ImmUtil {
     public static void showInput(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        //隐藏软键盘 //
-        //imm.hideSoftInputFromWindow(view.getWindowToken(), 0);//强制隐藏键盘
+
         // 显示软键盘 //
          imm.showSoftInputFromInputMethod(view.getWindowToken(), 0);
         // 切换软键盘的显示与隐藏
@@ -26,9 +25,16 @@ public class ImmUtil {
 
     }
 
-    public static void showInput2(Context context, View view) {
+    public static void hideSoftInput(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(view, InputMethodManager.SHOW_FORCED);
+        view.requestFocus();
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);//强制隐藏键盘
+    }
+
+    public static void showSoftInput(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        view.requestFocus();
+        imm.showSoftInput(view, 0);//显示键盘
     }
     //(如果输入法在窗口上已经显示，则隐藏，反之则显示)
     //InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);

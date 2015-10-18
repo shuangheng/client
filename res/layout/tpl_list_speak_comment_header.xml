@@ -60,19 +60,19 @@
             <FrameLayout
                 android:id="@+id/tpl_list_speak_speak_image_container"
                 android:background="#ffe6e6e6"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/default_horizontal_margin"
                 android:layout_marginTop="10.0dip"
                 android:layout_marginRight="@dimen/default_horizontal_margin">
 
                 <ImageView
                     android:id="@+id/tpl_list_speak_iv_bg"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:visibility="gone"
                     android:scaleType="centerCrop"
-                    android:background="@android:color/transparent"
+                    android:background="@android:color/white"
                     android:contentDescription="@null" />
 
                 <RelativeLayout
@@ -92,8 +92,8 @@
                 <ImageView
                     android:id="@+id/tpl_list_speak_speak_reload_image"
                     android:visibility="gone"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:src="@drawable/ic_reload"
                     android:scaleType="center"
                     android:contentDescription="@null" />

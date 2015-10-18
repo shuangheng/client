@@ -17,6 +17,7 @@ import com.app.demos.layout.swipebacklayout.app.SwipeBackActivity;
 import com.app.demos.ui.fragment.Fragment2;
 import com.app.demos.ui.fragment.Fragment3;
 import com.app.demos.ui.fragment.FragmentNull;
+import com.app.demos.util.ImmUtil;
 
 /**
  * Created by tom on 15-6-29.
@@ -54,14 +55,14 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
         Fragment fragment = null;
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);//获取系统键盘
 
-        toast("Onclick");
         switch (v.getId())
         {
             case R.id.ui_create_speak_iv_picture:
                 fragment = new Fragment2();
                 ivPicture.setImageResource(R.drawable.ic_publish_operation_bar_keyboard);
                 ivExpression.setImageResource(R.drawable.ic_publish_operation_bar_photo);
-                imm.hideSoftInputFromInputMethod(editContent.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+                //imm.hideSoftInputFromInputMethod(editContent.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+                imm.hideSoftInputFromWindow(editContent.getWindowToken(), 0);
                 toast("picture");
 
                 break;
@@ -69,7 +70,9 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
                 ivExpression.setImageResource(R.drawable.ic_publish_operation_bar_keyboard);
                 ivPicture.setImageResource(R.drawable.ic_publish_operation_bar_emoticon);
                 fragment = new Fragment3();
-                imm.toggleSoftInput(2, InputMethodManager.HIDE_NOT_ALWAYS);
+                editContent.requestFocus();
+                //imm.toggleSoftInput(2, InputMethodManager.HIDE_NOT_ALWAYS);
+                //ImmUtil.showSoftInput();
                 toast("expression");
                 break;
             default:

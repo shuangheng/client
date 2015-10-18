@@ -11,6 +11,7 @@
 
 package com.app.demos.base;
 
+import android.content.Context;
 import android.util.Log;
 
 
@@ -41,7 +42,7 @@ public class LogMy {
 
         StringBuffer buffer = new StringBuffer();
         buffer.append(log);
-        buffer.append("------>>>>DebugLog");
+        buffer.append("--->>>DebugLog");
         buffer.append("[");
         buffer.append(methodName);
         buffer.append(":");
@@ -52,58 +53,59 @@ public class LogMy {
         return buffer.toString();
     }
 
-    private static void getMethodNames(StackTraceElement[] sElements){
-        className = sElements[1].getFileName();
+    private static void getMethodNames(Context context, StackTraceElement[] sElements){
+        //className = sElements[1].getFileName();
+        className = context.getClass().getSimpleName();
         methodName = sElements[1].getMethodName();
         lineNumber = sElements[1].getLineNumber();
     }
 
-    public static void e(String message){
+    public static void e(Context context, String message){
         if (!isDebuggable())
             return;
 
         // Throwable instance must be created before any methods
-        getMethodNames(new Throwable().getStackTrace());
+        getMethodNames(context, new Throwable().getStackTrace());
         Log.e(className, createLog(message));
     }
 
-    public static void i(String message){
+    public static void i(Context context, String message){
         if (!isDebuggable())
             return;
 
-        getMethodNames(new Throwable().getStackTrace());
+        getMethodNames(context, new Throwable().getStackTrace());
         Log.i(className, createLog(message));
     }
 
-    public static void d(String message){
+    public static void d(Context context, String message){
         if (!isDebuggable())
             return;
 
-        getMethodNames(new Throwable().getStackTrace());
+        getMethodNames(context, new Throwable().getStackTrace());
         Log.d(className, createLog(message));
     }
 
-    public static void v(String message){
+    public static void v(Context context, String message){
         if (!isDebuggable())
             return;
 
-        getMethodNames(new Throwable().getStackTrace());
+        getMethodNames(context, new Throwable().getStackTrace());
         Log.v(className, createLog(message));
     }
 
-    public static void w(String message){
+    public static void w(Context context, String message){
         if (!isDebuggable())
             return;
 
-        getMethodNames(new Throwable().getStackTrace());
+        getMethodNames(context, new Throwable().getStackTrace());
         Log.w(className, createLog(message));
     }
 
-    public static void wtf(String message){
+    public static void wtf(Context context, String message){
         if (!isDebuggable())
             return;
 
-        getMethodNames(new Throwable().getStackTrace());
+        getMethodNames(context, new Throwable().getStackTrace());
         Log.wtf(className, createLog(message));
     }
 

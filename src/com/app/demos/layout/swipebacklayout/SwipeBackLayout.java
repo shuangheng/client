@@ -79,6 +79,9 @@ public class SwipeBackLayout extends FrameLayout {
 
     private int mEdgeFlag;
 
+
+    private boolean shouldIntercept = true;
+
     /**
      * Threshold of scroll, we will close the activity, when scrollPercent over
      * this value;
@@ -365,11 +368,21 @@ public class SwipeBackLayout extends FrameLayout {
             return false;
         }
         try {
-            return mDragHelper.shouldInterceptTouchEvent(event);
+            boolean intercept = shouldIntercept && mDragHelper.shouldInterceptTouchEvent(event);
+            return intercept;
+            //return mDragHelper.shouldInterceptTouchEvent(event);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            return false;
         } catch (ArrayIndexOutOfBoundsException e) {
             // issues #9
             return false;
         }
+    }
+
+    public SwipeBackLayout setTouchMode(boolean shouldIntercept) {
+        this.shouldIntercept = shouldIntercept;
+        return this;
     }
 
     @Override
