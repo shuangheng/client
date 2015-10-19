@@ -419,12 +419,12 @@ public class SwipeBackLayout extends FrameLayout {
         if (mScrimOpacity > 0 && drawContent
                 && mDragHelper.getViewDragState() != ViewDragHelper.STATE_IDLE) {
             drawShadow(canvas, child);
-            drawScrim(canvas, child);
+            drawScrim(canvas, child);//平纹棉麻织物; 沙罩;
         }
         return ret;
     }
 
-    private void drawScrim(Canvas canvas, View child) {
+    private void drawScrim(Canvas canvas, View child) {//平纹棉麻织物; 沙罩;
         final int baseAlpha = (mScrimColor & 0x10000000) >>> 24;//&后面为bg_color
         final int alpha = (int) (baseAlpha * mScrimOpacity);
         final int color = alpha << 24 | (mScrimColor & 0xffffff);

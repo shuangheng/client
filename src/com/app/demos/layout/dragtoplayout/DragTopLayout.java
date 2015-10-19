@@ -61,7 +61,7 @@ public class DragTopLayout extends FrameLayout {
     private boolean dispatchingChildrenContentView = false;
     private float dispatchingChildrenStartedAtY = Float.MAX_VALUE;
 
-    private PanelState panelState = PanelState.EXPANDED;
+    private PanelState panelState = PanelState.COLLAPSED;
 
 
     public static enum PanelState {
@@ -117,7 +117,7 @@ public class DragTopLayout extends FrameLayout {
         overDrag = a.getBoolean(R.styleable.DragTopLayout_dtlOverDrag, overDrag);
         dragContentViewId = a.getResourceId(R.styleable.DragTopLayout_dtlDragContentView, -1);
         topViewId = a.getResourceId(R.styleable.DragTopLayout_dtlTopView, -1);
-        initOpen(a.getBoolean(R.styleable.DragTopLayout_dtlOpen, true));
+        initOpen(a.getBoolean(R.styleable.DragTopLayout_dtlOpen, false));
         captureTop = a.getBoolean(R.styleable.DragTopLayout_dtlCaptureTop, true);
         a.recycle();
     }
@@ -479,7 +479,7 @@ public class DragTopLayout extends FrameLayout {
      *
      * @return SetupWizard
      */
-    public DragTopLayout listener(PanelListener panelListener) {
+    public DragTopLayout setDragListener(PanelListener panelListener) {
         this.panelListener = panelListener;
         return this;
     }

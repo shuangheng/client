@@ -5,6 +5,8 @@ import java.util.HashMap;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,15 +36,22 @@ import com.app.demos.base.C;
 import com.app.demos.base.LogMy;
 import com.app.demos.layout.ButtonFloat;
 import com.app.demos.layout.ResizeLayout;
+import com.app.demos.layout.dragtoplayout.AttachUtil;
+import com.app.demos.layout.dragtoplayout.DragTopLayout;
 import com.app.demos.layout.materialEditText.MaterialEditText;
+import com.app.demos.layout.other.CircleImageView;
 import com.app.demos.list.CommentList;
 import com.app.demos.list.bitmap_load_list.ImageLoader_my;
 import com.app.demos.model.Comment;
 import com.app.demos.model.Customer;
 import com.app.demos.model.Gonggao;
 import com.app.demos.util.AppFilter;
+import com.app.demos.util.ColorUtil;
 import com.app.demos.util.ImmUtil;
 import com.app.demos.util.UIUtil;
+import com.nineoldandroids.view.ViewHelper;
+
+import de.greenrobot.event.EventBus;
 
 import static com.app.demos.util.Math_my.isEven;
 
@@ -67,6 +77,8 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
 
     private ArrayList<Comment> commentList;
     private CommentList commentAdapter;
+    private CircleImageView speakerIv;
+    private DragTopLayout dragLayout;
     private View moreView;
     private ProgressBar moreView_pg;
     private TextView moreView_tv;
@@ -91,6 +103,7 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
     private ButtonFloat btnFloat;
     private LinearLayout editLayout;
     private boolean bgColorIsWhite;
+    private float speakerIv_x;
 
 
     @Override
@@ -153,7 +166,7 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // other methods
     private void initToolBar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         toolbar.setTitle(getTitle());// 标题的文字需在setSupportActionBar之前，不然会无效
         if (!bgColorIsWhite) {
             toolbar.setBackgroundColor(toolcolor);
@@ -187,7 +200,9 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
     }
 
     private void initView() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         reSizelayout = (ResizeLayout) findViewById(R.id.ui_speak_comment_ResizeLayout);
+        speakerIv = (CircleImageView) findViewById(R.id.ui_speak_comment_circle_iv);
 
         moreView = getLayoutInflater().inflate(R.layout.tpl_list_speak_footer, null);
         moreView_pg = (ProgressBar) moreView.findViewById(R.id.list_speak_footer_progressbar);
@@ -205,6 +220,40 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
 
         btnFloat = (ButtonFloat) findViewById(R.id.ui_speak_comment_buttonFloat);
         editLayout = (LinearLayout) findViewById(R.id.ui_speak_comment_editLayout);
+        dragLayout = (DragTopLayout) findViewById(R.id.ui_speak_comment_drag_layout);
+        //dragLayout.toggleTopView();//关闭topView
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) speakerIv.getLayoutParams();
+        speakerIv_x = lp.width;
+        dragLayout.setDragListener(new DragTopLayout.PanelListener() {
+            @Override
+            public void onPanelStateChanged(DragTopLayout.PanelState panelState) {
+
+            }
+
+            @Override
+            public void onSliding(float ratio) {
+                if (ratio <= 1) {
+                    speakerIv.setTranslationX(-(DEVICE_WIDTH / 2 - speakerIv_x) * ratio);//平移到中点
+                    speakerIv.setScaleX(1 + (float) 0.5 * ratio);
+                    speakerIv.setScaleY(1 + (float) 0.5 * ratio);
+                    ViewHelper.setAlpha(toolbar, 1 - ratio);
+
+                } else if (ratio <= 2) {
+                    speakerIv.setTranslationX(-(DEVICE_WIDTH/2 - speakerIv_x));//平移到中点
+                    speakerIv.setScaleX(1.5f + (float)0.5 * (ratio-1));
+                    speakerIv.setScaleY(1.5f + (float)0.5 * (ratio-1));
+                } else if (ratio > 2 && ratio < 3) {
+                    speakerIv.setTranslationX(-(DEVICE_WIDTH / 2 - speakerIv_x));//平移到中点
+                    speakerIv.setScaleX(4 - ratio);
+                    speakerIv.setScaleY(4 - ratio);
+                }
+            }
+
+            @Override
+            public void onRefresh() {
+                toolbar.setSubtitle("refresh");
+            }
+        });
 
         reSizelayout.setOnResizeListener(new ResizeLayout.OnResizeListener() {
             @Override
@@ -266,6 +315,8 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
         //ivBgImage.setLayoutParams(param);
         /////Log.d("l_11", "yes");
     }
+
+
 
     @Override
     public void onClick(View v) {
@@ -452,5 +503,23 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
                          int visibleItemCount, int totalItemCount) {
         // TODO Auto-generated method stub
         lastVisibleIndex = firstVisibleItem + visibleItemCount - 1;
+        EventBus.getDefault().post(AttachUtil.isAdapterViewAttach(view));
+    }
+
+    // Handle scroll event from fragments
+    public void onEvent(Boolean b){
+        dragLayout.setTouchMode(b);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
     }
 }
