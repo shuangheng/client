@@ -57,23 +57,10 @@ import static com.app.demos.util.Math_my.isEven;
 
 public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickListener {
     private String speakId;
-    private String customerId;
-    private String content;
-    private String type;
-    private String likeCount;
     private String bgImageUrl;
 
     private Toolbar toolbar;
-    private TextView tvContent;
-    private TextView tvType;
-    private TextView tvLikeCount;
-    private TextView extra;
-    private Button careBtn;
-    private Button commentBtn;
-    private ImageView ivBgImage;
     private ListView list;
-    private ScrollView scroll;
-    private LinearLayout layout;
 
     private ArrayList<Comment> commentList;
     private CommentList commentAdapter;
@@ -82,15 +69,11 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
     private View moreView;
     private ProgressBar moreView_pg;
     private TextView moreView_tv;
-    private View tplSpeak;
-    private ImageButton ibLike;
     private int lastVisibleIndex;
     private int lastIdNum;
     private String lastId;
-    private String commentcount;
 
     private String bgColor;
-    private LinearLayout containerLayout;
     private String favorite;
     private int toolcolor;
 
@@ -104,6 +87,8 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
     private LinearLayout editLayout;
     private boolean bgColorIsWhite;
     private float speakerIv_x;
+    private ImageView ivBgImage;
+    private View tplSpeak;
 
 
     @Override
@@ -209,14 +194,39 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
         moreView_tv = (TextView) moreView.findViewById(R.id.list_speak_footer_hint_textview);
 
         tplSpeak = getLayoutInflater().inflate(R.layout.tpl_list_speak_comment_header, null);
-        layout = (LinearLayout) tplSpeak.findViewById(R.id.tpl_list_speak_bottom_layout);
-        containerLayout = (LinearLayout) tplSpeak.findViewById(R.id.tpl_list_speak_container);
-        tvContent = (TextView) tplSpeak.findViewById(R.id.tpl_list_speak_tv_content);
-        tvType = (TextView) tplSpeak.findViewById(R.id.tpl_list_speak_tv_type);
-        extra = (TextView) tplSpeak.findViewById(R.id.tpl_list_speak_speak_extra);
-        tvLikeCount = (TextView) tplSpeak.findViewById(R.id.tpl_list_speak_tv_like);
+        //layout = (LinearLayout) tplSpeak.findViewById(R.id.tpl_list_speak_bottom_layout);
+        LinearLayout containerLayout = (LinearLayout) tplSpeak.findViewById(R.id.tpl_list_speak_container);
+        TextView tvContent = (TextView) tplSpeak.findViewById(R.id.tpl_list_speak_tv_content);
+        TextView tvType = (TextView) tplSpeak.findViewById(R.id.tpl_list_speak_tv_type);
+        TextView extra = (TextView) tplSpeak.findViewById(R.id.tpl_list_speak_speak_extra);
+        TextView tvLikeCount = (TextView) tplSpeak.findViewById(R.id.tpl_list_speak_tv_like);
         ivBgImage = (ImageView) tplSpeak.findViewById(R.id.tpl_list_speak_iv_bg);
-        ibLike = (ImageButton) tplSpeak.findViewById(R.id.tpl_list_speak_ib_like);
+        ImageButton ibLike = (ImageButton) tplSpeak.findViewById(R.id.tpl_list_speak_ib_like);
+
+        //////////////////////////////////////////////////////////////////////////
+        Bundle params = this.getIntent().getExtras();
+        Gonggao g = getIntent().getParcelableExtra("Gonggao");
+        speakId = g.getId();
+        bgImageUrl = g.getBgimage();
+        favorite = g.getFavorite();
+        bgColor = params.getString("bgColor");
+
+        int position = Integer.parseInt(bgColor);//bg color
+        bgColorIsWhite = isEven(position);
+        toolcolor = bgColorIsWhite ? getResources().getColor(android.R.color.white) :
+                getResources().getColor(C.colors[position % 16]);
+        containerLayout.setBackgroundColor(toolcolor);
+
+        tvContent.setText(AppFilter.getHtml(g.getContent()));
+        tvType.setText(g.getType());
+        extra.setText("评论 " + g.getCommentcount());
+        tvLikeCount.setText(g.getLikeCount());
+        ivBgImage.setBackgroundColor(getResources().getColor(R.color.white));
+
+        if (favorite != null && favorite.equals("0")) {
+            ibLike.setBackgroundResource(R.drawable.ic_card_liked);
+        }
+        //////////////////////////////////////////////////////////////
 
         btnFloat = (ButtonFloat) findViewById(R.id.ui_speak_comment_buttonFloat);
         editLayout = (LinearLayout) findViewById(R.id.ui_speak_comment_editLayout);
@@ -232,20 +242,29 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
 
             @Override
             public void onSliding(float ratio) {
-                if (ratio <= 1) {
+                if (ratio <= 0) {
+                    speakerIv.setTranslationX(0);//平移到原位
+                    speakerIv.setTranslationY(0);//平移到原位
+                    speakerIv.setScaleX(1);
+                    speakerIv.setScaleY(1);
+                } else if (ratio <= 1) {
                     speakerIv.setTranslationX(-(DEVICE_WIDTH / 2 - speakerIv_x) * ratio);//平移到中点
-                    speakerIv.setScaleX(1 + (float) 0.5 * ratio);
-                    speakerIv.setScaleY(1 + (float) 0.5 * ratio);
-                    ViewHelper.setAlpha(toolbar, 1 - ratio);
+                    speakerIv.setScaleX(1.0f + 0.5f * ratio);
+                    speakerIv.setScaleY(1.0f + 0.5f * ratio);
+                    ViewHelper.setAlpha(toolbar, 1.0f - ratio);//透明
+                    ViewHelper.setAlpha(list, 1.5f - ratio);//半透明
 
                 } else if (ratio <= 2) {
-                    speakerIv.setTranslationX(-(DEVICE_WIDTH/2 - speakerIv_x));//平移到中点
-                    speakerIv.setScaleX(1.5f + (float)0.5 * (ratio-1));
-                    speakerIv.setScaleY(1.5f + (float)0.5 * (ratio-1));
+                    speakerIv.setTranslationY(speakerIv_x/2 * (ratio-1));//向下平移
+
+                    //speakerIv.setTranslationX(-(DEVICE_WIDTH/2 - speakerIv_x));//平移到中点
+                    //speakerIv.setScaleX(1.5f + 0.5f * (ratio-1));
+                    //speakerIv.setScaleY(1.5f + 0.5f * (ratio-1));
                 } else if (ratio > 2 && ratio < 3) {
-                    speakerIv.setTranslationX(-(DEVICE_WIDTH / 2 - speakerIv_x));//平移到中点
-                    speakerIv.setScaleX(4 - ratio);
-                    speakerIv.setScaleY(4 - ratio);
+
+                    //speakerIv.setTranslationX(-(DEVICE_WIDTH / 2 - speakerIv_x));//平移到中点
+                    //speakerIv.setScaleX(4 - ratio);//缩小
+                    //speakerIv.setScaleY(4 - ratio);
                 }
             }
 
@@ -282,32 +301,7 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
 
     //--fill content
     private void fillContent(){
-        Bundle params = this.getIntent().getExtras();
-        Gonggao g = getIntent().getParcelableExtra("Gonggao");
-        speakId = g.getId();
-        content = g.getContent();
-        type = g.getType();
-        commentcount = g.getCommentcount();
-        likeCount = g.getLikeCount();
-        bgImageUrl = g.getBgimage();
-        favorite = g.getFavorite();
-        bgColor = params.getString("bgColor");
 
-        int position = Integer.parseInt(bgColor);//bg color
-        bgColorIsWhite = isEven(position);
-        toolcolor = bgColorIsWhite ? getResources().getColor(android.R.color.white) :
-                getResources().getColor(C.colors[position % 16]);
-        containerLayout.setBackgroundColor(toolcolor);
-
-        tvContent.setText(AppFilter.getHtml(content));
-        tvType.setText(type);
-        extra.setText("评论 " + commentcount);
-        tvLikeCount.setText(likeCount);
-        ivBgImage.setBackgroundColor(getResources().getColor(R.color.white));
-
-        if (favorite != null && favorite.equals("0")) {
-            ibLike.setBackgroundResource(R.drawable.ic_card_liked);
-        }
         //设置ImageView大小
         //ViewGroup.LayoutParams param = ivBgImage.getLayoutParams();
         //param.height=BaseUi.DEVICE_WIDTH;
@@ -322,11 +316,9 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ui_speak_comment_buttonFloat:
-                //editLayout.setVisibility(View.VISIBLE);
+                btnFloat.setVisibility(View.GONE);
                 MaterialEditText editText = (MaterialEditText) findViewById(R.id.ui_speak_comment_editText);
-                //editText.requestFocus();
                 ImmUtil.showSoftInput(getContext(), editText);
-
                 break;
             case R.id.tpl_list_speak_iv_bg:
                 UiImageZoom.actionStart(getContext(), C.web.bgimage + bgImageUrl + ".jpg", null);
@@ -373,7 +365,7 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
                     toast("Add fans ok");
                     // refresh customer data
                     HashMap<String, String> cvParams = new HashMap<String, String>();
-                    cvParams.put("customerId", customerId);
+                    //cvParams.put("customerId", customerId);
                     this.doTaskAsync(C.task.customerView, C.api.customerView, cvParams, true);
                 } else {
                     toast("Add fans fail");

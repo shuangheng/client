@@ -57,7 +57,7 @@ public class MainDragTopActivity extends ActionBarActivity {
         setContentView(R.layout.activity_drag_top_layout_main);
 
         initView();
-        dragLayout.toggleTopView();
+        //dragLayout.toggleTopView();
         initListView();
 
 

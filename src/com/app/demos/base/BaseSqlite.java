@@ -3,6 +3,7 @@ package com.app.demos.base;
 import java.util.ArrayList;
 
 import com.app.demos.model.Gonggao;
+import com.app.demos.sqlite.DromInfoSqlite;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -16,7 +17,7 @@ import android.util.Log;
 public abstract class BaseSqlite {
 
 	private static final String DB_NAME = "demos.db";
-	private static final int DB_VERSION = 3;
+	private static final int DB_VERSION = 1;
 	
 	private DbHelper dbh = null;
 	private SQLiteDatabase db = null;
@@ -143,9 +144,10 @@ public abstract class BaseSqlite {
 	abstract protected String upgradeSql ();
 	
 	protected class DbHelper extends SQLiteOpenHelper {
-
+		private Context context;
 		public DbHelper(Context context, String name, CursorFactory factory, int version) {
 			super(context, name, factory, version);
+			this.context = context;
 		}
 
 		@Override
@@ -153,15 +155,21 @@ public abstract class BaseSqlite {
 			db.execSQL(createSql());
 			db.execSQL(createSql2());
 			db.execSQL(createSql3());
+			//db.execSQL(DromInfoSqlite.Creat);
 
-			Log.e("db","onCreateSql");
+			LogMy.e(context, "onCreateSql");
 		}
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			db.execSQL(upgradeSql());
-			onCreate(db);
-			Log.e("db","upgradeSql");
+            switch (oldVersion) {
+                case 1://不加 break 保证每次的数据库修改都能被执行到
+                    //db.execSQL();
+                case 2://不加 break 保证每次的数据库修改都能被执行到
+
+                default://不加 break 保证每次的数据库修改都能被执行到
+            }
+			LogMy.e(context, "upgradeSql");
 		}
 	}
 }

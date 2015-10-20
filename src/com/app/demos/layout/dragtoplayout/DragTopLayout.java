@@ -117,7 +117,7 @@ public class DragTopLayout extends FrameLayout {
         overDrag = a.getBoolean(R.styleable.DragTopLayout_dtlOverDrag, overDrag);
         dragContentViewId = a.getResourceId(R.styleable.DragTopLayout_dtlDragContentView, -1);
         topViewId = a.getResourceId(R.styleable.DragTopLayout_dtlTopView, -1);
-        initOpen(a.getBoolean(R.styleable.DragTopLayout_dtlOpen, false));
+        initOpen(a.getBoolean(R.styleable.DragTopLayout_dtlOpen, false));//default not show top view
         captureTop = a.getBoolean(R.styleable.DragTopLayout_dtlCaptureTop, true);
         a.recycle();
     }
@@ -320,8 +320,12 @@ public class DragTopLayout extends FrameLayout {
         @Override
         public int clampViewPositionVertical(View child, int top, int dy) {
             if (overDrag) {
-                // Drag over the top view height.
-                return Math.max(top, getPaddingTop() + collapseOffset);
+                if (ratio > 1) {
+                    return top - top/80;//top view 打开后拖拽变迟钝
+                } else {
+                    // Drag over the top view height.
+                    return Math.max(top, getPaddingTop() + collapseOffset);
+                }
             } else {
                 return Math.min(topViewHeight, Math.max(top, getPaddingTop() + collapseOffset));
             }

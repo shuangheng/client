@@ -15,8 +15,8 @@ import com.app.demos.layout.swipebacklayout.ViewDragHelper;
  * Created by tom on 15-10-19.
  */
 public class ToolBarMy extends Toolbar {
-    private Drawable mShadowBottom;
-    private Rect mTmpRect = new Rect();
+    //private Drawable mShadowBottom;
+    //private Rect mTmpRect = new Rect();
 
     public ToolBarMy(Context context) {
         super(context);
@@ -24,16 +24,16 @@ public class ToolBarMy extends Toolbar {
 
     public ToolBarMy(Context context, AttributeSet attrs) {
         super(context, attrs);
-        Drawable shadowBottom = getResources().getDrawable(R.drawable.shadow_bottom);
-        setShadow(shadowBottom);
+        //Drawable shadowBottom = getResources().getDrawable(R.drawable.shadow_bottom);
+        //setShadow(shadowBottom);
     }
 
     public ToolBarMy(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        Drawable shadowBottom = getResources().getDrawable(R.drawable.shadow_bottom);
-        setShadow(shadowBottom);
+        //Drawable shadowBottom = getResources().getDrawable(R.drawable.shadow_bottom);
+        //setShadow(shadowBottom);
     }
-
+/*
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
@@ -67,4 +67,5 @@ getDrawingRect(childRect);
             mShadowBottom.draw(canvas);
         }
     }
+    */
 }
