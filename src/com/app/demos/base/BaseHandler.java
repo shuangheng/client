@@ -9,7 +9,7 @@ import android.os.Message;
 public class BaseHandler extends Handler {
 	
 	protected BaseUi ui;
-	
+
 	public BaseHandler (BaseUi ui) {
 		this.ui = ui;
 	}
@@ -25,7 +25,6 @@ public class BaseHandler extends Handler {
 			String result;
 			switch (msg.what) {
 				case BaseTask.TASK_COMPLETE:
-					ui.hideProgressBar();
 					taskId = msg.getData().getInt("task");
 					result = msg.getData().getString("data");
 					if (result != null) {
@@ -37,7 +36,6 @@ public class BaseHandler extends Handler {
 					}
 					break;
 				case BaseTask.TEST_FoxconnEss:
-					ui.hideProgressBar();
 					result = msg.getData().getString("data");
 					if (result != null) {
 						ui.onTaskComplete(result);
@@ -46,7 +44,6 @@ public class BaseHandler extends Handler {
 					}
 					break;
 				case BaseTask.NETWORK_ERROR:
-					ui.hideProgressBar();
 					taskId = msg.getData().getInt("task");
 					ui.onNetworkError(taskId);
 					break;

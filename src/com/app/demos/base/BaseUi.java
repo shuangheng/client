@@ -17,6 +17,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -126,6 +127,14 @@ public class BaseUi extends BaseActivity {
         toast.setView(view);
         toast.setGravity(Gravity.CENTER, 0, 0);//显示位置
         toast.show();
+	}
+
+	public Toolbar getToolBar(int resId, String title, Boolean canBack) {
+		Toolbar mToolbar = (Toolbar) findViewById(resId);
+		mToolbar.setTitle(title);// 标题的文字需在setSupportActionBar之前，不然会无效
+		setSupportActionBar(mToolbar);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(canBack);
+		return mToolbar;
 	}
 
 	/**

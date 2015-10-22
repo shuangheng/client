@@ -18,7 +18,7 @@
 
         <com.app.demos.layout.dragtoplayout.DragTopLayout
             android:id="@+id/ui_speak_comment_drag_layout"
-            android:background="@color/colorPrimary"
+            android:background="@android:color/black"
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
 

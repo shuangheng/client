@@ -33,6 +33,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.app.demos.R;
+import com.app.demos.base.BaseUi;
 import com.app.demos.layout.dragtoplayout.AttachUtil;
 import com.app.demos.layout.dragtoplayout.DragTopLayout;
 
@@ -41,7 +42,7 @@ import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
-public class MainDragTopActivity extends ActionBarActivity {
+public class MainDragTopActivity extends BaseUi {
 
     public static final String TAG = "MainActivity";
 
@@ -52,7 +53,7 @@ public class MainDragTopActivity extends ActionBarActivity {
     private ListView listView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drag_top_layout_main);
 
@@ -77,14 +78,11 @@ public class MainDragTopActivity extends ActionBarActivity {
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        toolbar = getToolBar(R.id.tool_bar, "DragTopLayout", true);
         dragLayout = (DragTopLayout) findViewById(R.id.drag_layout);
         topImageView = (ImageView) findViewById(R.id.image_view);
         listView = (ListView) findViewById(R.id.list_view);
 
-        toolbar.setTitle("DragTopLayout");
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void initListView() {

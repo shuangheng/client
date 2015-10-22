@@ -248,7 +248,8 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
                     speakerIv.setScaleX(1);
                     speakerIv.setScaleY(1);
                 } else if (ratio <= 1) {
-                    speakerIv.setTranslationX(-(DEVICE_WIDTH / 2 - speakerIv_x) * ratio);//平移到中点
+                    speakerIv.setTranslationX(-(DEVICE_WIDTH / 2 - speakerIv_x) * ratio);//平移到 X 中点
+                    speakerIv.setTranslationY(0);//平移到 Y 原位
                     speakerIv.setScaleX(1.0f + 0.5f * ratio);
                     speakerIv.setScaleY(1.0f + 0.5f * ratio);
                     ViewHelper.setAlpha(toolbar, 1.0f - ratio);//透明

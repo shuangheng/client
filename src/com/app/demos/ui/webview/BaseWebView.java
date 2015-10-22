@@ -47,9 +47,7 @@ public class BaseWebView extends SwipeBackActivity {
     private Toolbar toolbar;
     private TextView mErrorView;
     private String paramUrl;
-    private boolean isPageError = false;
     private EditText editText;
-    private boolean isFinishScrollLeft;
     private SwipeRefreshLayout swipeRefresh;
 
     @Override
@@ -205,7 +203,6 @@ public class BaseWebView extends SwipeBackActivity {
                 webView.reload();
                 Toast.makeText(BaseWebView.this, paramUrl, Toast.LENGTH_SHORT).show();
                 mErrorView.setVisibility(View.GONE);
-                isPageError = false;
             }
         });
     }
@@ -292,7 +289,6 @@ public class BaseWebView extends SwipeBackActivity {
             //webView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);//default pageError show null
             initErrorPage();
             mErrorView.setVisibility(View.VISIBLE);
-            isPageError = true;
             //用javascript隐藏系统定义的404页面信息
             String data = "";
             webView.loadUrl("javascript:document.body.innerHTML=\"" + data + "\"");//set pageError as data

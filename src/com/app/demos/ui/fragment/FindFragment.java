@@ -6,6 +6,7 @@ import java.util.HashMap;
 import com.app.demos.Listener.HideFabScrollListener;
 import com.app.demos.R;
 import com.app.demos.base.C;
+import com.app.demos.base.LogMy;
 import com.app.demos.layout.swipeRefreshLayout.Progress_m;
 import com.app.demos.layout.swipeRefreshLayout.Progress_m.OnRefreshListener;
 import com.app.demos.list.MyList;
@@ -116,7 +117,7 @@ public class FindFragment extends Fragment implements  OnRefreshListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-        Log.d(TAG, "FindFragment-----onCreateView");
+        LogMy.d(activity, "FindFragment-----onCreateView");
         View view = inflater.inflate(R.layout.fragment_list_find, container, false);
 
         handler = new Handler();

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import android.app.Activity;
 import android.content.Context;
 import com.app.demos.util.HttpUtil;
 
@@ -19,6 +20,11 @@ public class BaseTaskPool {
 	
 	public BaseTaskPool (BaseUi ui) {
 		this.context = ui.getContext();
+		taskPool = Executors.newCachedThreadPool();
+	}
+
+	public BaseTaskPool (Activity ui) {
+		this.context = ui;
 		taskPool = Executors.newCachedThreadPool();
 	}
 	

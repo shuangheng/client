@@ -51,7 +51,6 @@ import com.app.demos.ui.fragment.Fragment2;
 import com.app.demos.ui.fragment.Fragment3;
 import com.app.demos.ui.fragment.SpeakFragment;
 import com.app.demos.ui.test.GestureDetectorTest;
-import com.app.demos.ui.test.draglayoutdemo.*;
 import com.app.demos.ui.test.observableScrollView.FlexibleSpaceWithImageListViewActivity;
 import com.app.demos.ui.test.ToolBarTitleScroll;
 import com.app.demos.ui.test.UiFoxconnEssPost;
@@ -117,7 +116,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         this.setHandler(new MyHandler(this));
         isFirstOpean = true;//第一次打开程序
         initWidth();
-        setUpActionBar();
+        initToolBar();
         //initSwipeRefresh();
         InitViewPager();
         initBottomButtom();
@@ -246,7 +245,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         });
     }
 
-    private void setUpActionBar() {
+    private void initToolBar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         /// mToolbarContainer = (LinearLayout) findViewById(R.id.toolbarContainer);
 // toolbar.setLogo(R.drawable.ic_launcher);
@@ -334,7 +333,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
      */
     private void initTabsValue() {
         // 底部游标颜色
-        mPagerSlidingTabStrip.setIndicatorColor(Color.BLUE);
+        mPagerSlidingTabStrip.setIndicatorColor(Color.WHITE);
         // tab的分割线颜色
         mPagerSlidingTabStrip.setDividerColor(Color.TRANSPARENT);
         // tab背景
@@ -344,11 +343,11 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
                 1, getResources().getDisplayMetrics()));
         // 游标高度
         mPagerSlidingTabStrip.setIndicatorHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                5, getResources().getDisplayMetrics()));
+                3, getResources().getDisplayMetrics()));
         // 选中的文字颜色
         mPagerSlidingTabStrip.setSelectedTextColor(Color.WHITE);
         // 正常文字颜色
-        mPagerSlidingTabStrip.setTextColor(Color.BLACK);
+        mPagerSlidingTabStrip.setTextColor(Color.GRAY);
     }
 
     private void InitViewPager() {
@@ -436,31 +435,6 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
                 // mToolbarContainer.setTranslationY(0);
                 //ivLayout.setRotationY(arg1 * 180);
             }
-            //ivBottomAdd0.setRotationY(arg1);
-            //ivBottomAdd2.setRotationY(arg1);
-            //ivBottomAdd1.setRotationY(arg1);
-            //将要进入的Fragment
-            i = mPager.getCurrentItem();
-            //if ((int)arg1 == 0.5) {
-            //actionBar.getTabAt(0).setText(""+arg0);
-            //actionBar.getTabAt(1).setText(""+i);
-            // tv.setText("arg0 : "+arg0+"\n"
-            //          +"arg1 : "+arg1+"\n"
-            //         +"i : "+i);
-            switch (i) {
-                case 0:
-
-                    break;
-                case 1:
-
-                    break;
-
-                case 2:
-
-                    break;
-
-            }
-            //}
         }
 
         @Override
