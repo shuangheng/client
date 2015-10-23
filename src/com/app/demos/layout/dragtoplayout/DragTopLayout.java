@@ -49,7 +49,7 @@ public class DragTopLayout extends FrameLayout {
     private boolean shouldIntercept = true;
 
     private PanelListener panelListener;
-    private float refreshRatio = 1.5f;
+    private float refreshRatio = 1.1f;
     private boolean overDrag = true;
     private int collapseOffset;
     private int topViewId = -1;
@@ -242,7 +242,7 @@ public class DragTopLayout extends FrameLayout {
         if (panelListener != null) {
             // Calculate the ratio while dragging.
             panelListener.onSliding(ratio);
-            if (ratio > refreshRatio && !isRefreshing) {
+            if (ratio >= refreshRatio && !isRefreshing) {
                 isRefreshing = true;
                 panelListener.onRefresh();
             }
@@ -300,7 +300,7 @@ public class DragTopLayout extends FrameLayout {
                 dragHelper.captureChildView(dragContentView, pointerId);
                 return false;
             }
-            return child == dragContentView;
+            return child == dragContentView || child == topView;
         }
 
         @Override

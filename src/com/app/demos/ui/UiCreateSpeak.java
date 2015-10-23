@@ -3,7 +3,6 @@ package com.app.demos.ui;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -14,10 +13,9 @@ import android.widget.Toast;
 
 import com.app.demos.R;
 import com.app.demos.layout.swipebacklayout.app.SwipeBackActivity;
-import com.app.demos.ui.fragment.Fragment2;
+import com.app.demos.ui.fragment.UserInfoFragment;
 import com.app.demos.ui.fragment.Fragment3;
 import com.app.demos.ui.fragment.FragmentNull;
-import com.app.demos.util.ImmUtil;
 
 /**
  * Created by tom on 15-6-29.
@@ -58,7 +56,7 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
         switch (v.getId())
         {
             case R.id.ui_create_speak_iv_picture:
-                fragment = new Fragment2();
+                fragment = new UserInfoFragment();
                 ivPicture.setImageResource(R.drawable.ic_publish_operation_bar_keyboard);
                 ivExpression.setImageResource(R.drawable.ic_publish_operation_bar_photo);
                 //imm.hideSoftInputFromInputMethod(editContent.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);

@@ -63,12 +63,6 @@ public class BaseWebView extends SwipeBackActivity {
         webView.loadUrl(paramUrl);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        //swipeRefresh.setRefreshing(true);
-    }
-
     /**
      * 开启硬件加速
      */

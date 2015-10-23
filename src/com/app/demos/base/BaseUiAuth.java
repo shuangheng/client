@@ -1,15 +1,14 @@
 package com.app.demos.base;
 
 import com.app.demos.R;
-import com.app.demos.base.BaseAuth;
 import com.app.demos.demo.DemoMap;
 import com.app.demos.demo.DemoWeb;
 import com.app.demos.model.Customer;
 import com.app.demos.test.TestUi;
-import com.app.demos.ui.UiBlogs;
-import com.app.demos.ui.UiConfig;
-import com.app.demos.ui.UiIndex;
-import com.app.demos.ui.UiLogin;
+import com.app.demos.ui.test.UiBlogs;
+import com.app.demos.ui.test.UiConfig;
+import com.app.demos.ui.test.UiIndex;
+import com.app.demos.ui.test.UiLogin;
 
 import android.app.AlertDialog;
 import android.os.Bundle;

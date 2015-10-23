@@ -13,6 +13,8 @@ public class BaseTask {
 	public static final int IMAGE_LOADING = 7;
 	public static final int IMAGE_LOAD_FAIL = 8;
 	public static final int IMAGE_LOAD_OK = 9;
+	public static final int FRAG_TASK_COMPLETE = 10;
+	public static final int FRAG_NETWORK_ERROR = 11;
 
 	private int id = 0;
 	private String name = "";

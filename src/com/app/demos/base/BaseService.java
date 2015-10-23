@@ -6,7 +6,7 @@ import java.util.concurrent.Executors;
 
 import com.app.demos.util.AppClient;
 import com.app.demos.util.AppUtil;
-import com.app.demos.util.HttpUtil;
+import com.app.demos.util.BaseDevice;
 
 import android.app.Service;
 import android.content.Context;
@@ -47,7 +47,7 @@ public class BaseService extends Service {
 			public void run() {
 				try {
 					AppClient client = new AppClient(taskUrl);
-					if (httpType == HttpUtil.WAP_INT) {
+					if (httpType == BaseDevice.WAP_INT) {
 						client.useWap();
 					}
 					String httpResult = client.get();
@@ -69,7 +69,7 @@ public class BaseService extends Service {
 			public void run() {
 				try {
 					AppClient client = new AppClient(taskUrl);
-					if (httpType == HttpUtil.WAP_INT) {
+					if (httpType == BaseDevice.WAP_INT) {
 						client.useWap();
 					}
 					String httpResult = client.post(taskArgs);
@@ -93,7 +93,7 @@ public class BaseService extends Service {
 		// get some global data
 		SharedPreferences sp = AppUtil.getSharedPreferences(ctx);
 		Editor editor = sp.edit();
-		editor.putInt(HTTP_TYPE, HttpUtil.getNetType(ctx));
+		editor.putInt(HTTP_TYPE, BaseDevice.getNetype(ctx));
 		editor.commit();
 		// start service
 		String actionName = sc.getName() + ACTION_START;

@@ -6,7 +6,8 @@ import java.util.concurrent.Executors;
 
 import android.app.Activity;
 import android.content.Context;
-import com.app.demos.util.HttpUtil;
+
+import com.app.demos.util.BaseDevice;
 
 import com.app.demos.util.AppClient;
 
@@ -86,7 +87,7 @@ public class BaseTaskPool {
 					if (this.taskUrl != null) {
 						// init app client
 						AppClient client = new AppClient(this.taskUrl);
-						if (HttpUtil.WAP_INT == HttpUtil.getNetType(context)) {
+						if (BaseDevice.WAP_INT == BaseDevice.getNetype(context)) {
 							client.useWap();
 						}
 						// http get

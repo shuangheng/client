@@ -1,4 +1,4 @@
-package com.app.demos.ui;
+package com.app.demos.ui.test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +15,6 @@ import com.app.demos.model.Config;
 import com.app.demos.model.Customer;
 import com.app.demos.util.AppCache;
 import com.app.demos.util.AppUtil;
-import com.app.demos.util.UIUtil;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -96,8 +95,8 @@ public class UiConfig extends BaseUiAuth {
 					final Customer customer = (Customer) message.getResult("Customer");
 					TextView textTop = (TextView) this.findViewById(R.id.tpl_list_info_text_top);
 					TextView textBottom = (TextView) this.findViewById(R.id.tpl_list_info_text_bottom);
-					textTop.setText(customer.getSign());
-					textBottom.setText(UIUtil.getCustomerInfo(this, customer));
+					//textTop.setText(customer.getSign());
+					//textBottom.setText(UIUtil.getCustomerInfo(this, customer));
 					// load face image async
 					faceImage = (ImageView) this.findViewById(R.id.tpl_list_info_image_face);
 					faceImageUrl = customer.getFaceurl();

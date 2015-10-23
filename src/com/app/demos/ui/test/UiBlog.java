@@ -1,4 +1,4 @@
-package com.app.demos.ui;
+package com.app.demos.ui.test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +16,6 @@ import com.app.demos.model.Comment;
 import com.app.demos.model.Customer;
 import com.app.demos.util.AppCache;
 import com.app.demos.util.AppUtil;
-import com.app.demos.util.UIUtil;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -109,8 +108,8 @@ public class UiBlog extends BaseUiAuth {
 					Customer customer = (Customer) message.getResult("Customer");
 					TextView textCustomerName = (TextView) this.findViewById(R.id.app_blog_text_customer_name);
 					TextView testCustomerInfo = (TextView) this.findViewById(R.id.app_blog_text_customer_info);
-					textCustomerName.setText(customer.getName());
-					testCustomerInfo.setText(UIUtil.getCustomerInfo(this, customer));
+					//textCustomerName.setText(customer.getName());
+					//testCustomerInfo.setText(UIUtil.getCustomerInfo(this, customer));
 					// set customer id
 					customerId = customer.getId();
 					// load face image async
@@ -159,7 +158,7 @@ public class UiBlog extends BaseUiAuth {
 					// update customer info
 					final Customer customer = (Customer) message.getResult("Customer");
 					TextView textInfo = (TextView) this.findViewById(R.id.app_blog_text_customer_info);
-					textInfo.setText(UIUtil.getCustomerInfo(this, customer));
+					//textInfo.setText(UIUtil.getCustomerInfo(this, customer));
 				} catch (Exception e) {
 					e.printStackTrace();
 					toast(e.getMessage());

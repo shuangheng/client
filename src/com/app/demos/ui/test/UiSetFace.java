@@ -1,4 +1,4 @@
-package com.app.demos.ui;
+package com.app.demos.ui.test;
 
 import java.util.ArrayList;
 import java.util.HashMap;

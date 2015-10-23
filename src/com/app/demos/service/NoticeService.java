@@ -3,7 +3,7 @@ package com.app.demos.service;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.app.demos.ui.UiBlogs;
+import com.app.demos.ui.test.UiBlogs;
 import com.app.demos.base.BaseMessage;
 import com.app.demos.base.BaseService;
 import com.app.demos.base.C;

@@ -14,20 +14,14 @@ import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.LogRecord;
 
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.app.demos.base.BaseTask;
-import com.app.demos.util.AppFileDownUtils;
 import com.app.demos.util.BaseDevice;
 
 /**

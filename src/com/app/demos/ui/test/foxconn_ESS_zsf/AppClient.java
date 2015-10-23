@@ -1,4 +1,4 @@
-package com.app.demos.util.foxconn_ESS_zsf;
+package com.app.demos.ui.test.foxconn_ESS_zsf;
 
 import android.util.Base64;
 import android.util.Log;

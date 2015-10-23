@@ -1,33 +1,24 @@
 package com.app.demos.base;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import com.app.demos.R;
 import com.app.demos.util.AppCache;
 import com.app.demos.util.AppUtil;
 import com.app.demos.util.BaseDevice;
-import com.app.demos.util.HttpUtil;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.SimpleAdapter.ViewBinder;
@@ -320,7 +311,7 @@ public class BaseUi extends BaseActivity {
 	}
 
 	public void doTaskAsync (int taskId, String taskUrl, Boolean showProgress) {
-		if ( ! HttpUtil.isNetworkConnected(this)) {
+		if ( ! BaseDevice.isNetworkConnected(this)) {
             hideProgressBar();
 			if (!toastShowing) {
 				toast(getString(R.string.not_network));
@@ -352,7 +343,7 @@ public class BaseUi extends BaseActivity {
 	}
 
 	public void doTaskAsync (int taskId, String taskUrl, HashMap<String, String> taskArgs, Boolean showProgress) {
-		if ( ! HttpUtil.isNetworkConnected(this)) {
+		if ( ! BaseDevice.isNetworkConnected(this)) {
             hideProgressBar();
 			if (!toastShowing) {
 				toast(getString(R.string.not_network));

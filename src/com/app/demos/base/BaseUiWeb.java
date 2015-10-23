@@ -1,9 +1,9 @@
 package com.app.demos.base;
 
 import com.app.demos.R;
-import com.app.demos.ui.UiBlogs;
-import com.app.demos.ui.UiConfig;
-import com.app.demos.ui.UiIndex;
+import com.app.demos.ui.test.UiBlogs;
+import com.app.demos.ui.test.UiConfig;
+import com.app.demos.ui.test.UiIndex;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

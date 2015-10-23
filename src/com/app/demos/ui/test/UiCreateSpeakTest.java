@@ -1,10 +1,8 @@
 package com.app.demos.ui.test;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.Window;
@@ -12,9 +10,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.app.demos.R;
-import com.app.demos.ui.fragment.Fragment2;
+import com.app.demos.ui.fragment.UserInfoFragment;
 import com.app.demos.ui.fragment.Fragment3;
-import com.app.demos.ui.fragment.FragmentOne;
 
 public class UiCreateSpeakTest extends FragmentActivity implements View.OnClickListener {
 
@@ -29,7 +26,7 @@ public class UiCreateSpeakTest extends FragmentActivity implements View.OnClickL
         setContentView(R.layout.ui_create_speak_test);
 
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-        tx.add(R.id.id_content, new Fragment2(),"ONE");
+        tx.add(R.id.id_content, new UserInfoFragment(),"ONE");
         tx.commit();
 
 
@@ -50,7 +47,7 @@ public class UiCreateSpeakTest extends FragmentActivity implements View.OnClickL
         switch (v.getId())
         {
             case R.id.ui_create_speak_iv_picture:
-                fragment = new Fragment2();
+                fragment = new UserInfoFragment();
                 toast("picture");
 
                 break;

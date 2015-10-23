@@ -1,8 +1,7 @@
-package com.app.demos.ui;
+package com.app.demos.ui.test;
 
 import java.util.HashMap;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,7 +11,6 @@ import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.app.demos.R;
 import com.app.demos.base.BaseAuth;
@@ -23,8 +21,11 @@ import com.app.demos.base.C;
 import com.app.demos.model.Customer;
 import com.app.demos.service.NoticeService;
 
-public class UiMain extends BaseUi {
-	private TextView tv;
+public class UiLogin extends BaseUi {
+
+	private EditText mEditName;
+	private EditText mEditPass;
+	private CheckBox mCheckBox;
 	private SharedPreferences settings;
 	
 	@Override
@@ -32,22 +33,91 @@ public class UiMain extends BaseUi {
 		super.onCreate(savedInstanceState);
 		
 		// check if login
-		/*if (BaseAuth.isLogin()) {
+		if (BaseAuth.isLogin()) {
 			Log.e("isLogin","ok");
 			this.forward(UiIndex.class);			
 		}
-		*/
-		// set view after check login
-		setContentView(R.layout.ui_main);		
-		// remember password
-		tv = (TextView) this.findViewById(R.id.tpl_list_find_tvContent);
-		
 		//自动登录
-		settings = getSharedPreferences("login", MODE_PRIVATE);	
+		settings = getSharedPreferences("login", MODE_PRIVATE);
+		/*if (settings.getBoolean("remember", false)) {
+			doTaskLogin1();
+			//this.forward(UiIndex.class);
+		}*/
+		// set view after check login
+		setContentView(R.layout.ui_login);
+		
+		// remember password
+		mEditName = (EditText) this.findViewById(R.id.app_login_edit_name);
+		mEditPass = (EditText) this.findViewById(R.id.app_login_edit_pass);
+		mCheckBox = (CheckBox) this.findViewById(R.id.app_login_check_remember);
+		
 		if (settings.getBoolean("remember", false)) {
-			doTaskLogin1();		
-		}else{
-			this.forward(UiIndex.class);
+			mCheckBox.setChecked(true);
+			mEditName.setText(settings.getString("username", ""));
+			mEditPass.setText(settings.getString("password", ""));
+		}
+		
+		// remember checkbox
+		mCheckBox.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener(){
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				SharedPreferences.Editor editor = settings.edit();
+				if (mCheckBox.isChecked()) {
+					editor.putBoolean("remember", true);
+					editor.putString("username", mEditName.getText().toString());
+					editor.putString("password", mEditPass.getText().toString());
+				} else {
+					editor.putBoolean("remember", false);
+					editor.putString("username", "");
+					editor.putString("password", "");
+				}
+				editor.commit();
+			}
+		});
+		
+		// login submit
+		OnClickListener mOnClickListener = new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				switch (v.getId()) {
+					case R.id.app_login_btn_submit : 
+						doTaskLogin();
+						break;
+					case R.id.app_register_btn_submit :
+						doTaskRegister();
+						break;
+				}
+			}
+		};
+		findViewById(R.id.app_login_btn_submit).setOnClickListener(mOnClickListener);
+		findViewById(R.id.app_register_btn_submit).setOnClickListener(mOnClickListener);
+	}
+	
+	protected void doTaskRegister() {
+		// TODO Auto-generated method stub
+		if (mEditName.length() >0 && mEditPass.length() > 0){
+			HashMap<String, String> urlparams = new HashMap<String, String>();
+			urlparams.put("name", mEditName.getText().toString());
+			urlparams.put("pass", mEditPass.getText().toString());
+			try {
+				this.doTaskAsync(C.task.register, C.api.register, urlparams, true);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}		
+	}
+
+	private void doTaskLogin() {
+		app.setLong(System.currentTimeMillis());
+		if (mEditName.length() > 0 && mEditPass.length() > 0) {
+			HashMap<String, String> urlParams = new HashMap<String, String>();
+			urlParams.put("name", mEditName.getText().toString());
+			urlParams.put("pass", mEditPass.getText().toString());
+			try {
+				this.doTaskAsync(C.task.login, C.api.login, urlParams, true);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -75,7 +145,10 @@ public class UiMain extends BaseUi {
 			case C.task.login:
 				Log.e("onTask","");
 				longinOrregister(message, R.string.msg_login_success, R.string.msg_loginfail);
-				break;			
+				break;
+			case C.task.register:
+				longinOrregister(message, R.string.msg_register_success, R.string.msg_register_fail);								
+				break;
 		}
 	}
 	
@@ -115,7 +188,6 @@ public class UiMain extends BaseUi {
 	@Override
 	public void onNetworkError (int taskId) {
 		super.onNetworkError(taskId);
-		this.forward(UiIndex.class);
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////
@@ -130,6 +202,3 @@ public class UiMain extends BaseUi {
 	}
 	
 }
-
-
-

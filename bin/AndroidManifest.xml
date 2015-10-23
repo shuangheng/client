@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.TestImage"
+            android:name=".ui.test.TestImage"
             android:theme="@style/com.app.demos.theme.light" > >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -38,7 +38,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.UiMain"
+            android:name=".ui.test.UiMain"
             android:theme="@style/com.app.demos.theme.light" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -56,7 +56,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.UiLogin"
+            android:name=".ui.test.UiLogin"
             android:theme="@style/com.app.demos.theme.login" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -65,7 +65,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.UiIndex"
+            android:name=".ui.test.UiIndex"
             android:launchMode="singleTask"
             android:theme="@style/com.app.demos.theme.light" >
             <intent-filter>
@@ -84,7 +84,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.UiNews"
+            android:name=".ui.test.UiNews"
             android:theme="@style/com.app.demos.theme.light" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -93,7 +93,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.UiBlog"
+            android:name=".ui.test.UiBlog"
             android:theme="@style/com.app.demos.theme.light" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -102,7 +102,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.UiBlogs"
+            android:name=".ui.test.UiBlogs"
             android:theme="@style/com.app.demos.theme.light" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -111,7 +111,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.UiConfig"
+            android:name=".ui.test.UiConfig"
             android:theme="@style/com.app.demos.theme.light" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -120,7 +120,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.UiEditText"
+            android:name=".ui.test.UiEditText"
             android:launchMode="singleTop"
             android:theme="@style/com.app.demos.theme.light"
             android:windowSoftInputMode="stateVisible|adjustResize" >
@@ -132,7 +132,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.UiEditBlog"
+            android:name=".ui.test.UiEditBlog"
             android:launchMode="singleTop"
             android:theme="@style/com.app.demos.theme.light"
             android:windowSoftInputMode="stateVisible|adjustResize" >
@@ -144,7 +144,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.UiSetFace"
+            android:name=".ui.test.UiSetFace"
             android:launchMode="singleTop"
             android:theme="@style/com.app.demos.theme.light" >
             <intent-filter>

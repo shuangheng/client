@@ -5,19 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.method.LinkMovementMethod;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.URLSpan;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -40,7 +33,7 @@ import com.app.demos.layout.materialEditText.MaterialEditText;
 import com.app.demos.layout.materialEditText.MaterialEditTextComplete;
 import com.app.demos.ui.UiActionBar;
 import com.app.demos.ui.webview.BaseWebView;
-import com.app.demos.util.foxconn_ESS_zsf.AppClient;
+import com.app.demos.ui.test.foxconn_ESS_zsf.AppClient;
 
 import java.util.HashMap;
 

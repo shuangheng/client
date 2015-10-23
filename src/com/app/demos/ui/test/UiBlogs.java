@@ -1,4 +1,4 @@
-package com.app.demos.ui;
+package com.app.demos.ui.test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +15,6 @@ import com.app.demos.model.Blogg;
 import com.app.demos.model.Customer;
 import com.app.demos.util.AppCache;
 import com.app.demos.util.AppUtil;
-import com.app.demos.util.UIUtil;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -23,7 +22,6 @@ import android.os.Message;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -87,8 +85,8 @@ public class UiBlogs extends BaseUiAuth {
 					final Customer customer = (Customer) message.getResult("Customer");
 					TextView textName = (TextView) this.findViewById(R.id.app_blogs_text_customer_name);
 					TextView textInfo = (TextView) this.findViewById(R.id.app_blogs_text_customer_info);
-					textName.setText(customer.getSign());
-					textInfo.setText(UIUtil.getCustomerInfo(this, customer));
+					//textName.setText(customer.getSign());
+					//textInfo.setText(UIUtil.getCustomerInfo(this, customer));
 					// load face image async
 					faceImage = (ImageView) this.findViewById(R.id.app_blogs_image_face);
 					faceImageUrl = customer.getFaceurl();

@@ -1,8 +1,7 @@
-package com.app.demos.ui.test;
+package com.app.demos.ui.test.foxconn_ESS_zsf;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,23 +13,18 @@ import android.widget.Toast;
 
 import com.app.demos.R;
 import com.app.demos.base.BaseTask;
-import com.app.demos.base.BaseUi;
 import com.app.demos.layout.swipebacklayout.app.SwipeBackActivity;
 import com.app.demos.list.bitmap_load_list.FileCache;
 import com.app.demos.model.DromInfo;
 import com.app.demos.sqlite.DromInfoSqlite;
+import com.app.demos.ui.test.UiSearchHistory;
 import com.app.demos.ui.test.swipebacktest.DemoActivity;
-import com.app.demos.util.SDUtil;
-import com.app.demos.util.foxconn_ESS_zsf.AppClient;
+import com.app.demos.ui.test.foxconn_ESS_zsf.AppClient;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;

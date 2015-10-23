@@ -5,8 +5,6 @@ import java.util.HashMap;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v7.widget.Toolbar;
@@ -15,14 +13,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AbsListView.OnScrollListener;
@@ -43,19 +39,24 @@ import com.app.demos.layout.other.CircleImageView;
 import com.app.demos.list.CommentList;
 import com.app.demos.list.bitmap_load_list.ImageLoader_my;
 import com.app.demos.model.Comment;
-import com.app.demos.model.Customer;
 import com.app.demos.model.Gonggao;
+import com.app.demos.ui.fragment.UserInfoFragment;
 import com.app.demos.util.AppFilter;
-import com.app.demos.util.ColorUtil;
-import com.app.demos.util.ImmUtil;
-import com.app.demos.util.UIUtil;
+import com.app.demos.util.BaseDevice;
 import com.nineoldandroids.view.ViewHelper;
+import com.nineoldandroids.view.ViewPropertyAnimator;
 
 import de.greenrobot.event.EventBus;
 
 import static com.app.demos.util.Math_my.isEven;
 
 public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickListener {
+    private static final int BIGGER = 1;//about InputMode
+    private static final int SMALLER = 2;
+    private static final int MSG_RESIZE = 1;
+    private static final int HEIGHT_THREADHOLD = 30;
+    private ResizeLayout reSizelayout;
+
     private String speakId;
     private String bgImageUrl;
 
@@ -77,18 +78,14 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
     private String favorite;
     private int toolcolor;
 
-    private static final int BIGGER = 1;//about InputMode
-    private static final int SMALLER = 2;
-    private static final int MSG_RESIZE = 1;
-    private static final int HEIGHT_THREADHOLD = 30;
-    private ResizeLayout reSizelayout;
-
     private ButtonFloat btnFloat;
     private LinearLayout editLayout;
     private boolean bgColorIsWhite;
     private float speakerIv_x;
     private ImageView ivBgImage;
     private View tplSpeak;
+    private UserInfoFragment userInfo;
+    private boolean speakerIvIsShown = true;
 
 
     @Override
@@ -117,6 +114,7 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
         if (commentList == null) {
             LogMy.e(getContext(),"commentList == null");
             loadData();
+            userInfo.loadData();
         }
 
     }
@@ -188,6 +186,7 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         reSizelayout = (ResizeLayout) findViewById(R.id.ui_speak_comment_ResizeLayout);
         speakerIv = (CircleImageView) findViewById(R.id.ui_speak_comment_circle_iv);
+        userInfo = (UserInfoFragment) getSupportFragmentManager().findFragmentById(R.id.ui_speak_comment_top_view_fragment);
 
         moreView = getLayoutInflater().inflate(R.layout.tpl_list_speak_footer, null);
         moreView_pg = (ProgressBar) moreView.findViewById(R.id.list_speak_footer_progressbar);
@@ -242,36 +241,12 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
 
             @Override
             public void onSliding(float ratio) {
-                if (ratio <= 0) {
-                    speakerIv.setTranslationX(0);//平移到原位
-                    speakerIv.setTranslationY(0);//平移到原位
-                    speakerIv.setScaleX(1);
-                    speakerIv.setScaleY(1);
-                } else if (ratio <= 1) {
-                    speakerIv.setTranslationX(-(DEVICE_WIDTH / 2 - speakerIv_x) * ratio);//平移到 X 中点
-                    speakerIv.setTranslationY(0);//平移到 Y 原位
-                    speakerIv.setScaleX(1.0f + 0.5f * ratio);
-                    speakerIv.setScaleY(1.0f + 0.5f * ratio);
-                    ViewHelper.setAlpha(toolbar, 1.0f - ratio);//透明
-                    ViewHelper.setAlpha(list, 1.5f - ratio);//半透明
-
-                } else if (ratio <= 2) {
-                    speakerIv.setTranslationY(speakerIv_x/2 * (ratio-1));//向下平移
-
-                    //speakerIv.setTranslationX(-(DEVICE_WIDTH/2 - speakerIv_x));//平移到中点
-                    //speakerIv.setScaleX(1.5f + 0.5f * (ratio-1));
-                    //speakerIv.setScaleY(1.5f + 0.5f * (ratio-1));
-                } else if (ratio > 2 && ratio < 3) {
-
-                    //speakerIv.setTranslationX(-(DEVICE_WIDTH / 2 - speakerIv_x));//平移到中点
-                    //speakerIv.setScaleX(4 - ratio);//缩小
-                    //speakerIv.setScaleY(4 - ratio);
-                }
+                OnSliding(ratio);
             }
 
             @Override
             public void onRefresh() {
-                toolbar.setSubtitle("refresh");
+
             }
         });
 
@@ -294,6 +269,50 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
         ivBgImage.setOnClickListener(this);
         ibLike.setOnClickListener(this);
 
+    }
+
+    private void OnSliding(float ratio) {
+        if (ratio <= 0) {
+            speakerIv.setTranslationX(0);//平移到原位
+            speakerIv.setTranslationY(0);//平移到原位
+            speakerIv.setScaleX(1);
+            speakerIv.setScaleY(1);
+        } else if (ratio <= 1) {
+            speakerIv.setTranslationX(-(DEVICE_WIDTH / 2 - speakerIv_x) * ratio);//平移到 X 中点
+            speakerIv.setTranslationY(0);//平移到 Y 原位
+            speakerIv.setScaleX(1.0f + 0.5f * ratio);
+            speakerIv.setScaleY(1.0f + 0.5f * ratio);
+            ViewHelper.setAlpha(toolbar, 1.0f - ratio);//透明
+            ViewHelper.setAlpha(list, 1.5f - ratio);//半透明
+
+        } else if (ratio <= 2) {
+            speakerIv.setTranslationY(speakerIv_x/2 * (ratio-1));//向下平移
+
+            //speakerIv.setTranslationX(-(DEVICE_WIDTH/2 - speakerIv_x));//平移到中点
+            //speakerIv.setScaleX(1.5f + 0.5f * (ratio-1));
+            //speakerIv.setScaleY(1.5f + 0.5f * (ratio-1));
+        } else if (ratio > 2 && ratio < 3) {
+
+            //speakerIv.setTranslationX(-(DEVICE_WIDTH / 2 - speakerIv_x));//平移到中点
+            //speakerIv.setScaleX(4 - ratio);//缩小
+            //speakerIv.setScaleY(4 - ratio);
+        }
+    }
+
+    private void showUser() {
+        if (!speakerIvIsShown) {
+            ViewPropertyAnimator.animate(speakerIv).cancel();
+            ViewPropertyAnimator.animate(speakerIv).scaleX(1).scaleY(1).setDuration(200).start();
+            speakerIvIsShown = true;
+        }
+    }
+
+    private void hideUser() {
+        if (speakerIvIsShown) {
+            ViewPropertyAnimator.animate(speakerIv).cancel();
+            ViewPropertyAnimator.animate(speakerIv).scaleX(0).scaleY(0).setDuration(200).start();
+            speakerIvIsShown = false;
+        }
     }
 
     private void initParamData() {
@@ -319,7 +338,7 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
             case R.id.ui_speak_comment_buttonFloat:
                 btnFloat.setVisibility(View.GONE);
                 MaterialEditText editText = (MaterialEditText) findViewById(R.id.ui_speak_comment_editText);
-                ImmUtil.showSoftInput(getContext(), editText);
+                BaseDevice.showSoftInput(getContext(), editText);
                 break;
             case R.id.tpl_list_speak_iv_bg:
                 UiImageZoom.actionStart(getContext(), C.web.bgimage + bgImageUrl + ".jpg", null);
@@ -372,17 +391,7 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
                     toast("Add fans fail");
                 }
                 break;
-            case C.task.customerView:
-                try {
-                    // update customer info
-                    final Customer customer = (Customer) message.getResult("Customer");
-                    TextView textInfo = (TextView) this.findViewById(R.id.app_blog_text_customer_info);
-                    textInfo.setText(UIUtil.getCustomerInfo(this, customer));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    toast(e.getMessage());
-                }
-                break;
+
         }
     }
 
@@ -401,7 +410,7 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
                     loadMoreData();
                 }
                 moreView_pg.setVisibility(View.VISIBLE);
-                moreView_tv.setText(getString(R.string.btn_more));
+                moreView_tv.setText(getString(R.string.loading));
             }
         });
     }
@@ -481,7 +490,7 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
                 && lastVisibleIndex >= commentAdapter.getCount()) {
             moreView_tv.setVisibility(View.VISIBLE);
             moreView_pg.setVisibility(View.VISIBLE);
-            moreView_tv.setText(getString(R.string.btn_more));
+            moreView_tv.setText(getString(R.string.loading));
             handler.post(new Runnable() {
                 @Override
                 public void run() {

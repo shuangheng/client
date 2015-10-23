@@ -1,10 +1,9 @@
 package com.app.demos.Listener;
 
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.app.demos.util.Utils;
+import com.app.demos.util.BaseDevice;
 
 /**
  * Created by tom on 15-5-1.
@@ -34,7 +33,7 @@ public abstract class HidingScrollListener extends RecyclerView.OnScrollListener
     private int mToolbarHeight;
 
     public HidingScrollListener(Context context) {
-        mToolbarHeight = Utils.getToolbarHeight(context);
+        mToolbarHeight = BaseDevice.getToolbarHeight(context);
     }
 
     @Override

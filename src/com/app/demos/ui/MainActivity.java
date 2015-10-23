@@ -10,7 +10,7 @@ import com.app.demos.base.BaseMessage;
 import com.app.demos.base.BaseTask;
 import com.app.demos.base.BaseUi;
 import com.app.demos.base.C;
-import com.app.demos.ui.fragment.Fragment2;
+import com.app.demos.ui.fragment.UserInfoFragment;
 import com.app.demos.ui.fragment.Fragment3;
 import com.app.demos.ui.fragment.MainFragment;
 import com.app.demos.list.MyList;
@@ -148,7 +148,7 @@ public class MainActivity extends BaseUi implements OnGestureListener {
         View activityView = mInflater.inflate(R.layout.fragment_list_speak, null);
 
         activityfragment = MainFragment.newInstance("Hello Activity.");
-        Fragment groupFragment = new Fragment2();
+        Fragment groupFragment = new UserInfoFragment();
         Fragment friendsFragment= new Fragment3();
         Fragment chatFragment=MainFragment.newInstance("Hello Chat.");
 

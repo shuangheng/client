@@ -43,7 +43,7 @@ public class IOUtil {
 		}
 		try {
 			HttpURLConnection conn = null;
-			if (HttpUtil.WAP_INT == HttpUtil.getNetType(ctx)) {
+			if (BaseDevice.WAP_INT == BaseDevice.getNetype(ctx)) {
 				Proxy proxy = new Proxy(java.net.Proxy.Type.HTTP, new InetSocketAddress("10.0.0.172", 80)); 
 				conn = (HttpURLConnection) myFileUrl.openConnection(proxy);
 			} else {

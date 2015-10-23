@@ -1,43 +1,30 @@
 package com.app.demos.ui;
 
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.app.demos.R;
 import com.app.demos.base.BaseApp;
-import com.app.demos.base.BaseHandler;
-import com.app.demos.base.BaseTask;
-import com.app.demos.base.BaseUi;
-import com.app.demos.base.C;
 import com.app.demos.base.LogMy;
 import com.app.demos.layout.RoundProgressBar;
 import com.app.demos.layout.widget.photoview.PhotoView;
 import com.app.demos.layout.widget.photoview.PhotoViewAttacher;
 import com.app.demos.list.bitmap_load_list.FileCache;
-import com.app.demos.list.bitmap_load_list.ImageLoader;
 import com.app.demos.list.bitmap_load_list.ImageLoader_my;
-import com.app.demos.util.AppFileDownUtils;
-import com.app.demos.util.HttpUtil;
+import com.app.demos.util.BaseDevice;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -220,7 +207,7 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
                         LogMy.e(getApplicationContext(),"down");
                     } else {
                         LogMy.e(getBaseContext(),"download");
-                        if (HttpUtil.isNetworkConnected(UiImageZoom.this)) {
+                        if (BaseDevice.isNetworkConnected(UiImageZoom.this)) {
                             downSuc = downloadFile(mDownloadUrl, saveFilePath);
                         } else {
                             Message msg = new Message();
@@ -343,21 +330,21 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
             super.handleMessage(msg);
             try {
                 switch (msg.what) {
-                    case AppFileDownUtils.MSG_DOWNING:
+                    case ImageDownUtils.MSG_DOWNING:
                         progressBar.setProgress(msg.getData().getInt("progress"));
                         break;
-                    case AppFileDownUtils.MSG_FAILURE:
+                    case ImageDownUtils.MSG_FAILURE:
                         imageReload.setVisibility(View.VISIBLE);
                         progressBar.setVisibility(View.GONE);
                         progressBar.setProgress(2);
                         break;
-                    case AppFileDownUtils.MSG_UNDOWN:
+                    case ImageDownUtils.MSG_UNDOWN:
                         imageReload.setVisibility(View.VISIBLE);
                         progressBar.setVisibility(View.GONE);
                         progressBar.setProgress(2);
                         Toast.makeText(UiImageZoom.this, getString(R.string.not_network), Toast.LENGTH_SHORT).show();
                         break;
-                    case AppFileDownUtils.MSG_FINISH:
+                    case ImageDownUtils.MSG_FINISH:
                         progressBar.setVisibility(View.GONE);
                         InputStream is = new FileInputStream(saveFilePath);
                         Bitmap b = BitmapFactory.decodeStream(is);

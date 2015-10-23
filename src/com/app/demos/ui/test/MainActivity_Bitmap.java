@@ -1,4 +1,4 @@
-package com.app.demos.ui;
+package com.app.demos.ui.test;
 
 import android.app.Activity;
 import android.os.Bundle;

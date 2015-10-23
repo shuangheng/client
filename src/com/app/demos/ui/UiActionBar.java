@@ -47,13 +47,13 @@ import com.app.demos.sqlite.FavoriteSpeakSqlite;
 import com.app.demos.sqlite.GonggaoSqlite;
 import com.app.demos.ui.authenticator.UiAuthenticator;
 import com.app.demos.ui.fragment.FindFragment;
-import com.app.demos.ui.fragment.Fragment2;
+import com.app.demos.ui.fragment.UserInfoFragment;
 import com.app.demos.ui.fragment.Fragment3;
 import com.app.demos.ui.fragment.SpeakFragment;
 import com.app.demos.ui.test.GestureDetectorTest;
 import com.app.demos.ui.test.observableScrollView.FlexibleSpaceWithImageListViewActivity;
 import com.app.demos.ui.test.ToolBarTitleScroll;
-import com.app.demos.ui.test.UiFoxconnEssPost;
+import com.app.demos.ui.test.foxconn_ESS_zsf.UiFoxconnEssPost;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -359,7 +359,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
 
         activityfragment = SpeakFragment.newInstance("Hello Activity.");
         findfragment = FindFragment.newInstance("Hello Activity.");
-        Fragment groupFragment = new Fragment2();
+        Fragment groupFragment = new UserInfoFragment();
         //Fragment friendsFragment=new Fragment3();
         //Fragment chatFragment=SpeakFragment.newInstance("Hello Chat.");
 

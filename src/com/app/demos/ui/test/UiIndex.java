@@ -1,4 +1,4 @@
-package com.app.demos.ui;
+package com.app.demos.ui.test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,15 +10,13 @@ import com.app.demos.base.BaseTask;
 import com.app.demos.base.BaseUi;
 import com.app.demos.base.BaseUiAuth;
 import com.app.demos.base.C;
-import com.app.demos.list.BlogList;
 import com.app.demos.list.MyList;
 import com.app.demos.model.Blogg;
 import com.app.demos.model.Gonggao;
 import com.app.demos.sqlite.BlogSqlite;
+import com.app.demos.ui.MainActivity;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
@@ -26,7 +24,6 @@ import android.view.KeyEvent;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
