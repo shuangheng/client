@@ -88,7 +88,7 @@ public class BaseTaskPool {
 						// init app client
 						AppClient client = new AppClient(this.taskUrl);
 						if (BaseDevice.WAP_INT == BaseDevice.getNetype(context)) {
-							client.useWap();
+							//client.useWap();
 						}
 						// http get
 						if (taskArgs == null) {

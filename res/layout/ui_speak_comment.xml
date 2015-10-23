@@ -124,6 +124,7 @@
     android:id="@+id/ui_speak_comment_circle_iv"
     android:layout_width="?attr/actionBarSize"
     android:layout_height="?attr/actionBarSize"
+    android:background="@android:color/white"
     android:layout_alignParentRight="true"
     android:layout_alignParentEnd="true"
     android:layout_alignParentTop="true"

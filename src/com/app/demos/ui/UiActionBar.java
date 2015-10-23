@@ -347,7 +347,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         // 选中的文字颜色
         mPagerSlidingTabStrip.setSelectedTextColor(Color.WHITE);
         // 正常文字颜色
-        mPagerSlidingTabStrip.setTextColor(Color.GRAY);
+        mPagerSlidingTabStrip.setTextColor(getResources().getColor(R.color.tabTextColor));
     }
 
     private void InitViewPager() {
