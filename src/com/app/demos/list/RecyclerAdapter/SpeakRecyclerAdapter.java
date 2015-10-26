@@ -18,10 +18,12 @@ import android.widget.Toast;
 import com.app.demos.R;
 import com.app.demos.base.BaseUi;
 import com.app.demos.base.C;
+import com.app.demos.layout.ListFooterView;
 import com.app.demos.list.bitmap_load_list.ImageLoader;
+import com.app.demos.list.bitmap_load_list.ImageLoader_my;
 import com.app.demos.model.Gonggao;
-import com.app.demos.ui.MainActivity;
 import com.app.demos.util.AppFilter;
+import com.app.demos.util.BaseDevice;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,7 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
     private boolean isShowBottom = false;
     private boolean isEnd = false;
     private int positionn;
+    private boolean isNeworkError;
 
 
     public void setFlagBusy(boolean busy) {
@@ -52,8 +55,10 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
         this.isEnd = isEnd;
     }
 
+    private ListFooterView footerView;
 
-    private ImageLoader mImageLoader;
+
+    private ImageLoader_my mImageLoader;
     private int positonn;
     private Context mContext;
     private String[] urlArrays;
@@ -63,7 +68,11 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
     public SpeakRecyclerAdapter(Context context, ArrayList<Gonggao> blogList) {
         mContext = context;
         gonggaoList = blogList;
-        mImageLoader = new ImageLoader(context, "image");
+        mImageLoader = new ImageLoader_my(context, "image");
+    }
+
+    public void setNeworkError(boolean neworkError) {
+        this.isNeworkError = neworkError;
     }
 
     public static interface OnRecyclerViewListener {
@@ -98,7 +107,7 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
             final View view = LayoutInflater.from(context).inflate(R.layout.tpl_list_speak_8_27, parent, false);
             return new RecyclerItemViewHolder(view);
         } else if (viewType == TYPE_FOOTER) {
-            final View view = LayoutInflater.from(context).inflate(R.layout.tpl_list_speak_footer, parent, false);
+            final View view = LayoutInflater.from(context).inflate(R.layout.tpl_list_footer, parent, false);
             return new RecyclerFooterViewHolder(view);
         }
         throw new RuntimeException("There is no type that matches the type " + viewType + " + make sure your using types correctly");
@@ -151,19 +160,19 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
                 holder.image.setVisibility(gonggaoList.get(position).getBgimage().equals("null") ? View.GONE : View.VISIBLE);
                 holder.image.setImageResource(R.drawable.ic_launcher);
 
-            mImageLoader.DisplayImage(url, holder.image, mBusy);
+            mImageLoader.DisplayImage(url, holder.image, mBusy, true);
 
         } else {
             RecyclerFooterViewHolder footerHolder = (RecyclerFooterViewHolder) viewHolder;
+            footerView = footerHolder.listFooterView;
             if (position > 4) {
-                footerHolder.pg.setVisibility(View.VISIBLE);
-                footerHolder.tv.setVisibility(View.VISIBLE);
+                footerView.setStatus(ListFooterView.LoadStatus.LOADING);
                 if (isEnd) {
-                    footerHolder.pg.setVisibility(View.GONE);
-                    footerHolder.tv.setText("点我发表");
+                    footerView.setStatus(ListFooterView.LoadStatus.END);
+                } else if (!BaseDevice.isNetworkConnected(mContext)){
+                    footerView.setStatus(ListFooterView.LoadStatus.FAIL);
                 } else {
-                    footerHolder.pg.setVisibility(View.VISIBLE);
-                    footerHolder.tv.setText("正在加载···");
+                    footerView.setStatus(ListFooterView.LoadStatus.LOADING);
                 }
             }
         }
@@ -191,8 +200,12 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
         return position == getBasicItemCount();
     }
 
-    public ImageLoader getImageLoader(){
+    public ImageLoader_my getImageLoader(){
         return mImageLoader;
+    }
+
+    public ListFooterView getFooterView() {
+        return footerView;
     }
 
     class RecyclerItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
@@ -229,14 +242,11 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
                 if (null != onRecyclerViewListener) {
                     onRecyclerViewListener.onItemClick(getAdapterPosition());
                 }
-                Toast.makeText(v.getContext(), "content" + getAdapterPosition(), Toast.LENGTH_SHORT).show();
-                Bundle params = new Bundle();
             }
             if(v == ib) {
                 if (null != onRecyclerViewListener) {
                     onRecyclerViewListener.onFavoriteClick(ib, getAdapterPosition());
                 }
-                Toast.makeText(v.getContext(), "ib", Toast.LENGTH_SHORT).show();
             }
             if (v == image) {
                 if (null != onRecyclerViewListener) {
@@ -257,27 +267,10 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     class RecyclerFooterViewHolder extends RecyclerView.ViewHolder {
-        public ProgressBar pg;
-        public TextView tv;
+        public ListFooterView listFooterView;
         public RecyclerFooterViewHolder( final View itemView) {
             super(itemView);
-            pg = (ProgressBar) itemView.findViewById(R.id.list_speak_footer_progressbar);
-            tv = (TextView) itemView.findViewById(R.id.list_speak_footer_hint_textview);
-            if (!isEnd) {
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(itemView.getContext(), "more Click", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            } else {
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(itemView.getContext(), "end", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
+            listFooterView = (ListFooterView) itemView.findViewById(R.id.tpl_list_footer_listfooterview);
         }
     }
 

@@ -3,7 +3,6 @@ package com.app.demos.list.bitmap_load_list;
 import com.app.demos.R;
 import com.app.demos.base.BaseUi;
 import com.app.demos.model.Gonggao;
-import com.app.demos.ui.MainActivity;
 import com.app.demos.util.AppFilter;
 import com.app.demos.util.BaseDevice;
 
@@ -106,7 +105,7 @@ public class LoaderAdapter extends BaseAdapter{
                 //blogItem.ib.setImageResource(R.drawable.ic_card_liked);
                 Log.d("ibutton", "yes");
 
-                v.setBackgroundResource(new MainActivity().likeButtonClick(mContext));
+                //v.setBackgroundResource(new MainActivity().likeButtonClick(mContext));
                 //new TestFragment().likeButtonClick();
             }
         });

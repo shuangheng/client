@@ -9,16 +9,13 @@ import com.app.demos.base.C;
 import com.app.demos.base.LogMy;
 import com.app.demos.layout.swipeRefreshLayout.Progress_m;
 import com.app.demos.layout.swipeRefreshLayout.Progress_m.OnRefreshListener;
-import com.app.demos.list.MyList;
 import com.app.demos.list.RecyclerAdapter.FindRecycAdapter;
-import com.app.demos.list.RecyclerAdapter.SpeakRecyclerAdapter;
 import com.app.demos.list.bitmap_load_list.ImageLoader;
 import com.app.demos.list.bitmap_load_list.LoaderAdapter;
 import com.app.demos.model.Find;
 import com.app.demos.model.Gonggao;
 import com.app.demos.sqlite.GonggaoSqlite;
 import com.app.demos.ui.UiActionBar;
-import com.app.demos.ui.UiSpeakComment;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -36,8 +33,6 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -56,7 +51,7 @@ public class FindFragment extends Fragment implements  OnRefreshListener {
     //---View---
     private ListView list;
     private ImageButton ib;
-    public MyList blogListAdapter;
+    //public MyList blogListAdapter;
     private LoaderAdapter adapter;
     private SharedPreferences sharedPreferences;
     private PopupWindow popupwindow;

@@ -39,6 +39,7 @@ import com.app.demos.base.BaseTask;
 import com.app.demos.base.BaseUi;
 import com.app.demos.base.C;
 import com.app.demos.layout.ButtonFloat;
+import com.app.demos.layout.ListFooterView;
 import com.app.demos.layout.other.PagerSlidingTabStrip_my;
 import com.app.demos.model.FavoriteSpeak;
 import com.app.demos.model.Find;
@@ -70,7 +71,6 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
     private long mPressedTime = 0;
 
     public int position_one;
-    private Resources resources;
     private SpeakFragment activityfragment;
     private FindFragment findfragment;
     /////////////////////////////////////
@@ -587,7 +587,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
                 try {	//剩余Data
                     ArrayList<Gonggao> ggList1 = (ArrayList<Gonggao>) message.getResultList("Gonggao");
                     if (ggList1 != null) {
-                        gonggaoSqlite.delete(null, null);
+                        //gonggaoSqlite.delete(null, null);
                         for (Gonggao g : ggList1) {
                             if (favoriteSpeakSqlite.exists(FavoriteSpeak.COL_SPEAKID + "=?", new String[]{g.getId()})) {
                                 g.setFavorite("0");
@@ -600,7 +600,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
                     }
 
                     ArrayList<Gonggao> gg = gonggaoSqlite.getAllGonggao();
-                    activityfragment.addGgList(gg);
+                    activityfragment.setGgList(gg);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -673,6 +673,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         switch (taskId) {
             case C.task.gg:
                 //activityfragment.swipeLayout.setRefreshing(false);
+                activityfragment.speakRecyclerAdapter.setNeworkError(true);
                 break;
             case C.task.find:
                 //findfragment.swipeLayout.setRefreshing(false);

@@ -13,7 +13,8 @@ import com.app.demos.util.BaseDevice;
  *if((controlsVisible && dy>0) || (!controlsVisible && dy<0)) {
  *scrolledDistance += dy; }
  *
- *2.如果总的滚动距离超多了一定值（这个值取决于你自己的设定，越大，需要滑动的距离越长才能显示或者隐藏），我们就根据其方向显示或者隐藏Toolbar（dy>0意味着下滚，dy<0意味着上滚）。
+ *2.如果总的滚动距离超多了一定值（这个值取决于你自己的设定，越大，需要滑动的距离越长才能显示或者隐藏），
+ * 我们就根据其方向显示或者隐藏Toolbar（dy>0意味着下滚，dy<0意味着上滚）。
  *if (scrolledDistance > HIDE_THRESHOLD && controlsVisible) {
  *onHide();
  *controlsVisible = false;

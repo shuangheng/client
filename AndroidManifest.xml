@@ -32,10 +32,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.UiSpeakMain"
-            android:theme="@style/com.app.demos.theme.light" >
-        </activity>
-        <activity
             android:name=".ui.UiImageZoom"
             android:launchMode="singleTop"
             android:theme="@style/com.app.demos.theme.light" >
@@ -109,98 +105,14 @@
             android:theme="@style/AppThemeSwipeBack.Transparent" >
         </activity>
         <activity
+            android:configChanges="keyboardHidden|orientation"
             android:name=".ui.UiSpeakComment"
             android:label="@string/comment"
-            android:theme="@style/AppThemeNoActionBar" >
+            android:theme="@style/AppThemeNoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
-        <activity
-            android:name=".ui.test.UiMain"
-            android:theme="@style/com.app.demos.theme.light" >
-        </activity>
-        <activity
-            android:name=".ui.MainActivity"
-            android:theme="@style/Theme.AppCompat.Light" >
-        </activity>
-        <activity
-            android:name=".ui.test.MainActivity_Bitmap"
-            android:theme="@style/Theme.AppCompat.Light" >
-        </activity>
-        <activity
-            android:name=".ui.test.UiLogin"
-            android:theme="@style/com.app.demos.theme.login" >
-        </activity>
-        <activity
-            android:name=".ui.test.UiIndex"
-            android:launchMode="singleTask"
-            android:theme="@style/com.app.demos.theme.light" >
-        </activity>
-        <activity
-            android:name=".ui.UiGongGao"
-            android:theme="@style/com.app.demos.theme.light" >
-        </activity>
-        <activity
-            android:name=".ui.test.UiNews"
-            android:theme="@style/com.app.demos.theme.light" >
-        </activity>
-        <activity
-            android:name=".ui.test.UiBlog"
-            android:theme="@style/com.app.demos.theme.light" >
-        </activity>
-        <activity
-            android:name=".ui.test.UiBlogs"
-            android:theme="@style/com.app.demos.theme.light" >
-        </activity>
-        <activity
-            android:name=".ui.test.UiConfig"
-            android:theme="@style/com.app.demos.theme.light" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.test.UiEditText"
-            android:launchMode="singleTop"
-            android:theme="@style/com.app.demos.theme.light"
-            android:windowSoftInputMode="stateVisible|adjustResize" >
-            <intent-filter>
-                <action android:name="com.app.demos.EDITTEXT" />
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.test.UiEditBlog"
-            android:launchMode="singleTop"
-            android:theme="@style/com.app.demos.theme.light"
-            android:windowSoftInputMode="stateVisible|adjustResize" >
-            <intent-filter>
-                <action android:name="com.app.demos.EDITBLOG" />
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.test.UiSetFace"
-            android:launchMode="singleTop"
-            android:theme="@style/com.app.demos.theme.light" >
-        </activity>
-        <activity
-            android:name=".demo.DemoWeb"
-            android:theme="@style/com.app.demos.theme.light" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".demo.DemoMap"
-            android:theme="@style/com.app.demos.theme.light" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
+
+
         <activity
             android:name=".test.TestUi"
             android:theme="@style/com.app.demos.theme.light" >

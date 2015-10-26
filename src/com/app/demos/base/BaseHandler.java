@@ -79,6 +79,8 @@ public class BaseHandler extends Handler {
 					taskId = msg.getData().getInt("task");
 					fragment.onNetworkError(taskId);
 					break;
+				default:
+					break;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

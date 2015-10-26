@@ -5,7 +5,9 @@ import java.util.HashMap;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,6 +39,7 @@ import com.app.demos.layout.dragtoplayout.AttachUtil;
 import com.app.demos.layout.dragtoplayout.DragTopLayout;
 import com.app.demos.layout.materialEditText.MaterialEditText;
 import com.app.demos.layout.other.CircleImageView;
+import com.app.demos.layout.swipebacklayout.app.SwipeBackActivity;
 import com.app.demos.list.CommentList;
 import com.app.demos.list.bitmap_load_list.ImageLoader_my;
 import com.app.demos.model.Comment;
@@ -86,6 +90,7 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
     private View tplSpeak;
     private UserInfoFragment userInfo;
     private boolean speakerIvIsShown = true;
+    private Handler handler;
 
 
     @Override
@@ -94,7 +99,8 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
         setContentView(R.layout.ui_speak_comment);
 
         // set handler
-        this.setHandler(new BlogHandler(this));
+        //this.setHandler(new BlogHandler(this));
+        handler = new BlogHandler();
 
         //--fill content
         initParamData();
@@ -112,9 +118,9 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
     public void onStart () {
         super.onStart();
         if (commentList == null) {
-            LogMy.e(getContext(),"commentList == null");
+            LogMy.e(getContext(), "commentList == null");
             loadData();
-            userInfo.loadData();
+            //userInfo.loadData();
         }
 
     }
@@ -217,6 +223,7 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
         containerLayout.setBackgroundColor(toolcolor);
 
         tvContent.setText(AppFilter.getHtml(g.getContent()));
+        tvContent.setTextColor(bgColorIsWhite ? Color.BLACK : Color.WHITE);
         tvType.setText(g.getType());
         extra.setText("评论 " + g.getCommentcount());
         tvLikeCount.setText(g.getLikeCount());
@@ -250,12 +257,17 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
             }
         });
 
+        FrameLayout.LayoutParams lpp = (FrameLayout.LayoutParams) reSizelayout.getLayoutParams();
+        final int reSizelayout_H = lpp.height;
+        RelativeLayout.LayoutParams lppp = (RelativeLayout.LayoutParams) editLayout.getLayoutParams();
+        final int editLayout_H = lpp.height;
+        toast("rel - h = "+editLayout_H);
         reSizelayout.setOnResizeListener(new ResizeLayout.OnResizeListener() {
             @Override
             public void OnResize(int w, int h, int oldw, int oldh) {
-                int change = BIGGER;
-                if (h < oldh) {
-                    change = SMALLER;
+                int change = BIGGER;//input hide
+                if (h < oldh || h > oldh && h < reSizelayout_H-editLayout_H) {
+                    change = SMALLER;//input show
                 }
 
                 Message msg = new Message();
@@ -428,10 +440,8 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // inner classes
 
-    private class BlogHandler extends BaseHandler {
-        public BlogHandler(BaseUi ui) {
-            super(ui);
-        }
+    private class BlogHandler extends Handler {
+
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -440,9 +450,11 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
                     if (msg.arg1 == BIGGER) {//inputMode is hidding
                         editLayout.setVisibility(View.GONE);
                         btnFloat.setVisibility(View.VISIBLE);
+                        dragLayout.invalidate();
                     } else {
                         btnFloat.setVisibility(View.GONE);
                         editLayout.setVisibility(View.VISIBLE);
+                        dragLayout.invalidate();
                     }
                 }
                 break;

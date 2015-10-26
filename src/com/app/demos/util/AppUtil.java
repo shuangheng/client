@@ -26,8 +26,10 @@ import android.content.SharedPreferences;
 import android.net.ParseException;
 import android.util.Log;
 
+import com.app.demos.base.BaseApp;
 import com.app.demos.base.BaseMessage;
 import com.app.demos.base.BaseModel;
+import com.app.demos.base.LogMy;
 import com.app.demos.model.Customer;
 
 public class AppUtil {
@@ -128,8 +130,11 @@ public class AppUtil {
 	}
 	
 	/* 获取 Message */
-	static public BaseMessage getMessage (String jsonStr) throws Exception {		
-		jsonStr=jsonStr.substring(2);
+	static public BaseMessage getMessage (String jsonStr) throws Exception {
+		LogMy.e(BaseApp.getContext(), "Json -->>" + jsonStr);
+		//int i = "{".indexOf(jsonStr);
+		jsonStr=jsonStr.substring(6);
+		//LogMy.e(BaseApp.getContext(), "Json >>" + jsonStr);
 		BaseMessage message = new BaseMessage();		
 		JSONObject jsonObject = null ;		
 
@@ -148,7 +153,7 @@ public class AppUtil {
 				message.setResult(jsonObject.getString("result"));
 			}
 		} catch (JSONException e) {
-            Log.e("json", jsonStr);
+            LogMy.e(BaseApp.getContext(), "Json format error -->>" + jsonStr);
 			throw new Exception("Json format error");
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -18,9 +18,6 @@ import com.app.demos.base.BaseList;
 
 import com.app.demos.list.bitmap_load_list.ImageLoader;
 import com.app.demos.model.Comment;
-import com.app.demos.model.Gonggao;
-import com.app.demos.ui.MainActivity;
-import com.app.demos.util.AppCache;
 import com.app.demos.util.AppFilter;
 import com.app.demos.util.TimeUtil;
 

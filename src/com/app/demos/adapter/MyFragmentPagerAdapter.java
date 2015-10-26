@@ -2,13 +2,20 @@ package com.app.demos.adapter;
 
 import java.util.ArrayList;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.app.demos.R;
+import com.app.demos.base.BaseApp;
+import com.app.demos.base.BaseAuth;
+
 public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
     private ArrayList<Fragment> fragmentsList;
-    private final String[] TITLES = { "广场", "公告", "二手", "寻物" };
+    private Context context = BaseApp.getContext();
+    private final String[] TITLES = {context.getString(R.string.tab_1), context.getString(R.string.tab_2),
+            context.getString(R.string.tab_3), context.getString(R.string.tab_4)};
 
     public MyFragmentPagerAdapter(FragmentManager fm) {
         super(fm);

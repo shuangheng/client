@@ -18,7 +18,6 @@ import com.app.demos.base.BaseList;
 
 import com.app.demos.model.Find;
 import com.app.demos.model.Gonggao;
-import com.app.demos.ui.MainActivity;
 import com.app.demos.util.AppCache;
 import com.app.demos.util.AppFilter;
 

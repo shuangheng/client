@@ -3,7 +3,7 @@ package com.app.demos.service;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.app.demos.ui.test.UiBlogs;
+import com.app.demos.ui.UiSpeakComment;
 import com.app.demos.base.BaseMessage;
 import com.app.demos.base.BaseService;
 import com.app.demos.base.C;
@@ -91,7 +91,7 @@ public class NoticeService extends BaseService {
 			n.icon = com.app.demos.R.drawable.icon;
 			n.when = System.currentTimeMillis();
 			// Simply open the parent activity
-			PendingIntent pi = PendingIntent.getActivity(this, 0, new Intent(this, UiBlogs.class), 0);
+			PendingIntent pi = PendingIntent.getActivity(this, 0, new Intent(this, UiSpeakComment.class), 0);
 			// Change the name of the notification here
 			n.setLatestEventInfo(this, "demos Notice", text, pi);
 			// show notification

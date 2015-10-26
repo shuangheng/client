@@ -8,9 +8,8 @@ import com.app.demos.R;
 import com.app.demos.base.C;
 import com.app.demos.layout.swipeRefreshLayout.Progress_m;
 import com.app.demos.layout.swipeRefreshLayout.Progress_m.OnRefreshListener;
-import com.app.demos.list.MyList;
 import com.app.demos.list.RecyclerAdapter.SpeakRecyclerAdapter;
-import com.app.demos.list.bitmap_load_list.ImageLoader;
+import com.app.demos.list.bitmap_load_list.ImageLoader_my;
 import com.app.demos.model.FavoriteSpeak;
 import com.app.demos.model.Gonggao;
 import com.app.demos.sqlite.GonggaoSqlite;
@@ -20,7 +19,6 @@ import com.app.demos.ui.UiSpeakComment;
 
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -58,7 +56,7 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
     //---View---
     private ListView list;
     private ImageButton ib;
-	public MyList blogListAdapter;
+	//public MyList blogListAdapter;
 	private SharedPreferences sharedPreferences;
     private PopupWindow popupwindow;
     private View pupView;
@@ -199,35 +197,7 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
         recyclerView.setOnScrollListener(new HideFabFooterScrollListener());
 
 
-        //list = (ListView) view.findViewById(R.id.ui_gongga_list_view);
 
-        
-
-		//setMyAdapter();
-		//list.setAdapter(blogListAdapter);
-		/*/ 绑定监听器
-        list.setOnScrollListener(this);
-		bt.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                pg.setVisibility(View.VISIBLE);// 将进度条可见
-                bt.setVisibility(View.GONE);// 不可见
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        activity.loadMoreData();// 加载更多数据                              
-                        bt.setVisibility(View.VISIBLE);//按钮可见
-                        pg.setVisibility(View.GONE);
-                       // blogListAdapter.notifyDataSetChanged();// 通知listView刷新数据
-                        
-                    }
-
-					
-                }, 2000);
-            }
-        });
-		*/
 		//下拉更新Layout
 		 swipeLayout = (Progress_m) view.findViewById(R.id.speak_swipe_refresh);
         swipeLayout.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW, Color.GREEN);
@@ -292,7 +262,7 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
 
     @Override
     public void onDestroy() {
-        ImageLoader imageLoader = speakRecyclerAdapter.getImageLoader();
+        ImageLoader_my imageLoader = speakRecyclerAdapter.getImageLoader();
             if (imageLoader != null){
                 imageLoader.clearCache();
             }
@@ -313,31 +283,7 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
 
 
 	
-	//设置默认List adapter
-		public void setMyAdapter(){
-				ggList =  new ArrayList<Gonggao>();
-				//Gonggao g = new Gonggao("10000","","my","","","2015-01-09");
-				
-				//ggList.add(g);
-				//getLastId(ggList);
-				//blogListAdapter = new MyList(activity,R.layout.tpl_list_speak, ggList);
-				//adapter = new LoaderAdapter(activity,R.layout.tpl_list_speak, ggList);
-				//adapter = new RecyclerAdapter(ggList);
-			    //list.setAdapter(adapter);
-				list.setOnItemClickListener(new OnItemClickListener(){
-					@Override
-					public void onItemClick(AdapterView<?> parent, View view, int postion, long id) {
-						Bundle params = new Bundle();
-						params.putString("speakId", ggList.get(postion).getId());
-						params.putString("content", ggList.get(postion).getContent());
-						params.putString("typeAll", ggList.get(postion).getTypeAll());
-						params.putString("likeCount", ggList.get(postion).getLikeCount());
-						params.putString("bgImageUrl", ggList.get(postion).getBgimage());
-						activity.overlay(UiSpeakComment.class, params);
-					}
-				});
-			
-		}
+
 						
 		//更新ListView数据
 		public void setGgList(ArrayList<Gonggao> g){
@@ -359,48 +305,7 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
             //recyclerAdapter.notifyDataSetChanged();// 通知listView刷新数据
 		}
 
-/*
-		@Override
-		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-			// TODO Auto-generated method stub
-			lastVisibleIndex = firstVisibleItem + visibleItemCount - 1;
-		}
-		
-		// 滑到底部后自动加载
-		@Override
-	    public void onScrollStateChanged(AbsListView view, int scrollState) {
-            switch (scrollState) {
-                case OnScrollListener.SCROLL_STATE_FLING:
-                    adapter.setFlagBusy(true);
-                    break;
-                case OnScrollListener.SCROLL_STATE_IDLE:
-                    adapter.setFlagBusy(false);
-                    break;
-                case OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
-                    adapter.setFlagBusy(false);
-                    break;
-                default:
-                    break;
-            }
-            adapter.notifyDataSetChanged();
-	        // 滑到底部后自动加载，判断listview已经停止滚动并且最后可视的条目等于adapter的条目
-	        if (scrollState == OnScrollListener.SCROLL_STATE_IDLE
-	        		&& lastVisibleIndex == adapter.getCount()) {
-	            // 当滑到底部时自动加载
-	             //pg.setVisibility(View.VISIBLE);
-	             //bt.setVisibility(View.VISIBLE);
-	        	moreView.setVisibility(View.VISIBLE);
-	             handler.postDelayed(new Runnable() {            
-	            	 @Override
-	            	 public void run() {
-	            		 activity.loadMoreData();
-	            		 //bt.setVisibility(View.GONE);
-	            		 //pg.setVisibility(View.GONE);  
-	            	 }            
-	             }, 2000);
-	        }
-	    }
-	*/
+
 		
 		@Override
     	public void onRefresh() {
@@ -415,25 +320,7 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
     	        });	    		
     	}
 		
-		//likeButton事件
-		public void likeButtonClick(){
-			SharedPreferences sharedPreferences = activity.getSharedPreferences("fragment1_isLike", 0);
-    		Boolean isLike = sharedPreferences.getBoolean("isLike",false);
-    		if (isLike = false) {
-    			ib.setImageResource(R.drawable.ic_card_liked);
-    			//获取编辑器
-    			SharedPreferences.Editor editor = sharedPreferences.edit();   
-        		editor.putBoolean("isLike", true);        		  
-        		editor.commit();//提交修改  
-    		} else {
-    			ib.setImageResource(R.drawable.ic_card_like_grey);
-    			//获取编辑器
-    			SharedPreferences.Editor editor = sharedPreferences.edit();   
-        		editor.putBoolean("isLike", false);        		  
-        		editor.commit();//提交修改  
-    		}    		
-		}
-		
+
 		//隐藏load more
 		public void hideLoadMore(){
 			//moreView.setVisibility(View.GONE);
@@ -508,14 +395,14 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
                 //pg.setVisibility(View.VISIBLE);
                 //bt.setVisibility(View.VISIBLE);
                 //moreView.setVisibility(View.VISIBLE);
-                handler.postDelayed(new Runnable() {
+                handler.post(new Runnable() {
                     @Override
                     public void run() {
                         activity.loadMoreData();
                         //bt.setVisibility(View.GONE);
                         //pg.setVisibility(View.GONE);
                     }
-                }, 2000);
+                });
 
             }
         }

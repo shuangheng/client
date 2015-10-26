@@ -10,15 +10,7 @@
         android:label="@string/app_name" >
 
         <!-- Activity defines -->
-        <activity
-            android:name=".ui.UiSpeakMain"
-            android:theme="@style/com.app.demos.theme.light" > >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".ui.test.TestImage"
             android:theme="@style/com.app.demos.theme.light" > >
@@ -74,24 +66,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.UiGongGao"
-            android:theme="@style/com.app.demos.theme.light" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.test.UiNews"
-            android:theme="@style/com.app.demos.theme.light" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".ui.test.UiBlog"
             android:theme="@style/com.app.demos.theme.light" >
@@ -153,24 +129,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".demo.DemoWeb"
-            android:theme="@style/com.app.demos.theme.light" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".demo.DemoMap"
-            android:theme="@style/com.app.demos.theme.light" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".test.TestUi"
             android:theme="@style/com.app.demos.theme.light" >

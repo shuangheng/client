@@ -11,14 +11,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/black"
+        android:background="@android:color/white"
         android:orientation="vertical">
 
         <include layout="@layout/toolbar" />
 
         <com.app.demos.layout.dragtoplayout.DragTopLayout
             android:id="@+id/ui_speak_comment_drag_layout"
-            android:background="@android:color/black"
+            android:background="@android:color/white"
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
 
@@ -43,6 +43,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:color/black"
                 android:orientation="vertical">
                 <ListView
                     android:id="@+id/ui_speak_comment_listview"
@@ -71,7 +72,7 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
         android:gravity="bottom"
-        android:visibility="gone"
+        android:visibility="visible"
         android:background="@color/white">
 
 
@@ -87,14 +88,14 @@
             android:id="@+id/ui_speak_comment_editText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:maxLines="3"
-            android:maxLength="20"
+            android:maxLines="8"
+            android:maxLength="100"
             android:hint="@string/input_comment"
             android:textCursorDrawable="@drawable/text_cursor_cyan"
-            app:met_typeface="fonts/Roboto-LightItalic.ttf"
-            app:met_accentTypeface="fonts/Roboto-LightItalic.ttf"
             app:met_baseColor="@android:color/black"
-            app:met_floatingLabel="highlight"
+            app:met_floatingLabel="normal"
+            app:met_floatingLabelText="@string/comment"
+            app:met_floatingLabelTextColor="@color/colorPrimary"
             android:layout_weight="1"
             app:met_primaryColor="?colorAccent" />
 
@@ -115,22 +116,22 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginRight="24dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginRight="@dimen/float_button_margin"
+        android:layout_marginBottom="@dimen/float_button_margin"
+        android:layout_marginEnd="@dimen/float_button_margin"
         android:background="@color/colorPrimary"
-        materialdesign:iconDrawable="@drawable/ic_action_new" />
+        materialdesign:iconDrawable="@drawable/ic_create_white_48dp" />
 
 <com.app.demos.layout.other.CircleImageView
     android:id="@+id/ui_speak_comment_circle_iv"
     android:layout_width="?attr/actionBarSize"
     android:layout_height="?attr/actionBarSize"
-    android:background="@android:color/white"
     android:layout_alignParentRight="true"
     android:layout_alignParentEnd="true"
     android:layout_alignParentTop="true"
-    android:layout_margin="28dp"
-    android:src="@drawable/face"
-    app:border_width="2dp"
+    android:layout_margin="26dp"
+    android:src="@drawable/headimg"
+    app:border_width="1dp"
     app:border_color="@color/colorPrimary"/>
 
 </com.app.demos.layout.ResizeLayout>

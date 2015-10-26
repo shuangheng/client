@@ -41,10 +41,10 @@
     <string name="main_text">富友</string>
     <string name="comment_reply">回复</string>
         
-    <string name="tab_1">广场</string>
+    <string name="tab_1">友说</string>
     <string name="tab_2">公告</string>
     <string name="tab_3">寻物</string>
-    <string name="tab_4">会话</string>
+    <string name="tab_4">二手</string>
     <string name="wonderful_comment">精彩评论</string>
     <string name="drawer_open">打开</string>
     <string name="drawer_close">关闭</string>
@@ -115,6 +115,7 @@
         software distributed under the License is distributed on an \"AS IS\" BASIS,
         WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
         See the License for the specific language governing permissions and limitations under the License.</string>
+    <string name="load_end">加载完成</string>
 
 
 </resources>

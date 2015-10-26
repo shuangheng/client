@@ -33,6 +33,7 @@ public class BaseUi extends BaseActivity {
 	protected boolean toastShowing = false;
 
     public static int DEVICE_WIDTH;
+    public static int DEVICE_HEIGHT;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -49,7 +50,8 @@ public class BaseUi extends BaseActivity {
 		this.taskPool = new BaseTaskPool(this);
 		// init application
 		this.app = (BaseApp) this.getApplicationContext();
-        this.DEVICE_WIDTH = BaseDevice.getScreenWidth(this);
+        DEVICE_WIDTH = BaseDevice.getScreenWidth(this);
+		DEVICE_HEIGHT = BaseDevice.getScreenHeight(this);
 	}
 
 	@Override
