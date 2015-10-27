@@ -136,6 +136,7 @@ public final class C {
 		public static final String d				= "http://218.28.167.99:8080/IWs_EssFunction.ashx";
 		public static final String base				= "http://120.24.97.52:8002";
 		public static final String index			= base + "/index.php";
+		public static final String agreement		= base + "/agreement/点亮富友软件许可及服务协议.php";
 		public static final String gomap			= base + "/gomap.php";
 		public static final String bgimage			= base + "/faces/default/l_";
 		public static final String thumb_image		= base + "/thumb.php?filename=l_";

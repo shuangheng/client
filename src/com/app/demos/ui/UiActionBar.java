@@ -529,8 +529,8 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         int i = list.size();
         Find j = list.get(i-1);
         find_lastId = j.getId();
-        find_lastIdNum =Integer.parseInt(lastId);
-        Log.e("find_id", lastId);
+        find_lastIdNum =Integer.parseInt(find_lastId);
+        Log.e("find_id", find_lastId);
     }
 
     //获取第一条数据的ID

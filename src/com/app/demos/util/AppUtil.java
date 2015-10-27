@@ -131,10 +131,8 @@ public class AppUtil {
 	
 	/* 获取 Message */
 	static public BaseMessage getMessage (String jsonStr) throws Exception {
-		LogMy.e(BaseApp.getContext(), "Json -->>" + jsonStr);
-		//int i = "{".indexOf(jsonStr);
-		jsonStr=jsonStr.substring(6);
-		//LogMy.e(BaseApp.getContext(), "Json >>" + jsonStr);
+		jsonStr = jsonStr.substring(jsonStr.indexOf("{"));//去除“{”前的乱码
+		LogMy.e(BaseApp.getContext(), "Json >>" + jsonStr);
 		BaseMessage message = new BaseMessage();		
 		JSONObject jsonObject = null ;		
 

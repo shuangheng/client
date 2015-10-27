@@ -339,7 +339,7 @@ public class UiAuthenticator extends BaseUi {
 
     public void clickOnProtocol(View paramView)
     {
-        BaseWebView.actionStart(this, "http://www.baidu.com");
+        BaseWebView.actionStart(this, C.web.agreement);
         overridePendingTransition(R.anim.in_from_right, android.R.anim.fade_out);
     }
 
