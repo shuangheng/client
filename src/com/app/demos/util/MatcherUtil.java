@@ -73,8 +73,8 @@ public class MatcherUtil {
             }
 
             //以下2项自己填写快速的，有效的邮箱
-            client.login("163.com");
-            client.setSender("sxgkwei@163.com");
+            client.login("126.com");
+            client.setSender("csh134871@126.com");
             client.addRecipient(email);
             if (250 == client.getReplyCode()) {
                 return true;

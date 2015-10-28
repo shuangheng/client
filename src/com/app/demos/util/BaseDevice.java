@@ -7,6 +7,7 @@ import android.net.NetworkInfo;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
@@ -40,6 +41,24 @@ public class BaseDevice {
         int screenW = dm.widthPixels;
         return screenW;
     }
+
+	/**
+	 * get view height width
+	 * @param view
+	 */
+	public static int getViewHeight(final View view) {
+		final int[] i = new int[1];
+		ViewTreeObserver vto2 = view.getViewTreeObserver();
+		vto2.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+			@Override
+			public void onGlobalLayout() {
+				view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+				i[0] = view.getHeight();
+						//view.getWidth();
+			}
+		});
+		return i[0];
+	}
 
 
     public static void showInput(Context context, View view) {
