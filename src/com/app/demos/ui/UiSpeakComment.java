@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,7 +27,6 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.app.demos.R;
-import com.app.demos.base.BaseHandler;
 import com.app.demos.base.BaseMessage;
 import com.app.demos.base.BaseUi;
 import com.app.demos.base.C;
@@ -39,7 +37,6 @@ import com.app.demos.layout.dragtoplayout.AttachUtil;
 import com.app.demos.layout.dragtoplayout.DragTopLayout;
 import com.app.demos.layout.materialEditText.MaterialEditText;
 import com.app.demos.layout.other.CircleImageView;
-import com.app.demos.layout.swipebacklayout.app.SwipeBackActivity;
 import com.app.demos.list.CommentList;
 import com.app.demos.list.bitmap_load_list.ImageLoader_my;
 import com.app.demos.model.Comment;
@@ -47,6 +44,7 @@ import com.app.demos.model.Gonggao;
 import com.app.demos.ui.fragment.UserInfoFragment;
 import com.app.demos.util.AppFilter;
 import com.app.demos.util.BaseDevice;
+import com.app.demos.util.ColorUtil;
 import com.nineoldandroids.view.ViewHelper;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 
@@ -160,6 +158,7 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
         toolbar.setTitle(getTitle());// 标题的文字需在setSupportActionBar之前，不然会无效
         if (!bgColorIsWhite) {
             toolbar.setBackgroundColor(toolcolor);
+            speakerIv.setBorderColor(toolcolor);
             btnFloat.setBackgroundColor(toolcolor);
         }
         setSupportActionBar(toolbar);
@@ -254,19 +253,19 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
 
             @Override
             public void onRefresh() {
-
+                userInfo.loadData();
             }
         });
 
         reSizelayout.setOnResizeListener(new ResizeLayout.OnResizeListener() {
             @Override
             public void OnResize(int w, int h, int oldw, int oldh) {
-                int change = BIGGER;//input hide
+                int change = BIGGER;//default input hide
                 if (h < oldh || h > oldh && h < default_ResizeLayout_height) {
-                    if (h<oldh && default_ResizeLayout_height == 0) {
+                    if (h < oldh && default_ResizeLayout_height == 0) {
                         default_ResizeLayout_height = oldh;
                     }
-                    change = SMALLER;//input show
+                    change = SMALLER;//input is showing
                 }
 
                 Message msg = new Message();
@@ -293,13 +292,18 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
             speakerIv.setTranslationY(0);//平移到 Y 原位
             speakerIv.setScaleX(1.0f + 0.5f * ratio);
             speakerIv.setScaleY(1.0f + 0.5f * ratio);
-            ViewHelper.setAlpha(toolbar, 1.0f - ratio);//透明
             ViewHelper.setAlpha(list, 1.5f - ratio);//半透明
+            int bgColor = ColorUtil.caculateColor(toolcolor, Color.WHITE, ratio);//过渡颜色
+            if (bgColorIsWhite) {
+                ViewHelper.setAlpha(toolbar, 1.0f - ratio);//透明
+            } else {
+                toolbar.setBackgroundColor(bgColor);
+            }
+            dragLayout.getTopView().setBackgroundColor(bgColor);
 
         } else if (ratio <= 2) {
             speakerIv.setTranslationY(speakerIv_x/2 * (ratio-1));//向下平移
-
-            //speakerIv.setTranslationX(-(DEVICE_WIDTH/2 - speakerIv_x));//平移到中点
+            speakerIv.setTranslationX(-(DEVICE_WIDTH/2 - speakerIv_x));//平移到中点
             //speakerIv.setScaleX(1.5f + 0.5f * (ratio-1));
             //speakerIv.setScaleY(1.5f + 0.5f * (ratio-1));
         } else if (ratio > 2 && ratio < 3) {

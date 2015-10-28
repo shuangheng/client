@@ -39,6 +39,10 @@ public class UserInfoFragment extends BaseFragment implements View.OnClickListen
         return view;
     }
 
+    public View getmProgressBarContinar() {
+        return mProgressBarContinar;
+    }
+
     public void loadData() {
         HashMap<String, String> blogParams = new HashMap<String, String>();
         blogParams.put("typeId", "0");

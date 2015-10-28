@@ -10,7 +10,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="@android:color/holo_orange_dark"
             android:id="@+id/fragment_2">
 
 
@@ -34,7 +33,6 @@
         android:id="@+id/fragment_load_progress_continar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
         android:gravity="center">
         <ProgressBar
             android:id="@+id/fragment_load_progress"

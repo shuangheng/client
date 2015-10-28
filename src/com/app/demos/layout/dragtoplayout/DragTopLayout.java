@@ -49,7 +49,7 @@ public class DragTopLayout extends FrameLayout {
     private boolean shouldIntercept = true;
 
     private PanelListener panelListener;
-    private float refreshRatio = 1.1f;
+    private float refreshRatio = 1.0f;
     private boolean overDrag = true;
     private int collapseOffset;
     private int topViewId = -1;
@@ -62,6 +62,10 @@ public class DragTopLayout extends FrameLayout {
     private float dispatchingChildrenStartedAtY = Float.MAX_VALUE;
 
     private PanelState panelState = PanelState.COLLAPSED;
+
+    public View getTopView() {
+        return topView;
+    }
 
 
     public static enum PanelState {
