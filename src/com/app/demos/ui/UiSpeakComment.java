@@ -76,6 +76,7 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
     private TextView moreView_tv;
     private int lastVisibleIndex;
     private int lastIdNum;
+    private int default_ResizeLayout_height;
     private String lastId;
 
     private String bgColor;
@@ -257,16 +258,14 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
             }
         });
 
-        FrameLayout.LayoutParams lpp = (FrameLayout.LayoutParams) reSizelayout.getLayoutParams();
-        final int reSizelayout_H = lpp.height;
-        RelativeLayout.LayoutParams lppp = (RelativeLayout.LayoutParams) editLayout.getLayoutParams();
-        final int editLayout_H = lpp.height;
-        toast("rel - h = "+editLayout_H);
         reSizelayout.setOnResizeListener(new ResizeLayout.OnResizeListener() {
             @Override
             public void OnResize(int w, int h, int oldw, int oldh) {
                 int change = BIGGER;//input hide
-                if (h < oldh || h > oldh && h < reSizelayout_H-editLayout_H) {
+                if (h < oldh || h > oldh && h < default_ResizeLayout_height) {
+                    if (h<oldh && default_ResizeLayout_height == 0) {
+                        default_ResizeLayout_height = oldh;
+                    }
                     change = SMALLER;//input show
                 }
 
