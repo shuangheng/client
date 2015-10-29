@@ -25,7 +25,7 @@ import java.util.HashMap;
 public class BaseFragment extends Fragment {
     private static final int FRAG_NETWORK_ERROR = 0;
     private static final int FRAG_TASK_COMPLETE = 1;
-    private Activity activity;
+    protected Activity activity;
     protected BaseTaskPool taskPool;
     private BaseHandler handler;
 

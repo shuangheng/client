@@ -145,7 +145,7 @@ public class SpeakFragment extends Fragment implements  OnRefreshListener {
             @Override
             public void onItemClick(int position) {
                 Gonggao g = ggList.get(position);
-                UiSpeakComment.actionStart(activity, g, "" + position);
+                UiSpeakComment.actionStart(activity, g, position);
             }
 
             @Override

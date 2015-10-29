@@ -24,10 +24,13 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +41,7 @@ import com.app.demos.base.BaseMessage;
 import com.app.demos.base.BaseTask;
 import com.app.demos.base.BaseUi;
 import com.app.demos.base.C;
+import com.app.demos.base.LogMy;
 import com.app.demos.layout.ButtonFloat;
 import com.app.demos.layout.ListFooterView;
 import com.app.demos.layout.other.PagerSlidingTabStrip_my;
@@ -48,6 +52,7 @@ import com.app.demos.sqlite.FavoriteSpeakSqlite;
 import com.app.demos.sqlite.GonggaoSqlite;
 import com.app.demos.ui.authenticator.UiAuthenticator;
 import com.app.demos.ui.fragment.FindFragment;
+import com.app.demos.ui.fragment.SpeakFragment_v1;
 import com.app.demos.ui.fragment.UserInfoFragment;
 import com.app.demos.ui.fragment.Fragment3;
 import com.app.demos.ui.fragment.SpeakFragment;
@@ -359,7 +364,27 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
 
         activityfragment = SpeakFragment.newInstance("Hello Activity.");
         findfragment = FindFragment.newInstance("Hello Activity.");
-        Fragment groupFragment = new UserInfoFragment();
+        SpeakFragment_v1 groupFragment = new SpeakFragment_v1();
+        groupFragment.setOnHideOrShowListener(new SpeakFragment_v1.OnHideOrShowListener() {
+            @Override
+            public void onhide() {
+                if (android.os.Build.VERSION.SDK_INT >= 14) {
+                    //activity.mToolbar.animate().translationY(-activity.mToolbar.getHeight()).setInterpolator(new DecelerateInterpolator(2));
+                    RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mFabButton.getLayoutParams();
+                    int fabBottomMargin = lp.bottomMargin;
+                    mFabButton.animate().translationY(mFabButton.getHeight()+fabBottomMargin).setInterpolator(new AccelerateInterpolator(2)).start();
+                    //Log.e("s","ddddddddddddddd");
+                }
+            }
+
+            @Override
+            public void onshow() {
+                if (android.os.Build.VERSION.SDK_INT >= 14) {
+                    //activity.mToolbarContainer.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
+                    mFabButton.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
+                }
+            }
+        });
         //Fragment friendsFragment=new Fragment3();
         //Fragment chatFragment=SpeakFragment.newInstance("Hello Chat.");
 
@@ -521,7 +546,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         Gonggao j = list.get(i-1);
         lastId = j.getId();
         lastIdNum =Integer.parseInt(lastId);
-        Log.e("id", lastId);
+        LogMy.e(this, "id"+ lastId);
     }
 
     //获取最后一条数据的ID
@@ -676,7 +701,8 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
                 activityfragment.speakRecyclerAdapter.setNeworkError(true);
                 break;
             case C.task.find:
-                //findfragment.swipeLayout.setRefreshing(false);
+                //findfragment.swipeLayout.setRefreshing(false);\
+                break;
         }
     }
 

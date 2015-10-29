@@ -130,7 +130,7 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
         btnFloat.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
     }
 
-    public static void actionStart(Context context,Gonggao g, String bgColor) {
+    public static void actionStart(Context context,Gonggao g, int bgColor) {
         Intent intent = new Intent( context, UiSpeakComment.class);
         intent.putExtra("Gonggao", g);
         intent.putExtra("bgColor", bgColor);
@@ -156,11 +156,11 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
     private void initToolBar() {
 
         toolbar.setTitle(getTitle());// 标题的文字需在setSupportActionBar之前，不然会无效
-        if (!bgColorIsWhite) {
+        //if (!bgColorIsWhite) {
             toolbar.setBackgroundColor(toolcolor);
             speakerIv.setBorderColor(toolcolor);
             btnFloat.setBackgroundColor(toolcolor);
-        }
+        //}
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//实现左侧返回按钮
@@ -214,13 +214,12 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
         speakId = g.getId();
         bgImageUrl = g.getBgimage();
         favorite = g.getFavorite();
-        bgColor = params.getString("bgColor");
 
-        int position = Integer.parseInt(bgColor);//bg color
+        int position = params.getInt("bgColor");//bg color
         bgColorIsWhite = isEven(position);
-        toolcolor = bgColorIsWhite ? getResources().getColor(android.R.color.white) :
+        toolcolor = bgColorIsWhite ? getResources().getColor(R.color.colorPrimary) :
                 getResources().getColor(C.colors[position % 16]);
-        containerLayout.setBackgroundColor(toolcolor);
+        containerLayout.setBackgroundColor(bgColorIsWhite ? Color.WHITE : toolcolor);
 
         tvContent.setText(AppFilter.getHtml(g.getContent()));
         tvContent.setTextColor(bgColorIsWhite ? Color.BLACK : Color.WHITE);
@@ -294,11 +293,11 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
             speakerIv.setScaleY(1.0f + 0.5f * ratio);
             ViewHelper.setAlpha(list, 1.5f - ratio);//半透明
             int bgColor = ColorUtil.caculateColor(toolcolor, Color.WHITE, ratio);//过渡颜色
-            if (bgColorIsWhite) {
-                ViewHelper.setAlpha(toolbar, 1.0f - ratio);//透明
-            } else {
+            //if (bgColorIsWhite) {
+             //   ViewHelper.setAlpha(toolbar, 1.0f - ratio);//透明
+            //} else {
                 toolbar.setBackgroundColor(bgColor);
-            }
+            //}
             dragLayout.getTopView().setBackgroundColor(bgColor);
 
         } else if (ratio <= 2) {
