@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -12,81 +11,49 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.demos.R;
-import com.app.demos.base.C;
 import com.app.demos.base.LogMy;
-import com.app.demos.layout.swipebacklayout.app.SwipeBackActivity;
-import com.app.demos.ui.fragment.FragmentOne;
-import com.app.demos.ui.fragment.UserInfoFragment;
-import com.app.demos.ui.fragment.Fragment3;
-import com.app.demos.ui.fragment.FragmentNull;
-import com.app.demos.util.AppClient;
+import com.app.demos.ui.uploadFile.UploadUtil;
 
 import java.io.File;
-import java.util.HashMap;
 
 /**
- * Created by tom on 15-6-29.
+ * Created by tom on 15-10-30.
  */
-public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickListener {
-    private EditText editContent;
-    private ImageView ivBg;
-    private ImageView ivRelease;
-    private ImageView ivPicture;
-    private ImageView ivExpression;
-    private FrameLayout frameLayout;
-    //private String actionUrl = "http://10.0.2.2:8002/save_upload_image.php";
-    private String actionUrl = C.web.base +"/faces/default/";
+public class UploadFile extends Activity implements View.OnClickListener {
+    private static String requestURL = "http://10.0.2.2:8002/save_upload_image.php";
+    private Button selectImage, uploadImage;
+    private ImageView imageView;
 
     private String picPath = null;
 
+    /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ui_create_speak);
+        setContentView(R.layout.ui_upload);
 
-        editContent = (EditText) findViewById(R.id.ui_create_speak_edit_content);
-        ivBg = (ImageView) findViewById(R.id.ui_create_speak_bg_image);
-        ivExpression = (ImageView) findViewById(R.id.ui_create_speak_iv_expression);
-        ivPicture = (ImageView) findViewById(R.id.ui_create_speak_iv_picture);
+        selectImage = (Button) this.findViewById(R.id.selectImage);
+        uploadImage = (Button) this.findViewById(R.id.uploadImage);
+        selectImage.setOnClickListener(this);
+        uploadImage.setOnClickListener(this);
 
-        ivPicture.setOnClickListener(this);
-        ivExpression.setOnClickListener(this);
+        imageView = (ImageView) this.findViewById(R.id.imageView);
 
-        editContent.setOnClickListener(this);
-
-
-    }
-
-    private void creatSpeak(String customerId, String content) {
-            HashMap<String, String> blogParams = new HashMap<String, String>();
-            blogParams.put("user", customerId);
-            blogParams.put("content", content);
-            this.doTaskAsync(C.task.ggCreate, C.api.ggCreate, blogParams, true);
     }
 
     @Override
     public void onClick(View v) {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        Fragment fragment = null;
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);//获取系统键盘
-
-        switch (v.getId())
-        {
-            case R.id.ui_create_speak_iv_picture:
-                fragment = new FragmentOne();
+        switch (v.getId()) {
+            case R.id.selectImage:
                 /***
                  * 这个是调用android内置的intent，来过滤图片文件 ，同时也可以过滤其他的
                  */
@@ -94,19 +61,11 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(intent, 1);
-
-                //fragment = new UserInfoFragment();
-                //ivPicture.setImageResource(R.drawable.ic_publish_operation_bar_keyboard);
-                //ivExpression.setImageResource(R.drawable.ic_publish_operation_bar_photo);
-                //imm.hideSoftInputFromInputMethod(editContent.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-                //imm.hideSoftInputFromWindow(editContent.getWindowToken(), 0);
-                toast("picture");
                 break;
-            case R.id.ui_create_speak_iv_expression:
-                fragment = new Fragment3();
+            case R.id.uploadImage:
                 if (picPath == null) {
 
-                    Toast.makeText(UiCreateSpeak.this, "请选择图片！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UploadFile.this, "请选择图片！", Toast.LENGTH_SHORT).show();
                 } else {
                     final File file = new File(picPath);
 
@@ -114,28 +73,16 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                AppClient.uploadFile(picPath, actionUrl);
+                                UploadUtil.uploadFile(file, requestURL);
+                                //uploadImage.setText(String.valueOf(request));
                             }
                         }).start();
-                        Toast.makeText(this, "doing uplod_image", Toast.LENGTH_LONG).show();
-                        creatSpeak("g4050282", editContent.getText().toString());
                     }
                 }
-
-                ivExpression.setImageResource(R.drawable.ic_publish_operation_bar_keyboard);
-                ivPicture.setImageResource(R.drawable.ic_publish_operation_bar_emoticon);
-
-                editContent.requestFocus();
-                //imm.toggleSoftInput(2, InputMethodManager.HIDE_NOT_ALWAYS);
-                //ImmUtil.showSoftInput();
-                toast("expression");
                 break;
             default:
-                fragment = new FragmentNull();
                 break;
         }
-        ft.replace(R.id.ui_create_speak_fragment_layout, fragment);
-        ft.commit();
     }
 
     @Override
@@ -164,7 +111,7 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
                         picPath = path;
                         Bitmap bitmap = BitmapFactory.decodeStream(cr
                                 .openInputStream(uri));
-                        ivBg.setImageBitmap(bitmap);
+                        imageView.setImageBitmap(bitmap);
                     } else {
                         alert();
                     }

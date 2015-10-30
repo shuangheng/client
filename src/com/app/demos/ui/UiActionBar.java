@@ -191,7 +191,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         drawerTv = (TextView) findViewById(R.id.drawer_tv);
         drawerList = (ListView) findViewById(R.id.drawer_list);
         String[] data = {"设备信息", "other", "login out", "toolBar Scroll", "toolbar scroll 2", "GestureDetector"
-                        , "draglayoutdemo", "drag down", "drage top", "about", "creat find"};
+                        , "draglayoutdemo", "drag down", "drage top", "about", "creat find", "UploadFile", "UploadfileActivity"};
         drawerList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data));
         drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -236,6 +236,12 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
                         break;
                     case 10:
                         overlay(UiCreateFind.class);
+                        break;
+                    case 11:
+                        overlay(UploadFile.class);
+                        break;
+                    case 12:
+                        overlay(UploadfileActivity.class);
                         break;
                 }
                 if (position != 0) {

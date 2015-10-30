@@ -58,6 +58,7 @@ public final class C {
 		public static final String fansDel			= "/customer/fansDel";
 		public static final String notice			= "/notify/notice";
 		public static final String gg				= "/gonggao/ggList";
+		public static final String ggCreate				= "/gonggao/ggCreate";
 		public static final String ggnew			= "/gonggao/newList";
 		public static final String newsList			= "/news/updateNews";
         public static final String find             = "/find/findList";
@@ -101,6 +102,7 @@ public final class C {
 		public static final int favorite_speak_delete		= 1029;
 		public static final int forgotPwd 			= 1030;
 		public static final int sendMail 			= 1031;
+		public static final int ggCreate 			= 1032;
 	}
 	
 	public static final class err {
@@ -140,6 +142,7 @@ public final class C {
 		public static final String gomap			= base + "/gomap.php";
 		public static final String bgimage			= base + "/faces/default/l_";
 		public static final String thumb_image		= base + "/thumb.php?filename=l_";
+		public static final String save_upload_image		= base + "/save_upload_image.php";
 	}
 
 	int bgImage_s[] = {R.drawable.s_1,

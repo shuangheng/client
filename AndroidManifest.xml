@@ -111,7 +111,14 @@
             android:theme="@style/AppThemeNoActionBar"
             android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
-
+        <activity
+            android:name=".ui.UploadFile"
+            android:theme="@style/com.app.demos.theme.light" >
+        </activity>
+        <activity
+            android:name=".ui.UploadfileActivity"
+            android:theme="@style/com.app.demos.theme.light" >
+        </activity>
 
         <activity
             android:name=".test.TestUi"
