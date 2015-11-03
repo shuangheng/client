@@ -28,7 +28,6 @@ import android.widget.Toast;
 
 import com.app.demos.R;
 import com.app.demos.base.LogMy;
-import com.app.demos.ui.uploadFile.UploadUtil;
 
 public class UploadfileActivity extends Activity implements View.OnClickListener {
     // 要上传的文件路径，理论上可以传输任何文件，实际使用时根据需要处理

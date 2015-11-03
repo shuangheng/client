@@ -18,7 +18,7 @@
             android:theme="@style/AppThemeNoActionBar"
             android:windowSoftInputMode="stateHidden"/>
         <activity
-            android:name=".ui.webview.BaseWebView"
+            android:name=".ui.webview.BaseWebUi"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:theme="@style/AppThemeNoActionBar" />
@@ -45,7 +45,6 @@
         <activity
             android:name=".ui.UiCreateSpeak"
             android:launchMode="singleTop"
-            android:windowSoftInputMode="stateHidden"
             android:theme="@style/AppThemeNoActionBar" >
         </activity>
         <activity
@@ -112,7 +111,7 @@
             android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <activity
-            android:name=".ui.UploadFile"
+            android:name=".ui.test.uploadFile.UploadFile"
             android:theme="@style/com.app.demos.theme.light" >
         </activity>
         <activity

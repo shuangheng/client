@@ -1,17 +1,13 @@
 package com.app.demos.ui.webview;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
-import android.os.PersistableBundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.Gravity;
@@ -26,7 +22,6 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -34,14 +29,12 @@ import android.widget.Toast;
 
 import com.app.demos.R;
 import com.app.demos.layout.other.WebViewMy;
-import com.app.demos.layout.swipeRefreshLayout.CircleImageView;
-import com.app.demos.layout.swipebacklayout.SwipeBackLayout;
 import com.app.demos.layout.swipebacklayout.app.SwipeBackActivity;
 
 /**
  * Created by tom on 15-10-2.
  */
-public class BaseWebView extends SwipeBackActivity {
+public class BaseWebUi extends SwipeBackActivity {
     private WebViewMy webView;
     private ProgressBar progressBar;
     private Toolbar toolbar;
@@ -73,7 +66,7 @@ public class BaseWebView extends SwipeBackActivity {
 
     public static void actionStart(Context context, String url)
     {
-        Intent intent = new Intent( context, BaseWebView.class);
+        Intent intent = new Intent( context, BaseWebUi.class);
         intent.putExtra("url", url);
         context.startActivity(intent);
     }
@@ -104,8 +97,8 @@ public class BaseWebView extends SwipeBackActivity {
         webView.setWebViewClient(new WebViewClientMy());//在 this WebView中打开所有链接
         seedUp();
 
-        WebSettings webSettings = webView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
+        //WebSettings webSettings = webView.getSettings();
+        //webSettings.setJavaScriptEnabled(true);
 
         webView.setWebChromeClient(new WebChromeClientMy());
         webView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -164,7 +157,7 @@ public class BaseWebView extends SwipeBackActivity {
             ActionBar.LayoutParams lp = new ActionBar.LayoutParams(
                     ActionBar.LayoutParams.WRAP_CONTENT,
                     ActionBar.LayoutParams.WRAP_CONTENT,
-                    Gravity.RIGHT);
+                    Gravity.END);
             getSupportActionBar().setCustomView(editText, lp);
             getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
             getSupportActionBar().setDisplayShowTitleEnabled(false);//去掉标题
@@ -195,7 +188,7 @@ public class BaseWebView extends SwipeBackActivity {
         mErrorView.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 webView.reload();
-                Toast.makeText(BaseWebView.this, paramUrl, Toast.LENGTH_SHORT).show();
+                Toast.makeText(BaseWebUi.this, paramUrl, Toast.LENGTH_SHORT).show();
                 mErrorView.setVisibility(View.GONE);
             }
         });

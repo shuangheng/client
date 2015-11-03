@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
@@ -128,6 +129,21 @@ public class BaseUi extends BaseActivity {
 		setSupportActionBar(mToolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(canBack);
 		return mToolbar;
+	}
+
+	/**
+	 * set CustomView On ToolBar
+	 * @param customView
+	 * @param gravity Gravity.END | Gravity.RIGHT | Gravity.LEFT ...
+	 */
+	public void setCustomViewOnToolBar(View customView, int gravity) {
+		ActionBar.LayoutParams lp = new ActionBar.LayoutParams(
+				ActionBar.LayoutParams.WRAP_CONTENT,
+				ActionBar.LayoutParams.WRAP_CONTENT,
+				gravity);
+		getSupportActionBar().setCustomView(customView, lp);
+		getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM |
+				ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
 	}
 
 	/**

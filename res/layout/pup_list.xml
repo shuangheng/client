@@ -3,11 +3,18 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="@android:color/holo_red_dark">
 
     <ListView
         android:id="@+id/pup_listview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:cacheColorHint="#00000000"
+        android:descendantFocusability="blocksDescendants"
+        android:divider="@null"
+        android:dividerHeight="2dp"
+        android:fadingEdge="vertical"
+        android:fadingEdgeLength="1dp"
+        android:listSelector="@drawable/xml_list_bg"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>

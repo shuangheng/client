@@ -32,7 +32,7 @@ import com.app.demos.dialog.ProgressingDialog;
 import com.app.demos.layout.materialEditText.MaterialEditText;
 import com.app.demos.layout.materialEditText.MaterialEditTextComplete;
 import com.app.demos.ui.UiActionBar;
-import com.app.demos.ui.webview.BaseWebView;
+import com.app.demos.ui.webview.BaseWebUi;
 import com.app.demos.ui.test.foxconn_ESS_zsf.AppClient;
 
 import java.util.HashMap;
@@ -339,7 +339,7 @@ public class UiAuthenticator extends BaseUi {
 
     public void clickOnProtocol(View paramView)
     {
-        BaseWebView.actionStart(this, C.web.agreement);
+        BaseWebUi.actionStart(this, C.web.agreement);
         overridePendingTransition(R.anim.in_from_right, android.R.anim.fade_out);
     }
 

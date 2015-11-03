@@ -116,6 +116,11 @@
         WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
         See the License for the specific language governing permissions and limitations under the License.</string>
     <string name="load_end">加载完成</string>
+    <string name="edit_speak">写友说</string>
+    <string name="release">发布</string>
+    <string name="camera">拍照</string>
+    <string name="get_pic_from_photo">从相册选取</string>
+    <string name="cancel">取消</string>
 
 
 </resources>

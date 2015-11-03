@@ -1,8 +1,7 @@
-package com.app.demos.ui.uploadFile;
+package com.app.demos.ui.test.uploadFile;
 
 import com.app.demos.base.BaseApp;
 import com.app.demos.base.LogMy;
-import com.app.demos.ui.UploadFile;
 
 import java.io.DataOutputStream;
 import java.io.File;
