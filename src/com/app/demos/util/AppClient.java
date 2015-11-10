@@ -33,7 +33,9 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
+import com.app.demos.base.BaseApp;
 import com.app.demos.base.C;
+import com.app.demos.base.LogMy;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -261,6 +263,25 @@ public class AppClient {
 
 			dos.close();
 			is.close();
+
+			/**
+			 * 获取响应码 200=成功 当响应成功，获取响应的流
+			 */
+			int res = httpURLConnection.getResponseCode();
+			LogMy.e(BaseApp.getContext(), "response code:" + res);
+			if (res == 200) {
+				LogMy.e(BaseApp.getContext(), "request success");
+				InputStream input = httpURLConnection.getInputStream();
+				StringBuffer sb1 = new StringBuffer();
+				int ss;
+				while ((ss = input.read()) != -1) {
+					sb1.append((char) ss);
+				}
+				result = sb1.toString();
+				LogMy.e(BaseApp.getContext(), "result : " + result);
+			} else {
+				LogMy.e(BaseApp.getContext(), "request error");
+			}
 
 		} catch (Exception e)
 		{

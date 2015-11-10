@@ -60,5 +60,9 @@
     <color name="brown">#5d4037</color>
     <color name="tabTextColor">#88e9e9e9</color>
 
+    <color name="action_bar_sub_title">#ff8c9196</color>
+    <color name="action_bar_title">#ff282d32</color>
+    <color name="publish_bottom_pan_item_title">#ff7d7d82</color>
+
 
 </resources>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:paddingLeft="10.0dip"
+    android:paddingTop="20.0dip"
+    android:paddingRight="10.0dip"
+    android:paddingBottom="20.0dip"
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/bottom_pan_min_height"
+    android:stretchColumns="*"
+  >
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="@string/camera"
+            android:drawableTop="@drawable/ic_publish_bottom_pan_camera"
+            android:onClick="clickOnCamera"
+            style="@style/PublishBottomPanMainItem" />
+
+        <TextView
+            android:text="@string/album"
+            android:drawableTop="@drawable/ic_publish_bottom_pan_album"
+            android:onClick="clickOnAlbum"
+            style="@style/PublishBottomPanMainItem" />
+
+    </TableRow>
+</TableLayout>

@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -49,7 +50,9 @@ import com.app.demos.layout.ButtonFloatSmall;
 import com.app.demos.layout.ResizeLayout;
 import com.app.demos.layout.ResizeLinearLayout;
 import com.app.demos.layout.swipebacklayout.app.SwipeBackActivity;
+import com.app.demos.list.bitmap_load_list.ImageLoader;
 import com.app.demos.ui.fragment.FragmentOne;
+import com.app.demos.ui.fragment.SelectPhotoFragment;
 import com.app.demos.ui.fragment.UserInfoFragment;
 import com.app.demos.ui.fragment.Fragment3;
 import com.app.demos.ui.fragment.FragmentNull;
@@ -108,7 +111,7 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
         handlerMy = new HandlerMy();
         initView();
 
-        ViewHelper.setScaleX(btnRelease, 0);
+        ViewHelper.setScaleX(btnRelease, 0);//隐藏按钮
         ViewHelper.setScaleY(btnRelease, 0);
     }
 
@@ -152,11 +155,12 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
         });
     }
 
-    private void creatSpeak(String customerId, String content) {
+    private void creatSpeak(String customerId, String content, String bgimage) {
             HashMap<String, String> blogParams = new HashMap<String, String>();
             blogParams.put("user", customerId);
             blogParams.put("title", customerId);
             blogParams.put("content", content);
+            blogParams.put("bgimage", bgimage);
             this.doTaskAsync(C.task.ggCreate, C.api.ggCreate, blogParams, true);
     }
 /*
@@ -196,11 +200,14 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
             case R.id.action_bar_item_text:
                 if (popupwindow == null) {
                     initPupView();
+                    editContent.getText().append("\ninitPupView");
                 }
                 if (popupwindow.isShowing()) {
                     popupwindow.dismiss();
+                    editContent.getText().append("\npopupwindow.dismiss()");
                 } else {
                     popupwindow.showAsDropDown(v);
+                    editContent.getText().append("\npopupwindow.showAsDropDown()");
                 }
                 break;
             case R.id.buttonFloat_small:
@@ -219,27 +226,34 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
                             }
                         }).start();
                         Toast.makeText(this, "doing uplod_image", Toast.LENGTH_LONG).show();
-                        creatSpeak("g4050282", editContent.getText().toString());
+                        creatSpeak("g4050282", editContent.getText().toString(), picPath.substring(picPath.lastIndexOf("/") + 1));
                     }
                 }
                 break;
             case R.id.ui_create_speak_iv_picture:
+                fragment = new SelectPhotoFragment();
                 switch (bottomBarStatus) {
                     case 1:
+                        //editContent.getText().append("\nbottomBarStatus = 1");
+                        fragment = new FragmentNull();
+                        ft.replace(R.id.ui_create_speak_fragment_layout, fragment);
+                        ft.commit();
                         BaseDevice.showSoftInput(this, editContent);
                         break;
                     default:
-                        fragment = new FragmentOne();
+                        //editContent.getText().append("\nbottomBarStatus = "+String.valueOf(bottomBarStatus));
                         if (imm.isActive()) {
                             BaseDevice.hideSoftInput(this, editContent);
                         }
                         ivExpression.setImageResource(R.drawable.ic_publish_operation_bar_emoticon);
                         ivPicture.setImageResource(R.drawable.ic_publish_operation_bar_keyboard);
                         bottomBarStatus = 1;
+                        ft.replace(R.id.ui_create_speak_fragment_layout, fragment);
+                        ft.commit();
                         break;
                 }
                 //initPupView(v);
-                pickPhoto();
+               // pickPhoto();
                 /***
                  * 这个是调用android内置的intent，来过滤图片文件 ，同时也可以过滤其他的
                  */
@@ -253,31 +267,38 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
                 //ivExpression.setImageResource(R.drawable.ic_publish_operation_bar_photo);
                 //imm.hideSoftInputFromInputMethod(editContent.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
                 //imm.hideSoftInputFromWindow(editContent.getWindowToken(), 0);
-                toast("picture");
+                //toast("picture");
                 break;
             case R.id.ui_create_speak_iv_expression:
+                fragment = new Fragment3();
                 switch (bottomBarStatus) {
                     case 10:
+                        //editContent.getText().append("\nbottomBarStatus_emoji = 10");
+                        fragment = new FragmentNull();
+                        ft.replace(R.id.ui_create_speak_fragment_layout, fragment);
+                        ft.commit();
                         BaseDevice.showSoftInput(this, editContent);
                         break;
                     default:
-                        fragment = new Fragment3();
-                        if (imm.isActive()) {
-                            BaseDevice.hideSoftInput(this, editContent);
-                        }
+                        //editContent.getText().append("\nbottomBarStatus_emoji_default = "+bottomBarStatus);
+
                         ivExpression.setImageResource(R.drawable.ic_publish_operation_bar_keyboard);
                         ivPicture.setImageResource(R.drawable.ic_publish_operation_bar_photo);
                         bottomBarStatus = 10;
+                        ft.replace(R.id.ui_create_speak_fragment_layout, fragment);
+                        ft.commit();
+                        if (imm.isActive()) {
+                            BaseDevice.hideSoftInput(this, editContent);
+                        }
                         break;
                 }
-                toast("expression");
+                //toast("expression");
                 break;
             default:
-                fragment = new FragmentNull();
+                //fragment = new FragmentNull();
                 break;
         }
-        ft.replace(R.id.ui_create_speak_fragment_layout, fragment);
-        ft.commit();
+
     }
 
     @Override
@@ -285,12 +306,28 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
         if (resultCode == Activity.RESULT_OK) {
             /**
              * 当选择的图片不为空的话，在获取到图片的途径
-             */
-            doPhoto(requestCode,data);
- /*           Uri uri = data.getData();
+
+            if (requestCode == SELECT_PIC_BY_TACK_PHOTO) {
+                Bundle bundle = data.getExtras();
+                Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
+                ivBg.setImageBitmap(bitmap);
+                return;
+            }*/
+            doPhoto(requestCode, data);
+            //doPhoto2(requestCode, data);
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void doPhoto2(int requestCode, Intent data) {
+        Uri uri = data.getData();
+        switch (requestCode) {
+            case SELECT_PIC_BY_PICK_PHOTO:
+
             LogMy.e(this, "uri = " + uri);
             try {
-                String[] pojo = { MediaStore.Images.Media.DATA };
+                String[] pojo = {MediaStore.Images.Media.DATA};
 
                 Cursor cursor = managedQuery(uri, pojo, null, null, null);
                 if (cursor != null) {
@@ -303,7 +340,7 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
                      * 这里加这样一个判断主要是为了第三方的软件选择，比如：使用第三方的文件管理器的话，你选择的文件就不一定是图片了，
                      * 这样的话，我们判断文件的后缀名 如果是图片格式的话，那么才可以
                      */
-    /*                if (path.endsWith("jpg") || path.endsWith("png")) {
+                    if (path.endsWith("jpg") || path.endsWith("png")) {
                         picPath = path;
                         Bitmap bitmap = BitmapFactory.decodeStream(cr
                                 .openInputStream(uri));
@@ -316,11 +353,30 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
                 }
 
             } catch (Exception e) {
+                e.printStackTrace();
             }
-            */
-        }
+                break;
+            case SELECT_PIC_BY_TACK_PHOTO:
+                Bitmap photo = null;
+                if (uri != null) {
+                    photo = BitmapFactory.decodeFile(uri.getPath());
+                }
+                if (photo == null) {
+                    Bundle bundle = data.getExtras();
+                    if (bundle != null) {
+                        photo = (Bitmap) bundle.get("data");
+                    } else {
+                        alert();
+                        return;
+                    }
+                }
 
-        super.onActivityResult(requestCode, resultCode, data);
+
+                    ivBg.setImageBitmap(photo);
+                break;
+            default:
+                break;
+        }
     }
 
     private void alert() {
@@ -373,7 +429,7 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
             }
         }); // 自定义view添加触摸事件
 
-        String[] strings = {getString(R.string.camera, R.string.get_pic_from_photo, R.string.cancel)};
+        String[] strings = {getString(R.string.camera), getString(R.string.get_pic_from_photo), getString(R.string.cancel)};
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, strings);
         listView = (ListView) pupView.findViewById(R.id.pup_listview);
         listView.setAdapter(adapter);
@@ -389,6 +445,8 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
                         break;
                     case 2:
                         popupwindow.dismiss();
+                        break;
+                    default:
                         break;
                 }
             }
@@ -407,23 +465,34 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
 
     /**
      * 拍照获取图片
+     * 需要说明一下，以下操作使用照相机拍照，拍照后的图片会存放在相册中的
+     * 这里使用的这种方式有一个好处就是获取的图片是拍照后的原图
+     * 如果不实用ContentValues存放照片路径的话，拍照后获取的图片为缩略图不清晰
      */
     private void takePhoto() {
-        //执行拍照前，应该先判断SD卡是否存在
-        String SDState = Environment.getExternalStorageState();
+        String SDState = Environment.getExternalStorageState();//执行拍照前，应该先判断SD卡是否存在
         if(SDState.equals(Environment.MEDIA_MOUNTED))
         {
 
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);//"android.media.action.IMAGE_CAPTURE"
-/***
- * 需要说明一下，以下操作使用照相机拍照，拍照后的图片会存放在相册中的
- * 这里使用的这种方式有一个好处就是获取的图片是拍照后的原图
- * 如果不实用ContentValues存放照片路径的话，拍照后获取的图片为缩略图不清晰
- */
+            //intent = new Intent("android.media.action.IMAGE_CAPTURE");
+
             ContentValues values = new ContentValues();
-            photoUri = this.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-            intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, photoUri);
-/**-----------------*/
+            //photoUri = this.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            String imagePath = Environment.getExternalStorageDirectory() + "/Fuyou/temp";
+            photoUri = Uri.fromFile(new File(imagePath, "111111.jpg"));
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+            startActivityForResult(intent, SELECT_PIC_BY_TACK_PHOTO);
+        }else{
+            Toast.makeText(this,"内存卡不存在", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void takePhoto2() {
+        String SDState = Environment.getExternalStorageState();//执行拍照前，应该先判断SD卡是否存在
+        if(SDState.equals(Environment.MEDIA_MOUNTED))
+        {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(intent, SELECT_PIC_BY_TACK_PHOTO);
         }else{
             Toast.makeText(this,"内存卡不存在", Toast.LENGTH_LONG).show();
@@ -456,10 +525,8 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
      */
     private void doPhoto(int requestCode,Intent data)
     {
-        if(requestCode == SELECT_PIC_BY_PICK_PHOTO ) //从相册取图片，有些手机有异常情况，请注意
-        {
-            if(data == null)
-            {
+        if(requestCode == SELECT_PIC_BY_PICK_PHOTO ) { //从相册取图片，有些手机有异常情况，请注意
+            if(data == null) {
                 Toast.makeText(this, "选择图片文件出错", Toast.LENGTH_LONG).show();
                 return;
             }
@@ -477,23 +544,30 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
             int columnIndex = cursor.getColumnIndexOrThrow(pojo[0]);
             cursor.moveToFirst();
             picPath = cursor.getString(columnIndex);
-            cursor.close();
+
+            if(Build.VERSION.SDK_INT < 14) {
+                cursor.close();//4.0以上的版本会自动关闭 (4.0--14;; 4.0.3--15)
+            }
         }
         LogMy.i(this, "imagePath = " + picPath);
         if(picPath != null && ( picPath.endsWith(".png") || picPath.endsWith(".PNG") ||picPath.endsWith(".jpg") ||picPath.endsWith(".JPG") ))
         {
             ContentResolver cr = this.getContentResolver();
             Bitmap bitmap = null;
-            try {
-                bitmap = BitmapFactory.decodeStream(cr
-                        .openInputStream(photoUri));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            //bitmap = BitmapFactory.decodeStream(cr.openInputStream(photoUri));
+            bitmap = ImageLoader.decodeUri(cr, photoUri);//show thumb image 防止内存泄露
             ivBg.setImageBitmap(bitmap);
         }else{
             Toast.makeText(this, "选择图片文件不正确", Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void clickOnCamera(View view) {
+        takePhoto();
+    }
+
+    public void clickOnAlbum(View view) {
+        pickPhoto();
     }
 
     // inner classes
@@ -505,9 +579,14 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
             super.handleMessage(msg);
             switch (msg.what) {
                 case MSG_RESIZE: {
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    Fragment fragment = new FragmentNull();
+                    ft.replace(R.id.ui_create_speak_fragment_layout, fragment);
+                    ft.commit();
                     //if (msg.arg1 == BIGGER) {//inputMode is hidding
                         ivPicture.setImageResource(R.drawable.ic_publish_operation_bar_photo);
                         ivExpression.setImageResource(R.drawable.ic_publish_operation_bar_emoticon);
+                        bottomBarStatus = 0;
                     //}
                 }
                 break;

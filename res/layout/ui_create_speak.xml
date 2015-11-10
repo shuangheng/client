@@ -3,8 +3,8 @@
     xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ui_create_speak_resizeLayout"
     android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
     <include layout="@layout/toolbar" />
 
@@ -34,7 +34,7 @@
                     android:layout_height="wrap_content"
                     android:minHeight="100.0dip"
                     android:hint="@string/ui_create_speak_content_hint"
-                    android:cursorVisible="false"
+                    android:background="@null"
                     android:lineSpacingExtra="6.0dip" />
 
                 <ImageView
@@ -60,7 +60,7 @@
             android:layout_marginBottom="@dimen/float_button_margin"
             android:layout_marginEnd="@dimen/float_button_margin"
             android:background="@color/colorPrimary"
-            materialdesign:iconDrawable="@drawable/ic_action_new" />
+            materialdesign:iconDrawable="@drawable/ic_send_light" />
 
 
         <RelativeLayout

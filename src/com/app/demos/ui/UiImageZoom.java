@@ -108,7 +108,8 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
             imageLoader.DisplayImage(thumbUrl, photoView, true, false);
         }
         if (bgImageUrl != null) {
-            LogMy.e(BaseApp.getContext(),"UiImageZoom >>url" + bgImageUrl);
+            LogMy.e(BaseApp.getContext(),"UiImageZoom >>thumbUrl" + thumbUrl);
+            LogMy.e(BaseApp.getContext(),"UiImageZoom >>bgImageUrl" + bgImageUrl);
             url = bgImageUrl;
             progressBar.setVisibility(View.VISIBLE);
 

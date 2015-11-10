@@ -31,6 +31,16 @@
         <item name="android:minWidth">40.0dip</item>
     </style>
 
+    <style name="PublishBottomPanMainItem" parent="@style/BottomPanMainItem" />
+    <style name="BottomPanMainItem">
+        <item name="android:textColor">@color/publish_bottom_pan_item_title</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:clickable">true</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:drawablePadding">5.0dip</item>
+    </style>
+
     <style name="com.app.demos.theme.login" parent="android:Theme.Light">
         <item name="android:windowNoTitle">true</item>
     </style>
@@ -160,6 +170,5 @@
 
     <dimen name="action_bar_subtitle_text_size">13.0dip</dimen>
     <dimen name="action_bar_title_text_size">17.0dip</dimen>
-    <color name="action_bar_sub_title">#ff8c9196</color>
-    <color name="action_bar_title">#ff282d32</color>
+
 </resources>

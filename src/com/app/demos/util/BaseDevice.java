@@ -75,6 +75,22 @@ public class BaseDevice {
 
     }
 
+	/**
+	 * not use fail !!!!
+	 * @param context
+	 * @param view
+	 */
+	public static void hideInput(Context context, View view) {
+		InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+		view.requestFocus();
+		imm.hideSoftInputFromInputMethod(view.getWindowToken(), 0);//强制隐藏键盘
+	}
+
+	/**
+	 *
+	 * @param context
+	 * @param view
+	 */
     public static void hideSoftInput(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         view.requestFocus();
@@ -84,7 +100,7 @@ public class BaseDevice {
     public static void showSoftInput(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         view.requestFocus();
-        imm.showSoftInput(view, 0);//显示键盘
+		imm.showSoftInput(view, 0);//显示键盘
         //(如果输入法在窗口上已经显示，则隐藏，反之则显示)
         //InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         //imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);

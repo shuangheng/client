@@ -153,8 +153,8 @@ public class SpeakFragment_v1 extends BaseFragment implements  OnRefreshListener
             @Override
             public void onImageClick(int position) {
                 String imagePath = ggList.get(position).getBgimage();
-                String thumburl = C.web.thumb_image + imagePath + ".jpg";//thumb image path
-                UiImageZoom.actionStart(activity, C.web.bgimage + imagePath + ".jpg", thumburl);
+                String thumburl = C.web.thumb_image + imagePath;//thumb image path
+                UiImageZoom.actionStart(activity, C.web.bgimage + imagePath, thumburl);
                 //activity.overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);//动画效果
             }
 

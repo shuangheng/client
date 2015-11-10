@@ -278,6 +278,8 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
                     case R.id.action_share:
                         Toast.makeText(UiActionBar.this, "action_share", Toast.LENGTH_SHORT).show();
                         break;
+                    case R.id.action_foxconn_dromInfo:
+                        overlay(UiFoxconnEssPost.class);
                     default:
                         break;
                 }

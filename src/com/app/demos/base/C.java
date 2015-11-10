@@ -142,8 +142,8 @@ public final class C {
 		public static final String index			= base + "/index.php";
 		public static final String agreement		= base + "/agreement/点亮富友软件许可及服务协议.php";
 		public static final String gomap			= base + "/gomap.php";
-		public static final String bgimage			= base + "/faces/default/l_";
-		public static final String thumb_image		= base + "/thumb.php?filename=l_";
+		public static final String bgimage			= base + "/faces/default/";
+		public static final String thumb_image		= base + "/thumb.php?filename=";
 		public static final String save_upload_image		= base + "/save_upload_image.php";
 	}
 

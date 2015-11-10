@@ -1,5 +1,6 @@
 package com.app.demos.base;
 
+import com.app.demos.R;
 import com.app.demos.ui.fragment.BaseFragment;
 import com.app.demos.util.AppUtil;
 
@@ -8,14 +9,14 @@ import android.os.Looper;
 import android.os.Message;
 
 public class BaseHandler extends Handler {
-	
+
 	protected BaseUi ui;
 	protected BaseFragment fragment;
 
 	public BaseHandler (BaseUi ui) {
 		this.ui = ui;
 	}
-	
+
 	public BaseHandler (Looper looper) {
 		super(looper);
 	}
@@ -84,8 +85,11 @@ public class BaseHandler extends Handler {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			ui.toast(e.getMessage());
+			if (ui != null) {
+				ui.toast(BaseApp.getContext().getString(R.string.server_error));
+				ui.onNetworkError(msg.getData().getInt("task"));
+			}
 		}
 	}
-	
+
 }

@@ -54,5 +54,7 @@
     <dimen name="sliding_overlay_blur_size">4dp</dimen>
     <dimen name="float_button_margin">24dp</dimen>
 
+    <dimen name="bottom_pan_min_height">260.0dp</dimen>
+
 
 </resources>

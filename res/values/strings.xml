@@ -121,6 +121,8 @@
     <string name="camera">拍照</string>
     <string name="get_pic_from_photo">从相册选取</string>
     <string name="cancel">取消</string>
+    <string name="album">相册</string>
+    <string name="server_error">服务器异常</string>
 
 
 </resources>

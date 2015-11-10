@@ -154,7 +154,7 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             // load face image
             String imagePath = gonggaoList.get(position).getBgimage();
-            String url = C.web.thumb_image + imagePath + ".jpg";//thumb image path
+            String url = C.web.thumb_image + imagePath;//thumb image path
 
             //url="http://10.0.2.2:8002/faces/default/l_25.jpg";
                 holder.image.setVisibility(gonggaoList.get(position).getBgimage().equals("null") ? View.GONE : View.VISIBLE);

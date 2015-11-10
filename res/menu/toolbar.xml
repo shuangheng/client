@@ -4,6 +4,11 @@
     tools:context=".UiActionBar" >
 
     <item
+        android:id="@+id/action_foxconn_dromInfo"
+        android:orderInCategory="100"
+        android:title="foxconn_dromInfo"
+        app:showAsAction="never"/>
+    <item
         android:id="@+id/ab_search"
         android:orderInCategory="80"
         android:title="action_search"
