@@ -1,4 +1,4 @@
-package com.app.demos.ui;
+package com.app.demos.ui.uploadFile;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;

@@ -54,6 +54,14 @@
             android:theme="@style/AppThemeNoActionBar" >
         </activity>
         <activity
+            android:name=".ui.uploadFile.UploadFileProgress"
+            android:theme="@style/AppThemeNoActionBar" >
+        </activity>
+        <activity
+            android:name=".ui.uploadFile.SelectPicActivity"
+            android:theme="@style/com.app.demos.theme.light" >
+        </activity>
+        <activity
             android:name=".ui.test.UiCreateSpeakTest"
             android:windowSoftInputMode="adjustUnspecified|stateHidden"
             android:theme="@style/AppThemeNoActionBar" >
@@ -116,7 +124,7 @@
             android:theme="@style/com.app.demos.theme.light" >
         </activity>
         <activity
-            android:name=".ui.UploadfileActivity"
+            android:name=".ui.uploadFile.UploadfileActivity"
             android:theme="@style/com.app.demos.theme.light" >
         </activity>
 

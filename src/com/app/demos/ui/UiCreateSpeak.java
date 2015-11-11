@@ -129,6 +129,7 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
         ivPicture = (ImageView) findViewById(R.id.ui_create_speak_iv_picture);
         btnRelease = (ButtonFloatSmall) findViewById(R.id.buttonFloat_small);
 
+        ivBg.setOnClickListener(this);
         ivPicture.setOnClickListener(this);
         ivExpression.setOnClickListener(this);
         editContent.setOnClickListener(this);
@@ -156,25 +157,25 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
     }
 
     private void creatSpeak(String customerId, String content, String bgimage) {
-            HashMap<String, String> blogParams = new HashMap<String, String>();
-            blogParams.put("user", customerId);
-            blogParams.put("title", customerId);
-            blogParams.put("content", content);
-            blogParams.put("bgimage", bgimage);
-            this.doTaskAsync(C.task.ggCreate, C.api.ggCreate, blogParams, true);
-    }
-/*
-    private void creatSpeak2() {
         HashMap<String, String> blogParams = new HashMap<String, String>();
-        blogParams.put("lost_id", "4");
-        blogParams.put("lost_item", "@@2");
-        blogParams.put("item_summary", "@@131313");
-        blogParams.put("where", "ccc");
-        blogParams.put("content", "1311313131313123123123123123123122312312312312312312312312231223eerererererer");
-        this.doTaskAsync(C.task.find_release, C.api.find_release, blogParams, true);
+        blogParams.put("user", customerId);
+        blogParams.put("title", customerId);
+        blogParams.put("content", content);
+        blogParams.put("bgimage", bgimage);
+        this.doTaskAsync(C.task.ggCreate, C.api.ggCreate, blogParams, true);
     }
-*/
-        @Override
+    /*
+        private void creatSpeak2() {
+            HashMap<String, String> blogParams = new HashMap<String, String>();
+            blogParams.put("lost_id", "4");
+            blogParams.put("lost_item", "@@2");
+            blogParams.put("item_summary", "@@131313");
+            blogParams.put("where", "ccc");
+            blogParams.put("content", "1311313131313123123123123123123122312312312312312312312312231223eerererererer");
+            this.doTaskAsync(C.task.find_release, C.api.find_release, blogParams, true);
+        }
+    */
+    @Override
     public void onTaskComplete(int taskId, BaseMessage message) {
         super.onTaskComplete(taskId, message);
         switch (taskId) {
@@ -197,6 +198,11 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
 
         switch (v.getId())
         {
+            case R.id.ui_create_speak_bg_image:
+                picPath = null;
+                photoUri = null;
+                ivBg.setImageBitmap(null);
+                break;
             case R.id.action_bar_item_text:
                 if (popupwindow == null) {
                     initPupView();
@@ -253,7 +259,7 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
                         break;
                 }
                 //initPupView(v);
-               // pickPhoto();
+                // pickPhoto();
                 /***
                  * 这个是调用android内置的intent，来过滤图片文件 ，同时也可以过滤其他的
                  */
@@ -307,12 +313,12 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
             /**
              * 当选择的图片不为空的话，在获取到图片的途径
 
-            if (requestCode == SELECT_PIC_BY_TACK_PHOTO) {
-                Bundle bundle = data.getExtras();
-                Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
-                ivBg.setImageBitmap(bitmap);
-                return;
-            }*/
+             if (requestCode == SELECT_PIC_BY_TACK_PHOTO) {
+             Bundle bundle = data.getExtras();
+             Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
+             ivBg.setImageBitmap(bitmap);
+             return;
+             }*/
             doPhoto(requestCode, data);
             //doPhoto2(requestCode, data);
         }
@@ -325,36 +331,36 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
         switch (requestCode) {
             case SELECT_PIC_BY_PICK_PHOTO:
 
-            LogMy.e(this, "uri = " + uri);
-            try {
-                String[] pojo = {MediaStore.Images.Media.DATA};
+                LogMy.e(this, "uri = " + uri);
+                try {
+                    String[] pojo = {MediaStore.Images.Media.DATA};
 
-                Cursor cursor = managedQuery(uri, pojo, null, null, null);
-                if (cursor != null) {
-                    ContentResolver cr = this.getContentResolver();
-                    int colunm_index = cursor
-                            .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                    cursor.moveToFirst();
-                    String path = cursor.getString(colunm_index);
-                    /***
-                     * 这里加这样一个判断主要是为了第三方的软件选择，比如：使用第三方的文件管理器的话，你选择的文件就不一定是图片了，
-                     * 这样的话，我们判断文件的后缀名 如果是图片格式的话，那么才可以
-                     */
-                    if (path.endsWith("jpg") || path.endsWith("png")) {
-                        picPath = path;
-                        Bitmap bitmap = BitmapFactory.decodeStream(cr
-                                .openInputStream(uri));
-                        ivBg.setImageBitmap(bitmap);
+                    Cursor cursor = managedQuery(uri, pojo, null, null, null);
+                    if (cursor != null) {
+                        ContentResolver cr = this.getContentResolver();
+                        int colunm_index = cursor
+                                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                        cursor.moveToFirst();
+                        String path = cursor.getString(colunm_index);
+                        /***
+                         * 这里加这样一个判断主要是为了第三方的软件选择，比如：使用第三方的文件管理器的话，你选择的文件就不一定是图片了，
+                         * 这样的话，我们判断文件的后缀名 如果是图片格式的话，那么才可以
+                         */
+                        if (path.endsWith("jpg") || path.endsWith("png")) {
+                            picPath = path;
+                            Bitmap bitmap = BitmapFactory.decodeStream(cr
+                                    .openInputStream(uri));
+                            ivBg.setImageBitmap(bitmap);
+                        } else {
+                            alert();
+                        }
                     } else {
                         alert();
                     }
-                } else {
-                    alert();
-                }
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case SELECT_PIC_BY_TACK_PHOTO:
                 Bitmap photo = null;
@@ -372,7 +378,7 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
                 }
 
 
-                    ivBg.setImageBitmap(photo);
+                ivBg.setImageBitmap(photo);
                 break;
             default:
                 break;
@@ -480,6 +486,10 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
             ContentValues values = new ContentValues();
             //photoUri = this.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
             String imagePath = Environment.getExternalStorageDirectory() + "/Fuyou/temp";
+            File file = new File(imagePath);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
             photoUri = Uri.fromFile(new File(imagePath, "111111.jpg"));
             intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
             startActivityForResult(intent, SELECT_PIC_BY_TACK_PHOTO);
@@ -523,42 +533,55 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
      * @param requestCode
      * @param data
      */
-    private void doPhoto(int requestCode,Intent data)
-    {
-        if(requestCode == SELECT_PIC_BY_PICK_PHOTO ) { //从相册取图片，有些手机有异常情况，请注意
-            if(data == null) {
-                Toast.makeText(this, "选择图片文件出错", Toast.LENGTH_LONG).show();
-                return;
-            }
-            photoUri = data.getData();
-            if(photoUri == null )
-            {
-                Toast.makeText(this, "选择图片文件出错", Toast.LENGTH_LONG).show();
-                return;
-            }
-        }
-        String[] pojo = {MediaStore.Images.Media.DATA};
-        Cursor cursor = managedQuery(photoUri, pojo, null, null,null);
-        if(cursor != null )
-        {
-            int columnIndex = cursor.getColumnIndexOrThrow(pojo[0]);
-            cursor.moveToFirst();
-            picPath = cursor.getString(columnIndex);
-
-            if(Build.VERSION.SDK_INT < 14) {
-                cursor.close();//4.0以上的版本会自动关闭 (4.0--14;; 4.0.3--15)
-            }
-        }
-        LogMy.i(this, "imagePath = " + picPath);
-        if(picPath != null && ( picPath.endsWith(".png") || picPath.endsWith(".PNG") ||picPath.endsWith(".jpg") ||picPath.endsWith(".JPG") ))
-        {
-            ContentResolver cr = this.getContentResolver();
-            Bitmap bitmap = null;
-            //bitmap = BitmapFactory.decodeStream(cr.openInputStream(photoUri));
-            bitmap = ImageLoader.decodeUri(cr, photoUri);//show thumb image 防止内存泄露
-            ivBg.setImageBitmap(bitmap);
-        }else{
-            Toast.makeText(this, "选择图片文件不正确", Toast.LENGTH_LONG).show();
+    private void doPhoto(int requestCode,Intent data) {
+        switch (requestCode) {
+            case SELECT_PIC_BY_TACK_PHOTO:
+                if(photoUri != null ) {
+                    picPath = photoUri.getPath();
+                    editContent.getText().append(picPath+"---tt\n");
+                    ContentResolver cr = this.getContentResolver();
+                    Bitmap bitmap = null;
+                    bitmap = ImageLoader.decodeUri(cr, photoUri);//show thumb image 防止内存泄露
+                    ivBg.setImageBitmap(bitmap);
+                }else{
+                    Toast.makeText(this, "选择图片文件不正确", Toast.LENGTH_LONG).show();
+                }
+                break;
+            case SELECT_PIC_BY_PICK_PHOTO://从相册取图片，有些手机有异常情况，请注意
+                if(data == null) {
+                    Toast.makeText(this, "选择图片文件出错", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                photoUri = data.getData();
+                if(photoUri == null )
+                {
+                    Toast.makeText(this, "选择图片文件出错", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                String[] pojo = {MediaStore.Images.Media.DATA};
+                Cursor cursor = managedQuery(photoUri, pojo, null, null,null);
+                if(cursor != null ) {
+                    int columnIndex = cursor.getColumnIndexOrThrow(pojo[0]);
+                    cursor.moveToFirst();
+                    picPath = cursor.getString(columnIndex);
+                    editContent.getText().append(picPath+"tt\n");
+                    if(Build.VERSION.SDK_INT < 14) {
+                        cursor.close();//4.0以上的版本会自动关闭 (4.0--14;; 4.0.3--15)
+                    }
+                }
+                LogMy.i(this, "imagePath = " + picPath);
+                if(picPath != null ) {
+                    ContentResolver cr = this.getContentResolver();
+                    Bitmap bitmap = null;
+                    //bitmap = BitmapFactory.decodeStream(cr.openInputStream(photoUri));
+                    bitmap = ImageLoader.decodeUri(cr, photoUri);//show thumb image 防止内存泄露
+                    ivBg.setImageBitmap(bitmap);
+                }else{
+                    Toast.makeText(this, "选择图片文件不正确", Toast.LENGTH_LONG).show();
+                }
+                break;
+            default:
+                break;
         }
     }
 
@@ -584,9 +607,9 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
                     ft.replace(R.id.ui_create_speak_fragment_layout, fragment);
                     ft.commit();
                     //if (msg.arg1 == BIGGER) {//inputMode is hidding
-                        ivPicture.setImageResource(R.drawable.ic_publish_operation_bar_photo);
-                        ivExpression.setImageResource(R.drawable.ic_publish_operation_bar_emoticon);
-                        bottomBarStatus = 0;
+                    ivPicture.setImageResource(R.drawable.ic_publish_operation_bar_photo);
+                    ivExpression.setImageResource(R.drawable.ic_publish_operation_bar_emoticon);
+                    bottomBarStatus = 0;
                     //}
                 }
                 break;
