@@ -122,12 +122,12 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
         getToolBar(R.id.toolbar, getString(R.string.edit_speak), true);
         setCustomViewOnToolBar(release, Gravity.END);
 
-        reSizelayout = (ResizeLinearLayout) findViewById(R.id.ui_create_speak_resizeLayout);
+        //reSizelayout = (ResizeLinearLayout) findViewById(R.id.ui_create_speak_resizeLayout);
         editContent = (EditText) findViewById(R.id.ui_create_speak_edit_content);
         ivBg = (ImageView) findViewById(R.id.ui_create_speak_bg_image);
         ivExpression = (ImageView) findViewById(R.id.ui_create_speak_iv_expression);
         ivPicture = (ImageView) findViewById(R.id.ui_create_speak_iv_picture);
-        btnRelease = (ButtonFloatSmall) findViewById(R.id.buttonFloat_small);
+        //btnRelease = (ButtonFloatSmall) findViewById(R.id.buttonFloat_small);
 
         ivBg.setOnClickListener(this);
         ivPicture.setOnClickListener(this);
@@ -136,7 +136,7 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
         btnRelease.setOnClickListener(this);
         release.setOnClickListener(this);
         editContent.addTextChangedListener(this);
-
+/*
         reSizelayout.setOnResizeListener(new ResizeLinearLayout.OnResizeListener() {
             @Override
             public void OnResize(int w, int h, int oldw, int oldh) {
@@ -153,7 +153,7 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
                 msg.arg1 = change;
                 handlerMy.sendMessage(msg);
             }
-        });
+        });*/
     }
 
     private void creatSpeak(String customerId, String content, String bgimage) {
@@ -216,7 +216,7 @@ public class UiCreateSpeak extends SwipeBackActivity implements View.OnClickList
                     editContent.getText().append("\npopupwindow.showAsDropDown()");
                 }
                 break;
-            case R.id.buttonFloat_small:
+            case R.id.action_bar_item_image:
                 //creatSpeak2();
                 //creatSpeak("g4050282", "111111223223");
                 if (picPath == null) {

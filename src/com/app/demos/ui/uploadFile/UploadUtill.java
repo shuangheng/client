@@ -40,7 +40,7 @@ public class UploadUtill {
         return uploadUtil;
     }
 
-    private static final String TAG = "UploadUtil";
+    private static final String TAG = "UploadUtill";
     private int readTimeOut = 10 * 1000; // 读取超时
     private int connectTimeout = 10 * 1000; // 超时时间
     /***

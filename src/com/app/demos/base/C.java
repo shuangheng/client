@@ -1,5 +1,7 @@
 package com.app.demos.base;
 
+import android.os.Environment;
+
 import com.app.demos.R;
 
 public final class C {
@@ -31,6 +33,7 @@ public final class C {
 	// core settings (important)
 	
 	public static final class dir {
+		public static final String base2				= Environment.getExternalStorageDirectory() + "/Fuyou";
 		public static final String base				= "/sdcard/demos";
 		public static final String faces			= base + "/faces";
 		public static final String images			= base + "/images";

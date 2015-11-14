@@ -49,6 +49,12 @@
             android:theme="@style/AppThemeNoActionBar" >
         </activity>
         <activity
+            android:name=".ui.UiCreateSpeak_v1"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:theme="@style/AppThemeNoActionBar" >
+        </activity>
+        <activity
             android:name=".ui.AboutActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppThemeNoActionBar" >
@@ -143,13 +149,14 @@
     </application>
     <!-- For using network -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!--精确定位-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!--粗糙定位-->
 
     <!-- For using notification -->
     <uses-permission android:name="android.permission.VIBRATE" />

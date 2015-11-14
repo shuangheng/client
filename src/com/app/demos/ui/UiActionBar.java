@@ -52,7 +52,6 @@ import com.app.demos.ui.authenticator.UiAuthenticator;
 import com.app.demos.ui.fragment.FindFragment;
 import com.app.demos.ui.fragment.SpeakFragment_v1;
 import com.app.demos.ui.fragment.Fragment3;
-import com.app.demos.ui.fragment.SpeakFragment;
 import com.app.demos.ui.test.GestureDetectorTest;
 import com.app.demos.ui.test.observableScrollView.FlexibleSpaceWithImageListViewActivity;
 import com.app.demos.ui.test.ToolBarTitleScroll;
@@ -76,7 +75,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
     private long mPressedTime = 0;
 
     public int position_one;
-    private SpeakFragment activityfragment;
+    private SpeakFragment_v1 activityfragment;
     private FindFragment findfragment;
     /////////////////////////////////////
     private ListView drawerList;
@@ -103,7 +102,6 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
     private String find_lastId;
     private int find_lastIdNum;
     private Context context;
-    public SharedPreferences sharedPreferences_speak;
     public FavoriteSpeakSqlite favoriteSpeakSqlite;
 
 
@@ -127,7 +125,6 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         initBottomButtom();
         initDrawer();
 
-        sharedPreferences_speak = getSharedPreferences("fragment_speak", MODE_PRIVATE);
         gonggaoSqlite = new GonggaoSqlite(this);
         favoriteSpeakSqlite =new FavoriteSpeakSqlite(this);
     }
@@ -157,7 +154,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         mFabButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(UiActionBar.this, UiCreateSpeak.class);
+                Intent intent = new Intent(UiActionBar.this, UiCreateSpeak_v1.class);
                 startActivityForResult(intent, 1);
                 overridePendingTransition(R.anim.in_from_right, 0);
             }
@@ -374,7 +371,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         //LayoutInflater mInflater = getLayoutInflater();
         //View activityView = mInflater.inflate(R.layout.fragment_list_speak, null);
 
-        activityfragment = SpeakFragment.newInstance("Hello Activity.");
+        activityfragment = SpeakFragment_v1.newInstance("Hello Activity.");
         findfragment = FindFragment.newInstance("Hello Activity.");
         SpeakFragment_v1 groupFragment = new SpeakFragment_v1();
         groupFragment.setOnHideOrShowListener(new SpeakFragment_v1.OnHideOrShowListener() {

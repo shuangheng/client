@@ -96,8 +96,8 @@ public class SpeakFragment_v1 extends BaseFragment implements  OnRefreshListener
     private FavoriteSpeakSqlite favoriteSpeakSqlite;
     private OnHideOrShowListener onHideOrShowListener;
 
-    public static SpeakFragment newInstance(String s) {
-        SpeakFragment newFragment = new SpeakFragment();
+    public static SpeakFragment_v1 newInstance(String s) {
+        SpeakFragment_v1 newFragment = new SpeakFragment_v1();
         Bundle bundle = new Bundle();
         bundle.putString("hello", s);
         newFragment.setArguments(bundle);

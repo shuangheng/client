@@ -8,6 +8,7 @@ import com.app.demos.util.BaseDevice;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,6 +33,7 @@ public class BaseUi extends BaseActivity {
 	protected boolean showLoadBar = false;
 	protected boolean showDebugMsg = true;
 	protected boolean toastShowing = false;
+	protected SharedPreferences sharedPreferences_speak;
 
     public static int DEVICE_WIDTH;
     public static int DEVICE_HEIGHT;
@@ -53,6 +55,7 @@ public class BaseUi extends BaseActivity {
 		this.app = (BaseApp) this.getApplicationContext();
         DEVICE_WIDTH = BaseDevice.getScreenWidth(this);
 		DEVICE_HEIGHT = BaseDevice.getScreenHeight(this);
+		sharedPreferences_speak = getSharedPreferences("fragment_speak", MODE_PRIVATE);
 	}
 
 	@Override

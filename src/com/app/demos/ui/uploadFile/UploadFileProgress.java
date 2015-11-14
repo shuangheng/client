@@ -52,7 +52,7 @@ public class UploadFileProgress extends SwipeBackActivity implements View.OnClic
      */
     private static final int UPLOAD_IN_PROCESS = 5;
     /***
-     * 这里的这个URL是我服务器的javaEE环境URL
+     * 这里的这个URL是我服务器的PHP环境URL
      */
     private static String requestURL = C.web.save_upload_image;
     private Button selectButton,uploadButton;
@@ -154,9 +154,11 @@ public class UploadFileProgress extends SwipeBackActivity implements View.OnClic
 
                 case UPLOAD_INIT_PROCESS:
                     progressBar.setMax(msg.arg1);
+                    Toast.makeText(UploadFileProgress.this,""+msg.arg1, Toast.LENGTH_LONG).show();
                     break;
                 case UPLOAD_IN_PROCESS:
                     progressBar.setProgress(msg.arg1);
+                    uploadImageResult.setText("setProgress  :  "+msg.arg1);
                     break;
                 case UPLOAD_FILE_DONE:
                     String result = "响应码："+msg.arg1+"\n响应信息："+msg.obj+"\n耗时："+ UploadUtill.getRequestTime()+"秒";

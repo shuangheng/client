@@ -218,7 +218,7 @@ public class UiAuthenticator extends BaseUi {
         //editor.putString("empwd", emppwd);
         editor.putString("email", email);
         editor.commit();//提交修改
-        UiActionBar.actionStart(this);
+        //UiActionBar.actionStart(this);
         finish();
     }
 
@@ -228,7 +228,7 @@ public class UiAuthenticator extends BaseUi {
         editor.putString("empno", empno);
         //editor.putString("empwd", emppwd);
         editor.commit();//提交修改
-        UiActionBar.actionStart(this);
+        //UiActionBar.actionStart(this);
         finish();
     }
 
@@ -368,8 +368,7 @@ public class UiAuthenticator extends BaseUi {
         startType = localBundle.getInt("authenticatorType");
         switch (startType) {
             case 1:
-                //setLoginView();
-                setRegisterView();
+                setLoginView();
                 break;
             case 2:
                 setRegisterView();

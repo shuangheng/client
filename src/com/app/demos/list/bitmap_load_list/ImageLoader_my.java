@@ -22,6 +22,8 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.app.demos.base.BaseApp;
+import com.app.demos.base.LogMy;
 import com.app.demos.util.BaseDevice;
 
 /**
@@ -98,6 +100,7 @@ public class ImageLoader_my {
             InputStream is = conn.getInputStream();
             OutputStream os = new FileOutputStream(f);
             CopyStream(is, os);//save image
+            os.flush();
             os.close();
             //读取图片
             if (showThumb) {
@@ -128,8 +131,7 @@ public class ImageLoader_my {
             int width_tmp = o.outWidth, height_tmp = o.outHeight;
             int scale = 1;
             while (true) {
-                if (width_tmp / 2 < REQUIRED_SIZE
-                        || height_tmp / 2 < REQUIRED_SIZE)
+                if (width_tmp / 2 < REQUIRED_SIZE || height_tmp / 2 < REQUIRED_SIZE)
                     break;
                 width_tmp /= 2;
                 height_tmp /= 2;
@@ -141,6 +143,7 @@ public class ImageLoader_my {
             o2.inSampleSize = scale;
             return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -227,10 +230,10 @@ public class ImageLoader_my {
                 if (count == -1)
                     break;
                 os.write(bytes, 0, count);
-                Log.e("ImageLoader.copyStream", "CopyStream catch OK");
             }
         } catch (Exception ex) {
-            Log.e("ImageLoader.copyStream", "CopyStream catch Exception...");
+            ex.printStackTrace();
+            LogMy.e(BaseApp.getContext(), "ImageLoader.copyStream -----CopyStream catch Exception...");
         }
     }
 

@@ -176,6 +176,17 @@ public class TimeUtil {
     }
 
     /**
+     * <p> 时间戳(long) 转换成 String TimeStamp
+     * @param time 时间戳(long)
+     * @return String "yyyyMMdd_HHmmss"
+     */
+    public static String long2String2 (long time) {
+        SimpleDateFormat sd = new SimpleDateFormat("yyyyMMdd_HHmmss");//24小时制
+
+        return sd.format(new Timestamp(time));
+    }
+
+    /**
      *
      * @param month
      * @param day
