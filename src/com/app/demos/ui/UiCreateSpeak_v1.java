@@ -44,6 +44,7 @@ import android.widget.Toast;
 
 import com.app.demos.R;
 import com.app.demos.base.BaseMessage;
+import com.app.demos.base.BaseUi;
 import com.app.demos.base.C;
 import com.app.demos.base.LogMy;
 import com.app.demos.dialog.ProgressingDialog;
@@ -57,6 +58,7 @@ import com.app.demos.ui.fragment.Fragment3;
 import com.app.demos.ui.fragment.FragmentNull;
 import com.app.demos.ui.fragment.FragmentOne;
 import com.app.demos.ui.fragment.SelectPhotoFragment;
+import com.app.demos.ui.fragment.emoji.EmojiFragment;
 import com.app.demos.ui.uploadFile.SelectPicActivity;
 import com.app.demos.ui.uploadFile.UploadUtill;
 import com.app.demos.util.AppClient;
@@ -78,7 +80,7 @@ import java.util.Map;
 /**
  * Created by tom on 15-11-12.
  */
-public class UiCreateSpeak_v1 extends SwipeBackActivity implements View.OnClickListener, UploadUtill.OnUploadProcessListener, TextWatcher {
+public class UiCreateSpeak_v1 extends BaseUi implements View.OnClickListener, UploadUtill.OnUploadProcessListener, TextWatcher {
 
     /**
      * 去上传文件
@@ -277,7 +279,7 @@ public class UiCreateSpeak_v1 extends SwipeBackActivity implements View.OnClickL
                 }
                 break;
             case R.id.ui_create_speak_iv_expression:
-                fragment = new Fragment3();
+                fragment = EmojiFragment.newInstance("", editContent);
                 switch (bottomBarStatus) {
                     case 10:
                         fragment = new FragmentNull();
