@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.app.demos.layout.ListFooterView;
 import com.app.demos.list.bitmap_load_list.ImageLoader;
 import com.app.demos.list.bitmap_load_list.ImageLoader_my;
 import com.app.demos.model.Gonggao;
+import com.app.demos.ui.fragment.emoji.ParseEmojiMsgUtil;
 import com.app.demos.util.AppFilter;
 import com.app.demos.util.BaseDevice;
 
@@ -126,7 +128,9 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
             //String itemText = mItemList.get(position);
             //positionn = position;
             Gonggao g = gonggaoList.get(position);
-            holder.content.setText(AppFilter.getHtml(g.getContent()));
+            SpannableString spannableString = ParseEmojiMsgUtil.getExpressionString(mContext, g.getContent());
+            holder.content.setText(spannableString);
+            //holder.content.setText(AppFilter.getHtml(g.getContent()));
 
             holder.type.setText(g.getId());
             holder.extra.setText(g.getTypeAll());

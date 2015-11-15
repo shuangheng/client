@@ -77,6 +77,10 @@
             android:theme="@style/AppThemeNoActionBar" >
         </activity>
         <activity
+            android:name=".ui.test.LbsUi"
+            android:theme="@style/com.app.demos.theme.light" >
+        </activity>
+        <activity
             android:name=".ui.test.TestImage"
             android:theme="@style/com.app.demos.theme.light" >
         </activity>

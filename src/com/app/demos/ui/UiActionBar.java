@@ -53,6 +53,7 @@ import com.app.demos.ui.fragment.FindFragment;
 import com.app.demos.ui.fragment.SpeakFragment_v1;
 import com.app.demos.ui.fragment.Fragment3;
 import com.app.demos.ui.test.GestureDetectorTest;
+import com.app.demos.ui.test.LbsUi;
 import com.app.demos.ui.test.observableScrollView.FlexibleSpaceWithImageListViewActivity;
 import com.app.demos.ui.test.ToolBarTitleScroll;
 import com.app.demos.ui.test.foxconn_ESS_zsf.UiFoxconnEssPost;
@@ -189,7 +190,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         drawerList = (ListView) findViewById(R.id.drawer_list);
         String[] data = {"设备信息", "other", "login out", "toolBar Scroll", "toolbar scroll 2", "GestureDetector"
                         , "draglayoutdemo", "drag down", "drage top", "about", "creat find", "UploadFile", "UploadfileActivity",
-                        "UploadFileProgress"};
+                        "UploadFileProgress", "LBS test"};
         drawerList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data));
         drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -243,6 +244,9 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
                         break;
                     case 13:
                         overlay(UploadFileProgress.class);
+                        break;
+                    case 14:
+                        overlay(LbsUi.class);
                         break;
                 }
                 if (position != 0) {

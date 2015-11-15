@@ -59,6 +59,8 @@ import com.app.demos.ui.fragment.FragmentNull;
 import com.app.demos.ui.fragment.FragmentOne;
 import com.app.demos.ui.fragment.SelectPhotoFragment;
 import com.app.demos.ui.fragment.emoji.EmojiFragment;
+import com.app.demos.ui.fragment.emoji.EmojiParser;
+import com.app.demos.ui.fragment.emoji.ParseEmojiMsgUtil;
 import com.app.demos.ui.uploadFile.SelectPicActivity;
 import com.app.demos.ui.uploadFile.UploadUtill;
 import com.app.demos.util.AppClient;
@@ -214,7 +216,8 @@ public class UiCreateSpeak_v1 extends BaseUi implements View.OnClickListener, Up
             case C.task.ggCreate:
                 LogMy.w(this, message.getMessage());
                 if (message.getCode().equals("10000")) {
-                    finish();
+                    editContent.getText().append("\n"+"ok-------");
+                    //finish();
                     return;
                 }
                 editContent.getText().append("\n"+"fail-------");
@@ -243,8 +246,11 @@ public class UiCreateSpeak_v1 extends BaseUi implements View.OnClickListener, Up
                 break;
             case R.id.action_bar_item_image:
                 presDialog.show();
-                String content = editContent.getText().toString();
-
+                //String content = EmojiFragment.getStringToServer(UiCreateSpeak_v1.this, editContent);
+                String msgStr = ParseEmojiMsgUtil.convertToMsg(editContent.getText(), this);// 这里不要直接用mEditMessageEt.getText().toString();
+                String content = EmojiParser.getInstance(this).parseEmoji(msgStr);
+                LogMy.e(this, content);
+                editContent.getText().append(content);
                 if (picPath == null) {
                     creatSpeak(empno, content, null);
                 } else {
@@ -279,7 +285,6 @@ public class UiCreateSpeak_v1 extends BaseUi implements View.OnClickListener, Up
                 }
                 break;
             case R.id.ui_create_speak_iv_expression:
-                fragment = EmojiFragment.newInstance("", editContent);
                 switch (bottomBarStatus) {
                     case 10:
                         fragment = new FragmentNull();
@@ -290,6 +295,7 @@ public class UiCreateSpeak_v1 extends BaseUi implements View.OnClickListener, Up
                         bottomBarStatus = 0;
                         break;
                     default:
+                        fragment = EmojiFragment.newInstance("", editContent);
                         ivExpression.setImageResource(R.drawable.ic_publish_operation_bar_keyboard);
                         ivPicture.setImageResource(R.drawable.ic_publish_operation_bar_photo);
                         bottomBarStatus = 10;

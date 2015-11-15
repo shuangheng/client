@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/emoji_layout"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/icon_jw_writting_bg"
+    android:layout_height="@dimen/bottom_pan_min_height"
     android:orientation="vertical" >
 
     <android.support.v4.view.ViewPager

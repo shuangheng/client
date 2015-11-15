@@ -83,6 +83,11 @@ public class EmojiFragment extends Fragment {
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    public static String getStringToServer(Context context, EditText editText) {
+        String msgStr = ParseEmojiMsgUtil.convertToMsg(editText.getText(), context);// 这里不要直接用mEditMessageEt.getText().toString();
+        String unicode = EmojiParser.getInstance(context).parseEmoji(msgStr);
+        return unicode;
+    }
     SelectFaceHelper.OnFaceOprateListener mOnFaceOprateListener = new SelectFaceHelper.OnFaceOprateListener() {
         @Override
         public void onFaceSelected(SpannableString spanEmojiStr) {
