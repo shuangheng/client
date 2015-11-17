@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.demos.R;
+import com.app.demos.util.TimeUtil;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -75,8 +76,9 @@ public class LbsUi extends Activity implements View.OnClickListener {
      * @param location
      */
     private void showLocation(TextView textView, Location location){
+        String currentTime = TimeUtil.long2String(System.currentTimeMillis());
         String locationStr = "纬度：" + location.getLatitude() +"\n"
-                + "经度：" + location.getLongitude();
+                + "经度：" + location.getLongitude() +"\n"+ currentTime;
         textView.setText(locationStr);
     }
 
@@ -236,7 +238,7 @@ public class LbsUi extends Activity implements View.OnClickListener {
                     Toast.makeText(LbsUi.this, "location为空", Toast.LENGTH_SHORT).show();
                 }
                 //监视地理位置变化
-                locationManager.requestLocationUpdates(locationProvider, 3000, 1, locationListener);
+                locationManager.requestLocationUpdates(locationProvider, 3000, 0, locationListener);
                 break;
             default:
                 break;

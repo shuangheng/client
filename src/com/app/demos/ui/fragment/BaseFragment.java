@@ -2,6 +2,7 @@ package com.app.demos.ui.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
@@ -45,6 +46,12 @@ public class BaseFragment extends Fragment {
         }
         if (showProgress) {
             showProgressBar();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    hideProgressBar();
+                }
+            }, 10000);
         }
         taskPool.addTask(taskId, taskUrl, taskArgs, new BaseTask() {
             @Override

@@ -20,6 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout.LayoutParams;
 
 import com.app.demos.R;
+import com.app.demos.base.BaseApp;
+import com.app.demos.base.LogMy;
 
 public class SelectFaceHelper implements OnItemClickListener {
 	private static final String TAG = SelectFaceHelper.class.getSimpleName();
@@ -78,7 +80,7 @@ public class SelectFaceHelper implements OnItemClickListener {
 		for (int i = 0; i < mPageEmojiDatas.size(); i++) {
 			GridView view = (GridView) mInflater.inflate(R.layout.msg_face_gridview, null);
 			FaceAdapter adapter = new FaceAdapter(context, mPageEmojiDatas.get(i));
-			view.setSelector(R.drawable.transparent_background);
+			view.setSelector(R.drawable.item_background_holo_light);
 			view.setAdapter(adapter);
 			faceAdapters.add(adapter);
 			view.setOnItemClickListener(this);
@@ -239,7 +241,7 @@ public class SelectFaceHelper implements OnItemClickListener {
 			String emojiStr = EmojiParser.getInstance(context).convertEmoji(msgEmoji.getCharacter());
 			SpannableString spannableString = EmojiParser.getInstance(context).addFace(context, msgEmoji.getId(),
 					emojiStr);
-			Log.d(TAG, spannableString.toString());
+			LogMy.e(BaseApp.getContext(), TAG+ spannableString.toString());
 			if (null != mOnFaceOprateListener) {
 				mOnFaceOprateListener.onFaceSelected(spannableString);
 			}

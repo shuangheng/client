@@ -35,7 +35,8 @@ public class ParseEmojiMsgUtil {
 					+ key.substring(key.indexOf("]") + 1, key.lastIndexOf("[")));
 			int resId = Integer.parseInt(field.get(null).toString());
 			if (resId != 0) {
-				Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resId);
+				//Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resId);
+				Bitmap bitmap = LoadEmojiBitmap.getInstance(context).getBitmap(resId);//减少内存占用
 				ImageSpan imageSpan = new ImageSpan(bitmap);
 				int end = matcher.start() + key.length();
 				spannableString.setSpan(imageSpan, matcher.start(), end, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);

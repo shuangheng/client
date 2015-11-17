@@ -2799,13 +2799,13 @@ containing a value of this type.
         public static final int ui_actionbar_vPager=0x7f0c0109;
         public static final int ui_createFind_iv_back=0x7f0c0112;
         public static final int ui_createFind_tv_release=0x7f0c0113;
+        public static final int ui_create_speak_Layout=0x7f0c011e;
         public static final int ui_create_speak_bg_image=0x7f0c0122;
         public static final int ui_create_speak_container=0x7f0c011f;
         public static final int ui_create_speak_edit_content=0x7f0c0121;
         public static final int ui_create_speak_fragment_layout=0x7f0c0127;
         public static final int ui_create_speak_iv_expression=0x7f0c0126;
         public static final int ui_create_speak_iv_picture=0x7f0c0124;
-        public static final int ui_create_speak_resizeLayout=0x7f0c011e;
         public static final int ui_create_speak_scroll=0x7f0c0120;
         public static final int ui_find_create_TEXT=0x7f0c011a;
         public static final int ui_find_create_spinner_btn=0x7f0c011d;

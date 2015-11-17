@@ -47,13 +47,13 @@
 
                 <TextView
                     android:textSize="@dimen/feed_card_content_text_size"
-                    android:gravity="center_vertical"
+                    android:gravity="top|start|center"
                     android:id="@+id/tpl_list_speak_tv_content"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:maxLines="8"
                     android:ellipsize="end"
-                    android:lineSpacingExtra="6.0dip" />
+                    android:lineSpacingExtra="0.0dip" />
 
                 <TextView
                     android:textSize="15.0dip"

@@ -128,8 +128,8 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
             //String itemText = mItemList.get(position);
             //positionn = position;
             Gonggao g = gonggaoList.get(position);
-            SpannableString spannableString = ParseEmojiMsgUtil.getExpressionString(mContext, g.getContent());
-            holder.content.setText(spannableString);
+
+            holder.content.setText(g.getEmojiString());
             //holder.content.setText(AppFilter.getHtml(g.getContent()));
 
             holder.type.setText(g.getId());

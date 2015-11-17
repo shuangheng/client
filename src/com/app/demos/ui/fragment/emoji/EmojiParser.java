@@ -9,12 +9,16 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.util.Log;
+
+import com.app.demos.layout.Utils;
 
 public class EmojiParser {
 	private static final String TAG = EmojiParser.class.getSimpleName();
@@ -191,7 +195,9 @@ public class EmojiParser {
 			return null;
 		}
 		Drawable drawable = context.getResources().getDrawable(imgId);
-		drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+		int i = Utils.dpToPx(19, context.getResources());// "19"为editView 的 TextSize
+		drawable.setBounds(0, 0, i, i);//drawable 大小
+		//drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());//
 		ImageSpan imageSpan = new ImageSpan(drawable, spannableString);
 		SpannableString spannable = new SpannableString(spannableString);
 		spannable.setSpan(imageSpan, 0, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);

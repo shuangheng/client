@@ -1,5 +1,6 @@
 package com.app.demos.ui.fragment.emoji;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
@@ -24,6 +25,9 @@ public class EmojiFragment extends Fragment {
     private SelectFaceHelper mFaceHelper;
     private Context context;
 
+    public EmojiFragment(){}
+
+    @SuppressLint("ValidFragment")
     public EmojiFragment(EditText editText) {
         this.editText = editText;
     }
@@ -83,16 +87,25 @@ public class EmojiFragment extends Fragment {
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static String getStringToServer(Context context, EditText editText) {
+    public static String getStringToServer2(Context context, EditText editText) {
         String msgStr = ParseEmojiMsgUtil.convertToMsg(editText.getText(), context);// 这里不要直接用mEditMessageEt.getText().toString();
         String unicode = EmojiParser.getInstance(context).parseEmoji(msgStr);
         return unicode;
     }
+
+    public String getStringToServer() {
+        String msgStr = ParseEmojiMsgUtil.convertToMsg(editText.getText(), context);// 这里不要直接用mEditMessageEt.getText().toString();
+        String unicode = EmojiParser.getInstance(context).parseEmoji(msgStr);
+        return unicode;
+    }
+
     SelectFaceHelper.OnFaceOprateListener mOnFaceOprateListener = new SelectFaceHelper.OnFaceOprateListener() {
         @Override
         public void onFaceSelected(SpannableString spanEmojiStr) {
             if (null != spanEmojiStr) {
                 editText.append(spanEmojiStr);
+                //SpannableString spannableString = ParseEmojiMsgUtil.getExpressionString(context, getStringToServer());
+                //editText.append(spannableString);
             }
         }
 

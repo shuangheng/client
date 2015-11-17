@@ -4,8 +4,9 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/five"
-    android:horizontalSpacing="@dimen/five"
-    android:numColumns="6"
-    android:verticalSpacing="@dimen/five" >
+    android:padding="10dp"
+    android:horizontalSpacing="20dp"
+    android:verticalSpacing="10dp"
+    android:numColumns="6">
 
 </GridView>

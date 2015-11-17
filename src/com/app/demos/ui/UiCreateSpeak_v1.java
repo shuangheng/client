@@ -36,6 +36,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
@@ -125,6 +126,7 @@ public class UiCreateSpeak_v1 extends BaseUi implements View.OnClickListener, Up
     private ImageView ivPicture;
     private ImageView ivExpression;
     private FrameLayout frameLayout;
+    private LinearLayout linearLayout;
     /**
      * bottom bar status
      * <p>
@@ -158,8 +160,13 @@ public class UiCreateSpeak_v1 extends BaseUi implements View.OnClickListener, Up
     }
 
     @Override
-    public void onRestart() {
-        super.onRestart();
+    public void onPause() {
+        reSetBottomBar();
+        super.onPause();
+    }
+
+    public void reSetBottomBar() {
+
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Fragment fragment = new FragmentNull();
         ft.replace(R.id.ui_create_speak_fragment_layout, fragment);
@@ -176,6 +183,7 @@ public class UiCreateSpeak_v1 extends BaseUi implements View.OnClickListener, Up
         getToolBar(R.id.toolbar, getString(R.string.edit_speak), true);
         setCustomViewOnToolBar(release, Gravity.END);
 
+        linearLayout = (LinearLayout) findViewById(R.id.ui_create_speak_Layout);
         editContent = (EditText) findViewById(R.id.ui_create_speak_edit_content);
         ivBg = (ImageView) findViewById(R.id.ui_create_speak_bg_image);
         ivExpression = (ImageView) findViewById(R.id.ui_create_speak_iv_expression);

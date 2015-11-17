@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/ui_create_speak_resizeLayout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ui_create_speak_Layout"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
@@ -24,7 +24,23 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
 
-                <EditText
+                <com.app.demos.layout.materialEditText.MaterialEditText
+                    android:id="@+id/ui_create_speak_edit_content"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/feed_card_content_text_size"
+                    android:gravity="top|start|center"
+                    android:textColor="@android:color/black"
+                    android:padding="10.0dip"
+                    android:minHeight="100.0dip"
+                    android:hint="@string/ui_create_speak_content_hint"
+                    android:background="@null"
+                    android:maxLength="330"
+                    app:met_maxCharacters="300"
+                    app:met_hideUnderline="true"
+                    app:met_floatingLabel="none"/>
+
+                <!--EditText
                     android:id="@+id/ui_create_speak_edit_content"
                     android:textSize="@dimen/feed_card_content_text_size"
                     android:gravity="top|start|center"
@@ -34,8 +50,7 @@
                     android:layout_height="wrap_content"
                     android:minHeight="100.0dip"
                     android:hint="@string/ui_create_speak_content_hint"
-                    android:background="@null"
-                    android:lineSpacingExtra="6.0dip" />
+                    android:background="@null" /-->
 
                 <ImageView
                     android:id="@+id/ui_create_speak_bg_image"

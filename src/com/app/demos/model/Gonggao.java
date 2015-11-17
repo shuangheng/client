@@ -2,6 +2,7 @@ package com.app.demos.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.SpannableString;
 
 import com.app.demos.base.BaseModel;
 
@@ -61,6 +62,7 @@ public class Gonggao extends BaseModel implements Parcelable {
     private String type;
     private String commentcount;
 	private String favorite;
+    private SpannableString emojiString;
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
@@ -207,4 +209,11 @@ public class Gonggao extends BaseModel implements Parcelable {
 		return "评论 "+this.commentcount;
     }
 
+    public void setEmojiString(SpannableString emojiString) {
+        this.emojiString = emojiString;
+    }
+
+    public SpannableString getEmojiString() {
+        return emojiString;
+    }
 }

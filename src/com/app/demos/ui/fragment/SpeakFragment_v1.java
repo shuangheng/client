@@ -19,9 +19,11 @@ import com.app.demos.sqlite.GonggaoSqlite;
 import com.app.demos.ui.UiActionBar;
 import com.app.demos.ui.UiImageZoom;
 import com.app.demos.ui.UiSpeakComment;
+import com.app.demos.ui.fragment.emoji.ParseEmojiMsgUtil;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -30,6 +32,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
@@ -95,6 +98,7 @@ public class SpeakFragment_v1 extends BaseFragment implements  OnRefreshListener
     private SharedPreferences sharedPreferences_speak;
     private FavoriteSpeakSqlite favoriteSpeakSqlite;
     private OnHideOrShowListener onHideOrShowListener;
+    private Context context;
 
     public static SpeakFragment_v1 newInstance(String s) {
         SpeakFragment_v1 newFragment = new SpeakFragment_v1();
@@ -113,6 +117,7 @@ public class SpeakFragment_v1 extends BaseFragment implements  OnRefreshListener
         hello = args != null ? args.getString("hello") : defaultHello;
         sharedPreferences_speak = activity.getSharedPreferences("fragment_speak", 0);
 
+        context = getActivity();
         gonggaoSqlite = new GonggaoSqlite(activity);
         favoriteSpeakSqlite = new FavoriteSpeakSqlite(activity);
     }
@@ -246,6 +251,10 @@ public class SpeakFragment_v1 extends BaseFragment implements  OnRefreshListener
     private void initData() {
         final ArrayList<Gonggao> gList = gonggaoSqlite.getAllGonggao();
         if (gList != null) {
+            for (Gonggao g : gList) {//转换成表情
+                SpannableString spannableString = ParseEmojiMsgUtil.getExpressionString(context, g.getContent());
+                g.setEmojiString(spannableString);
+            }
             setGgList(gList);
         }
     }
@@ -267,7 +276,8 @@ public class SpeakFragment_v1 extends BaseFragment implements  OnRefreshListener
                 //Log.w("jgtime", "" + jgtime);
                 //if (jgtime > 30000) {
                 //从网路获取列表
-                onRefresh();
+
+                //onRefresh();
 
                 // String nowTime = Long.toString(loginTime);
                 // SharedPreferences.Editor editor = sharedPreferences.edit();//获取编辑器
@@ -487,6 +497,10 @@ public class SpeakFragment_v1 extends BaseFragment implements  OnRefreshListener
                     }
 
                     ArrayList<Gonggao> gg = gonggaoSqlite.getAllGonggao();
+                    for (Gonggao g : gg) {//转换成表情
+                        SpannableString spannableString = ParseEmojiMsgUtil.getExpressionString(context, g.getContent());
+                        g.setEmojiString(spannableString);
+                    }
                     setGgList(gg);
 
                     //activityfragment.blogListAdapter.notifyDataSetChanged();// 通知listView刷新数据
@@ -513,6 +527,10 @@ public class SpeakFragment_v1 extends BaseFragment implements  OnRefreshListener
                     }
 
                     ArrayList<Gonggao> gg = gonggaoSqlite.getAllGonggao();
+                    for (Gonggao g : gg) {//转换成表情
+                        SpannableString spannableString = ParseEmojiMsgUtil.getExpressionString(context, g.getContent());
+                        g.setEmojiString(spannableString);
+                    }
                     setGgList(gg);
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -92,12 +92,12 @@ public class AppClient {
 	public String get () throws Exception {
 		try {
 			HttpGet httpGet = headerFilter(new HttpGet(this.apiUrl));
-			Log.w("AppClient.get.url", this.apiUrl);
+			LogMy.w(BaseApp.getContext(), "AppClient.get.url--->>>>"+this.apiUrl);
 			// send get request
 			HttpResponse httpResponse = httpClient.execute(httpGet);
 			if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 				String httpResult = resultFilter(httpResponse.getEntity());
-				Log.w("AppClient.get.result", httpResult);
+				LogMy.w(BaseApp.getContext(), "AppClient.get.result--->>>>"+httpResult);
 				return httpResult;
 			} else {
 				return null;
@@ -123,18 +123,16 @@ public class AppClient {
 			// set data charset
 			if (this.charset != null) {
 				httpPost.setEntity(new UrlEncodedFormEntity(postParams, this.charset));
-				//Log.w("charset", ":");
 			} else {
 				httpPost.setEntity(new UrlEncodedFormEntity(postParams));
-				Log.w("tag", "msg");
 			}
-			Log.w("AppClient.post.url", this.apiUrl);
-			Log.w("AppClient.post.data", postParams.toString());
+			LogMy.w(BaseApp.getContext(), "AppClient.post.url--->>>>"+ this.apiUrl);
+			LogMy.w(BaseApp.getContext(), "AppClient.post.data--->>>>"+ postParams.toString());
 			// send post request
 			HttpResponse httpResponse = httpClient.execute(httpPost);
 			if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 				String httpResult = resultFilter(httpResponse.getEntity());
-				Log.w("AppClient.post.result", httpResult.substring(CS_GZIP));
+				LogMy.w(BaseApp.getContext(), "AppClient.post.result--->>>>" +httpResult.substring(CS_GZIP));
 				return httpResult;
 			} else {
 				return null;
@@ -200,7 +198,7 @@ public class AppClient {
 	}
 
 	public static final String remove(String data) {
-		Log.w("remove","yes");
+		LogMy.w(BaseApp.getContext(), "AppClient.remove--->>>>"+"yes");
 		return data.substring(30);
 	}
 
