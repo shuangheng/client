@@ -251,6 +251,8 @@ public class SpeakFragment_v1 extends BaseFragment implements  OnRefreshListener
     private void initData() {
         final ArrayList<Gonggao> gList = gonggaoSqlite.getAllGonggao();
         if (gList != null) {
+            getLastId(gList);
+            getFirstId(gList);
             for (Gonggao g : gList) {//转换成表情
                 SpannableString spannableString = ParseEmojiMsgUtil.getExpressionString(context, g.getContent());
                 g.setEmojiString(spannableString);
@@ -264,7 +266,7 @@ public class SpeakFragment_v1 extends BaseFragment implements  OnRefreshListener
         super.onStart();
         new Handler().post(new Runnable() {
             public void run() {
-                long loginTime = System.currentTimeMillis();
+                //long loginTime = System.currentTimeMillis();
 
                 checkFavoriteSpeak();
                 //String lastTime = sharedPreferences.getString("time", "0");

@@ -49,6 +49,16 @@ import java.util.regex.Pattern;
  */
 public class MaterialEditText extends EditText {
 
+  public boolean isShowCharactersCount() {
+    return showCharactersCount;
+  }
+
+  public void setShowCharactersCount(boolean showCharactersCount) {
+    this.showCharactersCount = showCharactersCount;
+  }
+
+  private boolean showCharactersCount = true;
+
   @IntDef({FLOATING_LABEL_NONE, FLOATING_LABEL_NORMAL, FLOATING_LABEL_HIGHLIGHT})
   public @interface FloatingLabelType {
   }
@@ -1295,7 +1305,9 @@ public class MaterialEditText extends EditText {
     if ((hasFocus() && hasCharatersCounter()) || !isCharactersCountValid()) {
       textPaint.setColor(isCharactersCountValid() ? (baseColor & 0x00ffffff | 0x44000000) : errorColor);
       String charactersCounterText = getCharactersCounterText();
-      canvas.drawText(charactersCounterText, isRTL() ? startX : endX - textPaint.measureText(charactersCounterText), lineStartY + bottomSpacing + relativeHeight, textPaint);
+      if (showCharactersCount) {
+        canvas.drawText(charactersCounterText, isRTL() ? startX : endX - textPaint.measureText(charactersCounterText), lineStartY + bottomSpacing + relativeHeight, textPaint);
+      }
     }
 
     // draw the bottom text

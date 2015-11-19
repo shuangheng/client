@@ -46,6 +46,7 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
     private IndexHandler handler;
     private FileCache fileCache;
     private File saveFilePath;
+    private Bitmap image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,19 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
         downUtils = new ImageDownUtils(this, handler, bgImageUrl);
 
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //new Thread(downUtils).start();//load image;
+            }
+        }, 100);
+        new Thread(downUtils).start();//load image;
+    }
+
 
     protected static Intent setIntent(Context paramContext, Class<?> paramClass, String url, String thumbUrl)
     {
@@ -82,6 +96,7 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
         photoView = (PhotoView) findViewById(R.id.ui_image_photoview);
         progressBar = (RoundProgressBar) findViewById(R.id.ui_image_progress_bar);
         progressBar.setSize(90);//设置大小
+        //progressBar.setProgress(2);
 
         //photoView.setImageDrawable(getResources().getDrawable(R.drawable.l_25));
         photoView.setMaxScale(10.0F);
@@ -105,28 +120,23 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
         bgImageUrl = getIntent().getStringExtra("imageUrl");
         thumbUrl = getIntent().getStringExtra("thumbnailUrl");
         if (thumbUrl != null) {
-            imageLoader.DisplayImage(thumbUrl, photoView, true, false);
+            imageLoader.DisplayImage(thumbUrl, photoView, false, false);
         }
         if (bgImageUrl != null) {
             LogMy.e(BaseApp.getContext(),"UiImageZoom >>thumbUrl" + thumbUrl);
             LogMy.e(BaseApp.getContext(),"UiImageZoom >>bgImageUrl" + bgImageUrl);
             url = bgImageUrl;
             progressBar.setVisibility(View.VISIBLE);
-
-
         } else {
             url = "http://f.hiphotos.baidu.com/image/h%3D200/sign=5bd83cff0c7b020813c938e152d8f25f/37d3d539b6003af30f59c83a332ac65c1138b68c.jpg";
         }
         fileCache = new FileCache(context, "image");
         saveFilePath = fileCache.getFile(url);
+        if (saveFilePath != null && saveFilePath.exists()){
+            imageLoader.DisplayImageFromFile(url, photoView, true, true);
+        }
     }
 
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        new Thread(downUtils).start();//load image
-    }
 
     //private void getParam
 
@@ -205,9 +215,9 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
                         msg.what = MSG_FINISH;
                         mHandler.sendMessage(msg);
                         downSuc = true;
-                        LogMy.e(getApplicationContext(),"down");
+                        LogMy.e(UiImageZoom.this, "saveFilePath.exists()");
                     } else {
-                        LogMy.e(getBaseContext(),"download");
+                        LogMy.e(UiImageZoom.this, "download");
                         if (BaseDevice.isNetworkConnected(UiImageZoom.this)) {
                             downSuc = downloadFile(mDownloadUrl, saveFilePath);
                         } else {
@@ -238,7 +248,7 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                LogMy.e(BaseApp.getContext(), "AppFileDownUtils catch Exception:" +e.getMessage());
+                LogMy.e(UiImageZoom.this, "AppFileDownUtils catch Exception:" +e.getMessage());
                 Message msg = new Message();
                 msg.what = MSG_FAILURE;
                 mHandler.sendMessage(msg);
@@ -304,7 +314,7 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
                                 msg.what = MSG_DOWNING;
                                 msg.setData(bundle);
                                 mHandler.sendMessage(msg);
-                                LogMy.e(BaseApp.getContext(), "downloading");
+                                LogMy.e(UiImageZoom.this, "downloading");
                                 tempProgress = progress;
                             }
                         }
@@ -319,7 +329,7 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
             } catch (Exception e) {
                 result = false;
                 e.printStackTrace();
-                LogMy.e(BaseApp.getContext(), "downloadFile catch Exception:" +e.getMessage());
+                LogMy.e(UiImageZoom.this, "downloadFile catch Exception:" +e.getMessage());
             }
             return result;
         }
@@ -348,8 +358,9 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
                     case ImageDownUtils.MSG_FINISH:
                         progressBar.setVisibility(View.GONE);
                         InputStream is = new FileInputStream(saveFilePath);
-                        Bitmap b = BitmapFactory.decodeStream(is);
-                        photoView.setImageBitmap(b);
+                        image = BitmapFactory.decodeStream(is);
+                        photoView.setImageBitmap(image);
+                        LogMy.e(UiImageZoom.this, "case ImageDownUtils.MSG_FINISH");
                         break;
 
                 }

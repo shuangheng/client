@@ -9,6 +9,9 @@ import java.util.Map.Entry;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.app.demos.base.BaseApp;
+import com.app.demos.base.LogMy;
+
 /**
  * Created by tom on 15-4-19.
  * copy from " https://github.com/shuangheng/SyncLoaderBitmapDemo/ "
@@ -34,7 +37,7 @@ public class MemoryCache {
 
     public void setLimit(long new_limit) {
         limit = new_limit;
-        Log.i(TAG, "MemoryCache will use up to " + limit / 1024. / 1024. + "MB");
+        LogMy.i(BaseApp.getContext(), TAG+ "----MemoryCache will use up to " + limit / 1024. / 1024. + "MB");
     }
 
     public Bitmap get(String id) {
@@ -64,7 +67,7 @@ public class MemoryCache {
      *
      */
     private void checkSize() {
-        Log.i(TAG, "cache size=" + size + " length=" + cache.size());
+        LogMy.i(BaseApp.getContext(), TAG+ "----cache size=" + size + " length=" + cache.size());
         if (size > limit) {
             // 先遍历最近最少使用的元素
             Iterator<Entry<String, Bitmap>> iter = cache.entrySet().iterator();
@@ -75,7 +78,7 @@ public class MemoryCache {
                 if (size <= limit)
                     break;
             }
-            Log.i(TAG, "Clean cache. New size " + cache.size());
+            LogMy.i(BaseApp.getContext(), TAG+ "----Clean cache. New size " + cache.size());
         }
     }
 

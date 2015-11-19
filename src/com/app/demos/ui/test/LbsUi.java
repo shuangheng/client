@@ -232,7 +232,6 @@ public class LbsUi extends Activity implements View.OnClickListener {
 
                 if(location!=null){
                     //不为空,显示地理位置经纬度
-
                     showLocation(textView, location);
                 }else{
                     Toast.makeText(LbsUi.this, "location为空", Toast.LENGTH_SHORT).show();

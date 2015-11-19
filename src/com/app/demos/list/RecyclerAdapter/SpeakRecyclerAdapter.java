@@ -45,6 +45,7 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
     private boolean isEnd = false;
     private int positionn;
     private boolean isNeworkError;
+    private int length = C.colors.length;
 
 
     public void setFlagBusy(boolean busy) {
@@ -146,7 +147,7 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
            // }
             holder.containerLayout.setBackgroundColor(isEven(position) ?
                             holder.containerLayout.getResources().getColor(R.color.white) :
-                            holder.containerLayout.getResources().getColor(C.colors[position % 16]));
+                            holder.containerLayout.getResources().getColor(C.colors[position % length]));
 
             /*
             int weight = BaseUi.DEVICE_WIDTH;
@@ -161,9 +162,8 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
             String url = C.web.thumb_image + imagePath;//thumb image path
 
             //url="http://10.0.2.2:8002/faces/default/l_25.jpg";
-            String s = gonggaoList.get(position).getBgimage();
-                holder.image.setVisibility(s.equals("null") ? View.GONE : View.VISIBLE);
-            holder.image.setImageResource(R.drawable.ic_launcher);
+                holder.image.setVisibility(imagePath.equals("null") ? View.GONE : View.VISIBLE);
+            holder.image.setImageResource(R.drawable.message_placeholder_picture);
 
             mImageLoader.DisplayImage(url, holder.image, mBusy, true);
 

@@ -369,7 +369,7 @@ public class UiCreateFind extends BaseUi{
     /**
      * 返回数据给上一个Activity
      */
-    private void returnData() {
+    public void returnData() {
         Intent intent = new Intent();
         intent.putExtra("Find_index", 2);
         setResult(RESULT_OK, intent);

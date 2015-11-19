@@ -188,7 +188,7 @@ public class BaseWebUi extends SwipeBackActivity {
         mErrorView.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 webView.reload();
-                Toast.makeText(BaseWebUi.this, paramUrl, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(BaseWebUi.this, paramUrl, Toast.LENGTH_SHORT).show();
                 mErrorView.setVisibility(View.GONE);
             }
         });

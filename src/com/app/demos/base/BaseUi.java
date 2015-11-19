@@ -197,6 +197,16 @@ public class BaseUi extends BaseActivity {
 		this.finish();
 	}
 
+	/**
+	 * 返回数据给上一个Activity
+	 */
+	public void returnData() {
+		Intent intent = new Intent();
+		intent.putExtra("Find_index", 2);
+		setResult(RESULT_OK, intent);
+		doFinish();
+	}
+
 	public Context getContext () {
 		return this;
 	}
@@ -410,6 +420,15 @@ public class BaseUi extends BaseActivity {
 	public void onNetworkError (int taskId) {
 		hideProgressBar();
 		toast(C.err.network);
+	}
+
+	public Boolean isNetworkConnected(Context context) {
+		Boolean isNetworkConnected = BaseDevice.isNetworkConnected(context);
+		if ( ! isNetworkConnected) {
+			hideProgressBar();
+				toast(getString(R.string.not_network));
+		}
+		return isNetworkConnected;
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////

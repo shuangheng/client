@@ -90,6 +90,7 @@ public class ImageLoader {
             //保存图片
             CopyStream(is, os);
             os.close();
+            is.close();
             //读取图片
             bitmap = decodeFile(f);
             return bitmap;

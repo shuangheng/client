@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -42,6 +43,7 @@ import com.app.demos.list.bitmap_load_list.ImageLoader_my;
 import com.app.demos.model.Comment;
 import com.app.demos.model.Gonggao;
 import com.app.demos.ui.fragment.UserInfoFragment;
+import com.app.demos.ui.fragment.emoji.ParseEmojiMsgUtil;
 import com.app.demos.util.AppFilter;
 import com.app.demos.util.BaseDevice;
 import com.app.demos.util.ColorUtil;
@@ -218,10 +220,12 @@ public class UiSpeakComment extends BaseUi implements OnScrollListener, OnClickL
         int position = params.getInt("bgColor");//bg color
         bgColorIsWhite = isEven(position);
         toolcolor = bgColorIsWhite ? getResources().getColor(R.color.colorPrimary) :
-                getResources().getColor(C.colors[position % 16]);
+                getResources().getColor(C.colors[position % C.colors.length]);
+        toast(""+C.colors.length);
         containerLayout.setBackgroundColor(bgColorIsWhite ? Color.WHITE : toolcolor);
 
-        tvContent.setText(AppFilter.getHtml(g.getContent()));
+        SpannableString spannableString = ParseEmojiMsgUtil.getExpressionString(this, g.getContent());
+        tvContent.setText(spannableString);
         tvContent.setTextColor(bgColorIsWhite ? Color.BLACK : Color.WHITE);
         tvType.setText(g.getType());
         extra.setText("评论 " + g.getCommentcount());

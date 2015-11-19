@@ -51,6 +51,7 @@ import com.app.demos.base.LogMy;
 import com.app.demos.dialog.ProgressingDialog;
 import com.app.demos.layout.ButtonFloatSmall;
 import com.app.demos.layout.ResizeLinearLayout;
+import com.app.demos.layout.materialEditText.MaterialEditText;
 import com.app.demos.layout.swipebacklayout.app.SwipeBackActivity;
 import com.app.demos.list.bitmap_load_list.ImageLoader;
 import com.app.demos.list.bitmap_load_list.ImageLoader_my;
@@ -120,7 +121,7 @@ public class UiCreateSpeak_v1 extends BaseUi implements View.OnClickListener, Up
     private static final int SELECT_PIC_BY_TACK_PHOTO = 2;
     private int default_ResizeLayout_height;
 
-    private EditText editContent;
+    private MaterialEditText editContent;
     private ImageView ivBg;
     private ImageView ivRelease;
     private ImageView ivPicture;
@@ -184,7 +185,8 @@ public class UiCreateSpeak_v1 extends BaseUi implements View.OnClickListener, Up
         setCustomViewOnToolBar(release, Gravity.END);
 
         linearLayout = (LinearLayout) findViewById(R.id.ui_create_speak_Layout);
-        editContent = (EditText) findViewById(R.id.ui_create_speak_edit_content);
+        editContent = (MaterialEditText) findViewById(R.id.ui_create_speak_edit_content);
+        editContent.setShowCharactersCount(false);
         ivBg = (ImageView) findViewById(R.id.ui_create_speak_bg_image);
         ivExpression = (ImageView) findViewById(R.id.ui_create_speak_iv_expression);
         ivPicture = (ImageView) findViewById(R.id.ui_create_speak_iv_picture);
@@ -224,11 +226,11 @@ public class UiCreateSpeak_v1 extends BaseUi implements View.OnClickListener, Up
             case C.task.ggCreate:
                 LogMy.w(this, message.getMessage());
                 if (message.getCode().equals("10000")) {
-                    editContent.getText().append("\n"+"ok-------");
-                    //finish();
+                    //editContent.getText().append("\n"+"ok-------");
+                    returnData();
                     return;
                 }
-                editContent.getText().append("\n"+"fail-------");
+                //editContent.getText().append("\n"+"fail-------");
         }
     }
 
@@ -253,12 +255,14 @@ public class UiCreateSpeak_v1 extends BaseUi implements View.OnClickListener, Up
                 bottomBarStatus = 0;
                 break;
             case R.id.action_bar_item_image:
+                if ( ! isNetworkConnected(this))
+                    return;
                 presDialog.show();
                 //String content = EmojiFragment.getStringToServer(UiCreateSpeak_v1.this, editContent);
                 String msgStr = ParseEmojiMsgUtil.convertToMsg(editContent.getText(), this);// 这里不要直接用mEditMessageEt.getText().toString();
                 String content = EmojiParser.getInstance(this).parseEmoji(msgStr);
                 LogMy.e(this, content);
-                editContent.getText().append(content);
+                //editContent.getText().append(content);
                 if (picPath == null) {
                     creatSpeak(empno, content, null);
                 } else {
@@ -338,7 +342,7 @@ public class UiCreateSpeak_v1 extends BaseUi implements View.OnClickListener, Up
                 os.flush();
                 os.close();
                 picPath = f.getPath();
-                editContent.getText().append("\n"+picPath);
+                //editContent.getText().append("\n"+picPath);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -418,8 +422,12 @@ public class UiCreateSpeak_v1 extends BaseUi implements View.OnClickListener, Up
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        if (s.toString().trim().length() != 0) {
+        int length = s.toString().trim().length();
+        if (length != 0) {
             showFab();
+            if (length > 290) {
+                editContent.setShowCharactersCount(true);
+            }
         } else {
             hideFab();
         }
@@ -440,7 +448,7 @@ public class UiCreateSpeak_v1 extends BaseUi implements View.OnClickListener, Up
             case SELECT_PIC_BY_TACK_PHOTO:
                 if(photoUri != null ) {
                     picPath = photoUri.getPath();
-                    editContent.getText().append(picPath+"---tt\n");
+                    //editContent.getText().append(picPath+"---tt\n");
                     ContentResolver cr = this.getContentResolver();
                     Bitmap bitmap = null;
                     bitmap = ImageLoader.decodeUri(cr, photoUri);//show thumb image 防止内存泄露
@@ -466,7 +474,7 @@ public class UiCreateSpeak_v1 extends BaseUi implements View.OnClickListener, Up
                     int columnIndex = cursor.getColumnIndexOrThrow(pojo[0]);
                     cursor.moveToFirst();
                     picPath = cursor.getString(columnIndex);
-                    editContent.getText().append(picPath+"tt\n");
+                    //editContent.getText().append(picPath+"tt\n");
                     if(Build.VERSION.SDK_INT < 14) {
                         cursor.close();//4.0以上的版本会自动关闭 (4.0--14;; 4.0.3--15)
                     }
@@ -536,8 +544,10 @@ public class UiCreateSpeak_v1 extends BaseUi implements View.OnClickListener, Up
                     //uploadImageResult.setText("setProgress  :  "+msg.arg1);
                     break;
                 case UPLOAD_FILE_DONE:
+                    String msgStr = ParseEmojiMsgUtil.convertToMsg(editContent.getText(), UiCreateSpeak_v1.this);// 这里不要直接用mEditMessageEt.getText().toString();
+                    String content = EmojiParser.getInstance(UiCreateSpeak_v1.this).parseEmoji(msgStr);
                     String imageFileName = picPath.substring(picPath.lastIndexOf("/") + 1);
-                    creatSpeak(sharedPreferences_speak.getString("empno", null), editContent.getText().toString(), imageFileName);
+                    creatSpeak(sharedPreferences_speak.getString("empno", null), content, imageFileName);
                     break;
                 default:
                     break;

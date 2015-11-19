@@ -60,6 +60,35 @@ public class ImageLoader_my {
         }
     }
 
+    public void DisplayImageFromFile(String url, ImageView imageView, boolean isLoadFromFile, boolean showThumb) {
+        imageViews.put(imageView, url);
+        // 先从内存缓存中查找
+
+        Bitmap bitmap = memoryCache.get(url);
+        if (bitmap != null) {
+            imageView.setImageBitmap(bitmap);
+        } else if (!isLoadFromFile){
+            File f = fileCache.getFile(url);
+            // 先从文件缓存中查找是否有
+            if (f != null && f.exists()){
+                if (showThumb) {
+                    bitmap = decodeFile(f, 720, 1280);//get thumb image
+                    if (bitmap != null) {
+                        imageView.setImageBitmap(bitmap);
+                    }
+                } else {
+                    try {
+                        InputStream is = new FileInputStream(f);
+                        bitmap = BitmapFactory.decodeStream(is);//get normal image
+                        imageView.setImageBitmap(bitmap);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
 
     private void queuePhoto(String url, ImageView imageView, boolean showThumb) {
         PhotoToLoad p = new PhotoToLoad(url, imageView, showThumb);
@@ -72,7 +101,7 @@ public class ImageLoader_my {
         Bitmap b = null;
         if (f != null && f.exists()){
             if (showThumb) {
-                b = decodeFile(f);//get thumb image
+                b = decodeFile(f, 100, 100);//get thumb image
                 if (b != null) {
                     return b;
                 }
@@ -102,14 +131,15 @@ public class ImageLoader_my {
             CopyStream(is, os);//save image
             os.flush();
             os.close();
+            is.close();
             //读取图片
             if (showThumb) {
-                bitmap = decodeFile(f);//get thumb image
+                bitmap = decodeFile(f, 100, 100);//get thumb image
                 return bitmap;
-            } else {
+            }// else {
                 bitmap = BitmapFactory.decodeStream(new FileInputStream(f));//get normal image
                 return bitmap;
-            }
+           // }
         } catch (Exception ex) {
             Log.e(TAG, "getBitmap catch Exception...\nmessage = " + ex.getMessage());
             //msg.what = BaseTask.IMAGE_LOAD_FAIL;
@@ -119,7 +149,7 @@ public class ImageLoader_my {
     }
 
     // decode这个图片并且按比例缩放以减少内存消耗，虚拟机对每张图片的缓存大小也是有限制的
-    private Bitmap decodeFile(File f) {
+    private Bitmap decodeFile(File f, int requiredWidth, int requiredHeight) {
         try {
             // decode image size
             BitmapFactory.Options o = new BitmapFactory.Options();
@@ -127,11 +157,11 @@ public class ImageLoader_my {
             BitmapFactory.decodeStream(new FileInputStream(f), null, o);
 
             // Find the correct scale value. It should be the power of 2.
-            final int REQUIRED_SIZE = 100;
+            // int REQUIRED_SIZE = requiredSize;
             int width_tmp = o.outWidth, height_tmp = o.outHeight;
             int scale = 1;
             while (true) {
-                if (width_tmp / 2 < REQUIRED_SIZE || height_tmp / 2 < REQUIRED_SIZE)
+                if (width_tmp / 2 < requiredWidth || height_tmp / 2 < requiredHeight)
                     break;
                 width_tmp /= 2;
                 height_tmp /= 2;

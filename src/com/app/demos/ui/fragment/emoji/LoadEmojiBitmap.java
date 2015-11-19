@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import com.app.demos.base.BaseApp;
+import com.app.demos.base.LogMy;
 import com.app.demos.layout.Utils;
 import com.app.demos.list.bitmap_load_list.MemoryCache;
 
@@ -31,8 +33,9 @@ public class LoadEmojiBitmap {
     public Bitmap getBitmap(int resId) {
         // 先从内存缓存中查找
         Bitmap bitmap = memoryCache.get(String.valueOf(resId));
-        if (bitmap != null)
+        if (bitmap != null) {
             return bitmap;
+        }
         else {
             //bitmap = BitmapFactory.decodeResource(context.getResources(), resId);
             bitmap = decodeResource(context, resId);
@@ -51,7 +54,7 @@ public class LoadEmojiBitmap {
         BitmapFactory.decodeResource(context.getResources(), resId, o);
 
         // Find the correct scale value. It should be the power of 2.
-        final int REQUIRED_SIZE = Utils.dpToPx(19, context.getResources());;
+        final int REQUIRED_SIZE = Utils.dpToPx(19, context.getResources());//目标size(TextView--TextSize)
         int width_tmp = o.outWidth, height_tmp = o.outHeight;
         int scale = 1;
         while (true) {

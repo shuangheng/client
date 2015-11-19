@@ -52,6 +52,7 @@ import com.app.demos.ui.authenticator.UiAuthenticator;
 import com.app.demos.ui.fragment.FindFragment;
 import com.app.demos.ui.fragment.SpeakFragment_v1;
 import com.app.demos.ui.fragment.Fragment3;
+import com.app.demos.ui.fragment.emoji.EmojiFragment;
 import com.app.demos.ui.test.GestureDetectorTest;
 import com.app.demos.ui.test.LbsUi;
 import com.app.demos.ui.test.observableScrollView.FlexibleSpaceWithImageListViewActivity;
@@ -69,6 +70,7 @@ import java.util.HashMap;
  */
 public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshListener {
     public static final String TAG = "UiActionBar";
+    private static final int UI_CREATE_SPEAK = 0;
     private boolean isFirstOpean;
     private ViewPager mPager;
     private ArrayList<Fragment> fragmentsList;
@@ -76,7 +78,6 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
     private long mPressedTime = 0;
 
     public int position_one;
-    private SpeakFragment_v1 activityfragment;
     private FindFragment findfragment;
     /////////////////////////////////////
     private ListView drawerList;
@@ -104,6 +105,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
     private int find_lastIdNum;
     private Context context;
     public FavoriteSpeakSqlite favoriteSpeakSqlite;
+    private SpeakFragment_v1 groupFragment;
 
 
     @Override
@@ -123,7 +125,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         initToolBar();
         //initSwipeRefresh();
         InitViewPager();
-        initBottomButtom();
+        initBottomButton();
         initDrawer();
 
         gonggaoSqlite = new GonggaoSqlite(this);
@@ -150,13 +152,13 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         swipeLayout.setOnRefreshListener(this);
     }
 
-    private void initBottomButtom() {
+    private void initBottomButton() {
         mFabButton = (ButtonFloat) findViewById(R.id.buttonFloat);
         mFabButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(UiActionBar.this, UiCreateSpeak_v1.class);
-                startActivityForResult(intent, 1);
+                startActivityForResult(intent, UI_CREATE_SPEAK);
                 overridePendingTransition(R.anim.in_from_right, 0);
             }
         });
@@ -171,14 +173,22 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case 1:
-                if (resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case UI_CREATE_SPEAK:
+                    mPager.setCurrentItem(0);
+                    groupFragment.swipeLayout.setRefreshing(true);
+                    groupFragment.onRefresh();
+                    break;
+                case 1:
                     int Find_index = data.getIntExtra("Find_index", 2);
-                    mPager.setCurrentItem(2);
+                    mPager.setCurrentItem(1);
                     findfragment.swipeLayout.setRefreshing(true);
                     findfragment.onRefresh();
-                }
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -375,9 +385,9 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         //LayoutInflater mInflater = getLayoutInflater();
         //View activityView = mInflater.inflate(R.layout.fragment_list_speak, null);
 
-        activityfragment = SpeakFragment_v1.newInstance("Hello Activity.");
+        //activityfragment = SpeakFragment_v1.newInstance("Hello Activity.");
         findfragment = FindFragment.newInstance("Hello Activity.");
-        SpeakFragment_v1 groupFragment = new SpeakFragment_v1();
+        groupFragment = new SpeakFragment_v1();
         groupFragment.setOnHideOrShowListener(new SpeakFragment_v1.OnHideOrShowListener() {
             @Override
             public void onhide() {
@@ -402,10 +412,10 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         //Fragment chatFragment=SpeakFragment.newInstance("Hello Chat.");
 
 
-        fragmentsList.add(activityfragment);
         fragmentsList.add(groupFragment);
         fragmentsList.add(findfragment);
         fragmentsList.add(new Fragment3());
+        fragmentsList.add(new EmojiFragment());
         //fragmentsList.add(chatFragment);
 
         mPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(), fragmentsList));
@@ -494,8 +504,8 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         if(lastIdNum == 1){
             //activityfragment.hideLoadMore();
             //activityfragment.recyclerAdapter.setisShowBottom(false);
-            activityfragment.speakRecyclerAdapter.setisEnd(true);
-            activityfragment.speakRecyclerAdapter.notifyItemChanged(activityfragment.speakRecyclerAdapter.getBasicItemCount());
+            //activityfragment.speakRecyclerAdapter.setisEnd(true);
+            //activityfragment.speakRecyclerAdapter.notifyItemChanged(activityfragment.speakRecyclerAdapter.getBasicItemCount());
             Toast.makeText(getContext(), "加载完成！", Toast.LENGTH_SHORT).show();
         }else{
             HashMap<String, String> blogParams = new HashMap<String, String>();
@@ -612,7 +622,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
                     }
 
                     ArrayList<Gonggao> gg = gonggaoSqlite.getAllGonggao();
-                    activityfragment.setGgList(gg);
+                    //activityfragment.setGgList(gg);
 
                     //activityfragment.blogListAdapter.notifyDataSetChanged();// 通知listView刷新数据
                 } catch (Exception e) {
@@ -638,7 +648,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
                     }
 
                     ArrayList<Gonggao> gg = gonggaoSqlite.getAllGonggao();
-                    activityfragment.setGgList(gg);
+                    //activityfragment.setGgList(gg);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -711,7 +721,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         switch (taskId) {
             case C.task.gg:
                 //activityfragment.swipeLayout.setRefreshing(false);
-                activityfragment.speakRecyclerAdapter.setNeworkError(true);
+                //activityfragment.speakRecyclerAdapter.setNeworkError(true);
                 break;
             case C.task.find:
                 //findfragment.swipeLayout.setRefreshing(false);\
@@ -722,7 +732,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
     @Override
     public void hideProgressBar() {
         super.hideProgressBar();
-        activityfragment.swipeLayout.setRefreshing(false);
+        //activityfragment.swipeLayout.setRefreshing(false);
         findfragment.swipeLayout.setRefreshing(false);
     }
 
@@ -731,7 +741,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         super.showProgressBar();
         switch (mPager.getCurrentItem()) {
             case 0:
-                activityfragment.swipeLayout.setRefreshing(true);
+                //activityfragment.swipeLayout.setRefreshing(true);
                 break;
             case 2:
                 findfragment.swipeLayout.setRefreshing(true);
