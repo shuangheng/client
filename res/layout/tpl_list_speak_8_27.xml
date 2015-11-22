@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="fill_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
@@ -20,6 +20,7 @@
 
                 <TextView
                     android:textSize="15.0dip"
+                    android:textColor="@color/secret_card_view_linkify_text_1"
                     android:gravity="center_vertical"
                     android:id="@+id/tpl_list_speak_tv_type"
                     android:paddingLeft="@dimen/default_horizontal_margin"
@@ -80,6 +81,7 @@
                     android:layout_height="fill_parent"
                     android:visibility="gone"
                     android:scaleType="centerCrop"
+                    android:src="@drawable/message_placeholder_picture"
                     android:contentDescription="@null" />
 
                 <RelativeLayout
@@ -114,7 +116,6 @@
 
                 <TextView
                     android:textSize="13.0dip"
-                    android:textColor="@android:color/darker_gray"
                     android:gravity="center_vertical"
                     android:id="@+id/tpl_list_speak_speak_extra"
                     android:paddingLeft="@dimen/default_horizontal_margin"
@@ -135,7 +136,6 @@
 
                     <TextView
                         android:textSize="13.0dip"
-                        android:textColor="@android:color/darker_gray"
                         android:gravity="center_vertical"
                         android:id="@+id/tpl_list_speak_tv_like"
                         android:layout_width="wrap_content"
@@ -145,7 +145,6 @@
                         android:id="@+id/tpl_list_speak_ib_like"
                         android:paddingLeft="4.0dip"
                         android:layout_marginLeft="5dp"
-                        android:background="@drawable/ic_card_like_grey"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="@null" />

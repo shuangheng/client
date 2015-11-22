@@ -132,11 +132,10 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             holder.content.setText(g.getEmojiString());
             //holder.content.setText(AppFilter.getHtml(g.getContent()));
-
             holder.type.setText(g.getId());
-            holder.extra.setText(g.getTypeAll());
+            holder.extra.setText(g.getTypeAll());//评论
             holder.likecount.setText(g.getLikeCount());
-
+/*
             //set background color
             holder.content.setTextColor(holder.content.getResources().getColor(isEven(position) ? R.color.black : R.color.white));
             holder.ib.setBackgroundResource(isEven(position) ? R.drawable.ic_card_like_grey : R.drawable.ic_card_like);
@@ -146,9 +145,30 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
                 }
            // }
             holder.containerLayout.setBackgroundColor(isEven(position) ?
-                            holder.containerLayout.getResources().getColor(R.color.white) :
-                            holder.containerLayout.getResources().getColor(C.colors[position % length]));
+                    holder.containerLayout.getResources().getColor(R.color.white) :
+                    holder.containerLayout.getResources().getColor(C.colors[position % length]));
 
+*/
+            if (g.getFavorite().equals("0")) {
+                holder.ib.setBackgroundResource(R.drawable.ic_card_liked);
+            }
+
+            //set background color
+            holder.extra.setTextColor(mContext.getResources().getColor(R.color.darker_gray));
+            holder.likecount.setTextColor(mContext.getResources().getColor(R.color.darker_gray));
+            holder.content.setTextColor(mContext.getResources().getColor(R.color.black ));
+            holder.ib.setBackgroundResource(R.drawable.ic_card_like_grey);
+            holder.containerLayout.setBackgroundColor(
+                    mContext.getResources().getColor(R.color.white));
+
+            if (!isEven(position)) {
+                holder.extra.setTextColor(holder.type.getResources().getColor(R.color.white_gray));
+                holder.likecount.setTextColor(mContext.getResources().getColor(R.color.white_gray));
+                holder.content.setTextColor(holder.content.getResources().getColor(R.color.white));
+                holder.ib.setBackgroundResource(R.drawable.ic_card_like);
+                holder.containerLayout.setBackgroundColor(
+                        holder.containerLayout.getResources().getColor(C.colors[position % length]));
+            }
             /*
             int weight = BaseUi.DEVICE_WIDTH;
             ViewGroup.LayoutParams params = holder.image.getLayoutParams();
@@ -160,8 +180,6 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
             // load face image
             String imagePath = gonggaoList.get(position).getBgimage();
             String url = C.web.thumb_image + imagePath;//thumb image path
-
-            //url="http://10.0.2.2:8002/faces/default/l_25.jpg";
                 holder.image.setVisibility(imagePath.equals("null") ? View.GONE : View.VISIBLE);
             holder.image.setImageResource(R.drawable.message_placeholder_picture);
 

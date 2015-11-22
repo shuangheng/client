@@ -13,48 +13,48 @@ public final class C {
 			R.drawable.s_28};
 
 	public static final int[] colors = {
-			R.color.material_accent_pink_500,
-			R.color.material_accent_pink_500,//1
-			R.color.material_red_500,
-			R.color.material_red_500,//2
-			R.color.material_pink_500,
-			R.color.material_pink_500,//3
-			R.color.material_purple_500,
-			R.color.material_purple_500,//4
-			R.color.material_purple_deep_500,
-			R.color.material_purple_deep_500,//5
-			R.color.material_primar_indigo_500,
-			R.color.material_primar_indigo_500,//6
-			R.color.material_blue_500,
-			R.color.material_blue_500,//7
-			R.color.material_blue_light_500,
-			R.color.material_blue_light_500,//8
-			R.color.material_cyan_500,
-			R.color.material_cyan_500,//9
+			//R.color.material_accent_pink_500,
+			//R.color.material_accent_pink_500,//1
+			//R.color.material_red_500,
+			//R.color.material_red_500,//2
+			//R.color.material_pink_500,
+			//R.color.material_pink_500,//3
+			//R.color.material_purple_500,
+			//R.color.material_purple_500,//4
+			//R.color.material_purple_deep_500,
+			//R.color.material_purple_deep_500,//5
+			//R.color.material_primar_indigo_500,
+			//R.color.material_primar_indigo_500,//6
+			//R.color.material_blue_500,
+			//R.color.material_blue_500,//7
+			//R.color.material_blue_light_500,
+			//R.color.material_blue_light_500,//8
+			//R.color.material_cyan_500,
+			//R.color.material_cyan_500,//9
 			R.color.material_teal_500,
 			R.color.material_teal_500,//10
 			R.color.material_green_500,
 			R.color.material_green_500,//11
-			R.color.material_green_light_500,
-			R.color.material_green_light_500,//12
-			R.color.material_lime_500,
-			R.color.material_lime_500,//13
-			R.color.material_yellow_500,
-			R.color.material_yellow_500,//14
+			//R.color.material_green_light_500,
+			//R.color.material_green_light_500,//12
+			//R.color.material_lime_500,
+			//R.color.material_lime_500,//13
+			//R.color.material_yellow_500,
+			//R.color.material_yellow_500,//14
 			R.color.material_amber_500,
 			R.color.material_amber_500,//15
-			R.color.material_orange_500,
-			R.color.material_orange_500,//16
+			//R.color.material_orange_500,
+			//R.color.material_orange_500,//16
 			R.color.material_orange_deep_500,
 			R.color.material_orange_deep_500,//17
 			R.color.material_brown_500,
 			R.color.material_brown_500,//18
 			R.color.material_grey_500,
 			R.color.material_grey_500,//19
-			R.color.material_grey_bule_500,
-			R.color.material_grey_bule_500,//20
-			R.color.ui_green,
-			R.color.ui_green,//21
+			//R.color.material_grey_bule_500,
+			//R.color.material_grey_bule_500,//20
+			//R.color.ui_green,
+			//R.color.ui_green,//21
 			R.color.accent_material_light,
 			R.color.accent_material_light,//22
 			R.color.color_primary_green,
@@ -67,7 +67,7 @@ public final class C {
 	// core settings (important)
 	
 	public static final class dir {
-		public static final String base2				= Environment.getExternalStorageDirectory() + "/Fuyou";
+		public static final String base2			= Environment.getExternalStorageDirectory() + "/Fuyou";
 		public static final String base				= "/sdcard/demos";
 		public static final String faces			= base + "/faces";
 		public static final String images			= base + "/images";

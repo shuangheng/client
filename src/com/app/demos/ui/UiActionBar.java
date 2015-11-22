@@ -275,7 +275,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         /// mToolbarContainer = (LinearLayout) findViewById(R.id.toolbarContainer);
 // toolbar.setLogo(R.drawable.ic_launcher);
-        mToolbar.setTitle("富友");// 标题的文字需在setSupportActionBar之前，不然会无效
+        mToolbar.setTitle(getString(R.string.app_name));// 标题的文字需在setSupportActionBar之前，不然会无效
 // toolbar.setSubtitle("副标题");
         setSupportActionBar(mToolbar);
 /* 这些通过ActionBar来设置也是一样的，注意要在setSupportActionBar(toolbar);之后，不然就报错了 */
