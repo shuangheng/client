@@ -11,6 +11,8 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,7 +33,6 @@ import com.app.demos.base.C;
 import com.app.demos.dialog.ProgressingDialog;
 import com.app.demos.layout.materialEditText.MaterialEditText;
 import com.app.demos.layout.materialEditText.MaterialEditTextComplete;
-import com.app.demos.ui.UiActionBar;
 import com.app.demos.ui.webview.BaseWebUi;
 import com.app.demos.ui.test.foxconn_ESS_zsf.AppClient;
 
@@ -61,10 +62,10 @@ public class UiAuthenticator extends BaseUi {
     private String emppwd;
     private String email;
     private SharedPreferences sharedPreferences_speak;
-    private String authType;
     private Toolbar mToolbar;
     private TextView textView;
     private MenuItem meunItem;
+    private TextView tvAuth;
 
     /**
      * start UiAuthenticator
@@ -130,50 +131,18 @@ public class UiAuthenticator extends BaseUi {
         sharedPreferences_speak = getSharedPreferences("fragment_speak", Context.MODE_PRIVATE);
     }
 
-    @Override
+    @Override//验证工号（empno）成功后调用
     public void onTaskComplete(String s) {
         super.onTaskComplete(s);
-        authType = s.split(",")[0];
+        String authType = s.split(",")[0];//“s”格式为“验证code，所属厂区”
         toast(s);
         int code = Integer.parseInt(authType);
-        if (code != 3) {
-            doRegister(empno, emppwd, email);
-        } else {
+        if (code == 3) {//“3”工号不存在；“2” I don't know; “1"login ok; "0"密码error; "4"未激活
             presDialog.dismiss();
             toast(this.getResources().getString(R.string.empno_not_saved));
+            return;
         }
-        /*
-        switch(code) {
-            case 0:
-                toast(this.getResources().getString(R.string.password_wrong));
-                break;
-            case 1:
-                if (startType == 1) {
-                    finish();
-                }
-                //forward(UiActionBar.class);
-                break;
-            case 3:
-                toast(this.getResources().getString(R.string.empno_not_saved));
-                break;
-            case 4:
-                toast(this.getResources().getString(R.string.empno_activation));
-                break;
-
-        }*/
-    }
-
-    @Override
-    public void hideProgressBar() {
-        super.hideProgressBar();
-        presDialog.dismiss();
-    }
-
-    @Override
-    protected void showProgressBar() {
-        super.showProgressBar();
-        presDialog.show();
-
+        doRegister(empno, emppwd, email, authType);
     }
 
     @Override
@@ -185,8 +154,10 @@ public class UiAuthenticator extends BaseUi {
                 String code = message.getCode();
                 if (code.equals("10000")){
                     doLoginOk();
-                } else {
-                    toast(getResources().getString(R.string.msg_loginfail));
+                } else if (code.equals("14002")) {
+                    toast(getResources().getString(R.string.msg_login_fail_empno_not_exist));
+                }else {
+                    toast(getResources().getString(R.string.msg_login_fail));
                 }
                 break;
             case C.task.register:
@@ -208,6 +179,19 @@ public class UiAuthenticator extends BaseUi {
                 } else toast(getResources().getString(R.string.empno_and_email_not_match));
                 break;
         }
+    }
+
+    @Override
+    public void hideProgressBar() {
+        super.hideProgressBar();
+        presDialog.dismiss();
+    }
+
+    @Override
+    protected void showProgressBar() {
+        super.showProgressBar();
+        presDialog.show();
+
     }
 
     private void doRegisterOk() {
@@ -285,7 +269,7 @@ public class UiAuthenticator extends BaseUi {
         }
     }
 
-    private void doRegister(String empno, String emppwd, String email) {
+    private void doRegister(String empno, String emppwd, String email, String authType) {
         if (email.length() > 7 && emppwd.length() >3) {
             HashMap<String, String> urlparams = new HashMap<String, String>();
             urlparams.put("name", empno);
@@ -381,6 +365,10 @@ public class UiAuthenticator extends BaseUi {
     }
 
     private void setRegisterView() {
+        tvAuth.setEnabled(true);
+        tvAuth.setVisibility(View.VISIBLE);
+        tvAuth.setText(getString(R.string.login));
+        tvAuth.setOnClickListener(new LoginOnClickListener());
         editText_email.setVisibility(View.VISIBLE);
         btn_auth.setText(getString(R.string.register_submit));
 
@@ -396,6 +384,10 @@ public class UiAuthenticator extends BaseUi {
     }
 
     private void setLoginView() {
+        tvAuth.setEnabled(true);
+        tvAuth.setVisibility(View.VISIBLE);
+        tvAuth.setText(getString(R.string.register_submit));
+        tvAuth.setOnClickListener(new RegisterOnClickListener());
         editText_empno.setText(sharedPreferences_speak.getString("empno", null));
         editText_email.setVisibility(View.GONE);
         btn_auth.setText(getResources().getString(R.string.login));
@@ -406,6 +398,8 @@ public class UiAuthenticator extends BaseUi {
 
 
     private void setForgotPasswordView() {
+        tvAuth.setVisibility(View.GONE);
+        tvAuth.setEnabled(false);
         editText_empno.setText(sharedPreferences_speak.getString("empno", null));
         editText_emppwd.setVisibility(View.GONE);
         editText_email.setVisibility(View.VISIBLE);
@@ -430,28 +424,25 @@ public class UiAuthenticator extends BaseUi {
     }
 
     private void initToolBar() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setTitle(getString(R.string.app_name));// 标题的文字需在setSupportActionBar之前，不然会无效
-        //mToolbar.setLogo(R.drawable.icon);
-        setSupportActionBar(mToolbar);
-            /* 这些通过ActionBar来设置也是一样的，注意要在setSupportActionBar(toolbar);之后，不然就报错了 */
-// 菜单的监听可以在toolbar里设置，也可以像ActionBar那样，通过Activity的onOptionsItemSelected回调方法来处理
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);//实现左侧返回按钮
-
+        tvAuth = (TextView) LayoutInflater.from(this).inflate(R.layout.action_bar_menu_text_item, null);
+        getToolBar(R.id.toolbar, getString(R.string.app_name), true);
+        setCustomViewOnToolBar(tvAuth, Gravity.END);//此方法一定用在 getTooBar（） 后面
+        //getSupportActionBar().setHomeButtonEnabled(true);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                break;
-            default:
-                break;
+    private class RegisterOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            setRegisterView();
+            startType = 2;
         }
-        return true;
     }
 
-
+    private class LoginOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            setLoginView();
+            startType = 1;
+        }
+    }
 }

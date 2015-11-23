@@ -11,6 +11,7 @@ import com.app.demos.base.LogMy;
 import com.app.demos.layout.swipeRefreshLayout.Progress_m;
 import com.app.demos.layout.swipeRefreshLayout.Progress_m.OnRefreshListener;
 import com.app.demos.list.RecyclerAdapter.SpeakRecyclerAdapter;
+import com.app.demos.list.bitmap_load_list.ImageHandler;
 import com.app.demos.list.bitmap_load_list.ImageLoader_my;
 import com.app.demos.model.FavoriteSpeak;
 import com.app.demos.model.Gonggao;
@@ -19,6 +20,7 @@ import com.app.demos.sqlite.GonggaoSqlite;
 import com.app.demos.ui.UiActionBar;
 import com.app.demos.ui.UiImageZoom;
 import com.app.demos.ui.UiSpeakComment;
+import com.app.demos.ui.authenticator.UiAuthenticator;
 import com.app.demos.ui.fragment.emoji.ParseEmojiMsgUtil;
 
 import android.app.Activity;
@@ -28,6 +30,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -54,7 +57,7 @@ import android.widget.Toast;
 import static com.app.demos.util.Math_my.isEven;
 
 public class SpeakFragment_v1 extends BaseFragment implements  OnRefreshListener {
-    private static final String TAG = "speak Fragment v1";
+    private static final String TAG = "speakFragment_v1----";
     private String hello;// = "hello android";
     private String defaultHello = "default value";
     //////////////////////////////////////////////
@@ -181,6 +184,11 @@ public class SpeakFragment_v1 extends BaseFragment implements  OnRefreshListener
     }
 
     private void onFavoriteClickk(View v, int position) {
+        if (!sharedPreferences_speak.getBoolean("isLogined", false)) {
+            UiAuthenticator.actionStart(activity, 1);
+            return;
+        }
+        String empno = sharedPreferences_speak.getString("empno", null);
         SharedPreferences.Editor editor = sharedPreferences_speak.edit();//获取编辑器
         editor.putBoolean("isLatest_favorite", false);
         editor.commit();//提交修改
@@ -192,7 +200,7 @@ public class SpeakFragment_v1 extends BaseFragment implements  OnRefreshListener
             g.setLikecount(String.valueOf(Integer.parseInt(g.getLikeCount()) - 1));
             gonggaoSqlite.updateGonggao(g);
             favoriteSpeakSqlite.delete(FavoriteSpeak.COL_SPEAKID + "=?", new String[]{g.getId()});
-            getFavoriteSpeakDelete("10", g.getId());//delete on server
+            getFavoriteSpeakDelete(empno, g.getId());//delete on server
         } else {
             v.setBackgroundResource(R.drawable.ic_card_liked);
             g.setFavorite("0");
@@ -202,10 +210,10 @@ public class SpeakFragment_v1 extends BaseFragment implements  OnRefreshListener
             ContentValues values = new ContentValues();
             values.put(FavoriteSpeak.COL_SPEAKID, g.getId());
             favoriteSpeakSqlite.create(values);
-            getFavoriteSpeakCreate("10", g.getId());
+            getFavoriteSpeakCreate(empno, g.getId());
         }
         speakRecyclerAdapter.notifyDataSetChanged();
-        LogMy.e(activity, TAG + "onFavoriteClick");
+        LogMy.e(activity, TAG + g.getId()+"---onFavoriteClick");
     }
 
     private void getGonggaoData() {
@@ -250,7 +258,7 @@ public class SpeakFragment_v1 extends BaseFragment implements  OnRefreshListener
 
     private void initData() {
         final ArrayList<Gonggao> gList = gonggaoSqlite.getAllGonggao();
-        if (gList != null) {
+        if (!gList.isEmpty()) {
             getLastId(gList);
             getFirstId(gList);
             for (Gonggao g : gList) {//转换成表情
@@ -363,7 +371,7 @@ public class SpeakFragment_v1 extends BaseFragment implements  OnRefreshListener
         Gonggao j = list.get(i - 1);
         lastId = j.getId();
         lastIdNum =Integer.parseInt(lastId);
-        LogMy.e(activity, TAG + "id" + lastId);
+        LogMy.e(activity, TAG + "lastId--" + lastId);
     }
 
     /**
@@ -393,6 +401,7 @@ public class SpeakFragment_v1 extends BaseFragment implements  OnRefreshListener
                     break;
                 case OnScrollListener.SCROLL_STATE_IDLE:
                     speakRecyclerAdapter.setFlagBusy(false);
+                    speakRecyclerAdapter.notifyDataSetChanged();
                     break;
                 case OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
                     speakRecyclerAdapter.setFlagBusy(false);
@@ -400,7 +409,7 @@ public class SpeakFragment_v1 extends BaseFragment implements  OnRefreshListener
                 default:
                     break;
             }
-            speakRecyclerAdapter.notifyDataSetChanged();
+            //speakRecyclerAdapter.notifyDataSetChanged();//频繁使用notifyDataSetChanged() case listView滑动卡顿
             // 滑到底部后自动加载，判断listview已经停止滚动并且最后可视的条目等于adapter的条目
             if (scrollState == OnScrollListener.SCROLL_STATE_IDLE
                     && isBottom(recyclerView)) {

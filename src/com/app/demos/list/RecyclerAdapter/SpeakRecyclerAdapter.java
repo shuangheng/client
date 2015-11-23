@@ -149,10 +149,6 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
                     holder.containerLayout.getResources().getColor(C.colors[position % length]));
 
 */
-            if (g.getFavorite().equals("0")) {
-                holder.ib.setBackgroundResource(R.drawable.ic_card_liked);
-            }
-
             //set background color
             holder.extra.setTextColor(mContext.getResources().getColor(R.color.darker_gray));
             holder.likecount.setTextColor(mContext.getResources().getColor(R.color.darker_gray));
@@ -168,6 +164,10 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
                 holder.ib.setBackgroundResource(R.drawable.ic_card_like);
                 holder.containerLayout.setBackgroundColor(
                         holder.containerLayout.getResources().getColor(C.colors[position % length]));
+            }
+
+            if (g.getFavorite().equals("0")) {
+                holder.ib.setBackgroundResource(R.drawable.ic_card_liked);
             }
             /*
             int weight = BaseUi.DEVICE_WIDTH;
@@ -197,6 +197,8 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
                 } else {
                     footerView.setStatus(ListFooterView.LoadStatus.LOADING);
                 }
+            } else {
+                footerView.setStatus(ListFooterView.LoadStatus.GONE);
             }
         }
     }

@@ -22,7 +22,7 @@
     <string name="config_sign">修改签名</string>
     <string name="config_face">更换头像</string>
     <!-- 提示文字 -->
-    <string name="msg_loginfail">登录失败</string>
+    <string name="msg_login_fail">登录失败</string>
     <string name="msg_login_success">登录成功</string>
     <string name="msg_register_fail">注册失败</string>
     <string name="msg_register_success">注册成功</string>
@@ -123,6 +123,7 @@
     <string name="cancel">取消</string>
     <string name="album">相册</string>
     <string name="server_error">服务器异常</string>
+    <string name="msg_login_fail_empno_not_exist">此工号还未注册</string>
 
 
 </resources>
