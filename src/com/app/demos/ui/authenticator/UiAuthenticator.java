@@ -405,7 +405,8 @@ public class UiAuthenticator extends BaseUi {
         editText_email.setVisibility(View.VISIBLE);
         btn_auth.setText(getResources().getString(R.string.get_password));
         protocol_link.setVisibility(View.GONE);
-        forgotPwd.setText(getString(R.string.login));
+        //forgotPwd.setText(getString(R.string.login));
+        forgotPwd.setVisibility(View.GONE);
     }
 
     @Override
