@@ -1,5 +1,6 @@
 package com.app.demos.ui;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,6 +24,7 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewPropertyAnimator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
@@ -33,6 +35,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.demos.Listener.OnHideOrShowListener;
 import com.app.demos.R;
 import com.app.demos.adapter.MyFragmentPagerAdapter;
 import com.app.demos.base.BaseHandler;
@@ -106,6 +109,11 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
     private Context context;
     public FavoriteSpeakSqlite favoriteSpeakSqlite;
     private SpeakFragment_v1 groupFragment;
+    private ViewPropertyAnimator mAnimator;
+    private MyFragmentPagerAdapter mFragmentPagerAdapter;
+    private boolean isFabButtonShow;
+    private OnHideOrShowListener mOnHideOrShowListener;
+    private View tabsAndFilter;
 
 
     @Override
@@ -127,9 +135,14 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         InitViewPager();
         initBottomButton();
         initDrawer();
+        initAmimator();
 
         gonggaoSqlite = new GonggaoSqlite(this);
         favoriteSpeakSqlite =new FavoriteSpeakSqlite(this);
+    }
+
+    private void initAmimator() {
+
     }
 
     @Override
@@ -376,38 +389,65 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         mPagerSlidingTabStrip.setSelectedTextColor(Color.WHITE);
         // 正常文字颜色
         mPagerSlidingTabStrip.setTextColor(getResources().getColor(R.color.tabTextColor));
+
+        tabsAndFilter = findViewById(R.id.ui_actionbar_tabs_filter);
+        mAnimator = tabsAndFilter.animate();
+        mAnimator.setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mToolbar.setTitle(isFabButtonShow ? getString(R.string.app_name) :
+                        mFragmentPagerAdapter.getPageTitle(mPager.getCurrentItem()));
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
     }
 
     private void InitViewPager() {
         mPagerSlidingTabStrip = (PagerSlidingTabStrip_my) findViewById(R.id.tabs);
         mPager = (ViewPager) findViewById(R.id.ui_actionbar_vPager);
         fragmentsList = new ArrayList<Fragment>();
+        mFragmentPagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), fragmentsList);
         //LayoutInflater mInflater = getLayoutInflater();
         //View activityView = mInflater.inflate(R.layout.fragment_list_speak, null);
 
         //activityfragment = SpeakFragment_v1.newInstance("Hello Activity.");
         findfragment = FindFragment.newInstance("Hello Activity.");
         groupFragment = new SpeakFragment_v1();
-        groupFragment.setOnHideOrShowListener(new SpeakFragment_v1.OnHideOrShowListener() {
+        mOnHideOrShowListener = new OnHideOrShowListener() {
             @Override
             public void onhide() {
-                if (android.os.Build.VERSION.SDK_INT >= 14) {
-                    //activity.mToolbar.animate().translationY(-activity.mToolbar.getHeight()).setInterpolator(new DecelerateInterpolator(2));
-                    RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mFabButton.getLayoutParams();
-                    int fabBottomMargin = lp.bottomMargin;
-                    mFabButton.animate().translationY(mFabButton.getHeight()+fabBottomMargin).setInterpolator(new AccelerateInterpolator(2)).start();
-                    //Log.e("s","ddddddddddddddd");
-                }
+                mAnimator.translationY(-tabsAndFilter.getHeight()).setInterpolator(new DecelerateInterpolator(2));
+                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mFabButton.getLayoutParams();
+                int fabBottomMargin = lp.bottomMargin;
+                mFabButton.animate().translationY(mFabButton.getHeight()+fabBottomMargin).setInterpolator(new AccelerateInterpolator(2)).start();
+                isFabButtonShow = false;
             }
 
             @Override
             public void onshow() {
-                if (android.os.Build.VERSION.SDK_INT >= 14) {
-                    //activity.mToolbarContainer.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
-                    mFabButton.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
-                }
+                //if (android.os.Build.VERSION.SDK_INT >= 14) {
+                mAnimator.translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
+                mFabButton.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
+                //}
+                isFabButtonShow = true;
             }
-        });
+        };
+        findfragment.setOnHideOrShowListener(mOnHideOrShowListener);
+        groupFragment.setOnHideOrShowListener(mOnHideOrShowListener);
         //Fragment friendsFragment=new Fragment3();
         //Fragment chatFragment=SpeakFragment.newInstance("Hello Chat.");
 
@@ -418,7 +458,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         fragmentsList.add(new EmojiFragment());
         //fragmentsList.add(chatFragment);
 
-        mPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(), fragmentsList));
+        mPager.setAdapter(mFragmentPagerAdapter);
         mPager.setCurrentItem(0);
         //左右预加载个数
         mPager.setOffscreenPageLimit(3);

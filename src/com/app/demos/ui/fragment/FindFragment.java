@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.app.demos.Listener.HideFabScrollListener;
+import com.app.demos.Listener.OnHideOrShowListener;
 import com.app.demos.R;
 import com.app.demos.base.C;
 import com.app.demos.base.LogMy;
@@ -85,6 +86,7 @@ public class FindFragment extends Fragment implements  OnRefreshListener {
     private LinearLayoutManager layoutManager;
     public FindRecycAdapter findRecyclerAdapter;
     private ArrayList<Find> findList;
+    private OnHideOrShowListener onHideOrShowListener;
 
     public static FindFragment newInstance(String s) {
         FindFragment newFragment = new FindFragment();
@@ -431,23 +433,22 @@ public class FindFragment extends Fragment implements  OnRefreshListener {
 
         @Override
         public void onHide() {
-            if (android.os.Build.VERSION.SDK_INT >= 14) {
-                //activity.mToolbar.animate().translationY(-activity.mToolbar.getHeight()).setInterpolator(new DecelerateInterpolator(2));
-                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) activity.mFabButton.getLayoutParams();
-                int fabBottomMargin = lp.bottomMargin;
-                activity.mFabButton.animate().translationY(activity.mFabButton.getHeight()+fabBottomMargin).setInterpolator(new AccelerateInterpolator(2)).start();
-                //Log.e("s","ddddddddddddddd");
+            if (onHideOrShowListener != null) {
+                onHideOrShowListener.onhide();
             }
         }
 
 
         @Override
         public void onShow() {
-            if (android.os.Build.VERSION.SDK_INT >= 14) {
-                //activity.mToolbarContainer.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
-                activity.mFabButton.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
+            if (onHideOrShowListener != null) {
+                onHideOrShowListener.onshow();
             }
         }
+    }
+
+    public void setOnHideOrShowListener(OnHideOrShowListener h) {
+        onHideOrShowListener = h;
     }
 
     public boolean isBottom(RecyclerView recyclerView) {

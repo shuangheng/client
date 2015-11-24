@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.app.demos.Listener.HideFabScrollListener;
+import com.app.demos.Listener.OnHideOrShowListener;
 import com.app.demos.R;
 import com.app.demos.base.BaseMessage;
 import com.app.demos.base.C;
@@ -11,46 +12,34 @@ import com.app.demos.base.LogMy;
 import com.app.demos.layout.swipeRefreshLayout.Progress_m;
 import com.app.demos.layout.swipeRefreshLayout.Progress_m.OnRefreshListener;
 import com.app.demos.list.RecyclerAdapter.SpeakRecyclerAdapter;
-import com.app.demos.list.bitmap_load_list.ImageHandler;
 import com.app.demos.list.bitmap_load_list.ImageLoader_my;
 import com.app.demos.model.FavoriteSpeak;
 import com.app.demos.model.Gonggao;
 import com.app.demos.sqlite.FavoriteSpeakSqlite;
 import com.app.demos.sqlite.GonggaoSqlite;
-import com.app.demos.ui.UiActionBar;
 import com.app.demos.ui.UiImageZoom;
 import com.app.demos.ui.UiSpeakComment;
 import com.app.demos.ui.authenticator.UiAuthenticator;
 import com.app.demos.ui.fragment.emoji.ParseEmojiMsgUtil;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
-import android.util.Log;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -472,14 +461,6 @@ public class SpeakFragment_v1 extends BaseFragment implements  OnRefreshListener
         int lastVisiblePosition = layoutManager.findLastCompletelyVisibleItemPosition();
         int lastPosition = recyclerView.getAdapter().getItemCount() - 1;
         return lastVisiblePosition == lastPosition;
-    }
-
-    /**
-     * Interface definition for a callback to be invoked when a view is clicked.
-     */
-    public interface OnHideOrShowListener {
-        void onhide();
-        void onshow();
     }
 
     public void setOnHideOrShowListener(OnHideOrShowListener h) {
