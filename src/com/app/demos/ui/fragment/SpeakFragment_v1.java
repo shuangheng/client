@@ -17,6 +17,7 @@ import com.app.demos.model.FavoriteSpeak;
 import com.app.demos.model.Gonggao;
 import com.app.demos.sqlite.FavoriteSpeakSqlite;
 import com.app.demos.sqlite.GonggaoSqlite;
+import com.app.demos.ui.UiActionBar;
 import com.app.demos.ui.UiImageZoom;
 import com.app.demos.ui.UiSpeakComment;
 import com.app.demos.ui.authenticator.UiAuthenticator;
@@ -169,7 +170,7 @@ public class SpeakFragment_v1 extends BaseFragment implements  OnRefreshListener
         swipeLayout = (Progress_m) view.findViewById(R.id.speak_swipe_refresh);
         swipeLayout.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW, Color.GREEN);
         swipeLayout.setOnRefreshListener(this);
-
+        swipeLayout.setProgressViewOffset(false, 0, (int)getResources().getDimension(R.dimen.tabsHeight));
     }
 
     private void onFavoriteClickk(View v, int position) {

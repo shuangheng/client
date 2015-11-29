@@ -56,7 +56,7 @@ public class Progress_m extends ViewGroup {
 
     private static final float DECELERATE_INTERPOLATION_FACTOR = 2f;
     private static final int INVALID_POINTER = -1;
-    private static final float DRAG_RATE = .5f;//阻力率
+    private static final float DRAG_RATE = .5f;//阻力率 default = .5f
 
     // Max amount of circle that can be filled by progress during swipe gesture,
     // where 1.0 is a full circle在刷卡手势的过程中，可以填充的最大循环，
@@ -73,7 +73,7 @@ public class Progress_m extends ViewGroup {
     // Default background for the progress spinner
     private static final int CIRCLE_BG_LIGHT = 0xFFFAFAFA;
     // Default offset in dips from the top of the view to where the progress spinner should stop
-    private static final int DEFAULT_CIRCLE_TARGET = 64;//progress 高度
+    private static final int DEFAULT_CIRCLE_TARGET = 64;//progress 高度 //default = 64
 
     private View mTarget; // the target of the gesture
     private OnRefreshListener mListener;

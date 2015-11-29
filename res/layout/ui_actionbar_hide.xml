@@ -36,7 +36,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/tabsHeight" >
                 </com.app.demos.layout.other.PagerSlidingTabStrip_my>
-                <include layout="@layout/discover_speak_filter_header"/>
+                <include
+                    layout="@layout/discover_speak_filter_header_v2"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent" />
             </LinearLayout>
 
         </RelativeLayout>
