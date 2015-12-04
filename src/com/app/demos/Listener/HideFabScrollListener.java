@@ -28,5 +28,6 @@ public abstract class HideFabScrollListener extends RecyclerView.OnScrollListene
     }
     public abstract void onHide();
     public abstract void onShow();
+    public abstract void onMoved(int distance);
 
 }

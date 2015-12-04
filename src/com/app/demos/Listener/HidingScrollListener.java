@@ -3,6 +3,10 @@ package com.app.demos.Listener;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 
+import com.app.demos.R;
+import com.app.demos.base.BaseApp;
+import com.app.demos.base.LogMy;
+import com.app.demos.layout.Utils;
 import com.app.demos.util.BaseDevice;
 
 /**
@@ -26,15 +30,25 @@ import com.app.demos.util.BaseDevice;
  *}
  */
 public abstract class HidingScrollListener extends RecyclerView.OnScrollListener {
-    private static final float HIDE_THRESHOLD = 10;
-    private static final float SHOW_THRESHOLD = 70;
+    private String TAG = "HidingScrollListener->>";
+    private static int mToolbarHeight;
+    private static final float HIDE_THRESHOLD = (BaseApp.getContext().getResources().getDimension(R.dimen.tabsHeight)
+            + (int)BaseApp.getContext().getResources().getDimension(R.dimen.abc_action_bar_default_height_material)) /2;
+    private static final float SHOW_THRESHOLD = HIDE_THRESHOLD;
+    //(Utils.dpToPx(40, BaseApp.getContext().getResources())
+    //+ Utils.dpToPx(56, BaseApp.getContext().getResources())) /2;
 
     private int mToolbarOffset = 0;
     private boolean mControlsVisible = true;
-    private int mToolbarHeight;
+    private int mTotalScrolledDistance;
 
     public HidingScrollListener(Context context) {
         mToolbarHeight = BaseDevice.getToolbarHeight(context);
+    }
+
+    public HidingScrollListener(int viewHeight) {
+        mToolbarHeight = viewHeight;
+        LogMy.e(BaseApp.getContext(), TAG+ "mToolbarHeight = "+mToolbarHeight);
     }
 
     @Override
@@ -42,20 +56,36 @@ public abstract class HidingScrollListener extends RecyclerView.OnScrollListener
         super.onScrollStateChanged(recyclerView, newState);
 
         if(newState == RecyclerView.SCROLL_STATE_IDLE) {
-            if (mControlsVisible) {
-                if (mToolbarOffset > HIDE_THRESHOLD) {
-                    setInvisible();
-                } else {
-                    setVisible();
-                }
+            if(mTotalScrolledDistance < mToolbarHeight) {
+                //setVisible();
             } else {
-                if ((mToolbarHeight - mToolbarOffset) > SHOW_THRESHOLD) {
-                    setVisible();
+                if (mControlsVisible) {
+                    if (mToolbarOffset > HIDE_THRESHOLD) {
+                        setInvisible();
+                        LogMy.e(BaseApp.getContext(), TAG + "mToolbarOffset > HIDE_THRESHOLD---setInvisible();\n" +
+                                mToolbarOffset + ">" + HIDE_THRESHOLD);
+                    } else {
+                        setVisible();
+                        LogMy.e(BaseApp.getContext(), TAG + "mToolbarOffset > HIDE_THRESHOLD---setVisible();\n" +
+                                mToolbarOffset + ">" + HIDE_THRESHOLD);
+                    }
                 } else {
-                    setInvisible();
+                    if ((mToolbarHeight - mToolbarOffset) > SHOW_THRESHOLD) {
+                        setVisible();
+                        LogMy.e(BaseApp.getContext(), TAG + "mToolbarHeight - mToolbarOffset) > SHOW_THRESHOLD--setVisible\n"
+                                + (mToolbarHeight - mToolbarOffset) + ">" + SHOW_THRESHOLD);
+                    } else {
+                        setInvisible();
+                        LogMy.e(BaseApp.getContext(), TAG + "mToolbarHeight - mToolbarOffset) > SHOW_THRESHOLD--setInvisible\n"
+                                + (mToolbarHeight - mToolbarOffset) + ">" + SHOW_THRESHOLD);
+                    }
                 }
             }
         }
+    }
+
+    public void setmToolbarOffset(int mToolbarOffset) {
+        this.mToolbarOffset = mToolbarOffset;
     }
 
     @Override
@@ -68,6 +98,7 @@ public abstract class HidingScrollListener extends RecyclerView.OnScrollListener
         if((mToolbarOffset <mToolbarHeight && dy>0) || (mToolbarOffset >0 && dy<0)) {
             mToolbarOffset += dy;
         }
+        mTotalScrolledDistance += dy;
 
     }
 
@@ -86,7 +117,7 @@ public abstract class HidingScrollListener extends RecyclerView.OnScrollListener
     }
 
     private void setVisible() {
-        if(mToolbarOffset > 0) {
+        if(mToolbarOffset >= 0) {
             onShow();
             mToolbarOffset = 0;
         }
@@ -94,7 +125,7 @@ public abstract class HidingScrollListener extends RecyclerView.OnScrollListener
     }
 
     private void setInvisible() {
-        if(mToolbarOffset < mToolbarHeight) {
+        if(mToolbarOffset <= mToolbarHeight) {
             onHide();
             mToolbarOffset = mToolbarHeight;
         }

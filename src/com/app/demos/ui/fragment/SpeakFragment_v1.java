@@ -3,7 +3,7 @@ package com.app.demos.ui.fragment;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.app.demos.Listener.HideFabScrollListener;
+import com.app.demos.Listener.HidingScrollListener;
 import com.app.demos.Listener.OnHideOrShowListener;
 import com.app.demos.R;
 import com.app.demos.base.BaseMessage;
@@ -17,11 +17,11 @@ import com.app.demos.model.FavoriteSpeak;
 import com.app.demos.model.Gonggao;
 import com.app.demos.sqlite.FavoriteSpeakSqlite;
 import com.app.demos.sqlite.GonggaoSqlite;
-import com.app.demos.ui.UiActionBar;
 import com.app.demos.ui.UiImageZoom;
 import com.app.demos.ui.UiSpeakComment;
 import com.app.demos.ui.authenticator.UiAuthenticator;
 import com.app.demos.ui.fragment.emoji.ParseEmojiMsgUtil;
+import com.app.demos.util.BaseDevice;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -92,6 +92,7 @@ public class SpeakFragment_v1 extends BaseFragment implements  OnRefreshListener
     private FavoriteSpeakSqlite favoriteSpeakSqlite;
     private OnHideOrShowListener onHideOrShowListener;
     private Context context;
+    private HidingScrollListener mHideFabFooterScrollListener;
 
     public static SpeakFragment_v1 newInstance(String s) {
         SpeakFragment_v1 newFragment = new SpeakFragment_v1();
@@ -164,7 +165,9 @@ public class SpeakFragment_v1 extends BaseFragment implements  OnRefreshListener
         recyclerView.setAdapter(speakRecyclerAdapter);
         //recyclerView.setOnScrollListener(new RecyclerView.OnScrollListe
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setOnScrollListener(new HideFabFooterScrollListener());
+        int height = BaseDevice.getToolbarHeight(context) + (int)context.getResources().getDimension(R.dimen.tabsHeight);
+        mHideFabFooterScrollListener = new HideFabFooterScrollListener(height);
+        recyclerView.setOnScrollListener(mHideFabFooterScrollListener);
 
         //下拉更新Layout
         swipeLayout = (Progress_m) view.findViewById(R.id.speak_swipe_refresh);
@@ -203,7 +206,7 @@ public class SpeakFragment_v1 extends BaseFragment implements  OnRefreshListener
             getFavoriteSpeakCreate(empno, g.getId());
         }
         speakRecyclerAdapter.notifyDataSetChanged();
-        LogMy.e(activity, TAG + g.getId()+"---onFavoriteClick");
+        LogMy.e(activity, TAG + g.getId() + "---onFavoriteClick");
     }
 
     private void getGonggaoData() {
@@ -374,7 +377,16 @@ public class SpeakFragment_v1 extends BaseFragment implements  OnRefreshListener
         LogMy.e(activity, TAG + "maxid" + Maxid);
     }
 
-    private class HideFabFooterScrollListener extends HideFabScrollListener {
+    //private class HideFabFooterScrollListener extends HideFabScrollListener {
+    private class HideFabFooterScrollListener extends HidingScrollListener {
+        public HideFabFooterScrollListener(Context context) {
+            super(context);
+        }
+
+        public HideFabFooterScrollListener(int viewHeight) {
+            super(viewHeight);
+        }
+
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
@@ -385,6 +397,8 @@ public class SpeakFragment_v1 extends BaseFragment implements  OnRefreshListener
         // 滑到底部后自动加载
         @Override
         public void onScrollStateChanged(RecyclerView view, int scrollState) {
+            super.onScrollStateChanged(view, scrollState);
+
             switch (scrollState) {
                 case OnScrollListener.SCROLL_STATE_FLING:
                     speakRecyclerAdapter.setFlagBusy(true);
@@ -421,19 +435,31 @@ public class SpeakFragment_v1 extends BaseFragment implements  OnRefreshListener
 
 
         @Override
+        public void onMoved(int distance) {
+            if (onHideOrShowListener != null) {
+                onHideOrShowListener.onMoved(distance);
+            }
+        }
+
+        @Override
         public void onHide() {
             if (onHideOrShowListener != null) {
-                onHideOrShowListener.onhide();
+                onHideOrShowListener.onHide();
             }
         }
 
         @Override
         public void onShow() {
             if (onHideOrShowListener != null) {
-                onHideOrShowListener.onshow();
+                onHideOrShowListener.onShow();
             }
         }
     }
+
+    public void setScrollDistance(int scrollDistance) {
+        this.mHideFabFooterScrollListener.setmToolbarOffset(scrollDistance);
+    }
+
 
     @Override
     public void onNetworkError(int taskId) {

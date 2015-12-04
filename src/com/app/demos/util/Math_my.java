@@ -6,12 +6,19 @@ package com.app.demos.util;
  */
 public class Math_my {
     /**
-     * 用取余运算
+     * 用取余运算判断is or not 偶数
      */
     public static boolean isEven(int num) {
 
         return (num % 2 == 0);
 
+    }
+
+    /**
+     * 绝对值
+     */
+    public static int abs(int num) {
+        return Math.abs(num);
     }
 
     /**

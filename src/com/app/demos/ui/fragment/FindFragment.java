@@ -31,14 +31,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -434,7 +431,7 @@ public class FindFragment extends Fragment implements  OnRefreshListener {
         @Override
         public void onHide() {
             if (onHideOrShowListener != null) {
-                onHideOrShowListener.onhide();
+                onHideOrShowListener.onHide();
             }
         }
 
@@ -442,8 +439,13 @@ public class FindFragment extends Fragment implements  OnRefreshListener {
         @Override
         public void onShow() {
             if (onHideOrShowListener != null) {
-                onHideOrShowListener.onshow();
+                onHideOrShowListener.onShow();
             }
+        }
+
+        @Override
+        public void onMoved(int distance) {
+
         }
     }
 

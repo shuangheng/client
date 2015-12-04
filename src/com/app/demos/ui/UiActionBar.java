@@ -64,6 +64,7 @@ import com.app.demos.ui.test.foxconn_ESS_zsf.UiFoxconnEssPost;
 import com.app.demos.ui.test.uploadFile.UploadFile;
 import com.app.demos.ui.uploadFile.UploadFileProgress;
 import com.app.demos.ui.uploadFile.UploadfileActivity;
+import com.app.demos.util.BaseDevice;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -390,7 +391,6 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         // 正常文字颜色
         mPagerSlidingTabStrip.setTextColor(getResources().getColor(R.color.tabTextColor));
 
-        tabsAndFilter = findViewById(R.id.ui_actionbar_tabs_filter);
         mAnimator = tabsAndFilter.animate();
         mAnimator.setListener(new Animator.AnimatorListener() {
             @Override
@@ -400,8 +400,8 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                mToolbar.setTitle(isFabButtonShow ? getString(R.string.app_name) :
-                        mFragmentPagerAdapter.getPageTitle(mPager.getCurrentItem()));
+                //mToolbar.setTitle(isFabButtonShow ? getString(R.string.app_name) :
+                    //    mFragmentPagerAdapter.getPageTitle(mPager.getCurrentItem()));
             }
 
             @Override
@@ -417,7 +417,9 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
     }
 
     private void InitViewPager() {
+        tabsAndFilter = findViewById(R.id.ui_actionbar_tabs_filter);
         mPagerSlidingTabStrip = (PagerSlidingTabStrip_my) findViewById(R.id.tabs);
+        initTabsValue();
         mPager = (ViewPager) findViewById(R.id.ui_actionbar_vPager);
         fragmentsList = new ArrayList<Fragment>();
         mFragmentPagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), fragmentsList);
@@ -429,22 +431,29 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         groupFragment = new SpeakFragment_v1();
         mOnHideOrShowListener = new OnHideOrShowListener() {
             @Override
-            public void onhide() {
-                mAnimator.translationY(-tabsAndFilter.getHeight()).setInterpolator(new DecelerateInterpolator(2));
+            public void onHide() {
+                mToolbar.setTitle(mFragmentPagerAdapter.getPageTitle(mPager.getCurrentItem()));
+
                 RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mFabButton.getLayoutParams();
                 int fabBottomMargin = lp.bottomMargin;
                 mFabButton.animate().translationY(mFabButton.getHeight()+fabBottomMargin).setInterpolator(new AccelerateInterpolator(2)).start();
+                tabsAndFilter.animate().translationY(-tabsAndFilter.getHeight()).setInterpolator(new AccelerateInterpolator(2)).start();
                 isFabButtonShow = false;
             }
 
             @Override
-            public void onshow() {
-                //if (android.os.Build.VERSION.SDK_INT >= 14) {
-                mAnimator.translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
-                mFabButton.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
-                //}
-                isFabButtonShow = true;
+            public void onShow() {
+                mToolbar.setTitle(getString(R.string.app_name));
+                onShowTabs();
             }
+
+            @Override
+            public void onMoved(int distance) {
+                tabsAndFilter.setTranslationY(-distance);
+                //mToolbar.setTitle("" +distance);
+            }
+
+
         };
         findfragment.setOnHideOrShowListener(mOnHideOrShowListener);
         groupFragment.setOnHideOrShowListener(mOnHideOrShowListener);
@@ -467,47 +476,36 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
         //mPager.setOnPageChangeListener(new MyOnPageChangeListener());
         mPagerSlidingTabStrip.setViewPager(mPager);
         mPagerSlidingTabStrip.setOnPageChangeListener(new MyOnPageChangeListener());
-        initTabsValue();
+
     }
+
+    private void onShowTabs() {
+        mFabButton.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
+        tabsAndFilter.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
+        isFabButtonShow = true;
+    }
+
 
     @Override
     public void onRefresh() {
         if (isFirstOpean) {
-            Log.e(TAG, "onRefresh()  = " + isFirstOpean);
             new Handler().post(new Runnable() {
                 public void run() {
 
                     getGonggaoData();
                     getFindData();
                     //showLoadMore();
-                    Log.e(TAG, "onRefresh() true = " + isFirstOpean);
                 }
             });
         } else {
-            Log.e(TAG, "mPager.getCurrentItem() = " + mPager.getCurrentItem());
             switch (mPager.getCurrentItem()) {
                 case 0:
                     getGonggaoData();
                 case 2:
                     getFindData();
-                    Log.e(TAG, "onRefresh() false"+ isFirstOpean);
             }
         }
         isFirstOpean = false;
-    }
-
-
-
-
-    public class MyOnClickListener implements View.OnClickListener {
-        private int index = 0;
-        public MyOnClickListener(int i) {
-            index = i;
-        }
-        @Override
-        public void onClick(View v) {
-            mPager.setCurrentItem(index);
-        }
     }
 
     public class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
@@ -519,9 +517,10 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
 
         @Override
         public void onPageScrolled(int arg0, float arg1, int arg2) {
-            if (android.os.Build.VERSION.SDK_INT >= 11) {
-                // mToolbarContainer.setTranslationY(0);
-                //ivLayout.setRotationY(arg1 * 180);
+            if (!isFabButtonShow) {
+                onShowTabs();
+                groupFragment.setScrollDistance(0);
+                isFabButtonShow = true;
             }
         }
 
