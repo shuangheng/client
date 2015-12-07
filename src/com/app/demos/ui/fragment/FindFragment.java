@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.app.demos.Listener.HideFabScrollListener;
+import com.app.demos.Listener.HidingScrollListener;
 import com.app.demos.Listener.OnHideOrShowListener;
 import com.app.demos.R;
 import com.app.demos.base.C;
@@ -17,8 +18,10 @@ import com.app.demos.model.Find;
 import com.app.demos.model.Gonggao;
 import com.app.demos.sqlite.GonggaoSqlite;
 import com.app.demos.ui.UiActionBar;
+import com.app.demos.util.BaseDevice;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -84,6 +87,8 @@ public class FindFragment extends Fragment implements  OnRefreshListener {
     public FindRecycAdapter findRecyclerAdapter;
     private ArrayList<Find> findList;
     private OnHideOrShowListener onHideOrShowListener;
+    private HideFabFooterScrollListener mHideFabFooterScrollListener;
+    private Context context;
 
     public static FindFragment newInstance(String s) {
         FindFragment newFragment = new FindFragment();
@@ -107,6 +112,8 @@ public class FindFragment extends Fragment implements  OnRefreshListener {
         Log.d(TAG, "FindFragment-----onCreate");
         Bundle args = getArguments();
         hello = args != null ? args.getString("hello") : defaultHello;
+
+        context = getActivity();
     }
 
     @Override
@@ -130,7 +137,9 @@ public class FindFragment extends Fragment implements  OnRefreshListener {
         recyclerView.setAdapter(findRecyclerAdapter);
         //recyclerView.setOnScrollListener(new RecyclerView.OnScrollListe
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setOnScrollListener(new HideFabFooterScrollListener());
+        int height = BaseDevice.getToolbarHeight(context) + (int)context.getResources().getDimension(R.dimen.tabsHeight);
+        mHideFabFooterScrollListener = new HideFabFooterScrollListener(height);
+        recyclerView.setOnScrollListener(mHideFabFooterScrollListener);
 
 
         //list = (ListView) view.findViewById(R.id.ui_gongga_list_view);
@@ -382,7 +391,11 @@ public class FindFragment extends Fragment implements  OnRefreshListener {
         }
     }
 
-    private class HideFabFooterScrollListener extends HideFabScrollListener {
+    private class HideFabFooterScrollListener extends HidingScrollListener {
+        public HideFabFooterScrollListener(int viewHeight) {
+            super(viewHeight);
+        }
+
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
@@ -399,6 +412,7 @@ public class FindFragment extends Fragment implements  OnRefreshListener {
                     break;
                 case OnScrollListener.SCROLL_STATE_IDLE:
                     findRecyclerAdapter.setFlagBusy(false);
+                    findRecyclerAdapter.notifyDataSetChanged();
                     break;
                 case OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
                     findRecyclerAdapter.setFlagBusy(false);
@@ -406,7 +420,7 @@ public class FindFragment extends Fragment implements  OnRefreshListener {
                 default:
                     break;
             }
-            findRecyclerAdapter.notifyDataSetChanged();
+            //findRecyclerAdapter.notifyDataSetChanged();
             // 滑到底部后自动加载，判断listview已经停止滚动并且最后可视的条目等于adapter的条目
             if (scrollState == OnScrollListener.SCROLL_STATE_IDLE
                     && isBottom(recyclerView)) {
@@ -445,7 +459,9 @@ public class FindFragment extends Fragment implements  OnRefreshListener {
 
         @Override
         public void onMoved(int distance) {
-
+            if (onHideOrShowListener != null) {
+                onHideOrShowListener.onMoved(distance);
+            }
         }
     }
 

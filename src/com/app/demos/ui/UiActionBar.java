@@ -443,13 +443,15 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
 
             @Override
             public void onShow() {
-                mToolbar.setTitle(getString(R.string.app_name));
                 onShowTabs();
             }
 
             @Override
             public void onMoved(int distance) {
                 tabsAndFilter.setTranslationY(-distance);
+                if (isFabButtonShow) {
+                    isFabButtonShow = false;
+                }
                 //mToolbar.setTitle("" +distance);
             }
 
@@ -480,6 +482,7 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
     }
 
     private void onShowTabs() {
+        mToolbar.setTitle(getString(R.string.app_name));
         mFabButton.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
         tabsAndFilter.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
         isFabButtonShow = true;
@@ -520,7 +523,6 @@ public class UiActionBar extends BaseUi implements SwipeRefreshLayout.OnRefreshL
             if (!isFabButtonShow) {
                 onShowTabs();
                 groupFragment.setScrollDistance(0);
-                isFabButtonShow = true;
             }
         }
 

@@ -96,7 +96,7 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
         photoView = (PhotoView) findViewById(R.id.ui_image_photoview);
         progressBar = (RoundProgressBar) findViewById(R.id.ui_image_progress_bar);
         progressBar.setSize(90);//设置大小
-        //progressBar.setProgress(2);
+        progressBar.setProgress(5);
 
         //photoView.setImageDrawable(getResources().getDrawable(R.drawable.l_25));
         photoView.setMaxScale(10.0F);
@@ -151,6 +151,9 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ui_image_container:
+                finish();
+                break;
+            case R.id.ui_image_photoview:
                 finish();
                 break;
             case R.id.ui_image_reload:

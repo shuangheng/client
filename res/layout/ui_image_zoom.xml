@@ -3,14 +3,14 @@
     android:orientation="vertical"
     android:id="@+id/ui_image_container"
     android:background="@android:color/black"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <com.app.demos.layout.widget.photoview.PhotoView
         android:id="@+id/ui_image_photoview"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:contentDescription="@null" />
 
@@ -23,8 +23,9 @@
     <ImageView
         android:id="@+id/ui_image_reload"
         android:visibility="gone"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:src="@drawable/ic_reload"
         android:scaleType="center"
         android:contentDescription="@null" />

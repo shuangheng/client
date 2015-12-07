@@ -57,7 +57,7 @@ public abstract class HidingScrollListener extends RecyclerView.OnScrollListener
 
         if(newState == RecyclerView.SCROLL_STATE_IDLE) {
             if(mTotalScrolledDistance < mToolbarHeight) {
-                //setVisible();
+                setVisible();
             } else {
                 if (mControlsVisible) {
                     if (mToolbarOffset > HIDE_THRESHOLD) {
