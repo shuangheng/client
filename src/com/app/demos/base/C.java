@@ -75,8 +75,8 @@ public final class C {
 	}
 	
 	public static final class api {
-		public static final String base				= "http://120.24.97.52:8001";
-		//public static final String base				= "http://10.0.2.2:8001";
+		//public static final String base				= "http://120.24.97.52:8001";
+		public static final String base				= "http://10.0.2.2:8001";
 		public static final String index			= "/index/index";
 		public static final String register			= "/index/register";
 		public static final String login			= "/index/login";
@@ -175,8 +175,8 @@ public final class C {
 		public static final String b				= "http://218.28.167.99:8080/Ws_EssFunction.ashx";
 		public static final String c				= "http://218.28.167.99:8080/PushMsgFunction.ashx";
 		public static final String d				= "http://218.28.167.99:8080/IWs_EssFunction.ashx";
-		public static final String base				= "http://120.24.97.52:8002";
-		//public static final String base				= "http://10.0.2.2:8002";
+		//public static final String base				= "http://120.24.97.52:8002";
+		public static final String base				= "http://10.0.2.2:8002";
 		public static final String index			= base + "/index.php";
 		public static final String agreement		= base + "/agreement/点亮富友软件许可及服务协议.php";
 		public static final String gomap			= base + "/gomap.php";

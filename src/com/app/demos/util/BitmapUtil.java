@@ -2,6 +2,7 @@ package com.app.demos.util;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -44,13 +45,13 @@ public class BitmapUtil {
     }
 
     /**
-     * 图片按比例大小压缩方法（根据路径获取图片并压缩）
+     * 图片按比例大小压缩方法（根据路径获取图片并压缩）**实际尺寸未改变
      * @param srcPath
      * @param maxWidth
      * @param maxHeight
      * @return
      */
-    public static Bitmap getCompressImage(String srcPath, float maxWidth, float maxHeight) {
+    public static Bitmap getCompressImage(String srcPath, int maxWidth, int maxHeight) {
         BitmapFactory.Options newOpts = new BitmapFactory.Options();
         //开始读入图片，此时把options.inJustDecodeBounds 设回true了
         newOpts.inJustDecodeBounds = true;
@@ -74,6 +75,50 @@ public class BitmapUtil {
         bitmap = BitmapFactory.decodeFile(srcPath, newOpts);
         //return compressImage(bitmap, maxSize);//压缩好比例大小后再进行质量压缩
         return bitmap;
+    }
+
+    /**
+     * 图片按比例大小压缩方法（根据路径获取图片并压缩）**实际尺寸未改变
+     * @param srcPath
+     * @param maxWidth
+     * @param maxHeight
+     * @return
+     */
+    public static Bitmap getCompressImage2(String srcPath, float maxWidth, float maxHeight) {
+        BitmapFactory.Options newOpts = new BitmapFactory.Options();
+        //开始读入图片，此时把options.inJustDecodeBounds 设回true了
+        newOpts.inJustDecodeBounds = true;
+        Bitmap bitmap = BitmapFactory.decodeFile(srcPath,newOpts);//此时返回bm为空
+
+        newOpts.inJustDecodeBounds = false;
+        int w = newOpts.outWidth;
+        int h = newOpts.outHeight;
+
+        int newW = 100, newH = 100;
+
+        //缩放比。由于是固定比例缩放，只用高或者宽其中一个数据进行计算即可
+        int be = 1;//be=1表示不缩放
+        if (w > h && w > maxWidth) {//如果宽度大的话根据宽度固定大小缩放
+            be = (int) (newOpts.outWidth / maxWidth);
+            newH = newOpts.outHeight/be;
+            newW = (int)maxWidth;
+            //return ThumbnailUtils.extractThumbnail(bitmap, (int)maxWidth, newOpts.outHeight/be);
+        } else if (w < h && h > maxHeight) {//如果高度高的话根据宽度固定大小缩放
+            be = (int) (newOpts.outHeight / maxHeight);
+            newH = (int)maxHeight;
+            newW = newOpts.outWidth/be;
+            //return ThumbnailUtils.extractThumbnail(bitmap, newOpts.outWidth/be, (int)maxHeight);
+        }
+        if (be <= 0) {
+            be = 1;
+            newH = h;
+            newW = w;
+        }
+        newOpts.inSampleSize = be;//设置缩放比例
+        //重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
+        bitmap = BitmapFactory.decodeFile(srcPath, newOpts);
+        return ThumbnailUtils.extractThumbnail(bitmap, newW, newH);
+        //return bitmap;
     }
 
     /**
