@@ -27,11 +27,26 @@ public abstract class AbstractFileCache {
         LogMy.e(BaseApp.getContext(),"FileHelper.createDirectory:" + dirString + ", ret = " + ret);
     }
 
+    /**
+     * return fileName File
+     * @param url
+     * @return
+     */
     public File getFile(String url) {
         File f = new File(getSavePath(url));
         return f;
     }
 
+    /**
+     * return file File
+     * @return
+     */
+    public File getFile2() {
+        File f = new File(getSavePath());
+        return f;
+    }
+
+    public abstract String  getSavePath();
     public abstract String  getSavePath(String url);
     public abstract String  getCacheDir(String file);
 

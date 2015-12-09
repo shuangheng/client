@@ -70,7 +70,8 @@ public final class C {
 		public static final String base2			= Environment.getExternalStorageDirectory() + "/Fuyou";
 		public static final String base				= "/sdcard/demos";
 		public static final String faces			= base + "/faces";
-		public static final String images			= base + "/images";
+		public static final String images			= "/image";
+		public static final String temp				= "/temp";
 	}
 	
 	public static final class api {

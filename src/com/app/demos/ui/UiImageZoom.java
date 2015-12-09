@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.app.demos.R;
 import com.app.demos.base.BaseApp;
+import com.app.demos.base.C;
 import com.app.demos.base.LogMy;
 import com.app.demos.layout.RoundProgressBar;
 import com.app.demos.layout.widget.photoview.PhotoView;
@@ -115,7 +116,7 @@ public class UiImageZoom extends Activity implements View.OnClickListener {
      */
     private void displayImage() {
         String url = "";
-        imageLoader = new ImageLoader_my(context, "image");
+        imageLoader = new ImageLoader_my(context, C.dir.images);
         //bgImageUrl = params.getString("bgImageUrl");
         bgImageUrl = getIntent().getStringExtra("imageUrl");
         thumbUrl = getIntent().getStringExtra("thumbnailUrl");

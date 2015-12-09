@@ -71,7 +71,7 @@ public class SpeakRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
     public SpeakRecyclerAdapter(Context context, ArrayList<Gonggao> blogList) {
         mContext = context;
         gonggaoList = blogList;
-        mImageLoader = new ImageLoader_my(context, "image");
+        mImageLoader = new ImageLoader_my(context, C.dir.images);
     }
 
     public void setNeworkError(boolean neworkError) {

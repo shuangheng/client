@@ -7,9 +7,9 @@ public class FileManager {
 
     public static String getSaveFilePath(String file) {
         if (CommonUtil.hasSDCard()) {
-            return CommonUtil.getRootFilePath() + "com.fuyou/image/" + file + "/";
+            return CommonUtil.getRootFilePath() + "com.fuyou/" + file + "/";
         } else {
-            return CommonUtil.getRootFilePath() + "com.fuyou/image/" + file + "/";
+            return CommonUtil.getRootFilePath() + "com.fuyou/" + file + "/";
         }
     }
 }

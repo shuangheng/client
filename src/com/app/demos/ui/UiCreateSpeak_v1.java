@@ -53,6 +53,7 @@ import com.app.demos.layout.ButtonFloatSmall;
 import com.app.demos.layout.ResizeLinearLayout;
 import com.app.demos.layout.materialEditText.MaterialEditText;
 import com.app.demos.layout.swipebacklayout.app.SwipeBackActivity;
+import com.app.demos.list.bitmap_load_list.FileCache;
 import com.app.demos.list.bitmap_load_list.ImageLoader;
 import com.app.demos.list.bitmap_load_list.ImageLoader_my;
 import com.app.demos.ui.authenticator.UiAuthenticator;
@@ -327,12 +328,11 @@ public class UiCreateSpeak_v1 extends BaseUi implements View.OnClickListener, Up
 
     private void compressFile(File file) {
         if (file.length()/1024 > 300) {
-            String imagePath = C.dir.base2 + "/temp";
-            File file2 = new File(imagePath);
+            File file2 = new FileCache(this, C.dir.temp).getFile2();
             if (!file2.exists()) {
                 file2.mkdirs();
             }
-            File f = new File(imagePath,
+            File f = new File(file2.getPath(),
                     empno + "_"+ TimeUtil.long2String2(System.currentTimeMillis()) + ".jpg");
             Bitmap bitmap = BitmapUtil.getCompressImage(picPath, 720f, 1280f);//压缩大小
             InputStream is = BitmapUtil.compressImage2(bitmap, 300);//压缩质量
@@ -401,12 +401,11 @@ public class UiCreateSpeak_v1 extends BaseUi implements View.OnClickListener, Up
 
             ContentValues values = new ContentValues();
             //photoUri = this.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-            String imagePath = C.dir.base2 + "/temp";
-            File file = new File(imagePath);
+            File file = new FileCache(this, C.dir.temp).getFile2();
             if (!file.exists()) {
                 file.mkdirs();
             }
-            photoUri = Uri.fromFile(new File(imagePath,
+            photoUri = Uri.fromFile(new File(file.getPath(),
                     empno + "_"+ TimeUtil.long2String2(System.currentTimeMillis()) + ".jpg"));
             intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
             startActivityForResult(intent, SELECT_PIC_BY_TACK_PHOTO);
