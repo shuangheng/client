@@ -24,7 +24,6 @@ import android.app.Service;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ParseException;
-import android.util.Log;
 
 import com.app.demos.base.BaseApp;
 import com.app.demos.base.BaseMessage;

@@ -72,7 +72,7 @@
     <declare-styleable name="ButtonFloat">
 
         <!-- Color of ripple animation -->
-        <attr name="rippleColor" format="color|reference" />
+        <attr name="rippleColorMy" format="color|reference" />
         <!-- in float button indicate icon resource -->
         <attr name="iconDrawable" format="integer" />
         <!-- in float button indicate if must start with animation -->

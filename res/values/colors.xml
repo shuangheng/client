@@ -44,17 +44,18 @@
     <color name="androidColorC">#99CC00</color>
     <color name="androidColorD">#FFBB33</color>
     <color name="androidColorE">#FF4444</color>
-    <color name="colorPrimary">#4876ff</color>
-    <color name="colorPrimaryDark">#3a5fcd</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
     <color name="accent_material_light">#009688</color>
     <color name="background_material_light">#fafafa</color>
+
 
     <color name="tab_bg">#fff1f1f1</color>
     <color name="topbar_bg">#006aa6</color>
 
 
     <color name="colorPrimaryLight">#cfd8dc</color>
-    <color name="colorAccent">#ffc107</color>
     <color name="colorAccentPressed">#FFECB3</color>
     <color name="black_light">#99444444</color>
     <color name="gray_dark">#616161</color>

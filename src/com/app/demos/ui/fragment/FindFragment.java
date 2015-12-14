@@ -18,6 +18,7 @@ import com.app.demos.model.Find;
 import com.app.demos.model.Gonggao;
 import com.app.demos.sqlite.GonggaoSqlite;
 import com.app.demos.ui.UiActionBar;
+import com.app.demos.ui.UiActionBar_v1;
 import com.app.demos.util.BaseDevice;
 
 import android.app.Activity;
@@ -47,7 +48,7 @@ public class FindFragment extends Fragment implements  OnRefreshListener {
     private String hello;// = "hello android";
     private String defaultHello = "default value";
     //////////////////////////////////////////////
-    private UiActionBar activity;
+    private UiActionBar_v1 activity;
 
     //---View---
     private ListView list;
@@ -102,7 +103,7 @@ public class FindFragment extends Fragment implements  OnRefreshListener {
     @Override
     public void onAttach(Activity activity){
         super.onAttach(activity);
-        this.activity = (UiActionBar) activity;
+        this.activity = (UiActionBar_v1) activity;
         //MaxIdNum = new MainActivity().MaxIdNum;
     }
 
