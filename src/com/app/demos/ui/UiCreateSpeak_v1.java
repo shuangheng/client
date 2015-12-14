@@ -334,7 +334,7 @@ public class UiCreateSpeak_v1 extends BaseUi implements View.OnClickListener, Up
             }
             File f = new File(file2.getPath(),
                     empno + "_"+ TimeUtil.long2String2(System.currentTimeMillis()) + ".jpg");
-            Bitmap bitmap = BitmapUtil.getCompressImage2(picPath, 720, 1280);//压缩大小
+            Bitmap bitmap = BitmapUtil.getCompressImage(picPath, 720, 1280);//压缩大小
             InputStream is = BitmapUtil.compressImage2(bitmap, 300);//压缩质量
             try {
                 OutputStream os = new FileOutputStream(f);

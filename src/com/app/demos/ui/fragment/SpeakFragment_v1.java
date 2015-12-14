@@ -179,6 +179,7 @@ public class SpeakFragment_v1 extends BaseFragment implements  OnRefreshListener
     private void onFavoriteClickk(View v, int position) {
         if (!sharedPreferences_speak.getBoolean("isLogined", false)) {
             UiAuthenticator.actionStart(activity, 1);
+            LogMy.e(null, TAG+ "onFavoriteClickk isLogined = false");
             return;
         }
         String empno = sharedPreferences_speak.getString("empno", null);

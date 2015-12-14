@@ -45,7 +45,7 @@ public class BitmapUtil {
     }
 
     /**
-     * 图片按比例大小压缩方法（根据路径获取图片并压缩）**实际尺寸未改变
+     * 图片按比例大小压缩方法（根据路径获取图片并压缩）**实际宽高（像素）未改变
      * @param srcPath
      * @param maxWidth
      * @param maxHeight
@@ -78,7 +78,7 @@ public class BitmapUtil {
     }
 
     /**
-     * 图片按比例大小压缩方法（根据路径获取图片并压缩）**实际尺寸未改变
+     * 图片按比例大小压缩方法（根据路径获取图片并压缩）**实际宽高（像素）改变
      * @param srcPath
      * @param maxWidth
      * @param maxHeight
@@ -117,7 +117,7 @@ public class BitmapUtil {
         newOpts.inSampleSize = be;//设置缩放比例
         //重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
         bitmap = BitmapFactory.decodeFile(srcPath, newOpts);
-        return ThumbnailUtils.extractThumbnail(bitmap, newW, newH);
+        return ThumbnailUtils.extractThumbnail(bitmap, newW, newH);//此方法得到的图片宽高比易改变
         //return bitmap;
     }
 
