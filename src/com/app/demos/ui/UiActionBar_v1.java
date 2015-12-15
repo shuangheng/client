@@ -530,11 +530,12 @@ public class UiActionBar_v1 extends BaseUi implements NavigationView.OnNavigatio
         int id = item.getItemId();
 
         if (id == R.id.nav_camara) {
+            overlay(LbsUi.class);
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
-
+            UiAuthenticator.actionStart(context, 2);
         } else if (id == R.id.nav_slideshow) {
-
+            overlay(UiCreateFind.class);
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {

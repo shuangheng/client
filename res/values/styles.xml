@@ -92,7 +92,7 @@
     </style>
 
     <!-- 自定义toolbar -->
-    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- activity tou ming -->
         <item name="android:windowIsTranslucent">true</item>
         <!-- toolbar bg（actionbar）颜色
@@ -141,9 +141,10 @@
 -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <!-- toolbar text（actionbar）颜色 -->
-        <item name="android:textColorPrimary">@color/white</item>
+        <!--item name="android:textColorPrimary">@color/white</item-->
         <!-- 状态栏颜色 -->
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <!-- 窗口的背景颜色 -->
         <item name="android:windowBackground">@android:color/white</item>
         <!-- SearchView -->
@@ -151,7 +152,10 @@
         <item name="android:colorBackground">@color/background_material_light</item>
     </style>
 
-    <style name="AppThemeNoActionBar" parent="@style/AppBaseTheme" />
+    <style name="AppThemeNoActionBar" parent="@style/AppBaseTheme" >
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 
     <!-- 自定义SearchView -->
     <style name="MySearchViewStyle" parent="Widget.AppCompat.SearchView">
