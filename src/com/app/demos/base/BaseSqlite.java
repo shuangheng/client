@@ -1,23 +1,19 @@
 package com.app.demos.base;
 
 import java.util.ArrayList;
-
-import com.app.demos.model.Gonggao;
-import com.app.demos.sqlite.DromInfoSqlite;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
+import com.app.demos.sqlite.CreateSql;
 
 public abstract class BaseSqlite {
 
 	private static final String DB_NAME = "demos.db";
-	private static final int DB_VERSION = 1;
+	private static final int DB_VERSION = 2;
 	
 	private DbHelper dbh = null;
 	private SQLiteDatabase db = null;
@@ -155,6 +151,7 @@ public abstract class BaseSqlite {
 			db.execSQL(createSql());
 			db.execSQL(createSql2());
 			db.execSQL(createSql3());
+			db.execSQL(CreateSql.createZhanben());
 			//db.execSQL(DromInfoSqlite.Creat);
 
 			LogMy.e(context, "onCreateSql");
@@ -164,7 +161,7 @@ public abstract class BaseSqlite {
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             switch (oldVersion) {
                 case 1://不加 break 保证每次的数据库修改都能被执行到
-                    //db.execSQL();
+                    db.execSQL(CreateSql.createZhanben());
                 case 2://不加 break 保证每次的数据库修改都能被执行到
 
                 default://不加 break 保证每次的数据库修改都能被执行到

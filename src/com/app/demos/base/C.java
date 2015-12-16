@@ -63,6 +63,9 @@ public final class C {
 			R.color.cyan_500//24
 	};
 
+	public static final class string {
+		public static final String zhanBen = "zhanben";
+	}
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	// core settings (important)
 	

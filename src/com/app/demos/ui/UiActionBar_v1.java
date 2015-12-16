@@ -63,6 +63,7 @@ import com.app.demos.ui.fragment.emoji.EmojiFragment;
 import com.app.demos.ui.test.GestureDetectorTest;
 import com.app.demos.ui.test.LbsUi;
 import com.app.demos.ui.test.ToolBarTitleScroll;
+import com.app.demos.ui.test.UiZhangBen;
 import com.app.demos.ui.test.foxconn_ESS_zsf.UiFoxconnEssPost;
 import com.app.demos.ui.test.observableScrollView.FlexibleSpaceWithImageListViewActivity;
 import com.app.demos.ui.test.uploadFile.UploadFile;
@@ -537,7 +538,7 @@ public class UiActionBar_v1 extends BaseUi implements NavigationView.OnNavigatio
         } else if (id == R.id.nav_slideshow) {
             overlay(UiCreateFind.class);
         } else if (id == R.id.nav_manage) {
-
+            overlay(UiZhangBen.class);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {

@@ -23,7 +23,7 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 23//change to 22+ case fail import org.apache.http.HttpEntity
+    compileSdkVersion 22//change to 22+ case fail import org.apache.http.HttpEntity
     buildToolsVersion "23.0.1"
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7

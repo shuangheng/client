@@ -100,5 +100,5 @@
                 android:text="@string/protocol_text"/>
         </LinearLayout>
     </ScrollView>
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar_shadow" />
 </RelativeLayout>
