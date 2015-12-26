@@ -150,6 +150,7 @@ public class AppUtil {
 				message.setResult(jsonObject.getString("result"));
 			}
 		} catch (JSONException e) {
+			e.printStackTrace();
             LogMy.e(BaseApp.getContext(), "Json format error -->>" + jsonStr);
 			throw new Exception("Json format error");
 		} catch (Exception e) {

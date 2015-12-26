@@ -73,7 +73,7 @@ public class ZhangbenSqlite extends BaseSqlite {
         String[] whereParams = new String[]{g.getId()};
         // create or update
         try {
-            if (this.exists(whereSql, whereParams)) {
+            if (whereParams[0] != null && this.exists(whereSql, whereParams)) {
                 this.update(values, whereSql, whereParams);
             } else {
                 this.create(values);
@@ -82,7 +82,7 @@ public class ZhangbenSqlite extends BaseSqlite {
             e.printStackTrace();
             return false;
         }
-        return false;
+        return true;
     }
 
     public ArrayList<Zhangben> getAllZhangben () {
