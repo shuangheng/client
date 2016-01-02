@@ -233,7 +233,7 @@ public class TimeUtil {
 
     /**
      * 从 "yyyy-MM-dd HH:mm:ss" 得到 month
-     * @param timeStamp
+     * @param timeStamp "yyyy-MM-dd HH:mm:ss"
      * @return month MM
      */
     public static String getMonth (String timeStamp) {
@@ -289,6 +289,16 @@ public class TimeUtil {
     public static String getMMdd (String timeStamp) {
 
         return getMonth(timeStamp) + "月" + getDay(timeStamp) + "日";
+    }
+
+    /**
+     * 从 "yyyy-MM-dd HH:mm:ss" 得到 yyyy-MM-dd
+     * @param timeStamp "yyyy-MM-dd HH:mm:ss"
+     * @return time MM-dd HH:mm
+     */
+    public static String getMDHM (String timeStamp) {
+
+        return timeStamp.substring(5, 16);
     }
 
     /**

@@ -1,45 +1,48 @@
-package com.app.demos.ui.test;
+package com.app.demos.ui.test.zhangBen;
 
-import android.graphics.BitmapFactory;
+import android.app.Dialog;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.PersistableBundle;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ImageSpan;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.app.demos.R;
 import com.app.demos.base.BaseMessage;
 import com.app.demos.base.BaseUi;
-import com.app.demos.base.C;
 import com.app.demos.base.LogMy;
-import com.app.demos.layout.Button;
+import com.app.demos.layout.PickerView;
+import com.app.demos.layout.Utils;
 import com.app.demos.list.bitmap_load_list.FileCache;
 import com.app.demos.model.Zhangben;
 import com.app.demos.sqlite.ZhangbenSqlite;
+import com.app.demos.ui.fragment.emoji.SelectFaceHelper;
 import com.app.demos.util.AppUtil;
 import com.app.demos.util.TimeUtil;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by tom on 15-12-16.
  */
-public class UiZhangBen extends BaseUi {
+public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOprateListener, View.OnClickListener {
     private static final int MSG_DATA = 100;
     private EditText lacation;
     private EditText money;
@@ -50,6 +53,12 @@ public class UiZhangBen extends BaseUi {
     private AppCompatButton save;
     private AppCompatButton next;
     private TextView header;
+    private SelectCategoryHelper mFaceHelper;
+    private TextView mTvCategry;
+    private TextView mTvtime;
+    private TextView mTvLocation;
+    private TextView mTvRemark;
+    private String customerTime;
     //private TextView time;
     //private TextView type;
 
@@ -73,8 +82,22 @@ public class UiZhangBen extends BaseUi {
         next = (AppCompatButton) findViewById(R.id.ui_zhanben_btn_next);
 
         header = (TextView) findViewById(R.id.ui_zhanben_header_tv);
+        mTvCategry = (TextView) findViewById(R.id.ui_zhanben_tv_category);
+        mTvtime = (TextView) findViewById(R.id.ui_zhanben_tv_time2);
+        mTvLocation = (TextView) findViewById(R.id.ui_zhanben_tv_location2);
+        mTvRemark = (TextView) findViewById(R.id.ui_zhanben_tv_remark);
+        View view = findViewById(R.id.emoji_layout);
+        if (null == mFaceHelper) {
+            mFaceHelper = new SelectCategoryHelper(this, view);
+            mFaceHelper.setFaceOpreateListener(this);
+        }
 
-        time.setText(TimeUtil.long2String(System.currentTimeMillis()));
+        String currentTime = TimeUtil.long2String(System.currentTimeMillis());
+        customerTime = currentTime;
+        time.setText(currentTime);
+        mTvtime.setText(TimeUtil.getMMdd(currentTime));
+
+        mTvtime.setOnClickListener(this);
         export.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -186,6 +209,141 @@ public class UiZhangBen extends BaseUi {
 
     private void initToolBar() {
         Toolbar toolbar = getToolBar(R.id.toolbar, getString(R.string.ji_zhang_ben), true);
+    }
+
+    @Override
+    public void onFaceSelected(CategoryModle modle) {
+        SpannableString spannableString = new SpannableString(" " + modle.getCharacter());
+        Drawable d = getResources().getDrawable(modle.getId());
+        if (d != null) {
+            int i = Utils.dpToPx(getResources().getDimension(R.dimen.dp_10), getResources());// "19"为editView 的 TextSize
+            d.setBounds(0, 0, i, i);//drawable 大小
+        }
+        ImageSpan imageSpan = new ImageSpan(d, ImageSpan.ALIGN_BASELINE);
+        spannableString.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        mTvCategry.setText(spannableString);
+    }
+
+    @Override
+    public void onFaceDeleted() {
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.ui_zhanben_tv_time2:
+                showTimePickerDialog();
+        }
+    }
+
+    private void showTimePickerDialog() {
+        Dialog dialog = new Dialog(this);
+
+        View view = LayoutInflater.from(this).inflate(R.layout.view_time_picker, null);
+        PickerView monthPv = (PickerView) view.findViewById(R.id.month_pv);
+        final PickerView dayPv = (PickerView) view.findViewById(R.id.day_pv);
+        PickerView hourPv = (PickerView) view.findViewById(R.id.hour_pv);
+        PickerView minutePv = (PickerView) view.findViewById(R.id.minute_pv);
+
+        ArrayList<String> months = new ArrayList<String>();
+        final ArrayList<String> days = new ArrayList<String>();
+        ArrayList<String> hours = new ArrayList<String>();
+        ArrayList<String> minutes = new ArrayList<String>();
+        for (int i = 1; i < 13; i++)
+        {
+            months.add(i < 10 ? "0" + i : "" + i);
+        }
+        for (int i = 1; i < getDays(TimeUtil.getMonth(customerTime)) + 1; i++)
+        {
+            days.add(i < 10 ? "0" + i : "" + i);
+        }
+        for (int i = 0; i < 24; i++)
+        {
+            hours.add(i < 10 ? "0" + i : "" + i);
+        }
+        for (int i = 0; i < 60; i++)
+        {
+            minutes.add(i < 10 ? "0" + i : "" + i);
+        }
+        monthPv.setData(months);
+        monthPv.setSelected(TimeUtil.getMonth(customerTime));
+        dayPv.setData(days);
+        monthPv.setSelected(TimeUtil.getDay(customerTime));
+        hourPv.setData(hours);
+        monthPv.setSelected(TimeUtil.getHour(customerTime));
+        minutePv.setData(minutes);
+        monthPv.setSelected(TimeUtil.getMinute(customerTime));
+
+        monthPv.setOnSelectListener(new PickerView.onSelectListener() {
+            @Override
+            public void onSelect(String text) {
+                String s = customerTime.substring(0, 5);//月份前的
+                String ss = customerTime.substring(7, 19);//月份后的
+                customerTime = s + text + ss;
+                String currentSelected = dayPv.getCurrentSelected();
+                for (int i = 1; i < getDays(text)+1; i++) {
+                    days.clear();
+                    days.add(i < 10 ? "0" + i : "" + i);
+                }
+                dayPv.setData(days);
+                if (days.size() < Integer.parseInt(currentSelected)) {
+                    dayPv.setSelected(days.size() - 1);
+                } else { dayPv.setSelected(currentSelected); }
+                mTvtime.setText(TimeUtil.getMMdd(customerTime));
+            }
+        });
+        dayPv.setOnSelectListener(new PickerView.onSelectListener() {
+            @Override
+            public void onSelect(String text) {
+                String s = customerTime.substring(0, 8);//月份前的
+                String ss = customerTime.substring(10, 19);//月份后的
+                customerTime = s + text + ss;
+                mTvtime.setText(TimeUtil.getMMdd(customerTime));
+            }
+        });
+        hourPv.setOnSelectListener(new PickerView.onSelectListener() {
+            @Override
+            public void onSelect(String text) {
+                String s = customerTime.substring(0, 11);//月份前的
+                String ss = customerTime.substring(13, 19);//月份后的
+                customerTime = s + text + ss;
+                mTvtime.setText(TimeUtil.getMMdd(customerTime));
+            }
+        });
+        minutePv.setOnSelectListener(new PickerView.onSelectListener() {
+            @Override
+            public void onSelect(String text) {
+                String s = customerTime.substring(0, 14);//月份前的
+                String ss = customerTime.substring(16, 19);//月份后的
+                customerTime = s + text + ss;
+                mTvtime.setText(TimeUtil.getMMdd(customerTime));
+            }
+        });
+        dialog.setContentView(view);
+        dialog.setTitle(getString(R.string.select_time));
+        dialog.show();
+    }
+
+    public int getDays(String month) {
+        int days = 0;
+        switch (Integer.parseInt(month)) {
+            case 1:case 3:case 5:case 7:case 8:case 10:case 12:
+                days = 31;
+                break;
+            case 2:
+                //int year = Calendar.getInstance().get(Calendar.YEAR);
+                int year = Integer.parseInt(TimeUtil.getYear(customerTime));
+                if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
+                    days = 29;
+                } else { days = 28; }
+                break;
+            default:
+                days = 30;
+                break;
+        }
+        return days;
     }
 
     private class IndexHandler extends Handler {

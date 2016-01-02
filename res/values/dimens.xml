@@ -62,6 +62,18 @@
     <dimen name="float_button_margin">24dp</dimen>
 
     <dimen name="bottom_pan_min_height">200.0dp</dimen>
+    <dimen name="ten">10dp</dimen>
+    <dimen name="dp_100">100dp</dimen>
+    <dimen name="dp_80">80dp</dimen>
+    <dimen name="dp_5">5dp</dimen>
+    <dimen name="dp_30">30dp</dimen>
+    <dimen name="dp_20">20dp</dimen>
+    <dimen name="dp_10">10dp</dimen>
+    <dimen name="sp_15">15sp</dimen>
+    <dimen name="time_picker_text_size">@dimen/sp_15</dimen>
+    <dimen name="time_picker_width">@dimen/dp_40</dimen>
+    <dimen name="dp_40">40dp</dimen>
+    <dimen name="ui_zhangben_category_height">@dimen/dp_40</dimen>
 
 
 </resources>

@@ -1,14 +1,10 @@
-package com.app.demos.ui.fragment.emoji;
-
-import java.util.ArrayList;
-import java.util.List;
+package com.app.demos.ui.test.zhangBen;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.SpannableString;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,25 +18,30 @@ import android.widget.RelativeLayout.LayoutParams;
 import com.app.demos.R;
 import com.app.demos.base.BaseApp;
 import com.app.demos.base.LogMy;
+import com.app.demos.ui.fragment.emoji.MsgFaceUtils;
+import com.app.demos.ui.fragment.emoji.ViewPagerAdapter;
 
-public class SelectFaceHelper implements OnItemClickListener {
-	private static final String TAG = SelectFaceHelper.class.getSimpleName();
+import java.util.ArrayList;
+import java.util.List;
+
+public class SelectCategoryHelper implements OnItemClickListener {
+	private static final String TAG = SelectCategoryHelper.class.getSimpleName();
 	private Context context;
 	private View mFaceView;
 	private ViewPager mViewPager;
 	private LinearLayout mIndexContainer;
 	private LayoutInflater mInflater;
-	private int pageSize = 23;//每页表情个数 = pageSize +1
+	private int pageSize = 10;//每页表情个数 = pageSize + 1
 	/** 保存于内存中的表情集合 */
-	private List<MsgEmojiModle> mMsgEmojiData = new ArrayList<MsgEmojiModle>();
+	private List<CategoryModle> mMsgCategoryData = new ArrayList<CategoryModle>();
 	/** 表情分页的结果集合 */
-	public List<List<MsgEmojiModle>> mPageEmojiDatas = new ArrayList<List<MsgEmojiModle>>();
+	public List<List<CategoryModle>> mPageCategoryDatas = new ArrayList<List<CategoryModle>>();
 
 	/** 表情页界面集合 */
 	private ArrayList<View> pageViews;
 
 	/** 表情数据填充器 */
-	private List<FaceAdapter> faceAdapters;
+	private List<CategoryAdapter> categoryAdapters;
 
 	/** 当前表情页 */
 	private int current = 0;
@@ -49,7 +50,7 @@ public class SelectFaceHelper implements OnItemClickListener {
 
 	private OnFaceOprateListener mOnFaceOprateListener;
 
-	public SelectFaceHelper(Context context, View toolView) {
+	public SelectCategoryHelper(Context context, View toolView) {
 		this.context = context;
 		mInflater = LayoutInflater.from(this.context);
 		mFaceView = toolView;
@@ -75,13 +76,13 @@ public class SelectFaceHelper implements OnItemClickListener {
 		pageViews.add(nullView1);
 
 		// 中间添加表情页
-		faceAdapters = new ArrayList<FaceAdapter>();
-		for (int i = 0; i < mPageEmojiDatas.size(); i++) {
-			GridView view = (GridView) mInflater.inflate(R.layout.msg_face_gridview, null);
-			FaceAdapter adapter = new FaceAdapter(context, mPageEmojiDatas.get(i));
+		categoryAdapters = new ArrayList<CategoryAdapter>();
+		for (int i = 0; i < mPageCategoryDatas.size(); i++) {
+			GridView view = (GridView) mInflater.inflate(R.layout.test_ui_zhangben_category_gridview, null);
+			CategoryAdapter adapter = new CategoryAdapter(context, mPageCategoryDatas.get(i));
 			view.setSelector(R.drawable.item_background_holo_light);
 			view.setAdapter(adapter);
-			faceAdapters.add(adapter);
+			categoryAdapters.add(adapter);
 			view.setOnItemClickListener(this);
 			pageViews.add(view);
 		}
@@ -167,6 +168,8 @@ public class SelectFaceHelper implements OnItemClickListener {
 		for (int i = 1; i < pointViews.size(); i++) {
 			if (index == i) {
 				pointViews.get(i).setBackgroundResource(R.drawable.icon_jw_face_index_prs);
+				if (index == 1)
+					pointViews.get(i).setBackgroundResource(R.drawable.list_focused_holo);
 			} else {
 				pointViews.get(i).setBackgroundResource(R.drawable.icon_jw_face_index_nor);
 			}
@@ -179,21 +182,21 @@ public class SelectFaceHelper implements OnItemClickListener {
 	 * @param //data
 	 */
 	private void ParseData() {
-		MsgEmojiModle emojEentry;
+		CategoryModle emojEentry;
 		try {
 			int len = MsgFaceUtils.faceImgs.length;
 			for (int i = 0; i < len; i++) {
 				int resID = MsgFaceUtils.faceImgs[i];
 				if (resID != 0) {
-					emojEentry = new MsgEmojiModle();
+					emojEentry = new CategoryModle();
 					emojEentry.setId(resID);
 					emojEentry.setCharacter(MsgFaceUtils.faceImgNames[i]);
-					mMsgEmojiData.add(emojEentry);
+					mMsgCategoryData.add(emojEentry);
 				}
 			}
-			int pageCount = (int) Math.ceil(mMsgEmojiData.size() / pageSize + 0.1);
+			int pageCount = (int) Math.ceil(mMsgCategoryData.size() / pageSize + 0.1);
 			for (int i = 0; i < pageCount; i++) {
-				mPageEmojiDatas.add(getData(i));
+				mPageCategoryDatas.add(getData(i));
 			}
 		} catch (Exception e) {
 			LogMy.e(BaseApp.getContext(), TAG+e.toString());
@@ -206,43 +209,32 @@ public class SelectFaceHelper implements OnItemClickListener {
 	 * @param page
 	 * @return
 	 */
-	private List<MsgEmojiModle> getData(int page) {
+	private List<CategoryModle> getData(int page) {
 		int startIndex = page * pageSize;
 		int endIndex = startIndex + pageSize;
-		if (endIndex > mMsgEmojiData.size()) {
-			endIndex = mMsgEmojiData.size();
+		if (endIndex > mMsgCategoryData.size()) {
+			endIndex = mMsgCategoryData.size();
 		}
-		List<MsgEmojiModle> list = new ArrayList<MsgEmojiModle>();
-		list.addAll(mMsgEmojiData.subList(startIndex, endIndex));
-		if (list.size() < pageSize) {
-			for (int i = list.size(); i < pageSize; i++) {
-				MsgEmojiModle object = new MsgEmojiModle();
+		List<CategoryModle> list = new ArrayList<CategoryModle>();
+		list.addAll(mMsgCategoryData.subList(startIndex, endIndex));
+		if (list.size() <= pageSize) {
+			for (int i = list.size(); i <= pageSize; i++) {
+				CategoryModle object = new CategoryModle();
 				list.add(object);
 			}
 		}
-		if (list.size() == pageSize) {
-			MsgEmojiModle object = new MsgEmojiModle();
-			object.setId(R.drawable.face_delete_select);
-			list.add(object);
-		}
+
 		return list;
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		MsgEmojiModle msgEmoji = (MsgEmojiModle) faceAdapters.get(current).getItem(position);
-		if (msgEmoji.getId() == R.drawable.face_delete_select) {
-			if (null != mOnFaceOprateListener) {
-				mOnFaceOprateListener.onFaceDeleted();
-			}
-		}
-		if (msgEmoji.getCharacter()!=null) {
-			String emojiStr = EmojiParser.getInstance(context).convertEmoji(msgEmoji.getCharacter());
-			SpannableString spannableString = EmojiParser.getInstance(context).addFace(context, msgEmoji.getId(),
-					emojiStr);
+		CategoryModle item = (CategoryModle) categoryAdapters.get(current).getItem(position);
+
+		if (item.getCharacter()!=null) {
 			//LogMy.e(BaseApp.getContext(), TAG+ spannableString.toString());
 			if (null != mOnFaceOprateListener) {
-				mOnFaceOprateListener.onFaceSelected(spannableString);
+				mOnFaceOprateListener.onFaceSelected(item);
 			}
 		}
 	}
@@ -253,7 +245,7 @@ public class SelectFaceHelper implements OnItemClickListener {
 
 	public interface OnFaceOprateListener {
 
-		void onFaceSelected(SpannableString spanEmojiStr);
+		void onFaceSelected(CategoryModle modle);
 
 		void onFaceDeleted();
 	}

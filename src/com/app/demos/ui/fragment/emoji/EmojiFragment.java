@@ -89,8 +89,7 @@ public class EmojiFragment extends Fragment {
 
     public static String getStringToServer2(Context context, EditText editText) {
         String msgStr = ParseEmojiMsgUtil.convertToMsg(editText.getText(), context);// 这里不要直接用mEditMessageEt.getText().toString();
-        String unicode = EmojiParser.getInstance(context).parseEmoji(msgStr);
-        return unicode;
+        return EmojiParser.getInstance(context).parseEmoji(msgStr);
     }
 
     public String getStringToServer() {

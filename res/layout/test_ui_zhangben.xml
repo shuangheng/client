@@ -22,6 +22,59 @@
                 android:text="New Text"
                 android:id="@+id/ui_zhanben_header_tv" />
 
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/ui_zhanben_tv_category"
+                    android:layout_width="@dimen/dp_80"
+                    android:layout_height="@dimen/ui_zhangben_category_height"
+                    android:gravity="center"
+                    android:background="@drawable/green_btn_bg"
+                    android:textColor="@android:color/white"
+                    android:text="@string/category"
+                    android:singleLine="true"
+                    android:layout_margin="@dimen/dp_5" />
+
+                <TextView
+                    android:id="@+id/ui_zhanben_tv_time2"
+                    android:layout_width="@dimen/dp_80"
+                    android:layout_height="@dimen/ui_zhangben_category_height"
+                    android:gravity="center"
+                    android:background="@drawable/green_btn_bg"
+                    android:textColor="@android:color/white"
+                    android:text="@string/time"
+                    android:singleLine="true"
+                    android:layout_margin="@dimen/dp_5" />
+
+                <TextView
+                    android:id="@+id/ui_zhanben_tv_location2"
+                    android:layout_width="@dimen/dp_80"
+                    android:layout_height="@dimen/ui_zhangben_category_height"
+                    android:gravity="center"
+                    android:background="@drawable/green_btn_bg"
+                    android:textColor="@android:color/white"
+                    android:text="@string/location"
+                    android:singleLine="true"
+                    android:layout_margin="@dimen/dp_5" />
+
+                <TextView
+                    android:id="@+id/ui_zhanben_tv_remark"
+                    android:layout_width="@dimen/dp_80"
+                    android:layout_height="@dimen/ui_zhangben_category_height"
+                    android:layout_margin="@dimen/dp_5"
+                    android:gravity="center"
+                    android:background="@drawable/green_btn_bg"
+                    android:textColor="@android:color/white"
+                    android:text="@string/remark"
+                    android:textSize="15dp"
+                    android:singleLine="true"/>
+            </LinearLayout>
+
+            <include layout="@layout/send_msg_tool"/>
+
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

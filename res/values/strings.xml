@@ -130,6 +130,15 @@
     <string name="is_new">最新</string>
     <string name="is_hot">最热</string>
     <string name="ji_zhang_ben">记账本</string>
+    <string name="time">时间</string>
+    <string name="location">地点</string>
+    <string name="remark">备注</string>
+    <string name="category">类别</string>
+    <string name="hour">时</string>
+    <string name="minute">分</string>
+    <string name="month">月</string>
+    <string name="day">日</string>
+    <string name="select_time">选择时间</string>
 
 
 </resources>

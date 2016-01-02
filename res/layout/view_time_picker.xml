@@ -1,0 +1,78 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white" >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" >
+
+        <com.app.demos.layout.PickerView
+            android:id="@+id/month_pv"
+            android:layout_width="@dimen/time_picker_width"
+            android:layout_height="160dp" />
+
+        <TextView
+            android:id="@+id/month_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="@dimen/dp_10"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/month_pv"
+            android:layout_toEndOf="@id/month_pv"
+            android:text="@string/month"
+            android:textColor="#ffaa33"
+            android:textSize="@dimen/time_picker_text_size"
+            android:textStyle="bold" />
+
+        <com.app.demos.layout.PickerView
+            android:id="@+id/day_pv"
+            android:layout_width="@dimen/time_picker_width"
+            android:layout_height="160dp"
+            android:layout_toRightOf="@id/month_tv"
+            android:layout_toEndOf="@id/month_tv"/>
+
+        <TextView
+            android:id="@+id/day_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="@dimen/dp_20"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/day_pv"
+            android:layout_toEndOf="@id/day_pv"
+            android:text="@string/day"
+            android:textColor="#ffaa33"
+            android:textSize="@dimen/time_picker_text_size"
+            android:textStyle="bold" />
+
+        <com.app.demos.layout.PickerView
+            android:id="@+id/hour_pv"
+            android:layout_width="@dimen/time_picker_width"
+            android:layout_height="160dp"
+            android:layout_toRightOf="@id/day_tv"
+            android:layout_toEndOf="@id/day_tv"/>
+
+        <TextView
+            android:id="@+id/hout_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/hour_pv"
+            android:layout_toEndOf="@id/hour_pv"
+            android:text=" : "
+            android:textSize="@dimen/time_picker_text_size"
+            android:textStyle="bold" />
+
+        <com.app.demos.layout.PickerView
+            android:id="@+id/minute_pv"
+            android:layout_width="@dimen/time_picker_width"
+            android:layout_height="160dp"
+            android:layout_toRightOf="@id/hout_tv"
+            android:layout_toEndOf="@id/hout_tv"/>
+
+
+
+    </RelativeLayout>
+
+</RelativeLayout>
