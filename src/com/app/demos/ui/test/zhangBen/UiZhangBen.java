@@ -13,8 +13,10 @@ import android.text.SpannableString;
 import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.app.demos.R;
 import com.app.demos.base.BaseMessage;
@@ -25,7 +27,6 @@ import com.app.demos.layout.Utils;
 import com.app.demos.list.bitmap_load_list.FileCache;
 import com.app.demos.model.Zhangben;
 import com.app.demos.sqlite.ZhangbenSqlite;
-import com.app.demos.ui.fragment.emoji.SelectFaceHelper;
 import com.app.demos.util.AppUtil;
 import com.app.demos.util.TimeUtil;
 
@@ -37,14 +38,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 /**
  * Created by tom on 15-12-16.
  */
 public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOprateListener, View.OnClickListener {
     private static final int MSG_DATA = 100;
-    private EditText lacation;
+    private EditText location;
     private EditText money;
     private EditText time;
     private EditText type;
@@ -70,112 +70,64 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
         initView();
     }
 
-    private void initView() {
-        initToolBar();
-        lacation = (EditText) findViewById(R.id.ui_zhanben_edit_loaction);
-        money = (EditText) findViewById(R.id.ui_zhanben_edit_money);
-        time = (EditText) findViewById(R.id.ui_zhanben_edit_time);
-        type = (EditText) findViewById(R.id.ui_zhanben_edit_type);
-        importBtn = (AppCompatButton) findViewById(R.id.ui_zhanben_btn_import);
-        export = (AppCompatButton) findViewById(R.id.ui_zhanben_btn_export);
-        save = (AppCompatButton) findViewById(R.id.ui_zhanben_btn_save);
-        next = (AppCompatButton) findViewById(R.id.ui_zhanben_btn_next);
-
-        header = (TextView) findViewById(R.id.ui_zhanben_header_tv);
-        mTvCategry = (TextView) findViewById(R.id.ui_zhanben_tv_category);
-        mTvtime = (TextView) findViewById(R.id.ui_zhanben_tv_time2);
-        mTvLocation = (TextView) findViewById(R.id.ui_zhanben_tv_location2);
-        mTvRemark = (TextView) findViewById(R.id.ui_zhanben_tv_remark);
-        View view = findViewById(R.id.emoji_layout);
-        if (null == mFaceHelper) {
-            mFaceHelper = new SelectCategoryHelper(this, view);
-            mFaceHelper.setFaceOpreateListener(this);
-        }
-
-        String currentTime = TimeUtil.long2String(System.currentTimeMillis());
-        customerTime = currentTime;
-        time.setText(currentTime);
-        mTvtime.setText(TimeUtil.getMMdd(currentTime));
-
-        mTvtime.setOnClickListener(this);
-        export.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.ui_zhanben_edit_time:
+                showTimePickerDialog2();
+            case R.id.ui_zhanben_tv_time2:
+                showTimePickerDialog2();
+                break;
+            case R.id.ui_zhanben_btn_save:
+                saveData(v);
+            case R.id.ui_zhanben_btn_export:
                 exportData();
                 Snackbar.make(v, "exprot data ok", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-            }
-        });
-        importBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Handler mHandler = new IndexHandler();
-                FileCache fileCache = new FileCache(UiZhangBen.this, "sql");
-                File saveFilePath = fileCache.getFile("zhanBen.sql");
-                try {
-                    FileInputStream is = new FileInputStream(saveFilePath);
-                    String encoding = "UTF-8";
-                    InputStreamReader reader = new InputStreamReader(is);
-                    BufferedReader bufferedReader = new BufferedReader(reader);
-                    String s = null;
-                    while ((s = bufferedReader.readLine()) != null) {
-                        toast(s);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("data", s);
-                        Message msg = new Message();
-                        msg.what = MSG_DATA;
-                        msg.setData(bundle);
-                        mHandler.sendMessage(msg);
-
-
-                    }
-                    is.close();
-                    reader.close();
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Zhangben zhang = new Zhangben();
-                zhang.setMoney(money.getText().toString());
-                zhang.setLocation(lacation.getText().toString());
-                zhang.setOne(type.getText().toString());
-                zhang.setTwo(type.getText().toString());
-                zhang.setThree(type.getText().toString());
-                zhang.setTime(time.getText().toString());
-                if (new ZhangbenSqlite(UiZhangBen.this).updateZhangben(zhang)) {
-                    Snackbar.make(v, "ok", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                    exportData();
-                } else {
-                    Snackbar.make(v, "fail", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
-            }
-        });
-
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                break;
+            case R.id.ui_zhanben_btn_import:
+                importData();
+                break;
+            case R.id.ui_zhanben_btn_next:
                 String s = "";
-                ArrayList<Zhangben> zList = new ZhangbenSqlite(UiZhangBen.this).getAllZhangben();
+                ArrayList<Zhangben> zList = new ZhangbenSqlite(UiZhangBen.this).getAllZhangben("4");
                 for (Zhangben z : zList) {
                     s = s + "\n" + z.getMoney() + "\n" + z.getThree() + "\n" + z.getTime() + "\n" +
                             z.getLocation() + "\n" + z.getId() + "--------------";
                 }
                 header.setText(s);
-            }
-        });
+                break;
+        }
+    }
+
+    private void saveData(View v) {
+        Zhangben zhang = new Zhangben();
+        zhang.setMoney(money.getText().toString());
+        zhang.setLocation(location.getText().toString());
+        zhang.setOne(type.getText().toString());
+        zhang.setTwo(type.getText().toString());
+        zhang.setThree(type.getText().toString());
+        //zhang.setTime(time.getText().toString());
+        zhang.setTime(customerTime);
+        if (new ZhangbenSqlite(UiZhangBen.this).updateZhangben(zhang)) {
+            Snackbar.make(v, "ok", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+            exportData();
+        } else {
+            Snackbar.make(v, "fail", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }
+
+        money.setText("");
+        type.setText("");
+        location.setText("");
+        time.setText(TimeUtil.long2String(System.currentTimeMillis()));
     }
 
     private void exportData() {
         String s = "";
         String douDian = ",";
-        ArrayList<Zhangben> zhangbenArrayList = new ZhangbenSqlite(UiZhangBen.this).getAllZhangben();
+        ArrayList<Zhangben> zhangbenArrayList = new ZhangbenSqlite(UiZhangBen.this).getAllZhangben(null);
         int size = zhangbenArrayList.size();
         for (Zhangben z : zhangbenArrayList) {
             if (z == zhangbenArrayList.get(size-1)) {
@@ -207,6 +159,35 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
         }
     }
 
+    private void importData() {
+        Handler mHandler = new IndexHandler();
+        FileCache fileCache = new FileCache(UiZhangBen.this, "sql");
+        File saveFilePath = fileCache.getFile("zhanBen.sql");
+        try {
+            FileInputStream is = new FileInputStream(saveFilePath);
+            String encoding = "UTF-8";
+            InputStreamReader reader = new InputStreamReader(is);
+            BufferedReader bufferedReader = new BufferedReader(reader);
+            String s = null;
+            while ((s = bufferedReader.readLine()) != null) {
+                toast(s);
+                Bundle bundle = new Bundle();
+                bundle.putString("data", s);
+                Message msg = new Message();
+                msg.what = MSG_DATA;
+                msg.setData(bundle);
+                mHandler.sendMessage(msg);
+
+
+            }
+            is.close();
+            reader.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void initToolBar() {
         Toolbar toolbar = getToolBar(R.id.toolbar, getString(R.string.ji_zhang_ben), true);
     }
@@ -230,12 +211,64 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
 
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.ui_zhanben_tv_time2:
-                showTimePickerDialog();
+    private void showTimePickerDialog2() {
+        Dialog dialog = new Dialog(this);
+
+        View view = LayoutInflater.from(this).inflate(R.layout.view_time_picker_2, null);
+        final DatePicker datePicker = (DatePicker) view.findViewById(R.id.datePicker);
+        final TimePicker timePicker = (TimePicker) view.findViewById(R.id.timePicker);
+
+        UiUtil.resizePicker(datePicker);
+        UiUtil.resizePicker(timePicker);
+
+        //datePicker.setMinDate(System.currentTimeMillis() - 1000);
+        int year = Integer.parseInt(TimeUtil.getYear(customerTime));
+        int monthOfYear = Integer.parseInt(TimeUtil.getMonth(customerTime))-1;
+        int dayOfMonth = Integer.parseInt(TimeUtil.getDay(customerTime));
+        datePicker.init(year, monthOfYear, dayOfMonth, new DatePicker.OnDateChangedListener() {
+
+            public void onDateChanged(DatePicker view, int year,
+                                      int monthOfYear, int dayOfMonth) {
+                //得到时间
+                String time = getTwoNum(timePicker.getCurrentHour()) + ":" + getTwoNum(timePicker.getCurrentMinute()) + ":00";
+
+                customerTime = year + "-" + getTwoNum(monthOfYear + 1) + "-" + getTwoNum(dayOfMonth) + " " + time;
+
+                mTvtime.setText(TimeUtil.getMMdd(customerTime));
+                print(customerTime);
+            }
+
+        });
+
+        timePicker.setIs24HourView(true);
+        timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                String date = datePicker.getYear() + "-" + getTwoNum(datePicker.getMonth() + 1) + "-"
+                        + getTwoNum(datePicker.getDayOfMonth());
+                customerTime = date + " " +
+                        getTwoNum(timePicker.getCurrentHour()) + ":" + getTwoNum(timePicker.getCurrentMinute()) + ":00";
+                mTvtime.setText(TimeUtil.getMMdd(customerTime));
+                print(customerTime);
+            }
+
+        });
+
+        dialog.setTitle(getString(R.string.select_time));
+        dialog.setContentView(view);
+        dialog.show();
+    }
+
+    private String getTwoNum(int numbar) {
+        String twoNum = "";
+        if (numbar < 10) {
+            twoNum = "0" + numbar;
+            return  twoNum;
         }
+        return numbar + "";
+    }
+
+    private void print(String customerTime) {
+        header.setText(customerTime);
     }
 
     private void showTimePickerDialog() {
@@ -268,13 +301,15 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
             minutes.add(i < 10 ? "0" + i : "" + i);
         }
         monthPv.setData(months);
-        monthPv.setSelected(TimeUtil.getMonth(customerTime));
+        //monthPv.setSelected(TimeUtil.getMonth(customerTime));
         dayPv.setData(days);
-        monthPv.setSelected(TimeUtil.getDay(customerTime));
+        //monthPv.setSelected(TimeUtil.getDay(customerTime));
         hourPv.setData(hours);
-        monthPv.setSelected(TimeUtil.getHour(customerTime));
+        hourPv.setMaxTextSize(Utils.dpToPx(getResources().getDimension(R.dimen.dp_5), getResources()));
+        //monthPv.setSelected(TimeUtil.getHour(customerTime));
         minutePv.setData(minutes);
-        monthPv.setSelected(TimeUtil.getMinute(customerTime));
+        minutePv.setColorText(getResources().getColor(R.color.green));
+       // monthPv.setSelected(TimeUtil.getMinute(customerTime));
 
         monthPv.setOnSelectListener(new PickerView.onSelectListener() {
             @Override
@@ -346,6 +381,40 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
         return days;
     }
 
+    private void initView() {
+        initToolBar();
+        location = (EditText) findViewById(R.id.ui_zhanben_edit_loaction);
+        money = (EditText) findViewById(R.id.ui_zhanben_edit_money);
+        time = (EditText) findViewById(R.id.ui_zhanben_edit_time);
+        type = (EditText) findViewById(R.id.ui_zhanben_edit_type);
+        importBtn = (AppCompatButton) findViewById(R.id.ui_zhanben_btn_import);
+        export = (AppCompatButton) findViewById(R.id.ui_zhanben_btn_export);
+        save = (AppCompatButton) findViewById(R.id.ui_zhanben_btn_save);
+        next = (AppCompatButton) findViewById(R.id.ui_zhanben_btn_next);
+
+        header = (TextView) findViewById(R.id.ui_zhanben_header_tv);
+        mTvCategry = (TextView) findViewById(R.id.ui_zhanben_tv_category);
+        mTvtime = (TextView) findViewById(R.id.ui_zhanben_tv_time2);
+        mTvLocation = (TextView) findViewById(R.id.ui_zhanben_tv_location2);
+        mTvRemark = (TextView) findViewById(R.id.ui_zhanben_tv_remark);
+        View view = findViewById(R.id.emoji_layout);
+        if (null == mFaceHelper) {
+            mFaceHelper = new SelectCategoryHelper(this, view);
+            mFaceHelper.setFaceOpreateListener(this);
+        }
+
+        String currentTime = TimeUtil.long2String(System.currentTimeMillis());
+        customerTime = currentTime;
+        time.setText(currentTime);
+        mTvtime.setText(TimeUtil.getMMdd(currentTime));
+
+        mTvtime.setOnClickListener(this);
+        export.setOnClickListener(this);
+        importBtn.setOnClickListener(this);
+        save.setOnClickListener(this);
+        next.setOnClickListener(this);
+    }
+
     private class IndexHandler extends Handler {
         @SuppressWarnings("unchecked")
         @Override
@@ -374,4 +443,5 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
             }
         }
     }
+
 }

@@ -93,7 +93,7 @@ public class GonggaoSqlite extends BaseSqlite {
 	public ArrayList<Gonggao> getAllGonggao () {
 		ArrayList<Gonggao> gList = new ArrayList<Gonggao>();
 		try {
-			ArrayList<ArrayList<String>> rList = this.query2(null, null);
+			ArrayList<ArrayList<String>> rList = this.query2(null, null, null);
 			int rCount = rList.size();
 			for (int i = 0; i < rCount; i++) {
 				ArrayList<String> rRow = rList.get(i);

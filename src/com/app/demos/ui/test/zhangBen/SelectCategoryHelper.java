@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ import android.widget.RelativeLayout.LayoutParams;
 import com.app.demos.R;
 import com.app.demos.base.BaseApp;
 import com.app.demos.base.LogMy;
-import com.app.demos.ui.fragment.emoji.MsgFaceUtils;
 import com.app.demos.ui.fragment.emoji.ViewPagerAdapter;
 
 import java.util.ArrayList;
@@ -33,7 +31,7 @@ public class SelectCategoryHelper implements OnItemClickListener {
 	private LayoutInflater mInflater;
 	private int pageSize = 10;//每页表情个数 = pageSize + 1
 	/** 保存于内存中的表情集合 */
-	private List<CategoryModle> mMsgCategoryData = new ArrayList<CategoryModle>();
+	private List<CategoryModle> mMsgCategoryAllData = new ArrayList<CategoryModle>();
 	/** 表情分页的结果集合 */
 	public List<List<CategoryModle>> mPageCategoryDatas = new ArrayList<List<CategoryModle>>();
 
@@ -184,17 +182,17 @@ public class SelectCategoryHelper implements OnItemClickListener {
 	private void ParseData() {
 		CategoryModle emojEentry;
 		try {
-			int len = MsgFaceUtils.faceImgs.length;
+			int len = CategoryUtils.faceImgs.length;
 			for (int i = 0; i < len; i++) {
-				int resID = MsgFaceUtils.faceImgs[i];
+				int resID = CategoryUtils.faceImgs[i];
 				if (resID != 0) {
 					emojEentry = new CategoryModle();
 					emojEentry.setId(resID);
-					emojEentry.setCharacter(MsgFaceUtils.faceImgNames[i]);
-					mMsgCategoryData.add(emojEentry);
+					emojEentry.setCharacter(CategoryUtils.faceImgNames[i]);
+					mMsgCategoryAllData.add(emojEentry);
 				}
 			}
-			int pageCount = (int) Math.ceil(mMsgCategoryData.size() / pageSize + 0.1);
+			int pageCount = (int) Math.ceil(mMsgCategoryAllData.size() / pageSize + 0.1);
 			for (int i = 0; i < pageCount; i++) {
 				mPageCategoryDatas.add(getData(i));
 			}
@@ -212,11 +210,11 @@ public class SelectCategoryHelper implements OnItemClickListener {
 	private List<CategoryModle> getData(int page) {
 		int startIndex = page * pageSize;
 		int endIndex = startIndex + pageSize;
-		if (endIndex > mMsgCategoryData.size()) {
-			endIndex = mMsgCategoryData.size();
+		if (endIndex > mMsgCategoryAllData.size()) {
+			endIndex = mMsgCategoryAllData.size();
 		}
 		List<CategoryModle> list = new ArrayList<CategoryModle>();
-		list.addAll(mMsgCategoryData.subList(startIndex, endIndex));
+		list.addAll(mMsgCategoryAllData.subList(startIndex, endIndex));
 		if (list.size() <= pageSize) {
 			for (int i = list.size(); i <= pageSize; i++) {
 				CategoryModle object = new CategoryModle();

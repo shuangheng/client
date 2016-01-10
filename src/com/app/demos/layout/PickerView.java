@@ -49,7 +49,8 @@ public class PickerView extends View
 	private float mMaxTextAlpha = 255;
 	private float mMinTextAlpha = 120;
 
-	private int mColorText = 0x333333;
+	//private int mColorText = 0x333333;
+	private int mColorText;
 
 	private int mViewHeight;
 	private int mViewWidth;
@@ -157,6 +158,21 @@ public class PickerView extends View
 			}
 	}
 
+	public void setMaxTextSize(int maxTextSize) {
+		mMaxTextSize = maxTextSize;
+		invalidate();
+	}
+
+	public void setMinTextSize(int minTextSize) {
+		mMinTextSize = minTextSize;
+		invalidate();
+	}
+
+	public void setColorText(int resColorId) {
+		mColorText = resColorId;
+		postInvalidate();
+	}
+
 	private void moveHeadToTail()
 	{
 		String head = mDataList.get(0);
@@ -191,7 +207,7 @@ public class PickerView extends View
 		mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		mPaint.setStyle(Style.FILL);
 		mPaint.setTextAlign(Align.CENTER);
-		mPaint.setColor(mColorText);
+		mPaint.setColor(mColorText == 0 ? 0x333333 : mColorText);
 	}
 
 	@Override
@@ -334,7 +350,7 @@ public class PickerView extends View
 	}
 
 	public String getCurrentSelected() {
-		return mcurrentSelected;
+		return "" + mCurrentSelected;
 	}
 
 	class MyTimerTask extends TimerTask

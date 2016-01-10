@@ -288,6 +288,16 @@ public class TimeUtil {
      */
     public static String getMMdd (String timeStamp) {
 
+        return timeStamp.substring(5, 10);
+    }
+
+    /**
+     * 从 "yyyy-MM-dd HH:mm:ss" 得到 MM-dd
+     * @param timeStamp
+     * @return time MM月dd日
+     */
+    public static String getMMdd2 (String timeStamp) {
+
         return getMonth(timeStamp) + "月" + getDay(timeStamp) + "日";
     }
 

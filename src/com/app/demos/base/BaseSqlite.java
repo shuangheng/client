@@ -80,11 +80,15 @@ public abstract class BaseSqlite {
 	}
 	
 	//改进上面的
-	public ArrayList<ArrayList<String>> query2 (String where, String[] params) {
+	public ArrayList<ArrayList<String>> query2(String where, String[] params, String limit) {
 		ArrayList<ArrayList<String>> rList = new ArrayList<ArrayList<String>>();
 		try {
 			db = dbh.getReadableDatabase();
-			cursor = db.query(tableName(), tableColumns(), where, params, null, null, "id desc");
+			if (limit == null) {
+				cursor = db.query(tableName(), tableColumns(), where, params, null, null, "id desc");
+			} else {
+				cursor = db.query(tableName(), tableColumns(), where, params, null, null, "id desc", limit);
+			}
 			while (cursor.moveToNext()) {				
 				ArrayList<String> rRow = new ArrayList<String>();
 				int j = cursor.getColumnCount();

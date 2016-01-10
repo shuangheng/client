@@ -5,9 +5,7 @@ import android.content.Context;
 
 import com.app.demos.base.BaseSqlite;
 import com.app.demos.base.C;
-import com.app.demos.model.DromInfo;
 import com.app.demos.model.FavoriteSpeak;
-import com.app.demos.model.Gonggao;
 import com.app.demos.model.Zhangben;
 
 import java.util.ArrayList;
@@ -85,10 +83,10 @@ public class ZhangbenSqlite extends BaseSqlite {
         return true;
     }
 
-    public ArrayList<Zhangben> getAllZhangben () {
+    public ArrayList<Zhangben> getAllZhangben (String limit) {
         ArrayList<Zhangben> gList = new ArrayList<Zhangben>();
         try {
-            ArrayList<ArrayList<String>> rList = this.query2(null, null);
+            ArrayList<ArrayList<String>> rList = this.query2(null, null, limit);
             int rCount = rList.size();
             for (int i = 0; i < rCount; i++) {
                 ArrayList<String> rRow = rList.get(i);

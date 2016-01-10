@@ -5,7 +5,6 @@ import android.content.Context;
 
 import com.app.demos.base.BaseSqlite;
 import com.app.demos.model.DromInfo;
-import com.app.demos.model.Gonggao;
 
 import java.util.ArrayList;
 
@@ -97,7 +96,7 @@ public class DromInfoSqlite extends BaseSqlite {
     public ArrayList<DromInfo> getAll() {
         ArrayList<DromInfo> gList = new ArrayList<DromInfo>();
         try {
-            ArrayList<ArrayList<String>> rList = this.query2(null, null);
+            ArrayList<ArrayList<String>> rList = this.query2(null, null, null);
             int rCount = rList.size();
             for (int i = 0; i < rCount; i++) {
                 ArrayList<String> rRow = rList.get(i);

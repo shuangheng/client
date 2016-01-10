@@ -90,7 +90,7 @@ public class FavoriteSpeakSqlite extends BaseSqlite {
     public ArrayList<FavoriteSpeak> getAll() {
         ArrayList<FavoriteSpeak> gList = new ArrayList<FavoriteSpeak>();
         try {
-            ArrayList<ArrayList<String>> rList = this.query2(null, null);
+            ArrayList<ArrayList<String>> rList = this.query2(null, null, null);
             int rCount = rList.size();
             for (int i = 0; i < rCount; i++) {
                 ArrayList<String> rRow = rList.get(i);
