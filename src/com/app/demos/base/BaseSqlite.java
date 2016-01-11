@@ -13,7 +13,7 @@ import com.app.demos.sqlite.CreateSql;
 public abstract class BaseSqlite {
 
 	private static final String DB_NAME = "demos.db";
-	private static final int DB_VERSION = 2;
+	private static final int DB_VERSION = 1;
 	
 	private DbHelper dbh = null;
 	private SQLiteDatabase db = null;
@@ -23,15 +23,17 @@ public abstract class BaseSqlite {
 		dbh = new DbHelper(context, DB_NAME, null, DB_VERSION);		
 	}
 
-	public void create (ContentValues values) {
+	public Boolean create (ContentValues values) {
 		try {
 			db = dbh.getWritableDatabase();
 			db.insert(tableName(), null, values);
 		} catch (Exception e) {
 			e.printStackTrace();
+            return false;
 		} finally {
 			db.close();
 		}
+        return true;
 	}
 	
 	public void update (ContentValues values, String where, String[] params) {
@@ -80,14 +82,14 @@ public abstract class BaseSqlite {
 	}
 	
 	//改进上面的
-	public ArrayList<ArrayList<String>> query2(String where, String[] params, String limit) {
+	public ArrayList<ArrayList<String>> query2(String where, String[] params, String limit, String desc) {
 		ArrayList<ArrayList<String>> rList = new ArrayList<ArrayList<String>>();
 		try {
 			db = dbh.getReadableDatabase();
 			if (limit == null) {
-				cursor = db.query(tableName(), tableColumns(), where, params, null, null, "id desc");
+				cursor = db.query(tableName(), tableColumns(), where, params, null, null, desc);
 			} else {
-				cursor = db.query(tableName(), tableColumns(), where, params, null, null, "id desc", limit);
+				cursor = db.query(tableName(), tableColumns(), where, params, null, null, desc, limit);
 			}
 			while (cursor.moveToNext()) {				
 				ArrayList<String> rRow = new ArrayList<String>();
@@ -156,6 +158,8 @@ public abstract class BaseSqlite {
 			db.execSQL(createSql2());
 			db.execSQL(createSql3());
 			db.execSQL(CreateSql.createZhanben());
+			db.execSQL(CreateSql.createZhanbenLocation());
+			//db.execSQL(CreateSql.insertZhanbenLocation());
 			//db.execSQL(DromInfoSqlite.Creat);
 
 			LogMy.e(context, "onCreateSql");
@@ -167,7 +171,8 @@ public abstract class BaseSqlite {
                 case 1://不加 break 保证每次的数据库修改都能被执行到
                     db.execSQL(CreateSql.createZhanben());
                 case 2://不加 break 保证每次的数据库修改都能被执行到
-
+                    db.execSQL(CreateSql.createZhanbenLocation());
+                    db.execSQL(CreateSql.insertZhanbenLocation());
                 default://不加 break 保证每次的数据库修改都能被执行到
             }
 			LogMy.e(context, "upgradeSql");

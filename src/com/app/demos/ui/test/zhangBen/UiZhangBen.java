@@ -21,11 +21,14 @@ import android.widget.TimePicker;
 import com.app.demos.R;
 import com.app.demos.base.BaseMessage;
 import com.app.demos.base.BaseUi;
+import com.app.demos.base.C;
 import com.app.demos.base.LogMy;
 import com.app.demos.layout.PickerView;
 import com.app.demos.layout.Utils;
 import com.app.demos.list.bitmap_load_list.FileCache;
+import com.app.demos.model.ZhangBenLocation;
 import com.app.demos.model.Zhangben;
+import com.app.demos.sqlite.ZhangBenLocationSqlite;
 import com.app.demos.sqlite.ZhangbenSqlite;
 import com.app.demos.util.AppUtil;
 import com.app.demos.util.TimeUtil;
@@ -59,6 +62,9 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
     private TextView mTvLocation;
     private TextView mTvRemark;
     private String customerTime;
+    private String customerLocation = "无地点";
+    private String remarkString;
+    private String customerCategory;
     //private TextView time;
     //private TextView type;
 
@@ -77,6 +83,9 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
                 showTimePickerDialog2();
             case R.id.ui_zhanben_tv_time2:
                 showTimePickerDialog2();
+                break;
+            case R.id.ui_zhanben_tv_location2:
+                showLocationPickerDialog();
                 break;
             case R.id.ui_zhanben_btn_save:
                 saveData(v);
@@ -101,17 +110,31 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
     }
 
     private void saveData(View v) {
+        if (customerCategory ==null) {
+            toast(getString(R.string.please_select_category));
+            return;
+        }
         Zhangben zhang = new Zhangben();
         zhang.setMoney(money.getText().toString());
-        zhang.setLocation(location.getText().toString());
+        //zhang.setLocation(location.getText().toString());
         zhang.setOne(type.getText().toString());
-        zhang.setTwo(type.getText().toString());
+        //zhang.setTwo(type.getText().toString());
         zhang.setThree(type.getText().toString());
         //zhang.setTime(time.getText().toString());
+        zhang.setLocation(customerLocation);
+        zhang.setTwo(customerCategory);
         zhang.setTime(customerTime);
         if (new ZhangbenSqlite(UiZhangBen.this).updateZhangben(zhang)) {
             Snackbar.make(v, "ok", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
+            //add location used //增加 location 使用次数
+            ZhangBenLocation zhangBenLocation = new ZhangBenLocation();
+            ZhangBenLocationSqlite zhangBenLocationSqlite = new ZhangBenLocationSqlite(this);
+            int used = zhangBenLocationSqlite.getLocationUsed(customerLocation);
+            zhangBenLocation.setLocation(customerLocation);
+            zhangBenLocation.setUsed(String.valueOf(used + 1));
+            zhangBenLocationSqlite.updateZhangBenLocation(zhangBenLocation);
+
             exportData();
         } else {
             Snackbar.make(v, "fail", Snackbar.LENGTH_LONG)
@@ -204,6 +227,8 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
         spannableString.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         mTvCategry.setText(spannableString);
+
+        customerCategory = modle.getCharacter();
     }
 
     @Override
@@ -241,6 +266,7 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
         });
 
         timePicker.setIs24HourView(true);
+        timePicker.setCurrentHour(Integer.parseInt(TimeUtil.getHour(customerTime)));
         timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
                 String date = datePicker.getYear() + "-" + getTwoNum(datePicker.getMonth() + 1) + "-"
@@ -271,6 +297,27 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
         header.setText(customerTime);
     }
 
+    private void showLocationPickerDialog() {
+        Dialog dialog = new Dialog(this);
+
+        View view = LayoutInflater.from(this).inflate(R.layout.view_location_picker, null);
+        PickerView locationPv = (PickerView) view.findViewById(R.id.location_pv);
+
+        ArrayList<String> locations = new ZhangBenLocationSqlite(this).getAllLocation(null);
+        locationPv.setData(locations);
+        locationPv.setOnSelectListener(new PickerView.onSelectListener() {
+            @Override
+            public void onSelect(String text) {
+                customerLocation = text;
+                mTvLocation.setText(customerLocation);
+            }
+        });
+        locationPv.setSelected(customerLocation);
+
+        dialog.setContentView(view);
+        dialog.setTitle(getString(R.string.select_location));
+        dialog.show();
+    }
     private void showTimePickerDialog() {
         Dialog dialog = new Dialog(this);
 
@@ -305,10 +352,8 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
         dayPv.setData(days);
         //monthPv.setSelected(TimeUtil.getDay(customerTime));
         hourPv.setData(hours);
-        hourPv.setMaxTextSize(Utils.dpToPx(getResources().getDimension(R.dimen.dp_5), getResources()));
         //monthPv.setSelected(TimeUtil.getHour(customerTime));
         minutePv.setData(minutes);
-        minutePv.setColorText(getResources().getColor(R.color.green));
        // monthPv.setSelected(TimeUtil.getMinute(customerTime));
 
         monthPv.setOnSelectListener(new PickerView.onSelectListener() {
@@ -402,13 +447,27 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
             mFaceHelper = new SelectCategoryHelper(this, view);
             mFaceHelper.setFaceOpreateListener(this);
         }
-
+        //init data
         String currentTime = TimeUtil.long2String(System.currentTimeMillis());
         customerTime = currentTime;
         time.setText(currentTime);
         mTvtime.setText(TimeUtil.getMMdd(currentTime));
 
+        ZhangBenLocationSqlite zhangBenLocationSqlite = new ZhangBenLocationSqlite(this);
+        if (zhangBenLocationSqlite.getAllLocation("1").size() == 0) {
+            if (zhangBenLocationSqlite.createData()) {//添加 location data
+                customerLocation = zhangBenLocationSqlite.getAllLocation(null).get(0);
+                mTvLocation.setText(customerLocation);
+            }
+        } else {
+            customerLocation = zhangBenLocationSqlite.getAllLocation(null).get(0);
+            mTvLocation.setText(customerLocation);
+        }
+
+
         mTvtime.setOnClickListener(this);
+        mTvLocation.setOnClickListener(this);
+        mTvRemark.setOnClickListener(this);
         export.setOnClickListener(this);
         importBtn.setOnClickListener(this);
         save.setOnClickListener(this);

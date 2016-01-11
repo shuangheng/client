@@ -63,8 +63,12 @@ public final class C {
 			R.color.cyan_500//24
 	};
 
+	public static final class array {
+		public static String[] locations = {"万盛百货", "超市", "大润发", "便利店", "无地点"};
+	}
 	public static final class string {
 		public static final String zhanBen = "zhanben";
+		public static final String zhangBenLocation = "zhangben_location";
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	// core settings (important)

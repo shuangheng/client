@@ -216,7 +216,7 @@ public class SelectCategoryHelper implements OnItemClickListener {
 		List<CategoryModle> list = new ArrayList<CategoryModle>();
 		list.addAll(mMsgCategoryAllData.subList(startIndex, endIndex));
 		if (list.size() <= pageSize) {
-			for (int i = list.size(); i <= pageSize; i++) {
+			for (int i = list.size(); i < pageSize; i++) {
 				CategoryModle object = new CategoryModle();
 				list.add(object);
 			}
@@ -232,6 +232,8 @@ public class SelectCategoryHelper implements OnItemClickListener {
 		if (item.getCharacter()!=null) {
 			//LogMy.e(BaseApp.getContext(), TAG+ spannableString.toString());
 			if (null != mOnFaceOprateListener) {
+				mViewPager.getAdapter().notifyDataSetChanged();
+				view.setBackgroundResource(R.drawable.green_btn_bg);
 				mOnFaceOprateListener.onFaceSelected(item);
 			}
 		}

@@ -96,7 +96,7 @@ public class DromInfoSqlite extends BaseSqlite {
     public ArrayList<DromInfo> getAll() {
         ArrayList<DromInfo> gList = new ArrayList<DromInfo>();
         try {
-            ArrayList<ArrayList<String>> rList = this.query2(null, null, null);
+            ArrayList<ArrayList<String>> rList = this.query2(null, null, null, "id desc");
             int rCount = rList.size();
             for (int i = 0; i < rCount; i++) {
                 ArrayList<String> rRow = rList.get(i);
