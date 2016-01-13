@@ -29,27 +29,32 @@ public class SelectCategoryHelper implements OnItemClickListener {
 	private ViewPager mViewPager;
 	private LinearLayout mIndexContainer;
 	private LayoutInflater mInflater;
-	private int pageSize = 10;//每页表情个数 = pageSize + 1
-	/** 保存于内存中的表情集合 */
+	public int pageSize = 10;//每页表情个数 = pageSize + 1
+	/** 保存于内存中的全部category集合 */
 	private List<CategoryModle> mMsgCategoryAllData = new ArrayList<CategoryModle>();
-	/** 表情分页的结果集合 */
+	/** recent category集合 --常用集合*/
+	private List<CategoryModle> mRecentCategoryList = new ArrayList<CategoryModle>();
+	/** category分页的结果集合 */
 	public List<List<CategoryModle>> mPageCategoryDatas = new ArrayList<List<CategoryModle>>();
 
-	/** 表情页界面集合 */
+	/** category页界面集合 */
 	private ArrayList<View> pageViews;
 
-	/** 表情数据填充器 */
+	/** category数据填充器 */
 	private List<CategoryAdapter> categoryAdapters;
 
-	/** 当前表情页 */
+	/** 当前category页 */
 	private int current = 0;
 	/** 游标点集合 */
 	private ArrayList<ImageView> pointViews;
 
 	private OnFaceOprateListener mOnFaceOprateListener;
+	private int pageViewSize;
+	private boolean isHaveRecent = false;
 
-	public SelectCategoryHelper(Context context, View toolView) {
+	public SelectCategoryHelper(Context context, View toolView, List<CategoryModle> recentCategoryList) {
 		this.context = context;
+		this.mRecentCategoryList = recentCategoryList;
 		mInflater = LayoutInflater.from(this.context);
 		mFaceView = toolView;
 		mViewPager = (ViewPager) mFaceView.findViewById(R.id.face_viewpager);
@@ -69,15 +74,30 @@ public class SelectCategoryHelper implements OnItemClickListener {
 		pageViews = new ArrayList<View>();
 		// 左侧添加空页
 		View nullView1 = new View(context);
-		// 设置透明背景
-		nullView1.setBackgroundColor(Color.TRANSPARENT);
+		nullView1.setBackgroundColor(Color.TRANSPARENT);// 设置透明背景
 		pageViews.add(nullView1);
 
-		// 中间添加表情页
+		//add recent page //添加常用页
+		pageViewSize = mPageCategoryDatas.size();
+		if (mRecentCategoryList != null && mRecentCategoryList.size() > 0) {
+			pageViewSize = mPageCategoryDatas.size() + 1;
+			isHaveRecent = true;
+		}
+
+		// 中间添加category页 and recent Category page
 		categoryAdapters = new ArrayList<CategoryAdapter>();
-		for (int i = 0; i < mPageCategoryDatas.size(); i++) {
+		for (int i = 0; i < pageViewSize; i++) {
 			GridView view = (GridView) mInflater.inflate(R.layout.test_ui_zhangben_category_gridview, null);
-			CategoryAdapter adapter = new CategoryAdapter(context, mPageCategoryDatas.get(i));
+			CategoryAdapter adapter;
+            if (isHaveRecent) {
+                if (i == 0) {
+                    adapter = new CategoryAdapter(context, mRecentCategoryList);
+                } else {
+                    adapter = new CategoryAdapter(context, mPageCategoryDatas.get(i - 1));
+                }
+            } else {
+                adapter = new CategoryAdapter(context, mPageCategoryDatas.get(i));
+            }
 			view.setSelector(R.drawable.item_background_holo_light);
 			view.setAdapter(adapter);
 			categoryAdapters.add(adapter);
@@ -113,7 +133,7 @@ public class SelectCategoryHelper implements OnItemClickListener {
 				imageView.setVisibility(View.GONE);
 			}
 			if (i == 1) {
-				imageView.setBackgroundResource(R.drawable.icon_jw_face_index_prs);
+				imageView.setBackgroundResource(isHaveRecent ? R.drawable.list_focused_holo : R.drawable.icon_jw_face_index_prs);
 			}
 			pointViews.add(imageView);
 
@@ -138,7 +158,7 @@ public class SelectCategoryHelper implements OnItemClickListener {
 				if (arg0 == pointViews.size() - 1 || arg0 == 0) {
 					if (arg0 == 0) {
 						mViewPager.setCurrentItem(arg0 + 1);// 第二屏 会再次实现该回调方法实现跳转.
-						pointViews.get(1).setBackgroundResource(R.drawable.icon_jw_face_index_prs);
+						pointViews.get(1).setBackgroundResource(isHaveRecent ? R.drawable.list_focused_holo : R.drawable.icon_jw_face_index_prs);
 					} else {
 						mViewPager.setCurrentItem(arg0 - 1);// 倒数第二屏
 						pointViews.get(arg0 - 1).setBackgroundResource(R.drawable.icon_jw_face_index_prs);
@@ -165,9 +185,7 @@ public class SelectCategoryHelper implements OnItemClickListener {
 	public void draw_Point(int index) {
 		for (int i = 1; i < pointViews.size(); i++) {
 			if (index == i) {
-				pointViews.get(i).setBackgroundResource(R.drawable.icon_jw_face_index_prs);
-				if (index == 1)
-					pointViews.get(i).setBackgroundResource(R.drawable.list_focused_holo);
+				pointViews.get(i).setBackgroundResource((index == 1) && isHaveRecent ? R.drawable.list_focused_holo : R.drawable.icon_jw_face_index_prs);
 			} else {
 				pointViews.get(i).setBackgroundResource(R.drawable.icon_jw_face_index_nor);
 			}
@@ -215,12 +233,14 @@ public class SelectCategoryHelper implements OnItemClickListener {
 		}
 		List<CategoryModle> list = new ArrayList<CategoryModle>();
 		list.addAll(mMsgCategoryAllData.subList(startIndex, endIndex));
-		if (list.size() <= pageSize) {
+		/*
+        if (list.size() <= pageSize) {
 			for (int i = list.size(); i < pageSize; i++) {
 				CategoryModle object = new CategoryModle();
 				list.add(object);
 			}
 		}
+		*/
 
 		return list;
 	}
@@ -232,9 +252,11 @@ public class SelectCategoryHelper implements OnItemClickListener {
 		if (item.getCharacter()!=null) {
 			//LogMy.e(BaseApp.getContext(), TAG+ spannableString.toString());
 			if (null != mOnFaceOprateListener) {
-				mViewPager.getAdapter().notifyDataSetChanged();
-				view.setBackgroundResource(R.drawable.green_btn_bg);
-				mOnFaceOprateListener.onFaceSelected(item);
+                if (item.getCharacter().equals("添加")) {
+                        mOnFaceOprateListener.onCategoryAdd();
+                } else {
+                    mOnFaceOprateListener.onFaceSelected(item, view);
+                }
 			}
 		}
 	}
@@ -245,8 +267,8 @@ public class SelectCategoryHelper implements OnItemClickListener {
 
 	public interface OnFaceOprateListener {
 
-		void onFaceSelected(CategoryModle modle);
+		void onFaceSelected(CategoryModle modle, View view);
 
-		void onFaceDeleted();
+		void onCategoryAdd();
 	}
 }

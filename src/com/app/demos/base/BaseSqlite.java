@@ -159,6 +159,7 @@ public abstract class BaseSqlite {
 			db.execSQL(createSql3());
 			db.execSQL(CreateSql.createZhanben());
 			db.execSQL(CreateSql.createZhanbenLocation());
+			db.execSQL(CreateSql.createZhanbenCategory());
 			//db.execSQL(CreateSql.insertZhanbenLocation());
 			//db.execSQL(DromInfoSqlite.Creat);
 
@@ -169,10 +170,9 @@ public abstract class BaseSqlite {
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             switch (oldVersion) {
                 case 1://不加 break 保证每次的数据库修改都能被执行到
-                    db.execSQL(CreateSql.createZhanben());
+
                 case 2://不加 break 保证每次的数据库修改都能被执行到
-                    db.execSQL(CreateSql.createZhanbenLocation());
-                    db.execSQL(CreateSql.insertZhanbenLocation());
+
                 default://不加 break 保证每次的数据库修改都能被执行到
             }
 			LogMy.e(context, "upgradeSql");

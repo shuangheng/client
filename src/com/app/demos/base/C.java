@@ -69,6 +69,7 @@ public final class C {
 	public static final class string {
 		public static final String zhanBen = "zhanben";
 		public static final String zhangBenLocation = "zhangben_location";
+		public static final String zhangBenCategory = "zhangben_category";
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	// core settings (important)

@@ -21,7 +21,6 @@ import android.widget.TimePicker;
 import com.app.demos.R;
 import com.app.demos.base.BaseMessage;
 import com.app.demos.base.BaseUi;
-import com.app.demos.base.C;
 import com.app.demos.base.LogMy;
 import com.app.demos.layout.PickerView;
 import com.app.demos.layout.Utils;
@@ -40,7 +39,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by tom on 15-12-16.
@@ -65,6 +64,7 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
     private String customerLocation = "无地点";
     private String remarkString;
     private String customerCategory;
+    private ArrayList<View> viewCategorySelecteds = new ArrayList<View>();
     //private TextView time;
     //private TextView type;
 
@@ -73,7 +73,16 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.test_ui_zhangben);
 
+        initRecent();
         initView();
+    }
+
+    private void initRecent() {
+        String recentCategory = sharedPreferences_speak.getString("RecentCategory", null);
+        if (recentCategory != null) {
+            String[] recentCategorys = recentCategory.split("@");
+            //recentCategorys.
+        }
     }
 
     @Override
@@ -81,6 +90,7 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
         switch (v.getId()) {
             case R.id.ui_zhanben_edit_time:
                 showTimePickerDialog2();
+                break;
             case R.id.ui_zhanben_tv_time2:
                 showTimePickerDialog2();
                 break;
@@ -89,6 +99,7 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
                 break;
             case R.id.ui_zhanben_btn_save:
                 saveData(v);
+                break;
             case R.id.ui_zhanben_btn_export:
                 exportData();
                 Snackbar.make(v, "exprot data ok", Snackbar.LENGTH_LONG)
@@ -101,7 +112,7 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
                 String s = "";
                 ArrayList<Zhangben> zList = new ZhangbenSqlite(UiZhangBen.this).getAllZhangben("4");
                 for (Zhangben z : zList) {
-                    s = s + "\n" + z.getMoney() + "\n" + z.getThree() + "\n" + z.getTime() + "\n" +
+                    s = s + "\n" + z.getMoney() + "\n" + z.getTwo() + "\n" + z.getTime() + "\n" +
                             z.getLocation() + "\n" + z.getId() + "--------------";
                 }
                 header.setText(s);
@@ -110,10 +121,15 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
     }
 
     private void saveData(View v) {
-        if (customerCategory ==null) {
+        if (customerCategory == null) {
             toast(getString(R.string.please_select_category));
             return;
         }
+        if (money.getText().toString().trim().length() == 0) {
+            toast(getString(R.string.please_input_money));
+            return;
+        }
+
         Zhangben zhang = new Zhangben();
         zhang.setMoney(money.getText().toString());
         //zhang.setLocation(location.getText().toString());
@@ -131,8 +147,9 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
             ZhangBenLocation zhangBenLocation = new ZhangBenLocation();
             ZhangBenLocationSqlite zhangBenLocationSqlite = new ZhangBenLocationSqlite(this);
             int used = zhangBenLocationSqlite.getLocationUsed(customerLocation);
+            print("location used: "+used + "\nlocation: " + customerLocation);
             zhangBenLocation.setLocation(customerLocation);
-            zhangBenLocation.setUsed(String.valueOf(used + 1));
+            zhangBenLocation.setUsed("" + (used + 1));
             zhangBenLocationSqlite.updateZhangBenLocation(zhangBenLocation);
 
             exportData();
@@ -216,7 +233,7 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
     }
 
     @Override
-    public void onFaceSelected(CategoryModle modle) {
+    public void onFaceSelected(CategoryModle modle, View view) {
         SpannableString spannableString = new SpannableString(" " + modle.getCharacter());
         Drawable d = getResources().getDrawable(modle.getId());
         if (d != null) {
@@ -229,11 +246,31 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
         mTvCategry.setText(spannableString);
 
         customerCategory = modle.getCharacter();
+
+        //view animation / bg
+        switch (viewCategorySelecteds.size()) {
+            case 0:
+                viewCategorySelecteds.add(view);
+                break;
+            case 1:
+                viewCategorySelecteds.add(view);
+                viewCategorySelecteds.get(0).setBackgroundResource(R.drawable.transparent_background);
+                view.setBackgroundResource(R.drawable.green_btn_bg);
+                break;
+            case 2:
+                viewCategorySelecteds.set(0, viewCategorySelecteds.get(1));
+                viewCategorySelecteds.set(1, view);
+                viewCategorySelecteds.get(0).setBackgroundResource(R.drawable.transparent_background);
+                view.setBackgroundResource(R.drawable.green_btn_bg);
+                break;
+
+        }
+
     }
 
     @Override
-    public void onFaceDeleted() {
-
+    public void onCategoryAdd() {
+        toast("add category");
     }
 
     private void showTimePickerDialog2() {
@@ -294,7 +331,7 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
     }
 
     private void print(String customerTime) {
-        header.setText(customerTime);
+        header.append("\n" + customerTime);
     }
 
     private void showLocationPickerDialog() {
@@ -318,94 +355,12 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
         dialog.setTitle(getString(R.string.select_location));
         dialog.show();
     }
-    private void showTimePickerDialog() {
-        Dialog dialog = new Dialog(this);
 
-        View view = LayoutInflater.from(this).inflate(R.layout.view_time_picker, null);
-        PickerView monthPv = (PickerView) view.findViewById(R.id.month_pv);
-        final PickerView dayPv = (PickerView) view.findViewById(R.id.day_pv);
-        PickerView hourPv = (PickerView) view.findViewById(R.id.hour_pv);
-        PickerView minutePv = (PickerView) view.findViewById(R.id.minute_pv);
-
-        ArrayList<String> months = new ArrayList<String>();
-        final ArrayList<String> days = new ArrayList<String>();
-        ArrayList<String> hours = new ArrayList<String>();
-        ArrayList<String> minutes = new ArrayList<String>();
-        for (int i = 1; i < 13; i++)
-        {
-            months.add(i < 10 ? "0" + i : "" + i);
-        }
-        for (int i = 1; i < getDays(TimeUtil.getMonth(customerTime)) + 1; i++)
-        {
-            days.add(i < 10 ? "0" + i : "" + i);
-        }
-        for (int i = 0; i < 24; i++)
-        {
-            hours.add(i < 10 ? "0" + i : "" + i);
-        }
-        for (int i = 0; i < 60; i++)
-        {
-            minutes.add(i < 10 ? "0" + i : "" + i);
-        }
-        monthPv.setData(months);
-        //monthPv.setSelected(TimeUtil.getMonth(customerTime));
-        dayPv.setData(days);
-        //monthPv.setSelected(TimeUtil.getDay(customerTime));
-        hourPv.setData(hours);
-        //monthPv.setSelected(TimeUtil.getHour(customerTime));
-        minutePv.setData(minutes);
-       // monthPv.setSelected(TimeUtil.getMinute(customerTime));
-
-        monthPv.setOnSelectListener(new PickerView.onSelectListener() {
-            @Override
-            public void onSelect(String text) {
-                String s = customerTime.substring(0, 5);//月份前的
-                String ss = customerTime.substring(7, 19);//月份后的
-                customerTime = s + text + ss;
-                String currentSelected = dayPv.getCurrentSelected();
-                for (int i = 1; i < getDays(text)+1; i++) {
-                    days.clear();
-                    days.add(i < 10 ? "0" + i : "" + i);
-                }
-                dayPv.setData(days);
-                if (days.size() < Integer.parseInt(currentSelected)) {
-                    dayPv.setSelected(days.size() - 1);
-                } else { dayPv.setSelected(currentSelected); }
-                mTvtime.setText(TimeUtil.getMMdd(customerTime));
-            }
-        });
-        dayPv.setOnSelectListener(new PickerView.onSelectListener() {
-            @Override
-            public void onSelect(String text) {
-                String s = customerTime.substring(0, 8);//月份前的
-                String ss = customerTime.substring(10, 19);//月份后的
-                customerTime = s + text + ss;
-                mTvtime.setText(TimeUtil.getMMdd(customerTime));
-            }
-        });
-        hourPv.setOnSelectListener(new PickerView.onSelectListener() {
-            @Override
-            public void onSelect(String text) {
-                String s = customerTime.substring(0, 11);//月份前的
-                String ss = customerTime.substring(13, 19);//月份后的
-                customerTime = s + text + ss;
-                mTvtime.setText(TimeUtil.getMMdd(customerTime));
-            }
-        });
-        minutePv.setOnSelectListener(new PickerView.onSelectListener() {
-            @Override
-            public void onSelect(String text) {
-                String s = customerTime.substring(0, 14);//月份前的
-                String ss = customerTime.substring(16, 19);//月份后的
-                customerTime = s + text + ss;
-                mTvtime.setText(TimeUtil.getMMdd(customerTime));
-            }
-        });
-        dialog.setContentView(view);
-        dialog.setTitle(getString(R.string.select_time));
-        dialog.show();
-    }
-
+    /**
+     * 获去当月天数
+     * @param month
+     * @return
+     */
     public int getDays(String month) {
         int days = 0;
         switch (Integer.parseInt(month)) {
@@ -444,7 +399,16 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
         mTvRemark = (TextView) findViewById(R.id.ui_zhanben_tv_remark);
         View view = findViewById(R.id.emoji_layout);
         if (null == mFaceHelper) {
-            mFaceHelper = new SelectCategoryHelper(this, view);
+
+            //---test--//
+            List<CategoryModle> list = new ArrayList<CategoryModle>();
+            for (int i = 2; i < 7; i++) {
+                CategoryModle categoryModle = new CategoryModle(CategoryUtils.faceImgs[i], CategoryUtils.faceImgNames[i]);
+                list.add(categoryModle);
+            }
+
+            //---test--//
+            mFaceHelper = new SelectCategoryHelper(this, view, list);
             mFaceHelper.setFaceOpreateListener(this);
         }
         //init data
@@ -458,10 +422,12 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
             if (zhangBenLocationSqlite.createData()) {//添加 location data
                 customerLocation = zhangBenLocationSqlite.getAllLocation(null).get(0);
                 mTvLocation.setText(customerLocation);
+                printLoction(zhangBenLocationSqlite);
             }
         } else {
             customerLocation = zhangBenLocationSqlite.getAllLocation(null).get(0);
             mTvLocation.setText(customerLocation);
+            printLoction(zhangBenLocationSqlite);
         }
 
 
@@ -472,6 +438,16 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
         importBtn.setOnClickListener(this);
         save.setOnClickListener(this);
         next.setOnClickListener(this);
+    }
+
+    //test
+    private void printLoction(ZhangBenLocationSqlite zhangBenLocationSqlite) {
+        String s = "";
+        ArrayList<ZhangBenLocation> zList = zhangBenLocationSqlite.getAll(null);
+        for (ZhangBenLocation z : zList) {
+            s = s + "\n" + z.getLocation() + " --> " + z.getUsed() + "\n--------------";
+        }
+        print(s);
     }
 
     private class IndexHandler extends Handler {

@@ -1,6 +1,7 @@
 package com.app.demos.sqlite;
 
 import com.app.demos.base.C;
+import com.app.demos.model.ZhangBenCategory;
 import com.app.demos.model.ZhangBenLocation;
 import com.app.demos.model.Zhangben;
 
@@ -23,7 +24,7 @@ public class CreateSql {
     public static String createZhanbenLocation() {
         return "CREATE TABLE IF NOT EXISTS " + C.string.zhangBenLocation + " (" +
                 ZhangBenLocation.COL_LOCATON + " TEXT, " +
-                ZhangBenLocation.COL_USED + " TEXT" +
+                ZhangBenLocation.COL_USED + " integer" +
                 ");";
     }
 
@@ -34,5 +35,13 @@ public class CreateSql {
                 "(" + "大润发" +", " + "0" + ");";
                 //"(无地点, 0), " +
                 //"(万盛百货, 0);";
+    }
+
+    public static String createZhanbenCategory() {
+        return "CREATE TABLE IF NOT EXISTS " + C.string.zhangBenCategory + " (" +
+                ZhangBenCategory.COL_RES_ID + " TEXT, " +
+                ZhangBenCategory.COL_CATEGORY_NAME + " TEXT, " +
+                ZhangBenCategory.COL_USED + " integer" +
+                ");";
     }
 }

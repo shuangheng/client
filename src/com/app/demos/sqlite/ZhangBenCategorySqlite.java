@@ -7,29 +7,32 @@ import com.app.demos.base.BaseSqlite;
 import com.app.demos.base.C;
 import com.app.demos.model.DromInfo;
 import com.app.demos.model.FavoriteSpeak;
+import com.app.demos.model.ZhangBenCategory;
 import com.app.demos.model.ZhangBenLocation;
+import com.app.demos.ui.test.zhangBen.CategoryUtils;
 
 import java.util.ArrayList;
 
 /**
  * Created by tom on 15-9-15.
  */
-public class ZhangBenLocationSqlite extends BaseSqlite {
+public class ZhangBenCategorySqlite extends BaseSqlite {
 
-    public ZhangBenLocationSqlite(Context context) {
+    public ZhangBenCategorySqlite(Context context) {
         super(context);
     }
 
     @Override
     protected String tableName() {
-        return C.string.zhangBenLocation;
+        return C.string.zhangBenCategory;
     }
 
     @Override
     protected String[] tableColumns() {
         String[] columns = {
-                ZhangBenLocation.COL_LOCATON,
-                ZhangBenLocation.COL_USED,
+                ZhangBenCategory.COL_RES_ID,
+                ZhangBenCategory.COL_CATEGORY_NAME,
+                ZhangBenCategory.COL_USED
         };
         return columns;
     }
@@ -37,8 +40,9 @@ public class ZhangBenLocationSqlite extends BaseSqlite {
     @Override
     protected String createSql() {
         return "CREATE TABLE IF NOT EXISTS " + tableName() + " (" +
-                ZhangBenLocation.COL_LOCATON + " TEXT, " +
-                ZhangBenLocation.COL_USED + " integer" +
+                ZhangBenCategory.COL_RES_ID + " TEXT, " +
+                ZhangBenCategory.COL_CATEGORY_NAME + " TEXT, " +
+                ZhangBenCategory.COL_USED + " integer" +
                 ");";
     }
 
@@ -47,15 +51,16 @@ public class ZhangBenLocationSqlite extends BaseSqlite {
         return "DROP TABLE IF EXISTS " + tableName();
     }
 
-    public boolean updateZhangBenLocation(ZhangBenLocation g) {
+    public boolean updateZhangBenCategory(ZhangBenCategory g) {
         // prepare g data
         ContentValues values = new ContentValues();
-        values.put(ZhangBenLocation.COL_LOCATON, g.getLocation());
-        values.put(ZhangBenLocation.COL_USED, g.getUsed());
+        values.put(ZhangBenCategory.COL_RES_ID, g.getResId());
+        values.put(ZhangBenCategory.COL_CATEGORY_NAME, g.getCategoryName());
+        values.put(ZhangBenCategory.COL_USED, g.getUsed());
 
         // prepare sql
-        String whereSql = ZhangBenLocation.COL_LOCATON + "=?";
-        String[] whereParams = new String[]{g.getLocation()};
+        String whereSql = ZhangBenCategory.COL_CATEGORY_NAME + "=?";
+        String[] whereParams = new String[]{g.getCategoryName()};
         // create or update
         try {
             if (this.exists(whereSql, whereParams)) {
@@ -70,10 +75,10 @@ public class ZhangBenLocationSqlite extends BaseSqlite {
         return true;
     }
 
-    public boolean delete(ZhangBenLocation d) {
+    public boolean delete(ZhangBenCategory d) {
         // prepare sql
-        String whereSql = ZhangBenLocation.COL_LOCATON + "=?";
-        String[] whereParams = new String[]{d.getLocation()};
+        String whereSql = ZhangBenCategory.COL_CATEGORY_NAME + "=?";
+        String[] whereParams = new String[]{d.getCategoryName()};
         // create or update
         try {
             if (this.exists(whereSql, whereParams)) {
@@ -86,53 +91,36 @@ public class ZhangBenLocationSqlite extends BaseSqlite {
         return true;
     }
 
+    /**
+     * 初始化 data
+     * @return
+     */
     public Boolean createData() {
-        Boolean createOk = false;
+        Boolean isCreateOk = false;
         ContentValues values = new ContentValues();
-        for (int i = 0; i < C.array.locations.length; i++) {
-            values.put(ZhangBenLocation.COL_LOCATON, C.array.locations[i]);
-            values.put(ZhangBenLocation.COL_USED, "0");
+        for (int i = 0; i < CategoryUtils.faceImgNames.length; i++) {
+            values.put(ZhangBenCategory.COL_RES_ID, CategoryUtils.faceImgs[i]);
+            values.put(ZhangBenCategory.COL_CATEGORY_NAME, CategoryUtils.faceImgNames[i]);
+            values.put(ZhangBenCategory.COL_USED, "0");
             if (this.create(values))
-                createOk = true;
+                isCreateOk = true;
             values.clear();
         }
-        return createOk;
+        return isCreateOk;
     }
 
-    public int getLocationUsed(String location) {
-        String whereSql = ZhangBenLocation.COL_LOCATON + "=?";
-        String[] whereParams = new String[]{location};
-        ArrayList<ArrayList<String>> rList = this.query2(whereSql, whereParams, null, ZhangBenLocation.COL_USED +" desc");
-        String used = rList.get(0).get(1);
-        return Integer.parseInt(used);
-    }
-
-    public ArrayList<String> getAllLocation(String limit) {
-        ArrayList<String> gList = new ArrayList<String>();
+    public ArrayList<ZhangBenCategory> getAll() {
+        ArrayList<ZhangBenCategory> gList = new ArrayList<ZhangBenCategory>();
         try {
-            ArrayList<ArrayList<String>> rList = this.query2(null, null, limit, ZhangBenLocation.COL_USED +" desc");
+            ArrayList<ArrayList<String>> rList = this.query2(null, null, null, ZhangBenCategory.COL_USED+" desc");
             int rCount = rList.size();
             for (int i = 0; i < rCount; i++) {
                 ArrayList<String> rRow = rList.get(i);
-                String location = (rRow.get(0));
-                gList.add(location);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return gList;
-    }
+                ZhangBenCategory g = new ZhangBenCategory();
+                g.setResId(rRow.get(0));
+                g.setCategoryName(rRow.get(1));
+                g.setUsed(rRow.get(2));
 
-    public ArrayList<ZhangBenLocation> getAll(String limit) {
-        ArrayList<ZhangBenLocation> gList = new ArrayList<ZhangBenLocation>();
-        try {
-            ArrayList<ArrayList<String>> rList = this.query2(null, null, limit, ZhangBenLocation.COL_USED +" desc");
-            int rCount = rList.size();
-            for (int i = 0; i < rCount; i++) {
-                ArrayList<String> rRow = rList.get(i);
-                ZhangBenLocation g = new ZhangBenLocation();
-                g.setLocation(rRow.get(0));
-                g.setUsed(rRow.get(1));
                 gList.add(g);
             }
         } catch (Exception e) {

@@ -14,6 +14,15 @@ public class CategoryModle {
 	/** 类别资源对应的文字描述 */
 	private String character;
 
+	public CategoryModle(int resId, String categoryName) {
+		id = resId;
+		character = categoryName;
+	}
+
+	public CategoryModle() {
+
+	}
+
 	public int getId() {
 		return id;
 	}
