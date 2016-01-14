@@ -40,7 +40,7 @@ public class ZhangBenCategorySqlite extends BaseSqlite {
     @Override
     protected String createSql() {
         return "CREATE TABLE IF NOT EXISTS " + tableName() + " (" +
-                ZhangBenCategory.COL_RES_ID + " TEXT, " +
+                ZhangBenCategory.COL_RES_ID + " integer, " +
                 ZhangBenCategory.COL_CATEGORY_NAME + " TEXT, " +
                 ZhangBenCategory.COL_USED + " integer" +
                 ");";
@@ -99,9 +99,9 @@ public class ZhangBenCategorySqlite extends BaseSqlite {
         Boolean isCreateOk = false;
         ContentValues values = new ContentValues();
         for (int i = 0; i < CategoryUtils.faceImgNames.length; i++) {
-            values.put(ZhangBenCategory.COL_RES_ID, CategoryUtils.faceImgs[i]);
+            values.put(ZhangBenCategory.COL_RES_ID, i);
             values.put(ZhangBenCategory.COL_CATEGORY_NAME, CategoryUtils.faceImgNames[i]);
-            values.put(ZhangBenCategory.COL_USED, "0");
+            values.put(ZhangBenCategory.COL_USED, 0);
             if (this.create(values))
                 isCreateOk = true;
             values.clear();
@@ -109,17 +109,17 @@ public class ZhangBenCategorySqlite extends BaseSqlite {
         return isCreateOk;
     }
 
-    public ArrayList<ZhangBenCategory> getAll() {
+    public ArrayList<ZhangBenCategory> getAll(String whereSql, String[] whereParam, String limit) {
         ArrayList<ZhangBenCategory> gList = new ArrayList<ZhangBenCategory>();
         try {
-            ArrayList<ArrayList<String>> rList = this.query2(null, null, null, ZhangBenCategory.COL_USED+" desc");
+            ArrayList<ArrayList<String>> rList = this.query2(whereSql, whereParam, limit, ZhangBenCategory.COL_USED+" desc");
             int rCount = rList.size();
             for (int i = 0; i < rCount; i++) {
                 ArrayList<String> rRow = rList.get(i);
                 ZhangBenCategory g = new ZhangBenCategory();
-                g.setResId(rRow.get(0));
+                g.setResId(Integer.parseInt(rRow.get(0)));
                 g.setCategoryName(rRow.get(1));
-                g.setUsed(rRow.get(2));
+                g.setUsed(Integer.parseInt(rRow.get(2)));
 
                 gList.add(g);
             }
@@ -145,5 +145,22 @@ public class ZhangBenCategorySqlite extends BaseSqlite {
     @Override
     protected String createSql3() {
         return null;
+    }
+
+    public int getCategoryUsed(String CategoryName) {
+        String whereSql = ZhangBenCategory.COL_CATEGORY_NAME + "=?";
+        String[] whereParams = new String[]{CategoryName};
+        ArrayList<ArrayList<String>> rList = this.query2(whereSql, whereParams, null, null);
+        String used = rList.get(0).get(2);
+        return Integer.parseInt(used);
+    }
+
+    public int getCategoryResId(String customerCategory) {
+        for (int i = 0; i < CategoryUtils.faceImgNames.length; i++) {
+            if (CategoryUtils.faceImgNames[i].equals(customerCategory)) {
+                return i;
+            }
+        }
+        return 0;
     }
 }

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white_gray2">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/ui_zhanben_tv_category"
+            android:layout_width="@dimen/dp_80"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="#ff8cddcd"
+            android:singleLine="true"
+            android:layout_margin="@dimen/dp_5" />
+    <EditText
+        android:id="@+id/result"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:paddingRight="@dimen/dp_20"
+        android:paddingEnd="@dimen/dp_20"
+        android:gravity="end|center"
+        android:textStyle="bold"
+        android:layout_weight="1"
+        android:layout_marginLeft="2px"
+        android:layout_marginRight="2px"
+        android:maxLength="10"
+        android:background="@null" />
+    </LinearLayout>
+
+    <include layout="@layout/horizontal_line_dip"/>
+
+    <GridLayout
+        android:id="@+id/view_num_input_pan_gridlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_5"
+        android:gravity="center"
+        android:columnCount="4"
+        android:rowCount="5" >
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/num1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_row="1"
+            android:background="@drawable/dark_btn_bg"
+            android:text="1" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/num2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_row="1"
+            android:background="@drawable/dark_btn_bg"
+            android:text="2" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/num3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="2"
+            android:layout_row="1"
+            android:background="@drawable/dark_btn_bg"
+            android:text="3" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/num4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_row="2"
+            android:background="@drawable/dark_btn_bg"
+            android:text="4" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/num5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_row="2"
+            android:background="@drawable/dark_btn_bg"
+            android:text="5" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/num6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="2"
+            android:layout_row="2"
+            android:background="@drawable/dark_btn_bg"
+            android:text="6" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/num7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_row="3"
+            android:background="@drawable/dark_btn_bg"
+            android:text="7" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/num8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_row="3"
+            android:background="@drawable/dark_btn_bg"
+            android:text="8" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/num9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="2"
+            android:layout_row="3"
+            android:layout_gravity="fill"
+            android:background="@drawable/dark_btn_bg"
+            android:text="9" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="3"
+            android:layout_row="1"
+            android:layout_gravity="fill"
+            android:textColor="@color/white"
+            android:background="@drawable/dark_btn_bg"
+            android:text="@string/delete" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="3"
+            android:layout_row="2"
+            android:layout_gravity="fill"
+            android:textColor="@color/white"
+            android:background="@drawable/dark_btn_bg"
+            android:text="@string/next_bi" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="3"
+            android:layout_row="3"
+            android:layout_rowSpan="2"
+            android:layout_gravity="fill"
+            android:textColor="@color/white"
+            android:text="@string/save"
+            android:background="@color/green"/>
+
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/num0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_columnSpan="2"
+            android:layout_gravity="fill_horizontal"
+            android:layout_row="4"
+            android:background="@drawable/dark_btn_bg"
+            android:text="0" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/point"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_row="4"
+            android:background="@drawable/dark_btn_bg"
+            android:text="." />
+
+    </GridLayout>
+</LinearLayout>

@@ -4,6 +4,14 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:src="@drawable/ic_create_white_48dp"
+        android:background="@color/green"
+        android:onClick="clickOnEdit" />
+
     <com.app.demos.layout.PickerView
         android:id="@+id/location_pv"
         android:layout_width="wrap_content"

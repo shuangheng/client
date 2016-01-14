@@ -17,6 +17,8 @@ import android.widget.RelativeLayout.LayoutParams;
 import com.app.demos.R;
 import com.app.demos.base.BaseApp;
 import com.app.demos.base.LogMy;
+import com.app.demos.model.ZhangBenCategory;
+import com.app.demos.sqlite.ZhangBenCategorySqlite;
 import com.app.demos.ui.fragment.emoji.ViewPagerAdapter;
 
 import java.util.ArrayList;
@@ -52,9 +54,8 @@ public class SelectCategoryHelper implements OnItemClickListener {
 	private int pageViewSize;
 	private boolean isHaveRecent = false;
 
-	public SelectCategoryHelper(Context context, View toolView, List<CategoryModle> recentCategoryList) {
+	public SelectCategoryHelper(Context context, View toolView ) {
 		this.context = context;
-		this.mRecentCategoryList = recentCategoryList;
 		mInflater = LayoutInflater.from(this.context);
 		mFaceView = toolView;
 		mViewPager = (ViewPager) mFaceView.findViewById(R.id.face_viewpager);
@@ -79,9 +80,18 @@ public class SelectCategoryHelper implements OnItemClickListener {
 
 		//add recent page //添加常用页
 		pageViewSize = mPageCategoryDatas.size();
-		if (mRecentCategoryList != null && mRecentCategoryList.size() > 0) {
-			pageViewSize = mPageCategoryDatas.size() + 1;
-			isHaveRecent = true;
+		ZhangBenCategorySqlite zhangBenCategorySqlite = new ZhangBenCategorySqlite(context);
+		String[] whereParam = {"0"};
+		ArrayList<ZhangBenCategory> mZhangBenCategoryList = zhangBenCategorySqlite.getAll(
+                                                                ZhangBenCategory.COL_USED + ">?", whereParam, ""+pageSize);
+		if (mZhangBenCategoryList.size() > 0) {
+			for (ZhangBenCategory zc : mZhangBenCategoryList) {
+				CategoryModle categoryModle = new CategoryModle(CategoryUtils.faceImgs[zc.getResId()],
+                                                                                zc.getCategoryName());
+                mRecentCategoryList.add(categoryModle);
+			}
+            pageViewSize = mPageCategoryDatas.size() + 1;
+            isHaveRecent = true;
 		}
 
 		// 中间添加category页 and recent Category page

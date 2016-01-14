@@ -8,22 +8,22 @@ import com.app.demos.base.BaseModel;
 public class ZhangBenCategory extends BaseModel {
 
     // model columns
-    public final static String COL_RES_ID = "resId";// CategoryUtils.faceImgs[i]
+    public final static String COL_RES_ID = "resId";// i -- CategoryUtils.faceImgs[i]
     public final static String COL_CATEGORY_NAME = "category_name";
     public final static String COL_USED = "used";
 
-    private String resId;
+    private int resId;
     private String categoryName;
-    private String used;
+    private int used;
 
     public ZhangBenCategory() {
     }
 
-    public String getResId() {
+    public int getResId() {
         return resId;
     }
 
-    public void setResId(String resId) {
+    public void setResId(int resId) {
         this.resId = resId;
     }
 
@@ -35,11 +35,11 @@ public class ZhangBenCategory extends BaseModel {
         this.categoryName = categoryName;
     }
 
-    public String getUsed() {
+    public int getUsed() {
         return used;
     }
 
-    public void setUsed(String used) {
+    public void setUsed(int used) {
         this.used = used;
     }
 }

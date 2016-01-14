@@ -142,6 +142,10 @@
     <string name="select_location">选择地点</string>
     <string name="please_select_category">请选择支出类别！</string>
     <string name="please_input_money">请输入金额！</string>
+    <string name="save">保存</string>
+    <string name="delete">删除</string>
+    <string name="next_bi">下一笔</string>
+    <string name="liu_shui">流水</string>
 
 
 </resources>

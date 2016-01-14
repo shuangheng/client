@@ -39,7 +39,7 @@ public class CreateSql {
 
     public static String createZhanbenCategory() {
         return "CREATE TABLE IF NOT EXISTS " + C.string.zhangBenCategory + " (" +
-                ZhangBenCategory.COL_RES_ID + " TEXT, " +
+                ZhangBenCategory.COL_RES_ID + " integer, " +
                 ZhangBenCategory.COL_CATEGORY_NAME + " TEXT, " +
                 ZhangBenCategory.COL_USED + " integer" +
                 ");";

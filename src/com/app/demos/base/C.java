@@ -64,7 +64,7 @@ public final class C {
 	};
 
 	public static final class array {
-		public static String[] locations = {"万盛百货", "超市", "大润发", "便利店", "无地点"};
+		public static String[] locations = {"无地点", "万盛百货", "超市", "大润发", "便利店"};
 	}
 	public static final class string {
 		public static final String zhanBen = "zhanben";

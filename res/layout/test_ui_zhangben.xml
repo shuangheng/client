@@ -25,18 +25,8 @@
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/ui_zhanben_tv_category"
-                    android:layout_width="@dimen/dp_80"
-                    android:layout_height="@dimen/ui_zhangben_category_height"
-                    android:gravity="center"
-                    android:background="@drawable/green_btn_bg"
-                    android:textColor="@android:color/white"
-                    android:text="@string/category"
-                    android:singleLine="true"
-                    android:layout_margin="@dimen/dp_5" />
+                android:layout_height="match_parent"
+                android:gravity="end">
 
                 <TextView
                     android:id="@+id/ui_zhanben_tv_time2"
@@ -75,109 +65,6 @@
 
             <include layout="@layout/send_msg_tool"/>
 
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:stretchColumns="1"
-                android:layout_gravity="center"
-                android:useDefaultMargins="true"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp">
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="金额(元)"
-                        android:id="@+id/ui_zhanben_tv_money"
-                        android:layout_row="0"
-                        android:layout_column="0"
-                        android:layout_gravity="center_vertical" />
-
-                    <com.app.demos.layout.materialEditText.MaterialEditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:inputType="number"
-                        android:ems="10"
-                        android:id="@+id/ui_zhanben_edit_money"
-                        android:layout_row="0"
-                        android:layout_column="1"
-                        android:hint="请输入金额"
-                        android:maxLength="9"
-                        android:singleLine="true"
-                        android:layout_marginTop="20dp"
-                        app:met_hideUnderline="true"
-                        app:met_floatingLabel="none"
-                        app:met_floatingLabelTextColor="@color/text_color"
-                        app:met_clearButton="true"
-                        app:met_textColor="@color/text_color"
-                        android:gravity="end" />
-
-                </TableRow>
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="消费项目"
-                        android:id="@+id/ui_zhanben_tv_type"
-                        android:layout_row="1"
-                        android:layout_column="0"
-                        android:layout_gravity="center_vertical" />
-
-                    <com.app.demos.layout.materialEditText.MaterialEditText
-                        android:layout_height="wrap_content"
-                        android:id="@+id/ui_zhanben_edit_type"
-                        android:layout_row="1"
-                        android:layout_column="1"
-                        android:singleLine="true"
-                        android:layout_marginTop="20dp"
-                        app:met_hideUnderline="true"
-                        app:met_floatingLabel="none"
-                        app:met_floatingLabelTextColor="@color/text_color"
-                        app:met_clearButton="true"
-                        app:met_textColor="@color/text_color"
-                        android:gravity="end" />
-                </TableRow>
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="时间"
-                        android:id="@+id/ui_zhanben_tv_time"
-                        android:layout_row="2"
-                        android:layout_column="0"
-                        android:layout_gravity="center_vertical" />
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/ui_zhanben_edit_time"
-                        android:layout_row="2"
-                        android:layout_column="1"
-                        android:gravity="end" />
-                </TableRow>
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="地点"
-                        android:id="@+id/ui_zhanben_tv_location"
-                        android:layout_row="3"
-                        android:layout_column="0"
-                        android:layout_gravity="center_vertical" />
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/ui_zhanben_edit_loaction"
-                        android:layout_row="3"
-                        android:layout_column="1"
-                        android:gravity="end" />
-                </TableRow>
-            </TableLayout>
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -201,16 +88,15 @@
                 <android.support.v7.widget.AppCompatButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="下一笔"
-                    android:id="@+id/ui_zhanben_btn_next" />
-
-                <android.support.v7.widget.AppCompatButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="保存"
-                    android:id="@+id/ui_zhanben_btn_save" />
+                    android:text="@string/liu_shui"
+                    android:id="@+id/ui_zhanben_btn_history" />
 
             </LinearLayout>
+
+            <com.app.demos.layout.NumInputPan
+                android:id="@+id/ui_zhanben_num_input_pan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
 
         </LinearLayout>

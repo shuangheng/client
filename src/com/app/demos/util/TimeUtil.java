@@ -312,6 +312,31 @@ public class TimeUtil {
     }
 
     /**
+     * 获去当月天数
+     * @param month
+     * @return
+     */
+    public int getDays(int year, String month) {
+        int days = 0;
+        switch (Integer.parseInt(month)) {
+            case 1:case 3:case 5:case 7:case 8:case 10:case 12:
+                days = 31;
+                break;
+            case 2:
+                //int year = Calendar.getInstance().get(Calendar.YEAR);
+                //int year = Integer.parseInt(TimeUtil.getYear(customerTime));
+                if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
+                    days = 29;
+                } else { days = 28; }
+                break;
+            default:
+                days = 30;
+                break;
+        }
+        return days;
+    }
+
+    /**
      * 从 "yyyy-MM-dd HH:mm:ss" 得到 yyyy-MM-dd
      * @param timeStamp
      * @return time yyyy-MM-dd

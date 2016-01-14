@@ -14,7 +14,6 @@ import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -22,11 +21,14 @@ import com.app.demos.R;
 import com.app.demos.base.BaseMessage;
 import com.app.demos.base.BaseUi;
 import com.app.demos.base.LogMy;
+import com.app.demos.layout.NumInputPan;
 import com.app.demos.layout.PickerView;
 import com.app.demos.layout.Utils;
 import com.app.demos.list.bitmap_load_list.FileCache;
+import com.app.demos.model.ZhangBenCategory;
 import com.app.demos.model.ZhangBenLocation;
 import com.app.demos.model.Zhangben;
+import com.app.demos.sqlite.ZhangBenCategorySqlite;
 import com.app.demos.sqlite.ZhangBenLocationSqlite;
 import com.app.demos.sqlite.ZhangbenSqlite;
 import com.app.demos.util.AppUtil;
@@ -39,21 +41,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by tom on 15-12-16.
  */
 public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOprateListener, View.OnClickListener {
     private static final int MSG_DATA = 100;
-    private EditText location;
-    private EditText money;
-    private EditText time;
-    private EditText type;
     private AppCompatButton export;
     private AppCompatButton importBtn;
-    private AppCompatButton save;
-    private AppCompatButton next;
+    private AppCompatButton history;
     private TextView header;
     private SelectCategoryHelper mFaceHelper;
     private TextView mTvCategry;
@@ -88,17 +84,11 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ui_zhanben_edit_time:
-                showTimePickerDialog2();
-                break;
             case R.id.ui_zhanben_tv_time2:
                 showTimePickerDialog2();
                 break;
             case R.id.ui_zhanben_tv_location2:
                 showLocationPickerDialog();
-                break;
-            case R.id.ui_zhanben_btn_save:
-                saveData(v);
                 break;
             case R.id.ui_zhanben_btn_export:
                 exportData();
@@ -108,7 +98,7 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
             case R.id.ui_zhanben_btn_import:
                 importData();
                 break;
-            case R.id.ui_zhanben_btn_next:
+            case R.id.ui_zhanben_btn_history:
                 String s = "";
                 ArrayList<Zhangben> zList = new ZhangbenSqlite(UiZhangBen.this).getAllZhangben("4");
                 for (Zhangben z : zList) {
@@ -120,22 +110,22 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
         }
     }
 
-    private void saveData(View v) {
+    private void saveData(View v, String money) {
         if (customerCategory == null) {
             toast(getString(R.string.please_select_category));
             return;
         }
-        if (money.getText().toString().trim().length() == 0) {
+        if (money.trim().length() == 0 || Float.parseFloat(money) == 0 || money.equals("0.")) {
             toast(getString(R.string.please_input_money));
             return;
         }
 
         Zhangben zhang = new Zhangben();
-        zhang.setMoney(money.getText().toString());
+        zhang.setMoney(money);
         //zhang.setLocation(location.getText().toString());
-        zhang.setOne(type.getText().toString());
+        //zhang.setOne(type.getText().toString());
         //zhang.setTwo(type.getText().toString());
-        zhang.setThree(type.getText().toString());
+        //zhang.setThree(type.getText().toString());
         //zhang.setTime(time.getText().toString());
         zhang.setLocation(customerLocation);
         zhang.setTwo(customerCategory);
@@ -152,16 +142,21 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
             zhangBenLocation.setUsed("" + (used + 1));
             zhangBenLocationSqlite.updateZhangBenLocation(zhangBenLocation);
 
+            //add Category used //增加 Category 使用次数
+            ZhangBenCategory zhangBenCategory = new ZhangBenCategory();
+            ZhangBenCategorySqlite zhangBenCategorySqlite = new ZhangBenCategorySqlite(this);
+            int usedCategory = zhangBenCategorySqlite.getCategoryUsed(customerCategory);
+            zhangBenCategory.setResId(zhangBenCategorySqlite.getCategoryResId(customerCategory));
+            zhangBenCategory.setCategoryName(customerCategory);
+            zhangBenCategory.setUsed((usedCategory + 1));
+            zhangBenCategorySqlite.updateZhangBenCategory(zhangBenCategory);
+
             exportData();
         } else {
             Snackbar.make(v, "fail", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         }
 
-        money.setText("");
-        type.setText("");
-        location.setText("");
-        time.setText(TimeUtil.long2String(System.currentTimeMillis()));
     }
 
     private void exportData() {
@@ -356,41 +351,11 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
         dialog.show();
     }
 
-    /**
-     * 获去当月天数
-     * @param month
-     * @return
-     */
-    public int getDays(String month) {
-        int days = 0;
-        switch (Integer.parseInt(month)) {
-            case 1:case 3:case 5:case 7:case 8:case 10:case 12:
-                days = 31;
-                break;
-            case 2:
-                //int year = Calendar.getInstance().get(Calendar.YEAR);
-                int year = Integer.parseInt(TimeUtil.getYear(customerTime));
-                if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
-                    days = 29;
-                } else { days = 28; }
-                break;
-            default:
-                days = 30;
-                break;
-        }
-        return days;
-    }
-
     private void initView() {
         initToolBar();
-        location = (EditText) findViewById(R.id.ui_zhanben_edit_loaction);
-        money = (EditText) findViewById(R.id.ui_zhanben_edit_money);
-        time = (EditText) findViewById(R.id.ui_zhanben_edit_time);
-        type = (EditText) findViewById(R.id.ui_zhanben_edit_type);
         importBtn = (AppCompatButton) findViewById(R.id.ui_zhanben_btn_import);
         export = (AppCompatButton) findViewById(R.id.ui_zhanben_btn_export);
-        save = (AppCompatButton) findViewById(R.id.ui_zhanben_btn_save);
-        next = (AppCompatButton) findViewById(R.id.ui_zhanben_btn_next);
+        history = (AppCompatButton) findViewById(R.id.ui_zhanben_btn_history);
 
         header = (TextView) findViewById(R.id.ui_zhanben_header_tv);
         mTvCategry = (TextView) findViewById(R.id.ui_zhanben_tv_category);
@@ -400,23 +365,15 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
         View view = findViewById(R.id.emoji_layout);
         if (null == mFaceHelper) {
 
-            //---test--//
-            List<CategoryModle> list = new ArrayList<CategoryModle>();
-            for (int i = 2; i < 7; i++) {
-                CategoryModle categoryModle = new CategoryModle(CategoryUtils.faceImgs[i], CategoryUtils.faceImgNames[i]);
-                list.add(categoryModle);
-            }
-
-            //---test--//
-            mFaceHelper = new SelectCategoryHelper(this, view, list);
+            mFaceHelper = new SelectCategoryHelper(this, view);
             mFaceHelper.setFaceOpreateListener(this);
         }
         //init data
-        String currentTime = TimeUtil.long2String(System.currentTimeMillis());
+        final String currentTime = TimeUtil.long2String(System.currentTimeMillis());
         customerTime = currentTime;
-        time.setText(currentTime);
         mTvtime.setText(TimeUtil.getMMdd(currentTime));
 
+        //init location data
         ZhangBenLocationSqlite zhangBenLocationSqlite = new ZhangBenLocationSqlite(this);
         if (zhangBenLocationSqlite.getAllLocation("1").size() == 0) {
             if (zhangBenLocationSqlite.createData()) {//添加 location data
@@ -430,14 +387,42 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
             printLoction(zhangBenLocationSqlite);
         }
 
+        //init Category data
+        ZhangBenCategorySqlite zhangBenCategorySqlite = new ZhangBenCategorySqlite(this);
+        if (zhangBenCategorySqlite.getAll(null, null, null).size() == 0) {
+            if (zhangBenCategorySqlite.createData()) {
+                print("zhangBenCategorySqlite.createData() == ok!!");
+            }
+        }
 
         mTvtime.setOnClickListener(this);
         mTvLocation.setOnClickListener(this);
         mTvRemark.setOnClickListener(this);
         export.setOnClickListener(this);
         importBtn.setOnClickListener(this);
-        save.setOnClickListener(this);
-        next.setOnClickListener(this);
+        history.setOnClickListener(this);
+        final NumInputPan inputPan = (NumInputPan) findViewById(R.id.ui_zhanben_num_input_pan);
+        inputPan.setBtnListener(new NumInputPan.OnBtnListener() {
+            @Override
+            public void onSaveClicked(String result) {
+                if (Float.parseFloat(result) == 0){
+                    toast(getString(R.string.please_input_money));
+                    return;
+                }
+                saveData(inputPan, result);
+            }
+
+            @Override
+            public void onNextClicked(String result) {
+                if (Float.parseFloat(result) == 0){
+                    toast(getString(R.string.please_input_money));
+                    return;
+                }
+                customerTime = TimeUtil.long2String(System.currentTimeMillis());
+                saveData(inputPan, result);
+                toast("next");
+            }
+        });
     }
 
     //test
@@ -448,6 +433,10 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
             s = s + "\n" + z.getLocation() + " --> " + z.getUsed() + "\n--------------";
         }
         print(s);
+    }
+
+    public void clickOnEdit(View view) {
+
     }
 
     private class IndexHandler extends Handler {
