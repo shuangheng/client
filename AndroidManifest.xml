@@ -93,6 +93,10 @@
             android:theme="@style/AppThemeNoActionBar" >
         </activity>
         <activity
+            android:name=".ui.test.zhangBen.UiAddBuyLocation"
+            android:theme="@style/AppThemeNoActionBar" >
+        </activity>
+        <activity
             android:name=".ui.test.LbsUi"
             android:theme="@style/com.app.demos.theme.light" >
         </activity>

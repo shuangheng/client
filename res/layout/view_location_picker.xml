@@ -10,7 +10,8 @@
         android:layout_gravity="end"
         android:src="@drawable/ic_create_white_48dp"
         android:background="@color/green"
-        android:onClick="clickOnEdit" />
+        android:onClick="clickOnEdit"
+        android:contentDescription="@null" />
 
     <com.app.demos.layout.PickerView
         android:id="@+id/location_pv"

@@ -1,17 +1,21 @@
 package com.app.demos.ui.test.zhangBen;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -47,9 +51,6 @@ import java.util.ArrayList;
  */
 public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOprateListener, View.OnClickListener {
     private static final int MSG_DATA = 100;
-    private AppCompatButton export;
-    private AppCompatButton importBtn;
-    private AppCompatButton history;
     private TextView header;
     private SelectCategoryHelper mFaceHelper;
     private TextView mTvCategry;
@@ -61,6 +62,7 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
     private String remarkString;
     private String customerCategory;
     private ArrayList<View> viewCategorySelecteds = new ArrayList<View>();
+    private Dialog dialog;
     //private TextView time;
     //private TextView type;
 
@@ -90,23 +92,6 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
             case R.id.ui_zhanben_tv_location2:
                 showLocationPickerDialog();
                 break;
-            case R.id.ui_zhanben_btn_export:
-                exportData();
-                Snackbar.make(v, "exprot data ok", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                break;
-            case R.id.ui_zhanben_btn_import:
-                importData();
-                break;
-            case R.id.ui_zhanben_btn_history:
-                String s = "";
-                ArrayList<Zhangben> zList = new ZhangbenSqlite(UiZhangBen.this).getAllZhangben("4");
-                for (Zhangben z : zList) {
-                    s = s + "\n" + z.getMoney() + "\n" + z.getTwo() + "\n" + z.getTime() + "\n" +
-                            z.getLocation() + "\n" + z.getId() + "--------------";
-                }
-                header.setText(s);
-                break;
         }
     }
 
@@ -127,7 +112,7 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
         //zhang.setTwo(type.getText().toString());
         //zhang.setThree(type.getText().toString());
         //zhang.setTime(time.getText().toString());
-        zhang.setLocation(customerLocation);
+        zhang.setLocation(mTvLocation.getText().toString());
         zhang.setTwo(customerCategory);
         zhang.setTime(customerTime);
         if (new ZhangbenSqlite(UiZhangBen.this).updateZhangben(zhang)) {
@@ -330,7 +315,7 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
     }
 
     private void showLocationPickerDialog() {
-        Dialog dialog = new Dialog(this);
+        dialog = new Dialog(this);
 
         View view = LayoutInflater.from(this).inflate(R.layout.view_location_picker, null);
         PickerView locationPv = (PickerView) view.findViewById(R.id.location_pv);
@@ -353,9 +338,6 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
 
     private void initView() {
         initToolBar();
-        importBtn = (AppCompatButton) findViewById(R.id.ui_zhanben_btn_import);
-        export = (AppCompatButton) findViewById(R.id.ui_zhanben_btn_export);
-        history = (AppCompatButton) findViewById(R.id.ui_zhanben_btn_history);
 
         header = (TextView) findViewById(R.id.ui_zhanben_header_tv);
         mTvCategry = (TextView) findViewById(R.id.ui_zhanben_tv_category);
@@ -398,9 +380,6 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
         mTvtime.setOnClickListener(this);
         mTvLocation.setOnClickListener(this);
         mTvRemark.setOnClickListener(this);
-        export.setOnClickListener(this);
-        importBtn.setOnClickListener(this);
-        history.setOnClickListener(this);
         final NumInputPan inputPan = (NumInputPan) findViewById(R.id.ui_zhanben_num_input_pan);
         inputPan.setBtnListener(new NumInputPan.OnBtnListener() {
             @Override
@@ -436,7 +415,57 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
     }
 
     public void clickOnEdit(View view) {
+        dialog.dismiss();
+        Intent intent = new Intent(this, UiAddBuyLocation.class);
+        startActivityForResult(intent, 0);
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case 0:
+                    String locationName = data.getStringExtra(getString(R.string.location_name));
+                    if (locationName != null && !locationName.equals("")) {
+                        customerLocation = locationName;
+                        mTvLocation.setText(locationName);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.zhang_ben, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_import:
+                importData();
+                break;
+            case R.id.action_export:
+                exportData();
+                toast("exprot data ok");
+                break;
+            case R.id.action_liu_shui:
+                String s = "";
+                ArrayList<Zhangben> zList = new ZhangbenSqlite(UiZhangBen.this).getAllZhangben("4");
+                for (Zhangben z : zList) {
+                    s = s + "\n" + z.getMoney() + "\n" + z.getTwo() + "\n" + z.getTime() + "\n" +
+                            z.getLocation() + "\n" + z.getId() + "--------------";
+                }
+                header.setText(s);
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private class IndexHandler extends Handler {
@@ -456,7 +485,7 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
                         LogMy.e(UiZhangBen.this, list.toString());
                         ZhangbenSqlite zhangbenSqlite = new ZhangbenSqlite(UiZhangBen.this);
                         for (Zhangben z : list) {
-                        zhangbenSqlite.updateZhangben(z);
+                            zhangbenSqlite.updateZhangben(z);
                         }
                         break;
 

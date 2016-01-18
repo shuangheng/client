@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".UiActionBar" >
+
+    <item
+        android:id="@+id/action_import"
+        android:orderInCategory="100"
+        android:title="@string/import_import"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_export"
+        android:orderInCategory="80"
+        android:title="@string/export"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_liu_shui"
+        android:icon="@android:drawable/ic_menu_share"
+        android:orderInCategory="90"
+        android:title="@string/liu_shui"
+        app:showAsAction="ifRoom"/>
+
+
+</menu>

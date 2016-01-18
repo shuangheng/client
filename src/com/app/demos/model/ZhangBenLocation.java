@@ -17,9 +17,9 @@ public class ZhangBenLocation extends BaseModel {
     public ZhangBenLocation() {
     }
 
-    public ZhangBenLocation(String customerId, String speakId, String uptime) {
-        this.location = customerId;
-        this.used = uptime;
+    public ZhangBenLocation(String location, String used) {
+        this.location = location;
+        this.used = used;
     }
 
     public String getLocation() {

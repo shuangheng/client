@@ -146,6 +146,12 @@
     <string name="delete">删除</string>
     <string name="next_bi">下一笔</string>
     <string name="liu_shui">流水</string>
+    <string name="export">导出</string>
+    <string name="import_import">导入</string>
+    <string name="please_input_location">请输入地点</string>
+    <string name="add_location">添加地点</string>
+    <string name="save_fail">保存失败！请稍后重试</string>
+    <string name="location_name">add_location_name</string>
 
 
 </resources>
