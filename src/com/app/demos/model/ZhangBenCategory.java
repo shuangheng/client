@@ -19,6 +19,12 @@ public class ZhangBenCategory extends BaseModel {
     public ZhangBenCategory() {
     }
 
+    public ZhangBenCategory(int resId, String categoryName, int used) {
+        this.resId = resId;
+        this.categoryName = categoryName;
+        this.used = used;
+    }
+
     public int getResId() {
         return resId;
     }

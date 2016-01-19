@@ -7,10 +7,21 @@
     <include layout="@layout/toolbar_shadow" />f
 
     <EditText
+        android:id="@+id/editText_loctin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText_loctin"
+        android:layout_margin="@dimen/dp_10"
+        android:singleLine="true"
+        android:maxLength="10"
         android:hint="@string/please_input_location"
         android:textSize="@dimen/sp_19"
+        android:gravity="center|end"
         android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginStart="@dimen/dp_10"
+        android:text="@string/host_location"/>
 </LinearLayout>

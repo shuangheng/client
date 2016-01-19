@@ -28,6 +28,10 @@ public class CategoryAdapter extends BaseAdapter {
         this.size=list.size();
     }
 
+    public List<CategoryModle> getData() {
+        return data;
+    }
+
     @Override
     public int getCount() {
         return this.size;

@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.Snackbar;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -18,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -45,6 +44,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by tom on 15-12-16.
@@ -92,6 +92,7 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
             case R.id.ui_zhanben_tv_location2:
                 showLocationPickerDialog();
                 break;
+
         }
     }
 
@@ -249,14 +250,52 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
     }
 
     @Override
-    public void onCategoryAdd() {
+    public void onCategoryAdd(CategoryAdapter categoryAdapter) {
+        showAddCategoryDialog(categoryAdapter);
         toast("add category");
+    }
+
+    private void showAddCategoryDialog(final CategoryAdapter categoryAdapter) {
+        final Dialog dialog = new Dialog(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_add_category, null);
+        final EditText editText = (EditText) view.findViewById(R.id.et_category);
+        TextView cancel = (TextView) view.findViewById(R.id.cancel);
+        TextView ok = (TextView) view.findViewById(R.id.ok);
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String category = editText.getText().toString().trim();
+                if (category.equals("")) {
+                    toast(getString(R.string.category_name_not_null));
+                } else {
+                    CategoryModle categoryModle = new CategoryModle(CategoryUtils.faceImgs[1], category);
+                    List<CategoryModle> list = categoryAdapter.getData();
+                    CategoryModle add = list.get(list.size()-1);
+                    list.add(categoryAdapter.getCount() - 1, categoryModle);
+                    list.add(categoryAdapter.getCount(), add);
+                    categoryAdapter.notifyDataSetChanged();
+                    new ZhangBenCategorySqlite(UiZhangBen.this).updateZhangBenCategory(new ZhangBenCategory(categoryModle.getId(), category, 0));
+                    dialog.dismiss();
+                }
+
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.setTitle(getString(R.string.please_input_category_name));
+        dialog.setContentView(view);
+        dialog.show();
     }
 
     private void showTimePickerDialog2() {
         Dialog dialog = new Dialog(this);
 
-        View view = LayoutInflater.from(this).inflate(R.layout.view_time_picker_2, null);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_time_picker_2, null);
         final DatePicker datePicker = (DatePicker) view.findViewById(R.id.datePicker);
         final TimePicker timePicker = (TimePicker) view.findViewById(R.id.timePicker);
 
@@ -369,13 +408,7 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
             printLoction(zhangBenLocationSqlite);
         }
 
-        //init Category data
-        ZhangBenCategorySqlite zhangBenCategorySqlite = new ZhangBenCategorySqlite(this);
-        if (zhangBenCategorySqlite.getAll(null, null, null).size() == 0) {
-            if (zhangBenCategorySqlite.createData()) {
-                print("zhangBenCategorySqlite.createData() == ok!!");
-            }
-        }
+
 
         mTvtime.setOnClickListener(this);
         mTvLocation.setOnClickListener(this);

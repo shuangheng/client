@@ -208,7 +208,26 @@ public class SelectCategoryHelper implements OnItemClickListener {
 	 * @param //data
 	 */
 	private void ParseData() {
+		//init Category data
+		ZhangBenCategorySqlite zhangBenCategorySqlite = new ZhangBenCategorySqlite(context);
+		ArrayList<ZhangBenCategory> zhangBenCategories = zhangBenCategorySqlite.getAll(null, null, null);
+		int len = zhangBenCategories.size();
+		if (len == 0) {
+			zhangBenCategorySqlite.createData();//create category sql
+		}
 		CategoryModle emojEentry;
+		try {
+			for (int i = 0; i < len; i++) {
+				int resID = CategoryUtils.faceImgs[zhangBenCategories.get(i).getResId()];
+				if (resID != 0) {
+					emojEentry = new CategoryModle();
+					emojEentry.setId(resID);
+					emojEentry.setCharacter(zhangBenCategories.get(i).getCategoryName());
+					mMsgCategoryAllData.add(emojEentry);
+				}
+			}
+			/*  *****old****
+			CategoryModle emojEentry;
 		try {
 			int len = CategoryUtils.faceImgs.length;
 			for (int i = 0; i < len; i++) {
@@ -220,6 +239,7 @@ public class SelectCategoryHelper implements OnItemClickListener {
 					mMsgCategoryAllData.add(emojEentry);
 				}
 			}
+			 */
 			int pageCount = (int) Math.ceil(mMsgCategoryAllData.size() / pageSize + 0.1);
 			for (int i = 0; i < pageCount; i++) {
 				mPageCategoryDatas.add(getData(i));
@@ -257,13 +277,15 @@ public class SelectCategoryHelper implements OnItemClickListener {
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		CategoryModle item = (CategoryModle) categoryAdapters.get(current).getItem(position);
+        CategoryAdapter categoryAdapter = categoryAdapters.get(current);
+		CategoryModle item = (CategoryModle) categoryAdapter.getItem(position);
+
 
 		if (item.getCharacter()!=null) {
 			//LogMy.e(BaseApp.getContext(), TAG+ spannableString.toString());
 			if (null != mOnFaceOprateListener) {
                 if (item.getCharacter().equals("添加")) {
-                        mOnFaceOprateListener.onCategoryAdd();
+                        mOnFaceOprateListener.onCategoryAdd(categoryAdapter);
                 } else {
                     mOnFaceOprateListener.onFaceSelected(item, view);
                 }
@@ -279,6 +301,6 @@ public class SelectCategoryHelper implements OnItemClickListener {
 
 		void onFaceSelected(CategoryModle modle, View view);
 
-		void onCategoryAdd();
+		void onCategoryAdd(CategoryAdapter categoryAdapter);
 	}
 }
