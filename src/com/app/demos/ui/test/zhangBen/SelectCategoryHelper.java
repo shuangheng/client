@@ -208,25 +208,6 @@ public class SelectCategoryHelper implements OnItemClickListener {
 	 * @param //data
 	 */
 	private void ParseData() {
-		//init Category data
-		ZhangBenCategorySqlite zhangBenCategorySqlite = new ZhangBenCategorySqlite(context);
-		ArrayList<ZhangBenCategory> zhangBenCategories = zhangBenCategorySqlite.getAll(null, null, null);
-		int len = zhangBenCategories.size();
-		if (len == 0) {
-			zhangBenCategorySqlite.createData();//create category sql
-		}
-		CategoryModle emojEentry;
-		try {
-			for (int i = 0; i < len; i++) {
-				int resID = CategoryUtils.faceImgs[zhangBenCategories.get(i).getResId()];
-				if (resID != 0) {
-					emojEentry = new CategoryModle();
-					emojEentry.setId(resID);
-					emojEentry.setCharacter(zhangBenCategories.get(i).getCategoryName());
-					mMsgCategoryAllData.add(emojEentry);
-				}
-			}
-			/*  *****old****
 			CategoryModle emojEentry;
 		try {
 			int len = CategoryUtils.faceImgs.length;
@@ -239,7 +220,6 @@ public class SelectCategoryHelper implements OnItemClickListener {
 					mMsgCategoryAllData.add(emojEentry);
 				}
 			}
-			 */
 			int pageCount = (int) Math.ceil(mMsgCategoryAllData.size() / pageSize + 0.1);
 			for (int i = 0; i < pageCount; i++) {
 				mPageCategoryDatas.add(getData(i));

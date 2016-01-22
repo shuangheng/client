@@ -3,6 +3,7 @@ package com.app.demos.layout;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.support.v7.widget.AppCompatButton;
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,6 +54,7 @@ public class NumInputPan extends LinearLayout {
         btnNum[10] = (AppCompatButton) findViewById(R.id.point);
         // 初始化显示结果区域
         editText = (EditText) findViewById(R.id.result);
+        editText.setInputType(InputType.TYPE_NULL);//hide system input
         editText.setText("0");
 
         GridLayout gridLayout = (GridLayout) findViewById(R.id.view_num_input_pan_gridlayout);

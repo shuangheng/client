@@ -1,6 +1,7 @@
 package com.app.demos.ui.test.zhangBen;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -71,16 +72,7 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.test_ui_zhangben);
 
-        initRecent();
         initView();
-    }
-
-    private void initRecent() {
-        String recentCategory = sharedPreferences_speak.getString("RecentCategory", null);
-        if (recentCategory != null) {
-            String[] recentCategorys = recentCategory.split("@");
-            //recentCategorys.
-        }
     }
 
     @Override
@@ -91,6 +83,9 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
                 break;
             case R.id.ui_zhanben_tv_location2:
                 showLocationPickerDialog();
+                break;
+            case R.id.ui_zhanben_tv_remark:
+                showRemarkDialog();
                 break;
 
         }
@@ -115,6 +110,7 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
         //zhang.setTime(time.getText().toString());
         zhang.setLocation(mTvLocation.getText().toString());
         zhang.setTwo(customerCategory);
+        zhang.setThree(remarkString);
         zhang.setTime(customerTime);
         if (new ZhangbenSqlite(UiZhangBen.this).updateZhangben(zhang)) {
             Snackbar.make(v, "ok", Snackbar.LENGTH_LONG)
@@ -123,7 +119,6 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
             ZhangBenLocation zhangBenLocation = new ZhangBenLocation();
             ZhangBenLocationSqlite zhangBenLocationSqlite = new ZhangBenLocationSqlite(this);
             int used = zhangBenLocationSqlite.getLocationUsed(customerLocation);
-            print("location used: "+used + "\nlocation: " + customerLocation);
             zhangBenLocation.setLocation(customerLocation);
             zhangBenLocation.setUsed("" + (used + 1));
             zhangBenLocationSqlite.updateZhangBenLocation(zhangBenLocation);
@@ -148,7 +143,7 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
     private void exportData() {
         String s = "";
         String douDian = ",";
-        ArrayList<Zhangben> zhangbenArrayList = new ZhangbenSqlite(UiZhangBen.this).getAllZhangben(null);
+        ArrayList<Zhangben> zhangbenArrayList = new ZhangbenSqlite(UiZhangBen.this).getAllZhangben(null, "id desc");
         int size = zhangbenArrayList.size();
         for (Zhangben z : zhangbenArrayList) {
             if (z == zhangbenArrayList.get(size-1)) {
@@ -254,6 +249,38 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
         showAddCategoryDialog(categoryAdapter);
         toast("add category");
     }
+
+    private void showRemarkDialog() {
+        final Dialog dialog = new Dialog(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_add_category, null);
+        final EditText editText = (EditText) view.findViewById(R.id.et_category);
+        TextView cancel = (TextView) view.findViewById(R.id.cancel);
+        TextView ok = (TextView) view.findViewById(R.id.ok);
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String category = editText.getText().toString().trim();
+                if (category.equals("")) {
+                    toast(getString(R.string.please_input_remark));
+                } else {
+                    remarkString = category;
+                    dialog.dismiss();
+                }
+
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.setTitle(getString(R.string.please_input_category_name));
+        dialog.setContentView(view);
+        dialog.show();
+    }
+
 
     private void showAddCategoryDialog(final CategoryAdapter categoryAdapter) {
         final Dialog dialog = new Dialog(this);
@@ -394,6 +421,11 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
         customerTime = currentTime;
         mTvtime.setText(TimeUtil.getMMdd(currentTime));
 
+        //init category data
+        ZhangBenCategorySqlite zhangBenCategorySqlite = new ZhangBenCategorySqlite(this);
+        if (zhangBenCategorySqlite.getAll(null, null, "1").size() == 0) {
+            zhangBenCategorySqlite.createData();
+        }
         //init location data
         ZhangBenLocationSqlite zhangBenLocationSqlite = new ZhangBenLocationSqlite(this);
         if (zhangBenLocationSqlite.getAllLocation("1").size() == 0) {
@@ -487,10 +519,13 @@ public class UiZhangBen extends BaseUi implements SelectCategoryHelper.OnFaceOpr
                 toast("exprot data ok");
                 break;
             case R.id.action_liu_shui:
+                UiZhangBenHistory.startAction(this);
+
                 String s = "";
-                ArrayList<Zhangben> zList = new ZhangbenSqlite(UiZhangBen.this).getAllZhangben("4");
+                ArrayList<Zhangben> zList = new ZhangbenSqlite(UiZhangBen.this).getAllZhangben("4", "id desc");
                 for (Zhangben z : zList) {
-                    s = s + "\n" + z.getMoney() + "\n" + z.getTwo() + "\n" + z.getTime() + "\n" +
+                    s = s + "\n$: " + z.getMoney() + "\nTwo: " + z.getTwo() + "\nThree: " + z.getThree()
+                            + "\ntime: " + z.getTime() + "\n " +
                             z.getLocation() + "\n" + z.getId() + "--------------";
                 }
                 header.setText(s);

@@ -5,6 +5,7 @@ import com.app.demos.R;
 
 public class CategoryUtils {
 	public static String[] faceImgNames = new String[] {
+			"早餐", "午餐", "晚餐", "水果", "干果", "日用",
             "一般", "餐饮", "购物", "服饰", "交通",
 			"娱乐", "社交", "居家", "通讯", "零食",
 			"美容", "运动", "旅行", "数码", "学习",
@@ -13,7 +14,15 @@ public class CategoryUtils {
 			"礼物", "礼金", "还钱", "捐赠", "理财",
 			"添加" };
 
-	public static int[] faceImgs = new int[] { R.drawable.emoji_1f60a,
+	public static int[] faceImgs = new int[] {
+			R.drawable.emoji_1f35e,
+			R.drawable.emoji_1f35a,
+			R.drawable.emoji_1f35d,
+			R.drawable.emoji_1f34e,
+			R.drawable.emoji_1f31f,
+			R.drawable.emoji_1f6c0,
+
+			R.drawable.emoji_1f60a,
             R.drawable.emoji_1f60d, R.drawable.emoji_1f35a, R.drawable.emoji_1f35d, R.drawable.emoji_1f35c,
             R.drawable.emoji_1f35e, R.drawable.emoji_1f35f, R.drawable.emoji_1f359, R.drawable.emoji_1f363,
             R.drawable.emoji_1f382,	R.drawable.emoji_1f367, R.drawable.emoji_1f37a, R.drawable.emoji_1f366,

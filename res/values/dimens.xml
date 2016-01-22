@@ -76,6 +76,7 @@
     <dimen name="ui_zhangben_category_height">@dimen/dp_40</dimen>
     <dimen name="num_input_pam_text_size">19sp</dimen>
     <dimen name="sp_19">19sp</dimen>
+    <dimen name="ui_zhangben_history_pay">20sp</dimen>
 
 
 </resources>

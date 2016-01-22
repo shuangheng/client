@@ -83,10 +83,10 @@ public class ZhangbenSqlite extends BaseSqlite {
         return true;
     }
 
-    public ArrayList<Zhangben> getAllZhangben (String limit) {
+    public ArrayList<Zhangben> getAllZhangben(String limit, String desc) {
         ArrayList<Zhangben> gList = new ArrayList<Zhangben>();
         try {
-            ArrayList<ArrayList<String>> rList = this.query2(null, null, limit, "id desc");
+            ArrayList<ArrayList<String>> rList = this.query2(null, null, limit, desc);
             int rCount = rList.size();
             for (int i = 0; i < rCount; i++) {
                 ArrayList<String> rRow = rList.get(i);

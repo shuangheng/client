@@ -157,6 +157,11 @@
     <string name="please_input_category_name">请输入类别名称</string>
     <string name="max_support_four_text">最多支持4个字！</string>
     <string name="category_name_not_null">类别的名称不能为空！</string>
+    <string name="remark_not_null">备注不能为空！</string>
+    <string name="please_input_remark">请输入备注信息</string>
+    <string name="pay">支出</string>
+    <string name="income">收入</string>
+    <string name="date">日期</string>
 
 
 </resources>
