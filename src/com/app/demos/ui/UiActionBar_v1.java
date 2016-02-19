@@ -1,6 +1,7 @@
 package com.app.demos.ui;
 
 import android.animation.Animator;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,6 +26,7 @@ import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,17 +49,20 @@ import com.app.demos.base.BaseTask;
 import com.app.demos.base.BaseUi;
 import com.app.demos.base.C;
 import com.app.demos.base.LogMy;
+import com.app.demos.layout.PickerView;
 import com.app.demos.layout.other.PagerSlidingTabStrip_my;
 import com.app.demos.model.FavoriteSpeak;
 import com.app.demos.model.Find;
 import com.app.demos.model.Gonggao;
 import com.app.demos.sqlite.FavoriteSpeakSqlite;
 import com.app.demos.sqlite.GonggaoSqlite;
+import com.app.demos.sqlite.ZhangBenLocationSqlite;
 import com.app.demos.ui.authenticator.UiAuthenticator;
 import com.app.demos.ui.fragment.FindFragment;
 import com.app.demos.ui.fragment.Fragment3;
 import com.app.demos.ui.fragment.SpeakFragment_v1;
 import com.app.demos.ui.fragment.emoji.EmojiFragment;
+import com.app.demos.ui.test.BaiduMapTest;
 import com.app.demos.ui.test.GestureDetectorTest;
 import com.app.demos.ui.test.LbsUi;
 import com.app.demos.ui.test.ToolBarTitleScroll;
@@ -214,82 +219,7 @@ public class UiActionBar_v1 extends BaseUi implements NavigationView.OnNavigatio
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         drawerTv = (TextView) findViewById(R.id.drawer_tv);
-        drawerList = (ListView) findViewById(R.id.drawer_list);
-        String[] data = {"设备信息", "other", "login out", "toolBar Scroll", "toolbar scroll 2", "GestureDetector"
-                        , "draglayoutdemo", "drag down", "drage top", "about", "creat find", "UploadFile", "UploadfileActivity",
-                        "UploadFileProgress", "LBS test"};
-        drawerList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data));
-        drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position) {
-                    case 0:
-                        TelephonyManager phoneMgr = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-                        String phoneName = Build.BRAND;//品牌
-                        String phoneModel = Build.MODEL;//手机型号
-                        String phoneNumber =phoneMgr.getLine1Number();//本机电话号码
-                        int SDK =Build.VERSION.SDK_INT;//SDK版本号
-                        String OS =Build.VERSION.RELEASE;//Firmware/OS 版本号
 
-                        drawerTv.setText(phoneName + "\n" + phoneModel + "\n" + phoneNumber + "\n" + SDK + "\n" + OS);
-                        break;
-                    case 1:
-                        UiImageZoom.actionStart(context, null, null);
-                        break;
-                    case 2:
-                        UiAuthenticator.actionStart(context, 2);
-                        break;
-                    case 3:
-                        overlay(ToolBarTitleScroll.class);
-                        break;
-                    case 4:
-                        overlay(FlexibleSpaceWithImageListViewActivity.class);
-                        break;
-                    case 5:
-                        overlay(GestureDetectorTest.class);
-                        break;
-                    case 6:
-                        overlay(com.app.demos.ui.test.draglayoutdemo.MainActivity.class);
-                        break;
-                    case 7:
-                        overlay(com.app.demos.ui.test.dragelayoutDown.MainActivity.class);
-                        break;
-                    case 8:
-                        overlay(com.app.demos.ui.test.dragTopLayout.MainDragTopActivity.class);
-                        break;
-                    case 9:
-                        overlay(AboutActivity.class);
-                        break;
-                    case 10:
-                        overlay(UiCreateFind.class);
-                        break;
-                    case 11:
-                        overlay(UploadFile.class);
-                        break;
-                    case 12:
-                        overlay(UploadfileActivity.class);
-                        break;
-                    case 13:
-                        overlay(UploadFileProgress.class);
-                        break;
-                    case 14:
-                        overlay(LbsUi.class);
-                        break;
-                }
-                if (position != 0) {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
-                            if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-                                mDrawerLayout.closeDrawer(GravityCompat.START);
-                            }
-                            //mDrawerLayout.closeDrawers();
-                        }
-                    }, 500);
-                }
-            }
-        });
     }
 
     private void initToolBar() {
@@ -534,7 +464,8 @@ public class UiActionBar_v1 extends BaseUi implements NavigationView.OnNavigatio
         } else if (id == R.id.nav_gallery) {
             UiAuthenticator.actionStart(context, 2);
         } else if (id == R.id.nav_slideshow) {
-            overlay(UiCreateFind.class);
+            showTestListDialog();
+            //overlay(UiCreateFind.class);
         } else if (id == R.id.nav_manage) {
             overlay(UiZhangBen.class);
         } else if (id == R.id.nav_share) {
@@ -546,6 +477,84 @@ public class UiActionBar_v1 extends BaseUi implements NavigationView.OnNavigatio
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void showTestListDialog() {
+            Dialog dialog = new Dialog(this);
+
+            View view = LayoutInflater.from(this).inflate(R.layout.test_show_test_list_dialog, null);
+        drawerList = (ListView) view.findViewById(R.id.drawer_list);
+        String[] data = {"设备信息", "other", "login out", "toolBar Scroll", "toolbar scroll 2", "GestureDetector"
+                , "draglayoutdemo", "drag down", "drage top", "about", "creat find", "UploadFile", "UploadfileActivity",
+                "UploadFileProgress", "LBS test", "Baidu Map"};
+        drawerList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data));
+        drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        TelephonyManager phoneMgr = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+                        String phoneName = Build.BRAND;//品牌
+                        String phoneModel = Build.MODEL;//手机型号
+                        String phoneNumber =phoneMgr.getLine1Number();//本机电话号码
+                        int SDK =Build.VERSION.SDK_INT;//SDK版本号
+                        String OS =Build.VERSION.RELEASE;//Firmware/OS 版本号
+
+                        drawerTv.setText(phoneName + "\n" + phoneModel + "\n" + phoneNumber + "\n" + SDK + "\n" + OS);
+                        break;
+                    case 1:
+                        UiImageZoom.actionStart(context, null, null);
+                        break;
+                    case 2:
+                        UiAuthenticator.actionStart(context, 2);
+                        break;
+                    case 3:
+                        overlay(ToolBarTitleScroll.class);
+                        break;
+                    case 4:
+                        overlay(FlexibleSpaceWithImageListViewActivity.class);
+                        break;
+                    case 5:
+                        overlay(GestureDetectorTest.class);
+                        break;
+                    case 6:
+                        overlay(com.app.demos.ui.test.draglayoutdemo.MainActivity.class);
+                        break;
+                    case 7:
+                        overlay(com.app.demos.ui.test.dragelayoutDown.MainActivity.class);
+                        break;
+                    case 8:
+                        overlay(com.app.demos.ui.test.dragTopLayout.MainDragTopActivity.class);
+                        break;
+                    case 9:
+                        overlay(AboutActivity.class);
+                        break;
+                    case 10:
+                        overlay(UiCreateFind.class);
+                        break;
+                    case 11:
+                        overlay(UploadFile.class);
+                        break;
+                    case 12:
+                        overlay(UploadfileActivity.class);
+                        break;
+                    case 13:
+                        overlay(UploadFileProgress.class);
+                        break;
+                    case 14:
+                        overlay(LbsUi.class);
+                        break;
+                    case 15:
+                        overlay(BaiduMapTest.class);
+                        break;
+                }
+            }
+        });
+
+
+            dialog.setContentView(view);
+            dialog.setTitle(getString(R.string.select_test));
+            dialog.show();
     }
 
     public class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {

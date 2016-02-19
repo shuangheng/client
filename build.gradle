@@ -20,10 +20,12 @@ dependencies {
     compile files('libs/dnsjava-2.1.3.jar')
     compile files('libs/commons-net-3.3.jar')
     compile 'com.android.support:design:23.0.1'
+    compile files('libs/baidumapapi_base_v3_7_1.jar')
+    compile files('libs/baidumapapi_map_v3_7_1.jar')
 }
 
 android {
-    compileSdkVersion 22//change to 22+ case fail import org.apache.http.HttpEntity
+    compileSdkVersion 23//change to 22+ case fail import org.apache.http.HttpEntity
     buildToolsVersion "23.0.1"
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7

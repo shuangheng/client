@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
 
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="2qAPNhILoffMaPDbYGwSsqNs" />
+       <!--release use j2ksf9zmmmXPKHMygZ9rV9XI -->
+       <!--test use 2qAPNhILoffMaPDbYGwSsqNs -->
+
 
         <!-- Activity defines -->
         <activity
@@ -106,6 +112,10 @@
             android:theme="@style/com.app.demos.theme.light" >
         </activity>
         <activity
+            android:name=".ui.test.BaiduMapTest"
+            android:theme="@style/com.app.demos.theme.light" >
+        </activity>
+        <activity
             android:name=".ui.test.TestImage"
             android:theme="@style/com.app.demos.theme.light" >
         </activity>
@@ -186,6 +196,13 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!--精确定位-->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!--粗糙定位-->
+    <!--baidu map -->
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
     <!-- For using notification -->
     <uses-permission android:name="android.permission.VIBRATE" />

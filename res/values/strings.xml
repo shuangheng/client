@@ -162,6 +162,7 @@
     <string name="pay">支出</string>
     <string name="income">收入</string>
     <string name="date">日期</string>
+    <string name="select_test">选择测试项目</string>
 
 
 </resources>
